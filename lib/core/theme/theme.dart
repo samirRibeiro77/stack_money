@@ -18,9 +18,9 @@ class StackMoneyTheme {
     backgroundColor: platinumSilver,
     foregroundColor: background,
     elevation: 0,
-    padding: const EdgeInsets.all(16),
+    padding: const EdgeInsets.all(8),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(16),
     ),
     textStyle: GoogleFonts.jetBrainsMono(
       fontWeight: FontWeight.bold,
@@ -103,11 +103,11 @@ class StackMoneyTheme {
         fillColor: surface,
         labelStyle: const TextStyle(color: mutedGrey),
         // Color of the label when it animates and floats to the border
-        floatingLabelStyle: const TextStyle(color: magentaNeon, fontWeight: FontWeight.bold),
+        floatingLabelStyle: const TextStyle(color: cyanNeon, fontWeight: FontWeight.bold),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
         // Active/Focused Border Style (Lights up in Cyan)
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: cyanNeon, width: 1.5),
+          borderSide: const BorderSide(color: magentaNeon, width: 1.5),
           borderRadius: BorderRadius.circular(12),
         ),
         // Idle/Enabled Border Style (Discreet Muted Grey)
@@ -117,7 +117,7 @@ class StackMoneyTheme {
         ),
         // Error Border Style
         errorBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: magentaNeon, width: 1),
+          borderSide: const BorderSide(color: cyanNeon, width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
       ),
