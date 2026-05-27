@@ -1,141 +1,99 @@
-# Miscellaneous
-*.class
-*.lock
-*.log
-*.pyc
+# -------------------------------------------------------------------------
+# StackMoney - Official .gitignore (Public Repo Optimized)
+# -------------------------------------------------------------------------
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 *.swp
-.buildlog/
-.history
+*.sb-*.chunk
 
-
-
-# Flutter repo-specific
-/bin/cache/
-/bin/internal/bootstrap.bat
-/bin/internal/bootstrap.sh
-/bin/mingit/
-/dev/benchmarks/mega_gallery/
-/dev/bots/.recipe_deps
-/dev/bots/android_tools/
-/dev/devicelab/ABresults*.json
-/dev/docs/doc/
-/dev/docs/flutter.docs.zip
-/dev/docs/lib/
-/dev/docs/pubspec.yaml
-/dev/integration_tests/**/xcuserdata
-/dev/integration_tests/**/Pods
-/packages/flutter/coverage/
-version
-analysis_benchmark.json
-
-# packages file containing multi-root paths
-.packages.generated
-
-# Flutter/Dart/Pub related
-**/doc/api/
+# Flutter / Dart / Pub
 .dart_tool/
+.packages
 .flutter-plugins
 .flutter-plugins-dependencies
-**/generated_plugin_registrant.dart
-.packages
 .pub-preload-cache/
 .pub/
 build/
-flutter_*.png
-linked_*.ds
-unlinked.ds
-unlinked_spec.ds
+lib/generated_plugin_registrant.dart
 
-# Android related
-**/android/**/gradle-wrapper.jar
-.gradle/
+# FVM (Flutter Version Management)
+# Ignora o SDK local que o FVM baixa, mas rastreia o arquivo de configuração
+.fvm/flutter_sdk
+!.fvm/fvm_config.json
+
+# Web tools cache
+.webpack/
+.sass-cache/
+
+# -------------------------------------------------------------------------
+# Android Specific
+# -------------------------------------------------------------------------
+**/android/.gradle/
 **/android/captures/
-**/android/gradlew
-**/android/gradlew.bat
 **/android/local.properties
-**/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
-*.jks
+**/android/**/GeneratedPluginRegistrant.java
 
-# iOS/XCode related
-**/ios/**/*.mode1v3
-**/ios/**/*.mode2v3
-**/ios/**/*.moved-aside
-**/ios/**/*.pbxuser
-**/ios/**/*.perspectivev3
-**/ios/**/*sync/
-**/ios/**/.sconsign.dblite
-**/ios/**/.tags*
-**/ios/**/.vagrant/
-**/ios/**/DerivedData/
-**/ios/**/Icon?
-**/ios/**/Pods/
-**/ios/**/.symlinks/
-**/ios/**/profile
-**/ios/**/xcuserdata
-**/ios/.generated/
-**/ios/Flutter/.last_build_id
-**/ios/Flutter/App.framework
-**/ios/Flutter/Flutter.framework
-**/ios/Flutter/Flutter.podspec
+# Android Keystores and Tokens (Security Critical)
+*.jks
+*.keystore
+*.p12
+*.pem
+
+# -------------------------------------------------------------------------
+# iOS Specific
+# -------------------------------------------------------------------------
 **/ios/Flutter/Generated.xcconfig
-**/ios/Flutter/ephemeral
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/ephemeral/
 **/ios/Flutter/app.flx
 **/ios/Flutter/app.zip
 **/ios/Flutter/flutter_assets/
-**/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/.generated/
 
-# macOS
-**/Flutter/ephemeral/
-**/Pods/
-**/macos/Flutter/GeneratedPluginRegistrant.swift
-**/macos/Flutter/ephemeral
-**/xcuserdata/
+# CocoaPods (Rastreia o Podfile.lock por segurança, mas ignora os binários)
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/DerivedData/
+**/ios/**/xcuserdata/
 
-# Windows
-**/windows/flutter/generated_plugin_registrant.cc
-**/windows/flutter/generated_plugin_registrant.h
-**/windows/flutter/generated_plugins.cmake
+# -------------------------------------------------------------------------
+# Firebase & Environment Secrets (CRITICAL FOR PUBLIC REPOS)
+# -------------------------------------------------------------------------
+# Android Firebase config
+**/android/app/google-services.json
 
-# Linux
-**/linux/flutter/generated_plugin_registrant.cc
-**/linux/flutter/generated_plugin_registrant.h
-**/linux/flutter/generated_plugins.cmake
-
-# Coverage
-coverage/
-
-# Symbols
-app.*.symbols
-
-# Exceptions to above rules.
-!**/ios/**/default.mode1v3
-!**/ios/**/default.mode2v3
-!**/ios/**/default.pbxuser
-!**/ios/**/default.perspectivev3
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
-!/dev/ci/**/Gemfile.lock
-
-# Firebase
-google-services.json
-
-# Firebase cache and temporary files
-.firebase/
-firebase-debug.log*
-.runtimeconfig.json
-
-# Firebase Emulators
-.emulator-ui/
-firebase-export-*/
+# iOS Firebase config
+**/ios/Runner/GoogleService-Info.plist
 
 # Local environment variables
 .env
 .env.*
 !.env.example
 
-# Function dependencies (if using Cloud Functions)
+# Firebase CLI cache & logs
+.firebase/
+firebase-debug.log*
+.runtimeconfig.json
+.emulator-ui/
+firebase-export-*/
+
+# Cloud Functions (Se for usar para o Archive ou Whitelist)
 functions/node_modules/
 functions/lib/
 functions/npm-debug.log*
