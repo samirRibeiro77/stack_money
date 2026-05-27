@@ -117,3 +117,25 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+# Firebase
+google-services.json
+
+# Firebase cache and temporary files
+.firebase/
+firebase-debug.log*
+.runtimeconfig.json
+
+# Firebase Emulators
+.emulator-ui/
+firebase-export-*/
+
+# Local environment variables
+.env
+.env.*
+!.env.example
+
+# Function dependencies (if using Cloud Functions)
+functions/node_modules/
+functions/lib/
+functions/npm-debug.log*
