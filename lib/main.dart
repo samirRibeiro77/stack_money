@@ -4,8 +4,15 @@ import 'package:stack_money/core/routes/routes.dart';
 import 'package:stack_money/core/theme/theme.dart';
 
 import 'core/l10n/app_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const StackMoneyApp());
 }
 

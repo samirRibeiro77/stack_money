@@ -77,11 +77,13 @@ lib/generated_plugin_registrant.dart
 # -------------------------------------------------------------------------
 # Firebase & Environment Secrets (CRITICAL FOR PUBLIC REPOS)
 # -------------------------------------------------------------------------
-# Android Firebase config
-**/android/app/google-services.json
 
-# iOS Firebase config
+# Firebase & Environment Secrets (CRITICAL FOR PUBLIC REPOS)
+**/android/app/google-services.json
 **/ios/Runner/GoogleService-Info.plist
+
+# Add this line to protect your FlutterFire auto-generated options
+lib/firebase_options.dart
 
 # Local environment variables
 .env
