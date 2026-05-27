@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/features/home/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  void _login(){}
+  static const route = '/login';
+
+  void _login(BuildContext context){
+    context.pushReplacement(HomeScreen.route);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +29,7 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 30),
             ElevatedButton.icon(
               style: StackMoneyTheme.googleLoginButtonStyle,
-              onPressed: () {
-                // TODO: Trigger Google Sign-In via Auth Cubit (Task 1.1)
-              },
+              onPressed: () => _login(context),
               icon: const Icon(
                 Icons.g_mobiledata,
                 color: StackMoneyTheme.magentaNeon,

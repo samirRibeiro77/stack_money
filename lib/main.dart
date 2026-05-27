@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:stack_money/features/auth/auth_page.dart';
+import 'package:stack_money/core/routes/routes.dart';
 import 'package:stack_money/core/theme/theme.dart';
 
 import 'core/l10n/app_localizations.dart';
@@ -14,9 +14,11 @@ class StackMoneyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appName,
       title: 'Stack Money',
       theme: StackMoneyTheme.darkTheme,
+      routerConfig: appRouter,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -27,7 +29,6 @@ class StackMoneyApp extends StatelessWidget {
         Locale('en'), // English (Default)
         Locale('pt'), // Portuguese
       ],
-      home: const LoginScreen(),
     );
   }
 }
