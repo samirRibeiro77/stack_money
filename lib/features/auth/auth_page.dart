@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/theme/theme.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+
+  void _login(){}
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +18,21 @@ class LoginScreen extends StatelessWidget {
           children: [
             Text(
               l10n.appName,
-              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.displayMedium,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             ElevatedButton.icon(
+              style: StackMoneyTheme.googleLoginButtonStyle,
               onPressed: () {
-                // Trigger Google Sign In flow (Task 1.1)
+                // TODO: Trigger Google Sign-In via Auth Cubit (Task 1.1)
               },
-              icon: const Icon(Icons.login),
+              icon: const Icon(
+                Icons.g_mobiledata,
+                color: StackMoneyTheme.magentaNeon,
+                size: 35,
+              ),
               label: Text(l10n.loginWithGoogle),
-            ),
+            )
           ],
         ),
       ),

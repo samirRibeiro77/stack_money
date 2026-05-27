@@ -16,7 +16,7 @@ class StackMoneyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Stack Money',
-      theme: StackMoneyTheme.themeData,
+      theme: StackMoneyTheme.darkTheme,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

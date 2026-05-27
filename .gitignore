@@ -9,15 +9,18 @@
 Thumbs.db
 desktop.ini
 
-# IDEs and Editors
-.idea/
+# IDEs and Editors (Strict JetBrains / Android Studio / VS Code Rules)
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/modules.xml
+.idea/dictionaries/
+.idea/libraries/
+.idea/caches/
+.idea/compiler.xml
+.idea/jarRepositories.xml
+*.iws
+*.iml
 .vscode/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.swp
-*.sb-*.chunk
 
 # Flutter / Dart / Pub
 .dart_tool/
@@ -30,7 +33,6 @@ build/
 lib/generated_plugin_registrant.dart
 
 # FVM (Flutter Version Management)
-# Ignora o SDK local que o FVM baixa, mas rastreia o arquivo de configuração
 .fvm/flutter_sdk
 !.fvm/fvm_config.json
 
@@ -66,7 +68,7 @@ lib/generated_plugin_registrant.dart
 **/ios/Runner/GeneratedPluginRegistrant.*
 **/ios/.generated/
 
-# CocoaPods (Rastreia o Podfile.lock por segurança, mas ignora os binários)
+# CocoaPods
 **/ios/Pods/
 **/ios/.symlinks/
 **/ios/DerivedData/
@@ -93,7 +95,7 @@ firebase-debug.log*
 .emulator-ui/
 firebase-export-*/
 
-# Cloud Functions (Se for usar para o Archive ou Whitelist)
+# Cloud Functions
 functions/node_modules/
 functions/lib/
 functions/npm-debug.log*
