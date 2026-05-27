@@ -23,7 +23,6 @@ class StackMoneyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appName,
-      title: 'Stack Money',
       theme: StackMoneyTheme.darkTheme,
       routerConfig: appRouter,
       localizationsDelegates: const [

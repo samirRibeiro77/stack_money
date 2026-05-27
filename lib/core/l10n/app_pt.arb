@@ -1,5 +1,7 @@
 {
   "@@locale": "pt",
   "appName": "Stack Money",
-  "loginWithGoogle": "Entrar com o Google"
+  "appNameTwoLines": "Stack\nMoney",
+  "loginWithGoogle": "Entrar com o Google",
+  "unknow": "Desconhecido"
 }

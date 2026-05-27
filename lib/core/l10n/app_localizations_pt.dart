@@ -12,5 +12,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get appName => 'Stack Money';
 
   @override
+  String get appNameTwoLines => 'Stack\nMoney';
+
+  @override
   String get loginWithGoogle => 'Entrar com o Google';
+
+  @override
+  String get unknow => 'Desconhecido';
 }

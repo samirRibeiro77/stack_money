@@ -104,11 +104,23 @@ abstract class AppLocalizations {
   /// **'Stack Money'**
   String get appName;
 
+  /// The official name of the application but using two lines
+  ///
+  /// In en, this message translates to:
+  /// **'Stack\nMoney'**
+  String get appNameTwoLines;
+
   /// Text displayed on the primary authentication button
   ///
   /// In en, this message translates to:
   /// **'Sign in with Google'**
   String get loginWithGoogle;
+
+  /// Unknow value
+  ///
+  /// In en, this message translates to:
+  /// **'Unknow'**
+  String get unknow;
 }
 
 class _AppLocalizationsDelegate

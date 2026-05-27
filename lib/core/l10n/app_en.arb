@@ -4,8 +4,16 @@
   "@appName": {
     "description": "The official name of the application"
   },
+  "appNameTwoLines": "Stack\nMoney",
+  "@appNameTwoLines": {
+    "description": "The official name of the application but using two lines"
+  },
   "loginWithGoogle": "Sign in with Google",
   "@loginWithGoogle": {
     "description": "Text displayed on the primary authentication button"
+  },
+  "unknow": "Unknow",
+  "@unknow": {
+    "description": "Unknow value"
   }
 }
