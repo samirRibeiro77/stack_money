@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "appName": "Stack Money",
+  "@appName": {
+    "description": "The official name of the application"
+  },
+  "loginWithGoogle": "Sign in with Google",
+  "@loginWithGoogle": {
+    "description": "Text displayed on the primary authentication button"
+  }
+}
