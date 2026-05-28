@@ -67,4 +67,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get noData => 'Sem dados';
+
+  @override
+  String get systemLinkFailed => 'Falha ao carregar sistema';
+
+  @override
+  String get retryHandshake => 'Tentar novamente';
 }

@@ -17,5 +17,7 @@
   "oneYear": "1A",
   "custom": "Filtro",
   "customLabel": "{start} a {end}",
-  "noData": "Sem dados"
+  "noData": "Sem dados",
+  "systemLinkFailed": "Falha ao carregar sistema",
+  "retryHandshake": "Tentar novamente"
 }

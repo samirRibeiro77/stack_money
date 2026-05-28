@@ -132,14 +132,14 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               const Icon(Icons.gpp_maybe_outlined, color: StackMoneyTheme.magentaNeon, size: 48),
               const SizedBox(height: 16),
-              const Text(
-                'SYSTEM_LINK_FAILED',
+              Text(
+                l10n.systemLinkFailed.replaceAll(' ', '_').toUpperCase(),
                 style: TextStyle(color: Colors.white, fontFamily: 'Orbitron', fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               TextButton(
                 onPressed: _loadFirebaseDashboardData,
-                child: const Text('RETRY_HANDSHAKE', style: TextStyle(color: StackMoneyTheme.cyanNeon, fontFamily: 'Orbitron')),
+                child: Text(l10n.retryHandshake.replaceAll(' ', '_').toUpperCase(), style: TextStyle(color: StackMoneyTheme.cyanNeon, fontFamily: 'Orbitron')),
               )
             ],
           ),
@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
           valueListenable: _visibilityNotifier,
           builder: (context, isVisible, child) {
             return StackMoneyCard(
-              title: 'TELEMETRY_STREAM',
+              title: l10n.telemetryStream,
               visibilityNotifier: _visibilityNotifier,
               children: [
                 SizedBox(
@@ -200,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(height: 28),
 
         Text(
-          l10n.allocationBuckets,
+          l10n.allocationBuckets.replaceAll(' ', '_').toUpperCase(),
           style: TextStyle(
             color: StackMoneyTheme.mutedGrey,
             fontFamily: 'Orbitron',

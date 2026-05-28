@@ -205,6 +205,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Data'**
   String get noData;
+
+  /// Error title when data is not found
+  ///
+  /// In en, this message translates to:
+  /// **'System Link Failed'**
+  String get systemLinkFailed;
+
+  /// Retry message for data management
+  ///
+  /// In en, this message translates to:
+  /// **'Retry Handshake'**
+  String get retryHandshake;
 }
 
 class _AppLocalizationsDelegate

@@ -67,4 +67,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noData => 'No Data';
+
+  @override
+  String get systemLinkFailed => 'System Link Failed';
+
+  @override
+  String get retryHandshake => 'Retry Handshake';
 }
