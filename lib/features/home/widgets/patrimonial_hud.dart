@@ -107,7 +107,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
             boxShadow: isVisible
                 ? [
                     BoxShadow(
-                      color: StackMoneyTheme.cyanNeon.withOpacity(0.08),
+                      color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.08),
                       blurRadius: 24,
                       offset: const Offset(0, 8),
                     ),

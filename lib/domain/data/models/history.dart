@@ -19,7 +19,7 @@ class History {
     final transactionsMap = <String, Transaction>{};
 
     if (json['transactions'] != null) {
-      final rawTransactions = json['transactions'] as Map<String, dynamic>;
+      final rawTransactions = json['transactions'] as Map<dynamic, dynamic>;
       rawTransactions.forEach((key, value) {
         transactionsMap[key] = Transaction.fromJson(value as Map<String, dynamic>);
       });
