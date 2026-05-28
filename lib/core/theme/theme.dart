@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/domain/data/enum/action_button.dart';
 
 class StackMoneyTheme {
   // Pure Stealth & Cyberpunk Color Palette
@@ -14,17 +16,22 @@ class StackMoneyTheme {
 
   /// Custom ButtonStyle for the Quick Action Buttons (+ and -)
   /// Features a Platinum Silver background with high-contrast text/icons
-  static ButtonStyle get platinumActionButtonStyle => ElevatedButton.styleFrom(
+  static ButtonStyle actionButton(ActionButton actionButton) {
+    return _platinumActionButtonStyle.copyWith(
+      foregroundColor: actionButton.color as WidgetStateProperty<Color>
+    );
+  }
+
+  static ButtonStyle get _platinumActionButtonStyle => ElevatedButton.styleFrom(
     backgroundColor: platinumSilver,
-    foregroundColor: background,
     elevation: 0,
-    padding: const EdgeInsets.all(8),
+    padding: const EdgeInsets.all(AppSizes.x4),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSizes.x8),
     ),
     textStyle: GoogleFonts.jetBrainsMono(
       fontWeight: FontWeight.bold,
-      fontSize: 18,
+      fontSize: AppSizes.fontMedium,
     ),
   );
 
@@ -34,12 +41,12 @@ class StackMoneyTheme {
     backgroundColor: carbonGrey,
     foregroundColor: cyanNeon, // Sets the text color to Cyan
     elevation: 0,
-    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+    padding: const EdgeInsets.symmetric(horizontal: AppSizes.x10, vertical: AppSizes.x6),
     shape: const StadiumBorder(), // Makes the button perfectly rounded
     textStyle: GoogleFonts.jetBrainsMono(
       fontWeight: FontWeight.bold,
-      fontSize: 16,
-      letterSpacing: 0.5,
+      fontSize: AppSizes.fontMedium,
+      letterSpacing: AppSizes.min / 4,
     ),
   );
 
@@ -76,9 +83,9 @@ class StackMoneyTheme {
         iconTheme: const IconThemeData(color: textPrimary),
         titleTextStyle: GoogleFonts.orbitron(
           color: textPrimary,
-          fontSize: 20,
+          fontSize: AppSizes.fontLarge,
           fontWeight: FontWeight.bold,
-          letterSpacing: 1.2,
+          letterSpacing: AppSizes.min / 2,
         ),
       ),
 
@@ -90,10 +97,10 @@ class StackMoneyTheme {
         indicatorSize: TabBarIndicatorSize.tab,
         labelStyle: GoogleFonts.jetBrainsMono(
           fontWeight: FontWeight.bold,
-          fontSize: 14,
+          fontSize: AppSizes.fontBody,
         ),
         unselectedLabelStyle: GoogleFonts.jetBrainsMono(
-          fontSize: 14,
+          fontSize: AppSizes.fontBody,
         ),
       ),
 
@@ -104,7 +111,7 @@ class StackMoneyTheme {
         labelStyle: const TextStyle(color: mutedGrey),
         // Color of the label when it animates and floats to the border
         floatingLabelStyle: const TextStyle(color: cyanNeon, fontWeight: FontWeight.bold),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+        contentPadding: const EdgeInsets.symmetric(horizontal: AppSizes.x8, vertical: AppSizes.x8),
         // Active/Focused Border Style (Lights up in Cyan)
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: magentaNeon, width: 1.5),
@@ -127,8 +134,8 @@ class StackMoneyTheme {
         color: surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: Color(0xFF27272A), width: 0.5), // Subtle border
+          borderRadius: BorderRadius.circular(AppSizes.radiusLarge),
+          side: const BorderSide(color: carbonGrey, width: AppSizes.min / 4), // Subtle border
         ),
       ),
     );

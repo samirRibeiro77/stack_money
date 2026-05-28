@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'telemetry_chart_state.dart';
+import 'package:stack_money/domain/data/enum/chart_filter.dart';
+import 'package:stack_money/domain/data/models/chart_filter_state.dart';
 
 class TelemetryFilterBar extends StatelessWidget {
   final ChartFilterState currentState;
@@ -15,13 +18,13 @@ class TelemetryFilterBar extends StatelessWidget {
     required this.isEnabled,
   });
 
-  Future<void> _openCustomDatePicker(BuildContext context) async {
+  Future<void> _openCustomDatePicker(BuildContext context, AppLocalizations l10n) async {
     if (!isEnabled) return;
 
     final DateTimeRange? picked = await showDateRangePicker(
       context: context,
-      firstDate: DateTime(2024),
-      lastDate: DateTime(2027),
+      firstDate: DateTime(2022),
+      lastDate: DateTime.now(),
       builder: (context, child) {
         // Injeta o tema escuro hacker dentro do calendário nativo
         return Theme(
@@ -44,22 +47,22 @@ class TelemetryFilterBar extends StatelessWidget {
       // Atualiza o estado alterando dinamicamente o texto do botão!
       onFilterChanged(ChartFilterState(
         filter: ChartFilter.custom,
-        customLabel: '$startStr a $endStr',
+        customLabel: l10n.customLabel(endStr, startStr),
       ));
     }
   }
 
-  Widget _buildChip(String label, ChartFilter filter, BuildContext context) {
+  Widget _buildChip(String label, ChartFilter filter, BuildContext context, AppLocalizations l10n) {
     final bool isSelected = currentState.filter == filter;
 
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        padding: const EdgeInsets.symmetric(horizontal: AppSizes.x2),
         child: GestureDetector(
           onTap: isEnabled
               ? () {
             if (filter == ChartFilter.custom) {
-              _openCustomDatePicker(context);
+              _openCustomDatePicker(context, l10n);
             } else {
               onFilterChanged(ChartFilterState(filter: filter));
             }
@@ -67,7 +70,7 @@ class TelemetryFilterBar extends StatelessWidget {
               : null,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: AppSizes.x5),
             decoration: BoxDecoration(
               color: isSelected ? StackMoneyTheme.surface : Colors.transparent,
               borderRadius: BorderRadius.circular(6),
@@ -97,15 +100,17 @@ class TelemetryFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Opacity(
       opacity: isEnabled ? 1.0 : 0.3,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildChip('3M', ChartFilter.threeMonths, context),
-          _buildChip('6M', ChartFilter.sixMonths, context),
-          _buildChip('1Y', ChartFilter.oneYear, context),
-          _buildChip(currentState.customLabel, ChartFilter.custom, context),
+          _buildChip(l10n.threeMonths, ChartFilter.threeMonths, context, l10n),
+          _buildChip(l10n.sixMonths, ChartFilter.sixMonths, context, l10n),
+          _buildChip(l10n.oneYear, ChartFilter.oneYear, context, l10n),
+          _buildChip(currentState.customLabel, ChartFilter.custom, context, l10n),
         ],
       ),
     );

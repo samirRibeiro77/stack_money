@@ -24,11 +24,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String get netWorth => 'Net Worth';
 
   @override
-  String get systemLocked => 'SYSTEM_LOCKED';
+  String get systemLocked => 'System Locked';
+
+  @override
+  String get telemetryStream => 'Telemetry Stream';
 
   @override
   String get hiddenValues => '••••••';
 
   @override
   String get liquidityBuffer => 'Liquidity Buffer';
+
+  @override
+  String allocation(Object value) {
+    return 'Alloc: $value%';
+  }
+
+  @override
+  String min(Object value) {
+    return 'Min: $value%';
+  }
+
+  @override
+  String get threeMonths => '3M';
+
+  @override
+  String get sixMonths => '6M';
+
+  @override
+  String get oneYear => '1Y';
+
+  @override
+  String get custom => 'Custom';
+
+  @override
+  String customLabel(Object end, Object start) {
+    return '$start to $end';
+  }
+
+  @override
+  String get noData => 'No Data';
 }

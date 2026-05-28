@@ -131,8 +131,14 @@ abstract class AppLocalizations {
   /// Values hidden for the user
   ///
   /// In en, this message translates to:
-  /// **'SYSTEM_LOCKED'**
+  /// **'System Locked'**
   String get systemLocked;
+
+  /// Chart telemetry stream title
+  ///
+  /// In en, this message translates to:
+  /// **'Telemetry Stream'**
+  String get telemetryStream;
 
   /// Use when values are hidden
   ///
@@ -145,6 +151,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Liquidity Buffer'**
   String get liquidityBuffer;
+
+  /// Allocation on wallet
+  ///
+  /// In en, this message translates to:
+  /// **'Alloc: {value}%'**
+  String allocation(Object value);
+
+  /// Min value for bucket
+  ///
+  /// In en, this message translates to:
+  /// **'Min: {value}%'**
+  String min(Object value);
+
+  /// 3 months filter
+  ///
+  /// In en, this message translates to:
+  /// **'3M'**
+  String get threeMonths;
+
+  /// 6 months filter
+  ///
+  /// In en, this message translates to:
+  /// **'6M'**
+  String get sixMonths;
+
+  /// 1 year filter
+  ///
+  /// In en, this message translates to:
+  /// **'1Y'**
+  String get oneYear;
+
+  /// Custom filter
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get custom;
+
+  /// Custom filter with date
+  ///
+  /// In en, this message translates to:
+  /// **'{start} to {end}'**
+  String customLabel(Object end, Object start);
+
+  /// No data found
+  ///
+  /// In en, this message translates to:
+  /// **'No Data'**
+  String get noData;
 }
 
 class _AppLocalizationsDelegate

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/features/auth/manager/login_manager.dart';
@@ -35,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
               l10n.appNameTwoLines.toUpperCase(),
               style: Theme.of(context).textTheme.displayMedium,
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: AppSizes.x20),
 
             // Reactive UI block listening exclusively to the loading changes
             ValueListenableBuilder<bool>(
@@ -65,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   icon: const Icon(
                     Icons.g_mobiledata_rounded,
                     color: StackMoneyTheme.magentaNeon,
-                    size: 32,
+                    size: AppSizes.x16,
                   ),
                   label: Text(l10n.loginWithGoogle),
                 );

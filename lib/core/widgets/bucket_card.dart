@@ -1,11 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/domain/data/enum/chart_filter.dart';
+import 'package:stack_money/domain/data/models/chart_filter_state.dart';
 import 'package:stack_money/domain/data/models/history.dart';
 import 'package:stack_money/domain/data/models/parameters.dart';
-import 'package:stack_money/features/home/widgets/telemetry_chart_state.dart';
 import 'package:stack_money/features/home/widgets/telemetry_filter_bar.dart';
 
 class BucketCard extends StatefulWidget {
@@ -35,14 +38,16 @@ class _BucketCardState extends State<BucketCard> {
   }
 
   String _calculateAllocation(double currentBucketValue, double totalGlobal) {
-    if (totalGlobal == 0) return 'ALLOC: 0.0%';
-    final pct = (currentBucketValue / totalGlobal) * 100;
-    return 'ALLOC: ${pct.toStringAsFixed(1)}%';
+    if (totalGlobal == 0) return '0.00';
+    final percent = (currentBucketValue / totalGlobal) * 100;
+    return percent.toStringAsFixed(2);
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.historyList.isEmpty) return const SizedBox();
+
+    final l10n = AppLocalizations.of(context)!;
 
     final latestHistory = widget.historyList.last;
     final double currentBalance = _getBucketValueAt(latestHistory);
@@ -79,7 +84,7 @@ class _BucketCardState extends State<BucketCard> {
                             const SizedBox(width: 8),
                             if (isVisible)
                               Text(
-                                _calculateAllocation(currentBalance, latestHistory.total),
+                                l10n.allocation(_calculateAllocation(currentBalance, latestHistory.total)),
                                 style: const TextStyle(
                                   color: StackMoneyTheme.mutedGrey,
                                   fontSize: 10,
@@ -90,13 +95,13 @@ class _BucketCardState extends State<BucketCard> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          'MIN: ${_currencyFormat.format(widget.parameter.minValue)}',
+                          l10n.min(_currencyFormat.format(widget.parameter.minValue)),
                           style: const TextStyle(color: StackMoneyTheme.mutedGrey, fontSize: 11),
                         ),
                       ],
                     ),
                     Text(
-                      isVisible ? _currencyFormat.format(currentBalance) : '••••••',
+                      isVisible ? _currencyFormat.format(currentBalance) : l10n.hiddenValues,
                       style: TextStyle(
                         color: isVisible ? healthColor : StackMoneyTheme.mutedGrey,
                         fontSize: 16,
@@ -109,11 +114,11 @@ class _BucketCardState extends State<BucketCard> {
 
                 // 💥 SEGURO: Renderização condicional limpa sem AnimatedSize que buga em Slivers
                 if (_isExpanded && isVisible) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSizes.x8),
                   const Divider(color: Colors.white10, height: 1),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSizes.x8),
                   _buildMiniChart(healthColor),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSizes.x8),
                   TelemetryFilterBar(
                     currentState: _chartFilter,
                     isEnabled: true,

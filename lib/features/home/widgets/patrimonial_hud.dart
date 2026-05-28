@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
@@ -77,8 +78,8 @@ class _PatrimonialHudState extends State<PatrimonialHud> with SingleTickerProvid
                       return Text(
                         _currencyFormat.format(_animation.value),
                         style: const TextStyle(
-                          color: Color(0xFFE2E8F0),
-                          fontSize: 28,
+                          color: StackMoneyTheme.platinumSilver,
+                          fontSize: AppSizes.fontDisplay,
                           fontFamily: 'Orbitron',
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.5,
@@ -97,16 +98,16 @@ class _PatrimonialHudState extends State<PatrimonialHud> with SingleTickerProvid
                       letterSpacing: 2.0,
                     ),
                   ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSizes.x8),
                 const Divider(color: Colors.white10, height: 1),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSizes.x8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.bolt, color: StackMoneyTheme.cyanNeon, size: 16),
-                        const SizedBox(width: 4),
+                        Icon(Icons.bolt, color: StackMoneyTheme.cyanNeon, size: AppSizes.x8),
+                        const SizedBox(width: AppSizes.x2),
                         Text(
                           l10n.liquidityBuffer,
                           style: TextStyle(color: StackMoneyTheme.mutedGrey, fontSize: 13),

@@ -1,0 +1,8 @@
+import 'package:stack_money/domain/data/enum/chart_filter.dart';
+
+class ChartFilterState {
+  final ChartFilter filter;
+  final String customLabel; // Guarda o texto "05/09 a 19/11" quando ativo
+
+  const ChartFilterState({required this.filter, this.customLabel = 'CUSTOM'});
+}

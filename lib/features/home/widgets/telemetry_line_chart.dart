@@ -1,9 +1,12 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/domain/data/enum/chart_filter.dart';
+import 'package:stack_money/domain/data/models/chart_filter_state.dart';
 import 'package:stack_money/domain/data/models/history.dart';
-import 'telemetry_chart_state.dart';
 
 class TelemetryLineChart extends StatelessWidget {
   final List<History> rawHistoryData;
@@ -25,27 +28,29 @@ class TelemetryLineChart extends StatelessWidget {
     switch (filterState.filter) {
       case ChartFilter.threeMonths:
         return rawHistoryData
-            .where((h) => latestDate.difference(h.date).inDays <= 90)
+            .where((h) => latestDate.difference(h.date).inDays <= filterState.filter.days)
             .toList();
       case ChartFilter.sixMonths:
         return rawHistoryData
-            .where((h) => latestDate.difference(h.date).inDays <= 180)
+            .where((h) => latestDate.difference(h.date).inDays <= filterState.filter.days)
             .toList();
       case ChartFilter.oneYear:
         return rawHistoryData
-            .where((h) => latestDate.difference(h.date).inDays <= 365)
+            .where((h) => latestDate.difference(h.date).inDays <= filterState.filter.days)
             .toList();
       case ChartFilter.custom:
-        // No mock trazemos tudo, na fiação real aplicaremos o range selecionado
         return rawHistoryData;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final data = _filteredData;
-    if (data.isEmpty)
-      return const SizedBox(height: 200, child: Center(child: Text("NO_DATA")));
+    if (data.isEmpty) {
+      return SizedBox(height: 200, child: Center(child: Text(l10n.noData)));
+    }
 
     // 📈 ESCALA DINÂMICA: Descobre o menor e maior valor para focar no zigue-zague real
     double minValue = data.map((e) => e.total).reduce((a, b) => a < b ? a : b);
@@ -66,7 +71,7 @@ class TelemetryLineChart extends StatelessWidget {
 
     return Container(
       height: 220,
-      padding: const EdgeInsets.only(right: 16, top: 12),
+      padding: const EdgeInsets.only(right: AppSizes.x8, top: AppSizes.x6),
       child: LineChart(
         duration: const Duration(milliseconds: 450),
         // Animação fluida de transição de ondas
@@ -88,8 +93,8 @@ class TelemetryLineChart extends StatelessWidget {
               ),
               // Criamos o efeito chanfrado aplicando um padding assimétrico agressivo
               tooltipPadding: const EdgeInsets.symmetric(
-                horizontal: 14,
-                vertical: 8,
+                horizontal: AppSizes.x7,
+                vertical: AppSizes.x4,
               ),
               tooltipRoundedRadius: 2,
               // Quase zero para cantos vivos e retos
@@ -193,7 +198,7 @@ class TelemetryLineChart extends StatelessWidget {
                   int idx = value.toInt();
                   if (idx >= 0 && idx < data.length) {
                     return Padding(
-                      padding: const EdgeInsets.only(top: 6.0),
+                      padding: EdgeInsets.only(top: AppSizes.x3),
                       child: Text(DateFormat('dd/MM').format(data[idx].date)),
                     );
                   }

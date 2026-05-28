@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/bucket_card.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/domain/data/enum/chart_filter.dart';
+import 'package:stack_money/domain/data/models/chart_filter_state.dart';
 import 'package:stack_money/domain/data/models/history.dart';
 import 'package:stack_money/domain/data/models/parameters.dart';
 import 'package:stack_money/features/home/widgets/home_header.dart';
 import 'package:stack_money/features/home/widgets/patrimonial_hud.dart';
-import 'package:stack_money/features/home/widgets/telemetry_chart_state.dart';
 import 'package:stack_money/features/home/widgets/telemetry_filter_bar.dart';
 import 'package:stack_money/features/home/widgets/telemetry_line_chart.dart';
 

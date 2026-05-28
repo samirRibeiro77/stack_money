@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/theme/theme.dart';
 
 class StackMoneyCard extends StatelessWidget {
@@ -21,19 +22,19 @@ class StackMoneyCard extends StatelessWidget {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: AppSizes.x10, horizontal: AppSizes.x8),
           decoration: BoxDecoration(
             color: StackMoneyTheme.surface,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
             // 🌌 AURA CIANO NEON REATIVA (Brilha se o sistema estiver aberto)
             boxShadow: isVisible
                 ? [
-              BoxShadow(
-                color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.06),
-                blurRadius: 20,
-                offset: const Offset(0, 6),
-              )
-            ]
+                    BoxShadow(
+                      color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.06),
+                      blurRadius: 20,
+                      offset: const Offset(0, 6),
+                    ),
+                  ]
                 : [],
           ),
           child: Column(
@@ -42,16 +43,16 @@ class StackMoneyCard extends StatelessWidget {
               // Exibe o título tático em caixa alta apenas se for enviado
               if (title != null) ...[
                 Text(
-                  title!.toUpperCase(),
+                  title!.replaceAll(' ', '_').toUpperCase(),
                   style: const TextStyle(
                     color: StackMoneyTheme.mutedGrey,
-                    fontSize: 11,
+                    fontSize: AppSizes.fontSmall,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.5,
                     fontFamily: 'Orbitron',
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSizes.x8),
               ],
 
               // Injeta a lista de widgets que vai compor o miolo do card

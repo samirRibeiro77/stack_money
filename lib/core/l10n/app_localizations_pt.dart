@@ -27,8 +27,41 @@ class AppLocalizationsPt extends AppLocalizations {
   String get systemLocked => 'SISTEMA_TRAVADO';
 
   @override
+  String get telemetryStream => 'Telemetria';
+
+  @override
   String get hiddenValues => '••••••';
 
   @override
   String get liquidityBuffer => 'Liquidez imediata';
+
+  @override
+  String allocation(Object value) {
+    return 'Aloc: $value%';
+  }
+
+  @override
+  String min(Object value) {
+    return 'Min: $value%';
+  }
+
+  @override
+  String get threeMonths => '3M';
+
+  @override
+  String get sixMonths => '6M';
+
+  @override
+  String get oneYear => '1A';
+
+  @override
+  String get custom => 'Filtro';
+
+  @override
+  String customLabel(Object end, Object start) {
+    return '$start a $end';
+  }
+
+  @override
+  String get noData => 'Sem dados';
 }

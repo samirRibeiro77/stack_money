@@ -20,9 +20,13 @@
   "@netWorth": {
     "description": "Net Worth for all money"
   },
-  "systemLocked": "SYSTEM_LOCKED",
+  "systemLocked": "System Locked",
   "@systemLocked": {
     "description": "Values hidden for the user"
+  },
+  "telemetryStream": "Telemetry Stream",
+  "@telemetryStream": {
+    "description": "Chart telemetry stream title"
   },
   "hiddenValues": "••••••",
   "@hiddenValues": {
@@ -31,5 +35,37 @@
   "liquidityBuffer": "Liquidity Buffer",
   "@liquidityBuffer": {
     "description": "Immediate liquidity total"
+  },
+  "allocation": "Alloc: {value}%",
+  "@allocation": {
+    "description": "Allocation on wallet"
+  },
+  "min": "Min: {value}%",
+  "@min": {
+    "description": "Min value for bucket"
+  },
+  "threeMonths": "3M",
+  "@threeMonths": {
+    "description": "3 months filter"
+  },
+  "sixMonths": "6M",
+  "@sixMonths": {
+    "description": "6 months filter"
+  },
+  "oneYear": "1Y",
+  "@oneYear": {
+    "description": "1 year filter"
+  },
+  "custom": "Custom",
+  "@custom": {
+    "description": "Custom filter"
+  },
+  "customLabel": "{start} to {end}",
+  "@customLabel": {
+    "description": "Custom filter with date"
+  },
+  "noData": "No Data",
+  "@noData": {
+    "description": "No data found"
   }
 }
