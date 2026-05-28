@@ -24,13 +24,19 @@ class TelemetryLineChart extends StatelessWidget {
 
     switch (filterState.filter) {
       case ChartFilter.threeMonths:
-        return rawHistoryData.where((h) => latestDate.difference(h.date).inDays <= 90).toList();
+        return rawHistoryData
+            .where((h) => latestDate.difference(h.date).inDays <= 90)
+            .toList();
       case ChartFilter.sixMonths:
-        return rawHistoryData.where((h) => latestDate.difference(h.date).inDays <= 180).toList();
+        return rawHistoryData
+            .where((h) => latestDate.difference(h.date).inDays <= 180)
+            .toList();
       case ChartFilter.oneYear:
-        return rawHistoryData.where((h) => latestDate.difference(h.date).inDays <= 365).toList();
+        return rawHistoryData
+            .where((h) => latestDate.difference(h.date).inDays <= 365)
+            .toList();
       case ChartFilter.custom:
-      // No mock trazemos tudo, na fiação real aplicaremos o range selecionado
+        // No mock trazemos tudo, na fiação real aplicaremos o range selecionado
         return rawHistoryData;
     }
   }
@@ -38,7 +44,8 @@ class TelemetryLineChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = _filteredData;
-    if (data.isEmpty) return const SizedBox(height: 200, child: Center(child: Text("NO_DATA")));
+    if (data.isEmpty)
+      return const SizedBox(height: 200, child: Center(child: Text("NO_DATA")));
 
     // 📈 ESCALA DINÂMICA: Descobre o menor e maior valor para focar no zigue-zague real
     double minValue = data.map((e) => e.total).reduce((a, b) => a < b ? a : b);
@@ -52,7 +59,7 @@ class TelemetryLineChart extends StatelessWidget {
     // Converte os nossos models para o formato aceito pela biblioteca fl_chart
     List<FlSpot> spots = [];
     for (int i = 0; i < data.length; i++) {
-      spots.add(FlSpot(i.toDouble(), data[i] .total));
+      spots.add(FlSpot(i.toDouble(), data[i].total));
     }
 
     final currencyFormat = NumberFormat.compactSimpleCurrency(locale: 'pt_BR');
@@ -61,7 +68,8 @@ class TelemetryLineChart extends StatelessWidget {
       height: 220,
       padding: const EdgeInsets.only(right: 16, top: 12),
       child: LineChart(
-        duration: const Duration(milliseconds: 450), // Animação fluida de transição de ondas
+        duration: const Duration(milliseconds: 450),
+        // Animação fluida de transição de ondas
         curve: Curves.easeInOutCubic,
         LineChartData(
           minY: minValue,
@@ -74,15 +82,27 @@ class TelemetryLineChart extends StatelessWidget {
             enabled: isSystemVisible, // Desativa toque se estiver encriptado
             touchTooltipData: LineTouchTooltipData(
               getTooltipColor: (spot) => StackMoneyTheme.surface,
-              tooltipBorder: const BorderSide(color: StackMoneyTheme.magentaNeon, width: 1.5),
+              tooltipBorder: const BorderSide(
+                color: StackMoneyTheme.magentaNeon,
+                width: 1.5,
+              ),
               // Criamos o efeito chanfrado aplicando um padding assimétrico agressivo
-              tooltipPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-              tooltipRoundedRadius: 2, // Quase zero para cantos vivos e retos
+              tooltipPadding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 8,
+              ),
+              tooltipRoundedRadius: 2,
+              // Quase zero para cantos vivos e retos
               getTooltipItems: (touchedSpots) {
                 return touchedSpots.map((spot) {
                   final historyItem = data[spot.x.toInt()];
-                  final dateStr = DateFormat('dd/MM/yy').format(historyItem.date);
-                  final valStr = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$').format(spot.y);
+                  final dateStr = DateFormat(
+                    'dd/MM/yy',
+                  ).format(historyItem.date);
+                  final valStr = NumberFormat.currency(
+                    locale: 'pt_BR',
+                    symbol: 'R\$',
+                  ).format(spot.y);
 
                   return LineTooltipItem(
                     '$dateStr\n$valStr',
@@ -97,52 +117,68 @@ class TelemetryLineChart extends StatelessWidget {
               },
             ),
             // 🎯 MIRA TELESCÓPICA VERTICAL
-            getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
-              return spotIndexes.map((index) {
-                return TouchedSpotIndicatorData(
-                  FlLine(
-                    color: StackMoneyTheme.magentaNeon.withOpacity(0.8),
-                    strokeWidth: 1.5,
-                    dashArray: [4, 4], // Linha pontilhada tática
-                  ),
-                  FlDotData(
-                    show: true,
-                    getDotPainter: (spot, percent, barData, index) => FlDotSquarePainter(
-                      size: 8,
-                      color: StackMoneyTheme.magentaNeon,
-                      strokeColor: StackMoneyTheme.background,
-                      strokeWidth: 2,
-                    ),
-                  ),
-                );
-              }).toList();
-            },
+            getTouchedSpotIndicator:
+                (LineChartBarData barData, List<int> spotIndexes) {
+                  return spotIndexes.map((index) {
+                    return TouchedSpotIndicatorData(
+                      FlLine(
+                        color: StackMoneyTheme.magentaNeon.withOpacity(0.8),
+                        strokeWidth: 1.5,
+                        dashArray: [4, 4], // Linha pontilhada tática
+                      ),
+                      FlDotData(
+                        show: true,
+                        getDotPainter: (spot, percent, barData, index) =>
+                            FlDotSquarePainter(
+                              size: 8,
+                              color: StackMoneyTheme.magentaNeon,
+                              strokeColor: StackMoneyTheme.background,
+                              strokeWidth: 2,
+                            ),
+                      ),
+                    );
+                  }).toList();
+                },
           ),
 
-          // 🌌 GRADE HOLOGRÁFICA DE FUNDO
+          // 🌌 GRADE HOLOGRÁFICA DE FUNDO (PROTEGIDA CONTRA DIVISÃO POR ZERO)
           gridData: FlGridData(
             show: true,
             drawVerticalLine: true,
-            horizontalInterval: (maxValue - minValue) / 4,
+            // 💥 CORREÇÃO AQUI: Se a variação for zero, assume 1.0 para não estourar a assertion
+            horizontalInterval: (maxValue - minValue) == 0
+                ? 1.0
+                : (maxValue - minValue) / 4,
             verticalInterval: 1,
-            getDrawingHorizontalLine: (value) => FlLine(color: Colors.white.withOpacity(0.04), strokeWidth: 1),
-            getDrawingVerticalLine: (value) => FlLine(color: Colors.white.withOpacity(0.04), strokeWidth: 1),
+            getDrawingHorizontalLine: (value) =>
+                FlLine(color: Colors.white.withOpacity(0.04), strokeWidth: 1),
+            getDrawingVerticalLine: (value) =>
+                FlLine(color: Colors.white.withOpacity(0.04), strokeWidth: 1),
           ),
 
           titlesData: FlTitlesData(
             show: true,
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
             // Legendas Laterais (Valores reduzidos compactos)
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: isSystemVisible,
                 reservedSize: 42,
                 getTitlesWidget: (value, meta) {
-                  if (value == meta.min || value == meta.max) return const SizedBox();
+                  if (value == meta.min || value == meta.max)
+                    return const SizedBox();
                   return Text(
                     currencyFormat.format(value),
-                    style: const TextStyle(color: StackMoneyTheme.mutedGrey, fontSize: 10, fontFamily: 'Orbitron'),
+                    style: const TextStyle(
+                      color: StackMoneyTheme.mutedGrey,
+                      fontSize: 10,
+                      fontFamily: 'Orbitron',
+                    ),
                   );
                 },
               ),
@@ -171,27 +207,35 @@ class TelemetryLineChart extends StatelessWidget {
           // 🚀 VETOR DE RENDIMENTO EM CIANO NEON + GRADIENTE DE NÉVOA
           lineBarsData: [
             LineChartBarData(
-              spots: isSystemVisible ? spots : spots.map((s) => FlSpot(s.x, minValue)).toList(), // Achata o gráfico se oculto
+              spots: isSystemVisible
+                  ? spots
+                  : spots.map((s) => FlSpot(s.x, minValue)).toList(),
+              // Achata o gráfico se oculto
               isCurved: true,
               preventCurveOverShooting: true,
-              color: isSystemVisible ? StackMoneyTheme.cyanNeon : StackMoneyTheme.cyanNeon.withOpacity(0.05),
+              color: isSystemVisible
+                  ? StackMoneyTheme.cyanNeon
+                  : StackMoneyTheme.cyanNeon.withOpacity(0.05),
               barWidth: 2,
               // Mini-quadrados nos pontos de auditoria
               dotData: FlDotData(
                 show: isSystemVisible,
-                getDotPainter: (spot, percent, barData, index) => FlDotSquarePainter(
-                  size: 5,
-                  color: StackMoneyTheme.cyanNeon,
-                  strokeColor: StackMoneyTheme.background,
-                  strokeWidth: 1.5,
-                ),
+                getDotPainter: (spot, percent, barData, index) =>
+                    FlDotSquarePainter(
+                      size: 5,
+                      color: StackMoneyTheme.cyanNeon,
+                      strokeColor: StackMoneyTheme.background,
+                      strokeWidth: 1.5,
+                    ),
               ),
               // Névoa inferior
               belowBarData: BarAreaData(
                 show: true,
                 gradient: LinearGradient(
                   colors: [
-                    StackMoneyTheme.cyanNeon.withOpacity(isSystemVisible ? 0.12 : 0.0),
+                    StackMoneyTheme.cyanNeon.withOpacity(
+                      isSystemVisible ? 0.12 : 0.0,
+                    ),
                     StackMoneyTheme.cyanNeon.withOpacity(0.0),
                   ],
                   begin: Alignment.topCenter,
