@@ -3,5 +3,9 @@
   "appName": "Stack Money",
   "appNameTwoLines": "Stack\nMoney",
   "loginWithGoogle": "Entrar com o Google",
-  "unknow": "Desconhecido"
+  "unknow": "Desconhecido",
+  "netWorth": "Patrimônio",
+  "systemLocked": "SISTEMA_TRAVADO",
+  "hiddenValues": "••••••",
+  "liquidityBuffer": "Liquidez imediata"
 }

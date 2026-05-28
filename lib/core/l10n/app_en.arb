@@ -15,5 +15,21 @@
   "unknow": "Unknow",
   "@unknow": {
     "description": "Unknow value"
+  },
+  "netWorth": "Net Worth",
+  "@netWorth": {
+    "description": "Net Worth for all money"
+  },
+  "systemLocked": "SYSTEM_LOCKED",
+  "@systemLocked": {
+    "description": "Values hidden for the user"
+  },
+  "hiddenValues": "••••••",
+  "@hiddenValues": {
+    "description": "Use when values are hidden"
+  },
+  "liquidityBuffer": "Liquidity Buffer",
+  "@liquidityBuffer": {
+    "description": "Immediate liquidity total"
   }
 }

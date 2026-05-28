@@ -5,7 +5,9 @@ import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
 
 class HomeHeader extends StatelessWidget {
-  const HomeHeader({super.key});
+  const HomeHeader({required this.visibilityNotifier, super.key});
+
+  final ValueNotifier<bool> visibilityNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +73,18 @@ class HomeHeader extends StatelessWidget {
 
       // --- 3. BOTÃO DE ENGRENAGEM ---
       actions: [
+        ValueListenableBuilder<bool>(
+          valueListenable: visibilityNotifier,
+          builder: (context, isVisible, child) {
+            return IconButton(
+              icon: Icon(
+                isVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                color: isVisible ? StackMoneyTheme.cyanNeon : StackMoneyTheme.mutedGrey,
+              ),
+              onPressed: () => visibilityNotifier.value = !isVisible,
+            );
+          },
+        ),
         IconButton(
           icon: const Icon(
             Icons.settings_outlined,

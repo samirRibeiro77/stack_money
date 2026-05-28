@@ -3,11 +3,13 @@ class Parameter {
   final String category;
   final String where;
   final double minValue;
+  final bool isImmediateLiquidity;
 
   Parameter({
     required this.category,
     required this.where,
     required this.minValue,
+    required this.isImmediateLiquidity
   }) : id = '${category.replaceAll(' ', '')}_${where.replaceAll(' ', '')}';
 
   const Parameter._withId({
@@ -15,6 +17,7 @@ class Parameter {
     required this.category,
     required this.where,
     required this.minValue,
+    required this.isImmediateLiquidity
   });
 
   factory Parameter.fromJson(Map<String, dynamic> json) {
@@ -23,6 +26,7 @@ class Parameter {
       category: json['category'] ?? '',
       where: json['where'] ?? '',
       minValue: (json['minValue'] as num).toDouble(),
+      isImmediateLiquidity: json['isImmediateLiquidity'] ?? false,
     );
   }
 
@@ -32,6 +36,7 @@ class Parameter {
       'category': category,
       'where': where,
       'minValue': minValue,
+      'isImmediateLiquidity': isImmediateLiquidity,
     };
   }
 }

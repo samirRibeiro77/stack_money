@@ -19,4 +19,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknow => 'Unknow';
+
+  @override
+  String get netWorth => 'Net Worth';
+
+  @override
+  String get systemLocked => 'SYSTEM_LOCKED';
+
+  @override
+  String get hiddenValues => '••••••';
+
+  @override
+  String get liquidityBuffer => 'Liquidity Buffer';
 }

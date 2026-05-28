@@ -121,6 +121,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknow'**
   String get unknow;
+
+  /// Net Worth for all money
+  ///
+  /// In en, this message translates to:
+  /// **'Net Worth'**
+  String get netWorth;
+
+  /// Values hidden for the user
+  ///
+  /// In en, this message translates to:
+  /// **'SYSTEM_LOCKED'**
+  String get systemLocked;
+
+  /// Use when values are hidden
+  ///
+  /// In en, this message translates to:
+  /// **'••••••'**
+  String get hiddenValues;
+
+  /// Immediate liquidity total
+  ///
+  /// In en, this message translates to:
+  /// **'Liquidity Buffer'**
+  String get liquidityBuffer;
 }
 
 class _AppLocalizationsDelegate

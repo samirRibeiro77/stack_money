@@ -19,4 +19,16 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get unknow => 'Desconhecido';
+
+  @override
+  String get netWorth => 'Patrimônio';
+
+  @override
+  String get systemLocked => 'SISTEMA_TRAVADO';
+
+  @override
+  String get hiddenValues => '••••••';
+
+  @override
+  String get liquidityBuffer => 'Liquidez imediata';
 }
