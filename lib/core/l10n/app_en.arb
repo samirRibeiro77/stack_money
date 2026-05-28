@@ -36,6 +36,10 @@
   "@liquidityBuffer": {
     "description": "Immediate liquidity total"
   },
+  "allocationBuckets": "Allocation Buckets",
+  "@allocationBuckets": {
+    "description": "Allocation buckets title"
+  },
   "allocation": "Alloc: {value}%",
   "@allocation": {
     "description": "Allocation on wallet"

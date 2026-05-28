@@ -25,22 +25,15 @@ class TelemetryLineChart extends StatelessWidget {
     if (rawHistoryData.isEmpty) return [];
     final latestDate = rawHistoryData.last.date;
 
-    switch (filterState.filter) {
-      case ChartFilter.threeMonths:
-        return rawHistoryData
-            .where((h) => latestDate.difference(h.date).inDays <= filterState.filter.days)
-            .toList();
-      case ChartFilter.sixMonths:
-        return rawHistoryData
-            .where((h) => latestDate.difference(h.date).inDays <= filterState.filter.days)
-            .toList();
-      case ChartFilter.oneYear:
-        return rawHistoryData
-            .where((h) => latestDate.difference(h.date).inDays <= filterState.filter.days)
-            .toList();
-      case ChartFilter.custom:
-        return rawHistoryData;
+    if (filterState.filter == ChartFilter.custom && filterState.hasDates) {
+      return rawHistoryData
+          .where((h) => h.date.isAfter(filterState.start!) && h.date.isBefore(filterState.end!))
+          .toList();
     }
+
+    return rawHistoryData
+        .where((h) => latestDate.difference(h.date).inDays <= filterState.filter.days)
+        .toList();
   }
 
   @override

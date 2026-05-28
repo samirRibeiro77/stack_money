@@ -167,17 +167,11 @@ class _BucketCardState extends State<BucketCard> {
     final latestDate = widget.historyList.last.date;
 
     List<History> filteredHistory = widget.historyList.where((h) {
-      switch (_chartFilter.filter) {
-        case ChartFilter.threeMonths:
-          return latestDate.difference(h.date).inDays <= 90;
-        case ChartFilter.sixMonths:
-          return latestDate.difference(h.date).inDays <= 180;
-        case ChartFilter.oneYear:
-          return latestDate.difference(h.date).inDays <= 365;
-        case ChartFilter.custom:
-          // Na fiação com o Firebase, você pode aplicar o range selecionado se quiser
-          return true;
+      if (_chartFilter.filter == ChartFilter.custom && _chartFilter.hasDates) {
+        return h.date.isAfter(_chartFilter.start!) && h.date.isBefore(_chartFilter.end!);
       }
+
+      return latestDate.difference(h.date).inDays <= _chartFilter.filter.days;
     }).toList();
 
     // Fallback de segurança se o filtro retornar vazio (garante que o app não quebre)

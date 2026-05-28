@@ -36,6 +36,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get liquidityBuffer => 'Liquidity Buffer';
 
   @override
+  String get allocationBuckets => 'Allocation Buckets';
+
+  @override
   String allocation(Object value) {
     return 'Alloc: $value%';
   }

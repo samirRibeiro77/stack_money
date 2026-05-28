@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/bucket_card.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
@@ -79,6 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: StackMoneyTheme.background,
       body: SafeArea(
@@ -93,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Container(
                   width: MediaQuery.of(context).size.width - 32,
                   color: Colors.transparent,
-                  child: _buildBodyContent(),
+                  child: _buildBodyContent(l10n),
                 ),
               ),
             ),
@@ -104,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // GERE OS ESTADOS DE RENDERIZAÇÃO (LOADING, ERROR E DASHBOARD OPERACIONAL)
-  Widget _buildBodyContent() {
+  Widget _buildBodyContent(AppLocalizations l10n) {
     // 🌌 1. LOADING CIBERNÉTICO
     if (_isLoading) {
       return const SizedBox(
@@ -196,8 +199,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
         const SizedBox(height: 28),
 
-        const Text(
-          'ALLOCATION_BUCKETS',
+        Text(
+          l10n.allocationBuckets,
           style: TextStyle(
             color: StackMoneyTheme.mutedGrey,
             fontFamily: 'Orbitron',

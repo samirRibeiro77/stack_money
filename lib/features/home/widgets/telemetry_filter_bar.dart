@@ -47,6 +47,8 @@ class TelemetryFilterBar extends StatelessWidget {
       // Atualiza o estado alterando dinamicamente o texto do botão!
       onFilterChanged(ChartFilterState(
         filter: ChartFilter.custom,
+        start: picked.start,
+        end: picked.end,
         customLabel: l10n.customLabel(endStr, startStr),
       ));
     }

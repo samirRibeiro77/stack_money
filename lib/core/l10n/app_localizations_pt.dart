@@ -36,6 +36,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get liquidityBuffer => 'Liquidez imediata';
 
   @override
+  String get allocationBuckets => 'Caixinhas';
+
+  @override
   String allocation(Object value) {
     return 'Aloc: $value%';
   }
