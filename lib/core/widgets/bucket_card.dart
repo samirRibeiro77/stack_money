@@ -29,8 +29,13 @@ class BucketCard extends StatefulWidget {
 
 class _BucketCardState extends State<BucketCard> {
   bool _isExpanded = false;
-  ChartFilterState _chartFilter = const ChartFilterState(filter: ChartFilter.threeMonths);
-  final NumberFormat _currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+  ChartFilterState _chartFilter = const ChartFilterState(
+    filter: ChartFilter.threeMonths,
+  );
+  final NumberFormat _currencyFormat = NumberFormat.currency(
+    locale: 'pt_BR',
+    symbol: 'R\$',
+  );
 
   double _getBucketValueAt(History history) {
     final transaction = history.transactions[widget.parameter.id];
@@ -52,7 +57,9 @@ class _BucketCardState extends State<BucketCard> {
     final latestHistory = widget.historyList.last;
     final double currentBalance = _getBucketValueAt(latestHistory);
     final bool isUnderclock = currentBalance < widget.parameter.minValue;
-    final Color healthColor = isUnderclock ? StackMoneyTheme.magentaNeon : StackMoneyTheme.cyanNeon;
+    final Color healthColor = isUnderclock
+        ? StackMoneyTheme.magentaNeon
+        : StackMoneyTheme.cyanNeon;
 
     return ValueListenableBuilder<bool>(
       valueListenable: widget.visibilityNotifier,
@@ -60,7 +67,9 @@ class _BucketCardState extends State<BucketCard> {
         return Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: GestureDetector(
-            onTap: isVisible ? () => setState(() => _isExpanded = !_isExpanded) : null,
+            onTap: isVisible
+                ? () => setState(() => _isExpanded = !_isExpanded)
+                : null,
             child: StackMoneyCard(
               visibilityNotifier: widget.visibilityNotifier,
               children: [
@@ -73,7 +82,7 @@ class _BucketCardState extends State<BucketCard> {
                         Row(
                           children: [
                             Text(
-                              widget.parameter.where.toUpperCase(),
+                              widget.parameter.id.toUpperCase(),
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -84,7 +93,12 @@ class _BucketCardState extends State<BucketCard> {
                             const SizedBox(width: 8),
                             if (isVisible)
                               Text(
-                                l10n.allocation(_calculateAllocation(currentBalance, latestHistory.total)),
+                                l10n.allocation(
+                                  _calculateAllocation(
+                                    currentBalance,
+                                    latestHistory.total,
+                                  ),
+                                ),
                                 style: const TextStyle(
                                   color: StackMoneyTheme.mutedGrey,
                                   fontSize: 10,
@@ -95,15 +109,24 @@ class _BucketCardState extends State<BucketCard> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          l10n.min(_currencyFormat.format(widget.parameter.minValue)),
-                          style: const TextStyle(color: StackMoneyTheme.mutedGrey, fontSize: 11),
+                          l10n.min(
+                            _currencyFormat.format(widget.parameter.minValue),
+                          ),
+                          style: const TextStyle(
+                            color: StackMoneyTheme.mutedGrey,
+                            fontSize: 11,
+                          ),
                         ),
                       ],
                     ),
                     Text(
-                      isVisible ? _currencyFormat.format(currentBalance) : l10n.hiddenValues,
+                      isVisible
+                          ? _currencyFormat.format(currentBalance)
+                          : l10n.hiddenValues,
                       style: TextStyle(
-                        color: isVisible ? healthColor : StackMoneyTheme.mutedGrey,
+                        color: isVisible
+                            ? healthColor
+                            : StackMoneyTheme.mutedGrey,
                         fontSize: 16,
                         fontFamily: 'Orbitron',
                         fontWeight: FontWeight.bold,
@@ -138,20 +161,94 @@ class _BucketCardState extends State<BucketCard> {
   }
 
   Widget _buildMiniChart(Color activeColor) {
+    if (widget.historyList.isEmpty) return const SizedBox.shrink();
+
+    // 🎯 1. CORREÇÃO DA FIÇÃO: Filtra o histórico com base no botão clicado (_chartFilter)
+    final latestDate = widget.historyList.last.date;
+
+    List<History> filteredHistory = widget.historyList.where((h) {
+      switch (_chartFilter.filter) {
+        case ChartFilter.threeMonths:
+          return latestDate.difference(h.date).inDays <= 90;
+        case ChartFilter.sixMonths:
+          return latestDate.difference(h.date).inDays <= 180;
+        case ChartFilter.oneYear:
+          return latestDate.difference(h.date).inDays <= 365;
+        case ChartFilter.custom:
+          // Na fiação com o Firebase, você pode aplicar o range selecionado se quiser
+          return true;
+      }
+    }).toList();
+
+    // Fallback de segurança se o filtro retornar vazio (garante que o app não quebre)
+    if (filteredHistory.isEmpty) filteredHistory = [widget.historyList.last];
+
+    // 📈 2. Recalcula os saldos e a Escala Dinâmica usando APENAS o período filtrado!
+    List<double> values = filteredHistory
+        .map((h) => _getBucketValueAt(h))
+        .toList();
+    values.add(
+      widget.parameter.minValue,
+    ); // Mantém a linha de meta dentro da régua
+
+    double absoluteMin = values.reduce((a, b) => a < b ? a : b);
+    double absoluteMax = values.reduce((a, b) => a > b ? a : b);
+
+    double delta = absoluteMax - absoluteMin;
+    if (delta == 0) delta = widget.parameter.minValue.abs() * 0.2;
+    if (delta == 0) delta = 100.0;
+
+    double computedMinY = absoluteMin - (delta * 0.1);
+    double computedMaxY = absoluteMax + (delta * 0.1);
+
+    // ⚡️ 3. Converte os pontos filtrados e cronológicos para o fl_chart
     List<FlSpot> spots = [];
-    for (int i = 0; i < widget.historyList.length; i++) {
-      spots.add(FlSpot(i.toDouble(), _getBucketValueAt(widget.historyList[i])));
+    for (int i = 0; i < filteredHistory.length; i++) {
+      spots.add(FlSpot(i.toDouble(), _getBucketValueAt(filteredHistory[i])));
     }
 
     return SizedBox(
-      height: 100, // Altura fixa e segura para o fl_chart respirar
+      height: 110,
       child: LineChart(
+        duration: const Duration(milliseconds: 350),
+        // Adiciona a transição fluida de onda!
+        curve: Curves.easeInOutCubic,
         LineChartData(
-          minY: widget.parameter.minValue * 0.5,
-          maxY: widget.parameter.minValue * 1.5,
+          minY: computedMinY,
+          maxY: computedMaxY,
           gridData: const FlGridData(show: false),
           borderData: FlBorderData(show: false),
           titlesData: const FlTitlesData(show: false),
+
+          lineTouchData: LineTouchData(
+            touchTooltipData: LineTouchTooltipData(
+              getTooltipColor: (spot) => StackMoneyTheme.surface,
+              tooltipBorder: BorderSide(color: activeColor, width: 1),
+              tooltipPadding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 4,
+              ),
+              tooltipRoundedRadius: 2,
+              getTooltipItems: (touchedSpots) {
+                return touchedSpots.map((spot) {
+                  final deltaValue = spot.y - widget.parameter.minValue;
+                  final prefix = deltaValue >= 0 ? '+' : '';
+                  return LineTooltipItem(
+                    '$prefix${_currencyFormat.format(deltaValue)}',
+                    TextStyle(
+                      color: deltaValue >= 0
+                          ? StackMoneyTheme.cyanNeon
+                          : StackMoneyTheme.magentaNeon,
+                      fontFamily: 'Orbitron',
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                }).toList();
+              },
+            ),
+          ),
+
           extraLinesData: ExtraLinesData(
             horizontalLines: [
               HorizontalLine(

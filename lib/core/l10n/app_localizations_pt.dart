@@ -42,7 +42,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String min(Object value) {
-    return 'Min: $value%';
+    return 'Min: $value';
   }
 
   @override

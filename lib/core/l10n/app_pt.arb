@@ -10,7 +10,7 @@
   "hiddenValues": "••••••",
   "liquidityBuffer": "Liquidez imediata",
   "allocation": "Aloc: {value}%",
-  "min": "Min: {value}%",
+  "min": "Min: {value}",
   "threeMonths": "3M",
   "sixMonths": "6M",
   "oneYear": "1A",

@@ -40,7 +40,7 @@
   "@allocation": {
     "description": "Allocation on wallet"
   },
-  "min": "Min: {value}%",
+  "min": "Min: {value}",
   "@min": {
     "description": "Min value for bucket"
   },

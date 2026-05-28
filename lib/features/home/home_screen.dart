@@ -6,6 +6,8 @@ import 'package:stack_money/domain/data/enum/chart_filter.dart';
 import 'package:stack_money/domain/data/models/chart_filter_state.dart';
 import 'package:stack_money/domain/data/models/history.dart';
 import 'package:stack_money/domain/data/models/parameters.dart';
+import 'package:stack_money/domain/service/history_service.dart';
+import 'package:stack_money/domain/service/parameter_service.dart';
 import 'package:stack_money/features/home/widgets/home_header.dart';
 import 'package:stack_money/features/home/widgets/patrimonial_hud.dart';
 import 'package:stack_money/features/home/widgets/telemetry_filter_bar.dart';
@@ -21,66 +23,52 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Mudamos temporariamente para TRUE para testar se o gráfico inicializa sem o bug de achatamento
-  final ValueNotifier<bool> _visibilityNotifier = ValueNotifier<bool>(true);
+  // Inicializa camuflado por padrão seguindo o protocolo Stealth tático
+  final ValueNotifier<bool> _visibilityNotifier = ValueNotifier<bool>(false);
 
   ChartFilterState _chartFilter = const ChartFilterState(
     filter: ChartFilter.threeMonths,
   );
 
-  final List<Parameter> _mockParameters = [
-    Parameter(category: "Investimento", where: "Nomad Setup", minValue: 15000.0, isImmediateLiquidity: true),
-    Parameter(category: "Reserva", where: "Emergency Buffer", minValue: 20000.0, isImmediateLiquidity: false),
-    Parameter(category: "Investimento", where: "Compass 4x4", minValue: 60000.0, isImmediateLiquidity: true),
-    Parameter(category: "Reserva", where: "Safety Wallet", minValue: 100000.0, isImmediateLiquidity: false),
-  ];
+  // Listas reais que alimentarão o ecossistema vindas do Firebase
+  List<Parameter> _realParameters = [];
+  List<History> _realHistoryTimeline = [];
 
-  late final List<History> _mockLegacyHistory;
+  bool _isLoading = true;
+  bool _hasError = false;
 
   @override
   void initState() {
     super.initState();
+    _loadFirebaseDashboardData();
+  }
 
-    final idNomad = "Investimento_NomadSetup";
-    final idEmergency = "Reserva_EmergencyBuffer";
-    final idCompass = "Investimento_Compass4x4";
-    final idSafety = "Reserva_SafetyWallet";
+  // DISPARA A CARGA EM PARALELO VIA ONE-SHOT SNAPSHOT
+  Future<void> _loadFirebaseDashboardData() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _hasError = false;
+      });
 
-    _mockLegacyHistory = [
-      History.fromJson("2026_01_05", {
-        "date": "2026-01-05",
-        "total": 254200.46,
-        "immediateLiquidityTotal": 3200.0,
-        "transactions": {
-          idNomad: {"id": idNomad, "category": "Investimento", "where": "Nomad Setup", "actualValue": 16000.0},
-          idEmergency: {"id": idEmergency, "category": "Reserva", "where": "Emergency Buffer", "actualValue": 22000.0},
-          idCompass: {"id": idCompass, "category": "Investimento", "where": "Compass 4x4", "actualValue": 55000.0},
-          idSafety: {"id": idSafety, "category": "Reserva", "where": "Safety Wallet", "actualValue": 105000.0}
-        }
-      }),
-      History.fromJson("2026_02_20", {
-        "date": "2026-02-20",
-        "total": 244520.94,
-        "immediateLiquidityTotal": 1500.0,
-        "transactions": {
-          idNomad: {"id": idNomad, "category": "Investimento", "where": "Nomad Setup", "actualValue": 14000.0},
-          idEmergency: {"id": idEmergency, "category": "Reserva", "where": "Emergency Buffer", "actualValue": 21000.0},
-          idCompass: {"id": idCompass, "category": "Investimento", "where": "Compass 4x4", "actualValue": 52000.0},
-          idSafety: {"id": idSafety, "category": "Reserva", "where": "Safety Wallet", "actualValue": 98000.0}
-        }
-      }),
-      History.fromJson("2026_05_22", {
-        "date": "2026-05-22",
-        "total": 223025.27,
-        "immediateLiquidityTotal": 3287.76,
-        "transactions": {
-          idNomad: {"id": idNomad, "category": "Investimento", "where": "Nomad Setup", "actualValue": 15500.0},
-          idEmergency: {"id": idEmergency, "category": "Reserva", "where": "Emergency Buffer", "actualValue": 20500.0},
-          idCompass: {"id": idCompass, "category": "Investimento", "where": "Compass 4x4", "actualValue": 48000.0},
-          idSafety: {"id": idSafety, "category": "Reserva", "where": "Safety Wallet", "actualValue": 95000.0}
-        }
-      }),
-    ];
+      // Roda as duas queries simultaneamente para otimizar performance
+      final results = await Future.wait([
+        ParameterManagementService().getActiveParameters(),
+        HistoryManagementService().getConsolidatedHistory(),
+      ]);
+
+      setState(() {
+        _realParameters = results[0] as List<Parameter>;
+        _realHistoryTimeline = results[1] as List<History>;
+        _isLoading = false;
+      });
+    } catch (e) {
+      print('DEBUG_SYSTEM [HomeScreen]: Critical fail to load dashboard data -> $e');
+      setState(() {
+        _isLoading = false;
+        _hasError = true;
+      });
+    }
   }
 
   @override
@@ -102,85 +90,135 @@ class _HomeScreenState extends State<HomeScreen> {
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               sliver: SliverToBoxAdapter(
-                // 🛠️ FIX PROTOCOLO DE ISOLAMENTO DE TELA PRETA:
-                // Envelopamos a Column num Container com largura total estrita
                 child: Container(
                   width: MediaQuery.of(context).size.width - 32,
                   color: Colors.transparent,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min, // Força a coluna a ocupar o espaço mínimo necessário
-                    children: [
-                      // 1. HUD Principal
-                      PatrimonialHud(
-                        totalAmount: 223025.27,
-                        liquidityAmount: 3287.76,
-                        visibilityListenable: _visibilityNotifier,
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // 2. Telemetria Global unificada dentro de um bloco com tamanho rígido
-                      StackMoneyCard(
-                        title: 'TELEMETRY_STREAM',
-                        visibilityNotifier: _visibilityNotifier,
-                        children: [
-                          // Forçamos um SizedBox com altura cravada em volta do gráfico para o fl_chart não bugar
-                          SizedBox(
-                            height: 220,
-                            child: TelemetryLineChart(
-                              rawHistoryData: _mockLegacyHistory,
-                              filterState: _chartFilter,
-                              isSystemVisible: true, // Forçado true para o teste visual inicial
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          const Divider(color: Colors.white10, height: 1),
-                          const SizedBox(height: 16),
-                          TelemetryFilterBar(
-                            currentState: _chartFilter,
-                            isEnabled: true,
-                            onFilterChanged: (newState) {
-                              setState(() {
-                                _chartFilter = newState;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 28),
-
-                      const Text(
-                        'ALLOCATION_BUCKETS',
-                        style: TextStyle(
-                          color: StackMoneyTheme.mutedGrey,
-                          fontFamily: 'Orbitron',
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.5,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 3. Renderização dos cards de Potes
-                      ..._mockParameters.map(
-                            (param) => BucketCard(
-                          parameter: param,
-                          historyList: _mockLegacyHistory,
-                          visibilityNotifier: _visibilityNotifier,
-                        ),
-                      ),
-
-                      const SizedBox(height: 40),
-                    ],
-                  ),
+                  child: _buildBodyContent(),
                 ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  // GERE OS ESTADOS DE RENDERIZAÇÃO (LOADING, ERROR E DASHBOARD OPERACIONAL)
+  Widget _buildBodyContent() {
+    // 🌌 1. LOADING CIBERNÉTICO
+    if (_isLoading) {
+      return const SizedBox(
+        height: 400,
+        child: Center(
+          child: CircularProgressIndicator(
+            color: StackMoneyTheme.cyanNeon, // Correndo liso no Ciano Neon
+            backgroundColor: StackMoneyTheme.surface,
+            strokeWidth: 3,
+          ),
+        ),
+      );
+    }
+
+    // 🚨 2. EMERGENCY FALLBACK (CASO O BANCO TRAVE)
+    if (_hasError || _realHistoryTimeline.isEmpty) {
+      return SizedBox(
+        height: 300,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.gpp_maybe_outlined, color: StackMoneyTheme.magentaNeon, size: 48),
+              const SizedBox(height: 16),
+              const Text(
+                'SYSTEM_LINK_FAILED',
+                style: TextStyle(color: Colors.white, fontFamily: 'Orbitron', fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              TextButton(
+                onPressed: _loadFirebaseDashboardData,
+                child: const Text('RETRY_HANDSHAKE', style: TextStyle(color: StackMoneyTheme.cyanNeon, fontFamily: 'Orbitron')),
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
+    // 💎 CAPTURA DINAMICAMENTE OS DADOS ATUAIS DA ÚLTIMA AUDITORIA SALVA NO FIREBASE
+    final latestAudit = _realHistoryTimeline.last;
+
+    // ⚔️ 3. DASHBOARD TOTALMENTE OPERACIONAL E REAL
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // 1. HUD Principal consumindo dados dinâmicos do banco
+        PatrimonialHud(
+          totalAmount: latestAudit.total,
+          liquidityAmount: latestAudit.immediateLiquidityTotal,
+          visibilityListenable: _visibilityNotifier,
+        ),
+
+        const SizedBox(height: 20),
+
+        // 2. Telemetria Global unificada dentro do card
+        ValueListenableBuilder<bool>(
+          valueListenable: _visibilityNotifier,
+          builder: (context, isVisible, child) {
+            return StackMoneyCard(
+              title: 'TELEMETRY_STREAM',
+              visibilityNotifier: _visibilityNotifier,
+              children: [
+                SizedBox(
+                  height: 220,
+                  child: TelemetryLineChart(
+                    rawHistoryData: _realHistoryTimeline, // Linha de tempo real
+                    filterState: _chartFilter,
+                    isSystemVisible: isVisible,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Divider(color: Colors.white10, height: 1),
+                const SizedBox(height: 16),
+                TelemetryFilterBar(
+                  currentState: _chartFilter,
+                  isEnabled: isVisible,
+                  onFilterChanged: (newState) {
+                    setState(() {
+                      _chartFilter = newState;
+                    });
+                  },
+                ),
+              ],
+            );
+          },
+        ),
+
+        const SizedBox(height: 28),
+
+        const Text(
+          'ALLOCATION_BUCKETS',
+          style: TextStyle(
+            color: StackMoneyTheme.mutedGrey,
+            fontFamily: 'Orbitron',
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.5,
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // 🔋 3. RENDERIZAÇÃO REAL DE CADAS UM DOS SEUS POTES
+        ..._realParameters.map(
+              (param) => BucketCard(
+            parameter: param,
+            historyList: _realHistoryTimeline, // Passa a timeline real do Firebase
+            visibilityNotifier: _visibilityNotifier,
+          ),
+        ),
+
+        const SizedBox(height: 40),
+      ],
     );
   }
 }

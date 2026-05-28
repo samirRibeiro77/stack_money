@@ -161,7 +161,7 @@ abstract class AppLocalizations {
   /// Min value for bucket
   ///
   /// In en, this message translates to:
-  /// **'Min: {value}%'**
+  /// **'Min: {value}'**
   String min(Object value);
 
   /// 3 months filter
