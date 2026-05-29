@@ -6,12 +6,21 @@ class StackMoneyString {
     symbol: 'R\$',
   );
 
+  static final NumberFormat _shortCurrencyFormat =
+      NumberFormat.compactSimpleCurrency(locale: 'pt_BR');
+
   static String formatTitle(String s) {
     return s.replaceAll(' ', '_').toUpperCase();
   }
 
-  static String formatMoney({String? stringValue, double? doubleValue}) {
-    return _currencyFormat.format(doubleValue ?? stringValue);
+  static String formatMoney({
+    String? stringValue,
+    double? doubleValue,
+    bool short = false,
+  }) {
+    return short
+        ? _shortCurrencyFormat.format(doubleValue ?? stringValue)
+        : _currencyFormat.format(doubleValue ?? stringValue);
   }
 
   static String formatPercentage({

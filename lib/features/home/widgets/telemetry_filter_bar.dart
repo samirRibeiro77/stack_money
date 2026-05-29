@@ -64,6 +64,7 @@ class TelemetryFilterBar extends StatelessWidget {
     ChartFilter filter,
     BuildContext context,
     AppLocalizations l10n,
+    TextTheme textTheme,
   ) {
     final bool isSelected = currentState.filter == filter;
 
@@ -85,7 +86,7 @@ class TelemetryFilterBar extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: AppSizes.x5),
             decoration: BoxDecoration(
               color: isSelected ? StackMoneyTheme.surface : Colors.transparent,
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(AppSizes.x3),
               // Borda em Magenta Neon acesa se selecionado
               border: Border.all(
                 color: isSelected
@@ -97,10 +98,10 @@ class TelemetryFilterBar extends StatelessWidget {
             child: Text(
               label,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: isSelected ? Colors.white : StackMoneyTheme.mutedGrey,
-                fontSize: 11,
-                fontFamily: 'Orbitron',
+              style: textTheme.bodySmall?.copyWith(
+                color: isSelected
+                    ? StackMoneyTheme.platinumSilver
+                    : StackMoneyTheme.mutedGrey,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
@@ -113,20 +114,40 @@ class TelemetryFilterBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
 
     return Opacity(
       opacity: isEnabled ? 1.0 : 0.3,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildChip(l10n.threeMonths, ChartFilter.threeMonths, context, l10n),
-          _buildChip(l10n.sixMonths, ChartFilter.sixMonths, context, l10n),
-          _buildChip(l10n.oneYear, ChartFilter.oneYear, context, l10n),
+          _buildChip(
+            l10n.threeMonths,
+            ChartFilter.threeMonths,
+            context,
+            l10n,
+            textTheme,
+          ),
+          _buildChip(
+            l10n.sixMonths,
+            ChartFilter.sixMonths,
+            context,
+            l10n,
+            textTheme,
+          ),
+          _buildChip(
+            l10n.oneYear,
+            ChartFilter.oneYear,
+            context,
+            l10n,
+            textTheme,
+          ),
           _buildChip(
             currentState.customLabel,
             ChartFilter.custom,
             context,
             l10n,
+            textTheme,
           ),
         ],
       ),

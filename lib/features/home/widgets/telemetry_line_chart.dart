@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/domain/data/enum/chart_filter.dart';
@@ -27,22 +27,40 @@ class TelemetryLineChart extends StatelessWidget {
 
     if (filterState.filter == ChartFilter.custom && filterState.hasDates) {
       return rawHistoryData
-          .where((h) => h.date.isAfter(filterState.start!) && h.date.isBefore(filterState.end!))
+          .where(
+            (h) =>
+                h.date.isAfter(filterState.start!) &&
+                h.date.isBefore(filterState.end!),
+          )
           .toList();
     }
 
     return rawHistoryData
-        .where((h) => latestDate.difference(h.date).inDays <= filterState.filter.days)
+        .where(
+          (h) =>
+              latestDate.difference(h.date).inDays <= filterState.filter.days,
+        )
         .toList();
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
 
     final data = _filteredData;
     if (data.isEmpty) {
-      return SizedBox(height: 200, child: Center(child: Text(l10n.noData)));
+      return SizedBox(
+        height: 200,
+        child: Center(
+          child: Text(
+            l10n.noData,
+            style: textTheme.titleLarge?.copyWith(
+              color: StackMoneyTheme.magentaNeon,
+            ),
+          ),
+        ),
+      );
     }
 
     // 📈 ESCALA DINÂMICA: Descobre o menor e maior valor para focar no zigue-zague real
@@ -59,8 +77,6 @@ class TelemetryLineChart extends StatelessWidget {
     for (int i = 0; i < data.length; i++) {
       spots.add(FlSpot(i.toDouble(), data[i].total));
     }
-
-    final currencyFormat = NumberFormat.compactSimpleCurrency(locale: 'pt_BR');
 
     return Container(
       height: 220,
@@ -94,21 +110,11 @@ class TelemetryLineChart extends StatelessWidget {
               getTooltipItems: (touchedSpots) {
                 return touchedSpots.map((spot) {
                   final historyItem = data[spot.x.toInt()];
-                  final dateStr = DateFormat(
-                    'dd/MM/yy',
-                  ).format(historyItem.date);
-                  final valStr = NumberFormat.currency(
-                    locale: 'pt_BR',
-                    symbol: 'R\$',
-                  ).format(spot.y);
 
                   return LineTooltipItem(
-                    '$dateStr\n$valStr',
-                    const TextStyle(
-                      color: Color(0xFFE2E8F0), // Branco Metálico
-                      fontFamily: 'Orbitron',
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                    '${StackMoneyString.formatDate(historyItem.date, hideSameYear: false)}\n${StackMoneyString.formatMoney(doubleValue: spot.y)}',
+                    textTheme.labelMedium!.copyWith(
+                      color: StackMoneyTheme.platinumSilver,
                     ),
                   );
                 }).toList();
@@ -122,16 +128,19 @@ class TelemetryLineChart extends StatelessWidget {
                       FlLine(
                         color: StackMoneyTheme.magentaNeon.withOpacity(0.8),
                         strokeWidth: 1.5,
-                        dashArray: [4, 4], // Linha pontilhada tática
+                        dashArray: [
+                          AppSizes.x2.toInt(),
+                          AppSizes.x2.toInt(),
+                        ], // Linha pontilhada tática
                       ),
                       FlDotData(
                         show: true,
                         getDotPainter: (spot, percent, barData, index) =>
                             FlDotSquarePainter(
-                              size: 8,
+                              size: AppSizes.x4,
                               color: StackMoneyTheme.magentaNeon,
                               strokeColor: StackMoneyTheme.background,
-                              strokeWidth: 2,
+                              strokeWidth: AppSizes.min,
                             ),
                       ),
                     );
@@ -168,15 +177,15 @@ class TelemetryLineChart extends StatelessWidget {
                 showTitles: isSystemVisible,
                 reservedSize: 42,
                 getTitlesWidget: (value, meta) {
-                  if (value == meta.min || value == meta.max)
+                  if (value == meta.min || value == meta.max) {
                     return const SizedBox();
+                  }
                   return Text(
-                    currencyFormat.format(value),
-                    style: const TextStyle(
-                      color: StackMoneyTheme.mutedGrey,
-                      fontSize: 10,
-                      fontFamily: 'Orbitron',
+                    StackMoneyString.formatMoney(
+                      doubleValue: value,
+                      short: true,
                     ),
+                    style: textTheme.labelSmall,
                   );
                 },
               ),
@@ -192,7 +201,10 @@ class TelemetryLineChart extends StatelessWidget {
                   if (idx >= 0 && idx < data.length) {
                     return Padding(
                       padding: EdgeInsets.only(top: AppSizes.x3),
-                      child: Text(DateFormat('dd/MM').format(data[idx].date)),
+                      child: Text(
+                        StackMoneyString.formatDate(data[idx].date),
+                        style: textTheme.bodySmall,
+                      ),
                     );
                   }
                   return const SizedBox();
@@ -214,7 +226,7 @@ class TelemetryLineChart extends StatelessWidget {
               color: isSystemVisible
                   ? StackMoneyTheme.cyanNeon
                   : StackMoneyTheme.cyanNeon.withOpacity(0.05),
-              barWidth: 2,
+              barWidth: AppSizes.min,
               // Mini-quadrados nos pontos de auditoria
               dotData: FlDotData(
                 show: isSystemVisible,

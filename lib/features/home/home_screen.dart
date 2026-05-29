@@ -1,6 +1,8 @@
 // Substitua o arquivo home_screen.dart por esta versão com o controle em lote implementado:
 
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -128,6 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       backgroundColor: StackMoneyTheme.background,
@@ -146,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Container(
                   width: MediaQuery.of(context).size.width - 32,
                   color: Colors.transparent,
-                  child: _buildBodyContent(l10n),
+                  child: _buildBodyContent(l10n, textTheme),
                 ),
               ),
             ),
@@ -156,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildBodyContent(AppLocalizations l10n) {
+  Widget _buildBodyContent(AppLocalizations l10n, TextTheme textTheme) {
     if (_isLoading) {
       return const SizedBox(
         height: 400,
@@ -180,25 +183,22 @@ class _HomeScreenState extends State<HomeScreen> {
               const Icon(
                 Icons.gpp_maybe_outlined,
                 color: StackMoneyTheme.magentaNeon,
-                size: 48,
+                size: AppSizes.x24,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: AppSizes.x8),
               Text(
                 StackMoneyString.formatTitle(l10n.systemLinkFailed),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Orbitron',
-                  fontWeight: FontWeight.bold,
+                style: textTheme.headlineMedium?.copyWith(
+                  color: StackMoneyTheme.magentaNeon,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSizes.x4),
               TextButton(
                 onPressed: _loadFirebaseDashboardData,
                 child: Text(
                   StackMoneyString.formatTitle(l10n.retryHandshake),
-                  style: TextStyle(
+                  style: textTheme.titleMedium?.copyWith(
                     color: StackMoneyTheme.cyanNeon,
-                    fontFamily: 'Orbitron',
                   ),
                 ),
               ),
@@ -220,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
           visibilityListenable: _visibilityNotifier,
         ),
 
-        const SizedBox(height: 20),
+        SizedBox(height: AppSizes.x10),
 
         ValueListenableBuilder<bool>(
           valueListenable: _visibilityNotifier,
@@ -237,9 +237,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     isSystemVisible: isVisible,
                   ),
                 ),
-                const SizedBox(height: 12),
-                const Divider(color: Colors.white10, height: 1),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSizes.x6),
+                const Divider(),
+                const SizedBox(height: AppSizes.x8),
                 TelemetryFilterBar(
                   currentState: _chartFilter,
                   isEnabled: isVisible,
@@ -254,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
 
-        const SizedBox(height: 28),
+        SizedBox(height: AppSizes.x12),
 
         // 🎛️ RÓTULO TÁTICO DA SEÇÃO + ÍCONE MESTRE COLORIDO REATIVO
         ValueListenableBuilder<bool>(
@@ -265,11 +265,8 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   StackMoneyString.formatTitle(l10n.allocationBuckets),
-                  style: TextStyle(
-                    color: StackMoneyTheme.mutedGrey,
-                    fontFamily: 'Orbitron',
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                  style: textTheme.labelLarge?.copyWith(
+                    fontWeight: AppTypography.weightBold,
                     letterSpacing: 1.5,
                   ),
                 ),
@@ -285,21 +282,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: _masterExpandState
                           ? StackMoneyTheme.cyanNeon
                           : StackMoneyTheme.magentaNeon,
-                      size: 22,
+                      size: AppSizes.x10,
                     ),
                   ),
               ],
             );
           },
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: AppSizes.x8),
 
         // 🔋 RENDERIZAÇÃO DOS POTES COM VINCULAÇÃO DE CHAVES GLOBAIS
         ...List.generate(_realParameters.length, (index) {
           final param = _realParameters[index];
           return BucketCard(
             key: _bucketKeys[index],
-            // 👈 Injeta a GlobalKey correspondente ao pote
             parameter: param,
             historyList: _realHistoryTimeline,
             visibilityNotifier: _visibilityNotifier,
@@ -308,7 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }),
 
-        const SizedBox(height: 40),
+        SizedBox(height: AppSizes.x24),
       ],
     );
   }

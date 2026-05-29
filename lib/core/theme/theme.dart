@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/domain/data/enum/action_button.dart';
 
 class StackMoneyTheme {
@@ -18,7 +19,7 @@ class StackMoneyTheme {
   /// Features a Platinum Silver background with high-contrast text/icons
   static ButtonStyle actionButton(ActionButton actionButton) {
     return _platinumActionButtonStyle.copyWith(
-      foregroundColor: actionButton.color as WidgetStateProperty<Color>
+      foregroundColor: actionButton.color as WidgetStateProperty<Color>,
     );
   }
 
@@ -29,26 +30,29 @@ class StackMoneyTheme {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppSizes.x8),
     ),
-    textStyle: GoogleFonts.jetBrainsMono(
-      fontWeight: FontWeight.bold,
-      fontSize: AppSizes.fontMedium,
-    ),
+    textStyle: darkTheme.textTheme.labelMedium,
   );
 
   /// Custom ButtonStyle for the Google Login Button
   /// Features a Platinum Silver background, Cyan text, and stadium-rounded corners
   static ButtonStyle get googleLoginButtonStyle => ElevatedButton.styleFrom(
     backgroundColor: carbonGrey,
-    foregroundColor: cyanNeon, // Sets the text color to Cyan
+    foregroundColor: cyanNeon,
+    // Sets the text color to Cyan
     elevation: 0,
-    padding: const EdgeInsets.symmetric(horizontal: AppSizes.x10, vertical: AppSizes.x6),
-    shape: const StadiumBorder(), // Makes the button perfectly rounded
-    textStyle: GoogleFonts.jetBrainsMono(
-      fontWeight: FontWeight.bold,
-      fontSize: AppSizes.fontMedium,
-      letterSpacing: AppSizes.min / 4,
+    padding: const EdgeInsets.symmetric(
+      horizontal: AppSizes.x10,
+      vertical: AppSizes.x6,
     ),
+    shape: const StadiumBorder(),
+    // Makes the button perfectly rounded
+    textStyle: darkTheme.textTheme.labelMedium,
   );
+
+  /// Main Dark Theme Configuration for StackMoney
+  static final _baseTextTheme = GoogleFonts.orbitronTextTheme(
+    ThemeData.dark().textTheme,
+  ).apply(bodyColor: textPrimary, displayColor: textPrimary);
 
   /// Main Dark Theme Configuration for StackMoney
   static ThemeData get darkTheme {
@@ -67,12 +71,94 @@ class StackMoneyTheme {
       ),
 
       // Global Typography Configurations
-      textTheme: GoogleFonts.jetBrainsMonoTextTheme(ThemeData.dark().textTheme).copyWith(
-        displayLarge: GoogleFonts.orbitron(color: textPrimary, fontWeight: FontWeight.bold),
-        displayMedium: GoogleFonts.orbitron(color: textPrimary, fontWeight: FontWeight.bold),
-        displaySmall: GoogleFonts.orbitron(color: textPrimary, fontWeight: FontWeight.bold),
-        titleLarge: GoogleFonts.orbitron(color: textPrimary, fontWeight: FontWeight.w600),
-        titleMedium: GoogleFonts.orbitron(color: textPrimary, fontWeight: FontWeight.w500),
+      textTheme: _baseTextTheme.copyWith(
+        // --- DISPLAY (Orbitron) ---
+        displayLarge: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontDisplayLarge,
+          fontWeight: AppTypography.weightBold,
+          color: textPrimary,
+        ),
+        displayMedium: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontDisplayMedium,
+          fontWeight: AppTypography.weightBold,
+          color: textPrimary,
+        ),
+        displaySmall: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontDisplaySmall,
+          fontWeight: AppTypography.weightBold,
+          color: textPrimary,
+        ),
+
+        // --- HEADLINE (Orbitron) ---
+        headlineLarge: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontHeadlineLarge,
+          fontWeight: AppTypography.weightBold,
+          color: textPrimary,
+        ),
+        headlineMedium: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontHeadlineMedium,
+          fontWeight: AppTypography.weightBold,
+          color: textPrimary,
+        ),
+        headlineSmall: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontHeadlineSmall,
+          fontWeight: AppTypography.weightBold,
+          color: textPrimary,
+        ),
+
+        // --- TITLE (Orbitron) ---
+        titleLarge: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontTitleLarge,
+          fontWeight: AppTypography.weightMedium,
+          color: textPrimary,
+        ),
+        titleMedium: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontTitleMedium,
+          fontWeight: AppTypography.weightMedium,
+          color: textPrimary,
+        ),
+        titleSmall: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontTitleSmall,
+          fontWeight: AppTypography.weightMedium,
+          color: textPrimary,
+        ),
+
+        // --- BODY (JetBrainsMono) ---
+        bodyLarge: GoogleFonts.jetBrainsMono(
+          fontSize: AppTypography.fontBodyLarge,
+          fontWeight: AppTypography.weightBold,
+          color: textPrimary,
+        ),
+        bodyMedium: GoogleFonts.jetBrainsMono(
+          fontSize: AppTypography.fontBodyMedium,
+          fontWeight: AppTypography.weightMedium,
+          color: textPrimary,
+        ),
+        bodySmall: GoogleFonts.jetBrainsMono(
+          fontSize: AppTypography.fontBodySmall,
+          fontWeight: AppTypography.weightNormal,
+          color: textPrimary,
+        ),
+
+        // --- LABEL (Orbitron) ---
+        labelLarge: TextStyle(
+          color: mutedGrey,
+          fontSize: AppTypography.fontLabelLarge,
+          fontWeight: AppTypography.weightNormal,
+          fontFamily: 'Orbitron',
+        ),
+        labelMedium: TextStyle(
+          color: mutedGrey,
+          fontSize: AppTypography.fontLabelMedium,
+          fontWeight: AppTypography.weightNormal,
+          fontFamily: 'Orbitron',
+        ),
+        labelSmall: TextStyle(
+          color: mutedGrey,
+          fontSize: AppTypography.fontLabelSmall,
+          fontWeight: AppTypography.weightNormal,
+          fontFamily: 'Orbitron',
+        ),
       ),
 
       // AppBar Customization with Orbitron Title
@@ -82,9 +168,9 @@ class StackMoneyTheme {
         centerTitle: true,
         iconTheme: const IconThemeData(color: textPrimary),
         titleTextStyle: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontTitleLarge,
+          fontWeight: AppTypography.weightBold,
           color: textPrimary,
-          fontSize: AppSizes.fontLarge,
-          fontWeight: FontWeight.bold,
           letterSpacing: AppSizes.min / 2,
         ),
       ),
@@ -97,10 +183,10 @@ class StackMoneyTheme {
         indicatorSize: TabBarIndicatorSize.tab,
         labelStyle: GoogleFonts.jetBrainsMono(
           fontWeight: FontWeight.bold,
-          fontSize: AppSizes.fontBody,
+          fontSize: AppTypography.fontBodyMedium,
         ),
         unselectedLabelStyle: GoogleFonts.jetBrainsMono(
-          fontSize: AppSizes.fontBody,
+          fontSize: AppTypography.fontBodyMedium,
         ),
       ),
 
@@ -110,8 +196,14 @@ class StackMoneyTheme {
         fillColor: surface,
         labelStyle: const TextStyle(color: mutedGrey),
         // Color of the label when it animates and floats to the border
-        floatingLabelStyle: const TextStyle(color: cyanNeon, fontWeight: FontWeight.bold),
-        contentPadding: const EdgeInsets.symmetric(horizontal: AppSizes.x8, vertical: AppSizes.x8),
+        floatingLabelStyle: const TextStyle(
+          color: cyanNeon,
+          fontWeight: FontWeight.bold,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSizes.x8,
+          vertical: AppSizes.x8,
+        ),
         // Active/Focused Border Style (Lights up in Cyan)
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: magentaNeon, width: 1.5),
@@ -135,9 +227,15 @@ class StackMoneyTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSizes.radiusLarge),
-          side: const BorderSide(color: carbonGrey, width: AppSizes.min / 4), // Subtle border
+          side: const BorderSide(
+            color: carbonGrey,
+            width: AppSizes.min / 4,
+          ), // Subtle border
         ),
       ),
+
+      // Default Divider
+      dividerTheme: DividerThemeData(color: Colors.white10),
     );
   }
 }

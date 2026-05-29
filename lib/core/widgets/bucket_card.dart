@@ -15,30 +15,26 @@ class BucketCard extends StatefulWidget {
   final Bucket parameter;
   final List<History> historyList;
   final ValueNotifier<bool> visibilityNotifier;
-  final VoidCallback?
-  onStateChanged; // 👈 Callback opcional para avisar a Home que o card mudou
+  final VoidCallback? onStateChanged;
 
   const BucketCard({
     super.key,
     required this.parameter,
     required this.historyList,
     required this.visibilityNotifier,
-    this.onStateChanged, // Injetado no construtor
+    this.onStateChanged,
   });
 
   @override
-  BucketCardState createState() => BucketCardState(); // 👈 Removido o underline
+  BucketCardState createState() => BucketCardState();
 }
 
-// 2. Remova o underline do nome da classe do State para que a GlobalKey possa enxergá-la
 class BucketCardState extends State<BucketCard> {
-  // 👈 Removido o underline
   bool isExpanded = false;
   ChartFilterState _chartFilter = const ChartFilterState(
     filter: ChartFilter.threeMonths,
   );
 
-  // 🎯 MÉTODO PÚBLICO: Chamado diretamente pela HomeScreen via GlobalKey!
   void setExpandedState(bool expand) {
     if (isExpanded != expand) {
       setState(() {
@@ -58,6 +54,7 @@ class BucketCardState extends State<BucketCard> {
     if (widget.historyList.isEmpty) return const SizedBox();
 
     final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
 
     final latestHistory = widget.historyList.last;
     final double currentBalance = _getBucketValueAt(latestHistory);
@@ -70,7 +67,7 @@ class BucketCardState extends State<BucketCard> {
       valueListenable: widget.visibilityNotifier,
       builder: (context, isVisible, child) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
+          padding: const EdgeInsets.only(bottom: AppSizes.x8),
           child: GestureDetector(
             onTap: isVisible
                 ? () {
@@ -79,6 +76,7 @@ class BucketCardState extends State<BucketCard> {
                   }
                 : null,
             child: StackMoneyCard(
+              shadowColor: healthColor,
               visibilityNotifier: widget.visibilityNotifier,
               children: [
                 Row(
@@ -91,14 +89,9 @@ class BucketCardState extends State<BucketCard> {
                           children: [
                             Text(
                               StackMoneyString.formatTitle(widget.parameter.id),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                fontFamily: 'Orbitron',
-                              ),
+                              style: textTheme.titleSmall,
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppSizes.x4),
                             if (isVisible)
                               Text(
                                 l10n.allocation(
@@ -108,24 +101,19 @@ class BucketCardState extends State<BucketCard> {
                                         100,
                                   ),
                                 ),
-                                style: const TextStyle(
-                                  color: StackMoneyTheme.mutedGrey,
-                                  fontSize: 10,
-                                  fontFamily: 'Orbitron',
-                                ),
+                                style: textTheme.labelSmall,
                               ),
                           ],
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: AppSizes.x3),
                         Text(
                           l10n.min(
                             StackMoneyString.formatMoney(
                               doubleValue: widget.parameter.minValue,
                             ),
                           ),
-                          style: const TextStyle(
+                          style: textTheme.bodySmall?.copyWith(
                             color: StackMoneyTheme.mutedGrey,
-                            fontSize: 11,
                           ),
                         ),
                       ],
@@ -136,13 +124,10 @@ class BucketCardState extends State<BucketCard> {
                               doubleValue: currentBalance,
                             )
                           : l10n.hiddenValues,
-                      style: TextStyle(
+                      style: textTheme.bodyLarge?.copyWith(
                         color: isVisible
                             ? healthColor
                             : StackMoneyTheme.mutedGrey,
-                        fontSize: 16,
-                        fontFamily: 'Orbitron',
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -151,7 +136,7 @@ class BucketCardState extends State<BucketCard> {
                 // 💥 SEGURO: Renderização condicional limpa sem AnimatedSize que buga em Slivers
                 if (isExpanded && isVisible) ...[
                   const SizedBox(height: AppSizes.x8),
-                  const Divider(color: Colors.white10, height: 1),
+                  const Divider(),
                   const SizedBox(height: AppSizes.x8),
                   _buildMiniChart(healthColor),
                   const SizedBox(height: AppSizes.x8),

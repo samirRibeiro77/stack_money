@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/theme/theme.dart';
 
@@ -7,16 +8,20 @@ class StackMoneyCard extends StatelessWidget {
   final String? title;
   final ValueNotifier<bool> visibilityNotifier;
   final List<Widget> children;
+  final Color shadowColor;
 
   const StackMoneyCard({
     super.key,
     this.title,
     required this.visibilityNotifier,
     required this.children,
+    this.shadowColor = StackMoneyTheme.cyanNeon,
   });
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return ValueListenableBuilder<bool>(
       valueListenable: visibilityNotifier,
       builder: (context, isVisible, child) {
@@ -30,11 +35,10 @@ class StackMoneyCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: StackMoneyTheme.surface,
             borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
-            // 🌌 AURA CIANO NEON REATIVA (Brilha se o sistema estiver aberto)
             boxShadow: isVisible
                 ? [
                     BoxShadow(
-                      color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.06),
+                      color: shadowColor.withValues(alpha: 0.06),
                       blurRadius: 20,
                       offset: const Offset(0, 6),
                     ),
@@ -44,22 +48,18 @@ class StackMoneyCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Exibe o título tático em caixa alta apenas se for enviado
               if (title != null) ...[
                 Text(
                   StackMoneyString.formatTitle(title!),
-                  style: const TextStyle(
-                    color: StackMoneyTheme.mutedGrey,
-                    fontSize: AppSizes.fontSmall,
-                    fontWeight: FontWeight.bold,
+                  style: textTheme.labelLarge?.copyWith(
+                    fontWeight: AppTypography.weightBold,
                     letterSpacing: 1.5,
-                    fontFamily: 'Orbitron',
                   ),
                 ),
                 const SizedBox(height: AppSizes.x8),
               ],
 
-              // Injeta a lista de widgets que vai compor o miolo do card
+              // Card custom body
               ...children,
             ],
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -54,6 +55,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
 
     return StackMoneyCard(
       title: l10n.netWorth,
@@ -82,12 +84,9 @@ class _PatrimonialHudState extends State<PatrimonialHud>
                         StackMoneyString.formatMoney(
                           doubleValue: _animation.value,
                         ),
-                        style: const TextStyle(
+                        style: textTheme.bodyLarge?.copyWith(
+                          fontSize: AppTypography.fontDisplaySmall,
                           color: StackMoneyTheme.platinumSilver,
-                          fontSize: AppSizes.fontDisplay,
-                          fontFamily: 'Orbitron',
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.5,
                         ),
                       );
                     },
@@ -95,12 +94,8 @@ class _PatrimonialHudState extends State<PatrimonialHud>
                 else
                   Text(
                     StackMoneyString.formatTitle(l10n.systemLocked),
-                    style: TextStyle(
+                    style: textTheme.headlineSmall?.copyWith(
                       color: StackMoneyTheme.magentaNeon,
-                      fontSize: 24,
-                      fontFamily: 'Orbitron',
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2.0,
                     ),
                   ),
                 const SizedBox(height: AppSizes.x8),
@@ -119,10 +114,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
                         const SizedBox(width: AppSizes.x2),
                         Text(
                           l10n.liquidityBuffer,
-                          style: TextStyle(
-                            color: StackMoneyTheme.mutedGrey,
-                            fontSize: 13,
-                          ),
+                          style: textTheme.labelMedium,
                         ),
                       ],
                     ),
@@ -132,12 +124,10 @@ class _PatrimonialHudState extends State<PatrimonialHud>
                               doubleValue: widget.liquidityAmount,
                             )
                           : l10n.hiddenValues,
-                      style: TextStyle(
+                      style: textTheme.labelLarge?.copyWith(
                         color: isVisible
-                            ? const Color(0xFFCBD5E1)
+                            ? StackMoneyTheme.platinumSilver
                             : StackMoneyTheme.mutedGrey,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
                       ),
                     ),
                   ],
