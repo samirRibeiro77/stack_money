@@ -109,7 +109,7 @@ class StackMoneyTheme {
         // --- TITLE (Orbitron) ---
         titleLarge: GoogleFonts.orbitron(
           fontSize: AppTypography.fontTitleLarge,
-          fontWeight: AppTypography.weightMedium,
+          fontWeight: AppTypography.weightBold,
           color: textPrimary,
         ),
         titleMedium: GoogleFonts.orbitron(

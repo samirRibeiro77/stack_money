@@ -37,12 +37,12 @@ class StackMoneyString {
         '0.00';
   }
 
-  static String formatDate(DateTime date, {bool hideSameYear = true}) {
-    var format = 'dd/MM';
+  static String formatDate(DateTime date, {bool hideSameYear = true, bool showYear = false}) {
+    var format = "dd/MM${showYear ? '/yy' : ''}";
     if (hideSameYear) {
       final now = DateTime.now();
-      if (date.year != now.year) {
-        format = 'dd/MM/yy';
+      if (date.year == now.year) {
+        format = "dd/MM";
       }
     }
     return DateFormat(format).format(date);
