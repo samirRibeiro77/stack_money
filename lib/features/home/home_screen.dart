@@ -1,3 +1,5 @@
+// Substitua o arquivo home_screen.dart por esta versão com o controle em lote implementado:
+
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -6,7 +8,7 @@ import 'package:stack_money/core/widgets/stack_money_card.dart';
 import 'package:stack_money/domain/data/enum/chart_filter.dart';
 import 'package:stack_money/domain/data/models/chart_filter_state.dart';
 import 'package:stack_money/domain/data/models/history.dart';
-import 'package:stack_money/domain/data/models/parameters.dart';
+import 'package:stack_money/domain/data/models/bucket.dart';
 import 'package:stack_money/domain/service/history_service.dart';
 import 'package:stack_money/domain/service/parameter_service.dart';
 import 'package:stack_money/features/home/widgets/home_header.dart';
@@ -24,19 +26,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Inicializa camuflado por padrão seguindo o protocolo Stealth tático
   final ValueNotifier<bool> _visibilityNotifier = ValueNotifier<bool>(false);
 
   ChartFilterState _chartFilter = const ChartFilterState(
     filter: ChartFilter.threeMonths,
   );
 
-  // Listas reais que alimentarão o ecossistema vindas do Firebase
-  List<Parameter> _realParameters = [];
+  List<Bucket> _realParameters = [];
   List<History> _realHistoryTimeline = [];
 
   bool _isLoading = true;
   bool _hasError = false;
+
+  // 🗝️ REGISTRO DE CHAVES GLOBAIS PARA CONTROLAR OS POTES EM LOTE
+  final List<GlobalKey<BucketCardState>> _bucketKeys = [];
+
+  // Estado visual do botão mestre (True = Próxima ação vai expandir tudo | False = Vai fechar tudo)
+  bool _masterExpandState = true;
 
   @override
   void initState() {
@@ -44,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadFirebaseDashboardData();
   }
 
-  // DISPARA A CARGA EM PARALELO VIA ONE-SHOT SNAPSHOT
   Future<void> _loadFirebaseDashboardData() async {
     try {
       setState(() {
@@ -52,22 +57,59 @@ class _HomeScreenState extends State<HomeScreen> {
         _hasError = false;
       });
 
-      // Roda as duas queries simultaneamente para otimizar performance
       final results = await Future.wait([
         ParameterManagementService().getActiveParameters(),
         HistoryManagementService().getConsolidatedHistory(),
       ]);
 
       setState(() {
-        _realParameters = results[0] as List<Parameter>;
+        _realParameters = results[0] as List<Bucket>;
         _realHistoryTimeline = results[1] as List<History>;
+
+        // 🛠️ Cria uma chave global única para cada pote carregado do Firebase
+        _bucketKeys.clear();
+        for (var i = 0; i < _realParameters.length; i++) {
+          _bucketKeys.add(GlobalKey<BucketCardState>());
+        }
+
         _isLoading = false;
       });
     } catch (e) {
-      print('DEBUG_SYSTEM [HomeScreen]: Critical fail to load dashboard data -> $e');
+      print('DEBUG_SYSTEM [HomeScreen]: Critical fail -> $e');
       setState(() {
         _isLoading = false;
         _hasError = true;
+      });
+    }
+  }
+
+  // 🎯 DISPARA O COMANDO EM LOTE NAS GLOBAL KEYS
+  void _toggleAllBuckets() {
+    for (var key in _bucketKeys) {
+      key.currentState?.setExpandedState(_masterExpandState);
+    }
+    setState(() {
+      _masterExpandState = !_masterExpandState;
+    });
+  }
+
+  // 🔄 REGRA DE SINCRONIA INVERSA: Só altera o botão se TODOS mudarem juntos
+  void _checkGlobalCardsState() {
+    if (_bucketKeys.isEmpty) return;
+
+    // Varre as chaves lendo o booleano de expansão interno de cada State público
+    final states = _bucketKeys.map((k) => k.currentState?.isExpanded ?? false).toList();
+
+    final allOpen = states.every((expanded) => expanded == true);
+    final allClosed = states.every((expanded) => expanded == false);
+
+    if (allOpen && _masterExpandState == true) {
+      setState(() {
+        _masterExpandState = false; // Se todos abriram manualmente, o mestre vira comando de fechar
+      });
+    } else if (allClosed && _masterExpandState == false) {
+      setState(() {
+        _masterExpandState = true; // Se todos fecharam manualmente, o mestre vira comando de abrir
       });
     }
   }
@@ -106,15 +148,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // GERE OS ESTADOS DE RENDERIZAÇÃO (LOADING, ERROR E DASHBOARD OPERACIONAL)
   Widget _buildBodyContent(AppLocalizations l10n) {
-    // 🌌 1. LOADING CIBERNÉTICO
     if (_isLoading) {
       return const SizedBox(
         height: 400,
         child: Center(
           child: CircularProgressIndicator(
-            color: StackMoneyTheme.cyanNeon, // Correndo liso no Ciano Neon
+            color: StackMoneyTheme.cyanNeon,
             backgroundColor: StackMoneyTheme.surface,
             strokeWidth: 3,
           ),
@@ -122,7 +162,6 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    // 🚨 2. EMERGENCY FALLBACK (CASO O BANCO TRAVE)
     if (_hasError || _realHistoryTimeline.isEmpty) {
       return SizedBox(
         height: 300,
@@ -132,14 +171,11 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               const Icon(Icons.gpp_maybe_outlined, color: StackMoneyTheme.magentaNeon, size: 48),
               const SizedBox(height: 16),
-              Text(
-                l10n.systemLinkFailed.replaceAll(' ', '_').toUpperCase(),
-                style: TextStyle(color: Colors.white, fontFamily: 'Orbitron', fontWeight: FontWeight.bold),
-              ),
+              Text(l10n.systemLinkFailed, style: TextStyle(color: Colors.white, fontFamily: 'Orbitron', fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               TextButton(
                 onPressed: _loadFirebaseDashboardData,
-                child: Text(l10n.retryHandshake.replaceAll(' ', '_').toUpperCase(), style: TextStyle(color: StackMoneyTheme.cyanNeon, fontFamily: 'Orbitron')),
+                child: Text(l10n.retryHandshake, style: TextStyle(color: StackMoneyTheme.cyanNeon, fontFamily: 'Orbitron')),
               )
             ],
           ),
@@ -147,15 +183,12 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    // 💎 CAPTURA DINAMICAMENTE OS DADOS ATUAIS DA ÚLTIMA AUDITORIA SALVA NO FIREBASE
     final latestAudit = _realHistoryTimeline.last;
 
-    // ⚔️ 3. DASHBOARD TOTALMENTE OPERACIONAL E REAL
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        // 1. HUD Principal consumindo dados dinâmicos do banco
         PatrimonialHud(
           totalAmount: latestAudit.total,
           liquidityAmount: latestAudit.immediateLiquidityTotal,
@@ -164,7 +197,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
         const SizedBox(height: 20),
 
-        // 2. Telemetria Global unificada dentro do card
         ValueListenableBuilder<bool>(
           valueListenable: _visibilityNotifier,
           builder: (context, isVisible, child) {
@@ -175,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 220,
                   child: TelemetryLineChart(
-                    rawHistoryData: _realHistoryTimeline, // Linha de tempo real
+                    rawHistoryData: _realHistoryTimeline,
                     filterState: _chartFilter,
                     isSystemVisible: isVisible,
                   ),
@@ -199,26 +231,51 @@ class _HomeScreenState extends State<HomeScreen> {
 
         const SizedBox(height: 28),
 
-        Text(
-          l10n.allocationBuckets.replaceAll(' ', '_').toUpperCase(),
-          style: TextStyle(
-            color: StackMoneyTheme.mutedGrey,
-            fontFamily: 'Orbitron',
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.5,
-          ),
+        // 🎛️ RÓTULO TÁTICO DA SEÇÃO + ÍCONE MESTRE COLORIDO REATIVO
+        ValueListenableBuilder<bool>(
+          valueListenable: _visibilityNotifier,
+          builder: (context, isVisible, child) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  l10n.allocationBuckets,
+                  style: TextStyle(
+                    color: StackMoneyTheme.mutedGrey,
+                    fontFamily: 'Orbitron',
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+                // Exibe o ícone de controle apenas se o app estiver aberto no protocolo stealth
+                if (isVisible)
+                  IconButton(
+                    onPressed: _toggleAllBuckets,
+                    icon: Icon(
+                      _masterExpandState ? Icons.unfold_more : Icons.unfold_less,
+                      // Ciano se a próxima ação for Expandir tudo | Magenta se for Colapsar tudo!
+                      color: _masterExpandState ? StackMoneyTheme.cyanNeon : StackMoneyTheme.magentaNeon,
+                      size: 22,
+                    ),
+                  ),
+              ],
+            );
+          },
         ),
         const SizedBox(height: 16),
 
-        // 🔋 3. RENDERIZAÇÃO REAL DE CADAS UM DOS SEUS POTES
-        ..._realParameters.map(
-              (param) => BucketCard(
+        // 🔋 RENDERIZAÇÃO DOS POTES COM VINCULAÇÃO DE CHAVES GLOBAIS
+        ...List.generate(_realParameters.length, (index) {
+          final param = _realParameters[index];
+          return BucketCard(
+            key: _bucketKeys[index], // 👈 Injeta a GlobalKey correspondente ao pote
             parameter: param,
-            historyList: _realHistoryTimeline, // Passa a timeline real do Firebase
+            historyList: _realHistoryTimeline,
             visibilityNotifier: _visibilityNotifier,
-          ),
-        ),
+            onStateChanged: _checkGlobalCardsState, // Escuta as interações manuais do usuário
+          );
+        }),
 
         const SizedBox(height: 40),
       ],

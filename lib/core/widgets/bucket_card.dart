@@ -8,44 +8,51 @@ import 'package:stack_money/core/widgets/stack_money_card.dart';
 import 'package:stack_money/domain/data/enum/chart_filter.dart';
 import 'package:stack_money/domain/data/models/chart_filter_state.dart';
 import 'package:stack_money/domain/data/models/history.dart';
-import 'package:stack_money/domain/data/models/parameters.dart';
+import 'package:stack_money/domain/data/models/bucket.dart';
 import 'package:stack_money/features/home/widgets/telemetry_filter_bar.dart';
 
 class BucketCard extends StatefulWidget {
-  final Parameter parameter;
+  final Bucket parameter;
   final List<History> historyList;
   final ValueNotifier<bool> visibilityNotifier;
+  final VoidCallback? onStateChanged; // 👈 Callback opcional para avisar a Home que o card mudou
 
   const BucketCard({
     super.key,
     required this.parameter,
     required this.historyList,
     required this.visibilityNotifier,
+    this.onStateChanged, // Injetado no construtor
   });
 
   @override
-  State<BucketCard> createState() => _BucketCardState();
+  BucketCardState createState() => BucketCardState(); // 👈 Removido o underline
 }
 
-class _BucketCardState extends State<BucketCard> {
-  bool _isExpanded = false;
-  ChartFilterState _chartFilter = const ChartFilterState(
-    filter: ChartFilter.threeMonths,
-  );
-  final NumberFormat _currencyFormat = NumberFormat.currency(
-    locale: 'pt_BR',
-    symbol: 'R\$',
-  );
+// 2. Remova o underline do nome da classe do State para que a GlobalKey possa enxergá-la
+class BucketCardState extends State<BucketCard> { // 👈 Removido o underline
+  bool isExpanded = false;
+  ChartFilterState _chartFilter = const ChartFilterState(filter: ChartFilter.threeMonths);
+  final NumberFormat _currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+
+  // 🎯 MÉTODO PÚBLICO: Chamado diretamente pela HomeScreen via GlobalKey!
+  void setExpandedState(bool expand) {
+    if (isExpanded != expand) {
+      setState(() {
+        isExpanded = expand;
+      });
+    }
+  }
 
   double _getBucketValueAt(History history) {
-    final transaction = history.transactions[widget.parameter.id];
+    final transaction = history.transactions[widget.parameter.id.replaceAll(' ', '')];
     return transaction?.actualValue ?? 0.0;
   }
 
   String _calculateAllocation(double currentBucketValue, double totalGlobal) {
-    if (totalGlobal == 0) return '0.00';
-    final percent = (currentBucketValue / totalGlobal) * 100;
-    return percent.toStringAsFixed(2);
+    if (totalGlobal == 0) return 'ALLOC: 0.0%';
+    final pct = (currentBucketValue / totalGlobal) * 100;
+    return 'ALLOC: ${pct.toStringAsFixed(1)}%';
   }
 
   @override
@@ -68,7 +75,10 @@ class _BucketCardState extends State<BucketCard> {
           padding: const EdgeInsets.only(bottom: 16.0),
           child: GestureDetector(
             onTap: isVisible
-                ? () => setState(() => _isExpanded = !_isExpanded)
+                ? () {
+                    setState(() => isExpanded = !isExpanded);
+                    if (widget.onStateChanged != null) widget.onStateChanged!();
+                  }
                 : null,
             child: StackMoneyCard(
               visibilityNotifier: widget.visibilityNotifier,
@@ -136,7 +146,7 @@ class _BucketCardState extends State<BucketCard> {
                 ),
 
                 // 💥 SEGURO: Renderização condicional limpa sem AnimatedSize que buga em Slivers
-                if (_isExpanded && isVisible) ...[
+                if (isExpanded && isVisible) ...[
                   const SizedBox(height: AppSizes.x8),
                   const Divider(color: Colors.white10, height: 1),
                   const SizedBox(height: AppSizes.x8),
@@ -168,7 +178,8 @@ class _BucketCardState extends State<BucketCard> {
 
     List<History> filteredHistory = widget.historyList.where((h) {
       if (_chartFilter.filter == ChartFilter.custom && _chartFilter.hasDates) {
-        return h.date.isAfter(_chartFilter.start!) && h.date.isBefore(_chartFilter.end!);
+        return h.date.isAfter(_chartFilter.start!) &&
+            h.date.isBefore(_chartFilter.end!);
       }
 
       return latestDate.difference(h.date).inDays <= _chartFilter.filter.days;

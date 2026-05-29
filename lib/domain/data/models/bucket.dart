@@ -1,18 +1,18 @@
-class Parameter {
+class Bucket {
   final String id; // "Category_Where"
   final String category;
   final String where;
   final double minValue;
   final bool isImmediateLiquidity;
 
-  Parameter({
+  Bucket({
     required this.category,
     required this.where,
     required this.minValue,
     required this.isImmediateLiquidity
   }) : id = '${category.replaceAll(' ', '')}_${where.replaceAll(' ', '')}';
 
-  const Parameter._withId({
+  const Bucket._withId({
     required this.id,
     required this.category,
     required this.where,
@@ -20,8 +20,8 @@ class Parameter {
     required this.isImmediateLiquidity
   });
 
-  factory Parameter.fromJson(Map<String, dynamic> json) {
-    return Parameter._withId(
+  factory Bucket.fromJson(Map<String, dynamic> json) {
+    return Bucket._withId(
       id: json['id'] ?? '${json['category']}_${json['where']}',
       category: json['category'] ?? '',
       where: json['where'] ?? '',
