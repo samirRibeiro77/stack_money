@@ -1,6 +1,7 @@
 // Substitua o arquivo home_screen.dart por esta versão com o controle em lote implementado:
 
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/bucket_card.dart';
@@ -98,18 +99,22 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_bucketKeys.isEmpty) return;
 
     // Varre as chaves lendo o booleano de expansão interno de cada State público
-    final states = _bucketKeys.map((k) => k.currentState?.isExpanded ?? false).toList();
+    final states = _bucketKeys
+        .map((k) => k.currentState?.isExpanded ?? false)
+        .toList();
 
     final allOpen = states.every((expanded) => expanded == true);
     final allClosed = states.every((expanded) => expanded == false);
 
     if (allOpen && _masterExpandState == true) {
       setState(() {
-        _masterExpandState = false; // Se todos abriram manualmente, o mestre vira comando de fechar
+        _masterExpandState =
+            false; // Se todos abriram manualmente, o mestre vira comando de fechar
       });
     } else if (allClosed && _masterExpandState == false) {
       setState(() {
-        _masterExpandState = true; // Se todos fecharam manualmente, o mestre vira comando de abrir
+        _masterExpandState =
+            true; // Se todos fecharam manualmente, o mestre vira comando de abrir
       });
     }
   }
@@ -133,7 +138,10 @@ class _HomeScreenState extends State<HomeScreen> {
           slivers: [
             HomeHeader(visibilityNotifier: _visibilityNotifier),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 16.0,
+              ),
               sliver: SliverToBoxAdapter(
                 child: Container(
                   width: MediaQuery.of(context).size.width - 32,
@@ -169,14 +177,31 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.gpp_maybe_outlined, color: StackMoneyTheme.magentaNeon, size: 48),
+              const Icon(
+                Icons.gpp_maybe_outlined,
+                color: StackMoneyTheme.magentaNeon,
+                size: 48,
+              ),
               const SizedBox(height: 16),
-              Text(l10n.systemLinkFailed, style: TextStyle(color: Colors.white, fontFamily: 'Orbitron', fontWeight: FontWeight.bold)),
+              Text(
+                StackMoneyString.formatTitle(l10n.systemLinkFailed),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Orbitron',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 8),
               TextButton(
                 onPressed: _loadFirebaseDashboardData,
-                child: Text(l10n.retryHandshake, style: TextStyle(color: StackMoneyTheme.cyanNeon, fontFamily: 'Orbitron')),
-              )
+                child: Text(
+                  StackMoneyString.formatTitle(l10n.retryHandshake),
+                  style: TextStyle(
+                    color: StackMoneyTheme.cyanNeon,
+                    fontFamily: 'Orbitron',
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -239,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  l10n.allocationBuckets,
+                  StackMoneyString.formatTitle(l10n.allocationBuckets),
                   style: TextStyle(
                     color: StackMoneyTheme.mutedGrey,
                     fontFamily: 'Orbitron',
@@ -253,9 +278,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   IconButton(
                     onPressed: _toggleAllBuckets,
                     icon: Icon(
-                      _masterExpandState ? Icons.unfold_more : Icons.unfold_less,
+                      _masterExpandState
+                          ? Icons.unfold_more
+                          : Icons.unfold_less,
                       // Ciano se a próxima ação for Expandir tudo | Magenta se for Colapsar tudo!
-                      color: _masterExpandState ? StackMoneyTheme.cyanNeon : StackMoneyTheme.magentaNeon,
+                      color: _masterExpandState
+                          ? StackMoneyTheme.cyanNeon
+                          : StackMoneyTheme.magentaNeon,
                       size: 22,
                     ),
                   ),
@@ -269,11 +298,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ...List.generate(_realParameters.length, (index) {
           final param = _realParameters[index];
           return BucketCard(
-            key: _bucketKeys[index], // 👈 Injeta a GlobalKey correspondente ao pote
+            key: _bucketKeys[index],
+            // 👈 Injeta a GlobalKey correspondente ao pote
             parameter: param,
             historyList: _realHistoryTimeline,
             visibilityNotifier: _visibilityNotifier,
-            onStateChanged: _checkGlobalCardsState, // Escuta as interações manuais do usuário
+            onStateChanged:
+                _checkGlobalCardsState, // Escuta as interações manuais do usuário
           );
         }),
 

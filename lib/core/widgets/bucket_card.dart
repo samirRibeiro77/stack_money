@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
@@ -15,7 +15,8 @@ class BucketCard extends StatefulWidget {
   final Bucket parameter;
   final List<History> historyList;
   final ValueNotifier<bool> visibilityNotifier;
-  final VoidCallback? onStateChanged; // 👈 Callback opcional para avisar a Home que o card mudou
+  final VoidCallback?
+  onStateChanged; // 👈 Callback opcional para avisar a Home que o card mudou
 
   const BucketCard({
     super.key,
@@ -30,10 +31,12 @@ class BucketCard extends StatefulWidget {
 }
 
 // 2. Remova o underline do nome da classe do State para que a GlobalKey possa enxergá-la
-class BucketCardState extends State<BucketCard> { // 👈 Removido o underline
+class BucketCardState extends State<BucketCard> {
+  // 👈 Removido o underline
   bool isExpanded = false;
-  ChartFilterState _chartFilter = const ChartFilterState(filter: ChartFilter.threeMonths);
-  final NumberFormat _currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+  ChartFilterState _chartFilter = const ChartFilterState(
+    filter: ChartFilter.threeMonths,
+  );
 
   // 🎯 MÉTODO PÚBLICO: Chamado diretamente pela HomeScreen via GlobalKey!
   void setExpandedState(bool expand) {
@@ -45,14 +48,9 @@ class BucketCardState extends State<BucketCard> { // 👈 Removido o underline
   }
 
   double _getBucketValueAt(History history) {
-    final transaction = history.transactions[widget.parameter.id.replaceAll(' ', '')];
+    final transaction =
+        history.transactions[widget.parameter.id.replaceAll(' ', '')];
     return transaction?.actualValue ?? 0.0;
-  }
-
-  String _calculateAllocation(double currentBucketValue, double totalGlobal) {
-    if (totalGlobal == 0) return 'ALLOC: 0.0%';
-    final pct = (currentBucketValue / totalGlobal) * 100;
-    return 'ALLOC: ${pct.toStringAsFixed(1)}%';
   }
 
   @override
@@ -92,7 +90,7 @@ class BucketCardState extends State<BucketCard> { // 👈 Removido o underline
                         Row(
                           children: [
                             Text(
-                              widget.parameter.id.toUpperCase(),
+                              StackMoneyString.formatTitle(widget.parameter.id),
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -104,9 +102,10 @@ class BucketCardState extends State<BucketCard> { // 👈 Removido o underline
                             if (isVisible)
                               Text(
                                 l10n.allocation(
-                                  _calculateAllocation(
-                                    currentBalance,
-                                    latestHistory.total,
+                                  StackMoneyString.formatPercentage(
+                                    doubleValue:
+                                        (currentBalance / latestHistory.total) *
+                                        100,
                                   ),
                                 ),
                                 style: const TextStyle(
@@ -120,7 +119,9 @@ class BucketCardState extends State<BucketCard> { // 👈 Removido o underline
                         const SizedBox(height: 6),
                         Text(
                           l10n.min(
-                            _currencyFormat.format(widget.parameter.minValue),
+                            StackMoneyString.formatMoney(
+                              doubleValue: widget.parameter.minValue,
+                            ),
                           ),
                           style: const TextStyle(
                             color: StackMoneyTheme.mutedGrey,
@@ -131,7 +132,9 @@ class BucketCardState extends State<BucketCard> { // 👈 Removido o underline
                     ),
                     Text(
                       isVisible
-                          ? _currencyFormat.format(currentBalance)
+                          ? StackMoneyString.formatMoney(
+                              doubleValue: currentBalance,
+                            )
                           : l10n.hiddenValues,
                       style: TextStyle(
                         color: isVisible
@@ -239,7 +242,7 @@ class BucketCardState extends State<BucketCard> { // 👈 Removido o underline
                   final deltaValue = spot.y - widget.parameter.minValue;
                   final prefix = deltaValue >= 0 ? '+' : '';
                   return LineTooltipItem(
-                    '$prefix${_currencyFormat.format(deltaValue)}',
+                    '$prefix${StackMoneyString.formatMoney(doubleValue: deltaValue)}',
                     TextStyle(
                       color: deltaValue >= 0
                           ? StackMoneyTheme.cyanNeon

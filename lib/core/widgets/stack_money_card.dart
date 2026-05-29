@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/theme/theme.dart';
 
 class StackMoneyCard extends StatelessWidget {
@@ -22,7 +23,10 @@ class StackMoneyCard extends StatelessWidget {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: AppSizes.x10, horizontal: AppSizes.x8),
+          padding: const EdgeInsets.symmetric(
+            vertical: AppSizes.x10,
+            horizontal: AppSizes.x8,
+          ),
           decoration: BoxDecoration(
             color: StackMoneyTheme.surface,
             borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
@@ -43,7 +47,7 @@ class StackMoneyCard extends StatelessWidget {
               // Exibe o título tático em caixa alta apenas se for enviado
               if (title != null) ...[
                 Text(
-                  title!.replaceAll(' ', '_').toUpperCase(),
+                  StackMoneyString.formatTitle(title!),
                   style: const TextStyle(
                     color: StackMoneyTheme.mutedGrey,
                     fontSize: AppSizes.fontSmall,

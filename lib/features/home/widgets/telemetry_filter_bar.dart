@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/domain/data/enum/chart_filter.dart';
@@ -18,7 +18,10 @@ class TelemetryFilterBar extends StatelessWidget {
     required this.isEnabled,
   });
 
-  Future<void> _openCustomDatePicker(BuildContext context, AppLocalizations l10n) async {
+  Future<void> _openCustomDatePicker(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
     if (!isEnabled) return;
 
     final DateTimeRange? picked = await showDateRangePicker(
@@ -42,19 +45,26 @@ class TelemetryFilterBar extends StatelessWidget {
     );
 
     if (picked != null) {
-      final startStr = DateFormat('dd/MM').format(picked.start);
-      final endStr = DateFormat('dd/MM').format(picked.end);
+      final startStr = StackMoneyString.formatDate(picked.start);
+      final endStr = StackMoneyString.formatDate(picked.end);
       // Atualiza o estado alterando dinamicamente o texto do botão!
-      onFilterChanged(ChartFilterState(
-        filter: ChartFilter.custom,
-        start: picked.start,
-        end: picked.end,
-        customLabel: l10n.customLabel(endStr, startStr),
-      ));
+      onFilterChanged(
+        ChartFilterState(
+          filter: ChartFilter.custom,
+          start: picked.start,
+          end: picked.end,
+          customLabel: l10n.customLabel(endStr, startStr),
+        ),
+      );
     }
   }
 
-  Widget _buildChip(String label, ChartFilter filter, BuildContext context, AppLocalizations l10n) {
+  Widget _buildChip(
+    String label,
+    ChartFilter filter,
+    BuildContext context,
+    AppLocalizations l10n,
+  ) {
     final bool isSelected = currentState.filter == filter;
 
     return Expanded(
@@ -63,12 +73,12 @@ class TelemetryFilterBar extends StatelessWidget {
         child: GestureDetector(
           onTap: isEnabled
               ? () {
-            if (filter == ChartFilter.custom) {
-              _openCustomDatePicker(context, l10n);
-            } else {
-              onFilterChanged(ChartFilterState(filter: filter));
-            }
-          }
+                  if (filter == ChartFilter.custom) {
+                    _openCustomDatePicker(context, l10n);
+                  } else {
+                    onFilterChanged(ChartFilterState(filter: filter));
+                  }
+                }
               : null,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
@@ -112,7 +122,12 @@ class TelemetryFilterBar extends StatelessWidget {
           _buildChip(l10n.threeMonths, ChartFilter.threeMonths, context, l10n),
           _buildChip(l10n.sixMonths, ChartFilter.sixMonths, context, l10n),
           _buildChip(l10n.oneYear, ChartFilter.oneYear, context, l10n),
-          _buildChip(currentState.customLabel, ChartFilter.custom, context, l10n),
+          _buildChip(
+            currentState.customLabel,
+            ChartFilter.custom,
+            context,
+            l10n,
+          ),
         ],
       ),
     );
