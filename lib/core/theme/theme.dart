@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
-import 'package:stack_money/domain/data/enum/action_button.dart';
+import 'package:stack_money/data/enum/action_button.dart';
 
 class StackMoneyTheme {
   // Pure Stealth & Cyberpunk Color Palette

@@ -1,4 +1,4 @@
-import 'package:stack_money/domain/data/enum/chart_filter.dart';
+import 'package:stack_money/data/enum/chart_filter.dart';
 
 class ChartFilterState {
   final ChartFilter filter;

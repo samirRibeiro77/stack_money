@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // 👈 Import necessário
-import 'package:stack_money/domain/data/models/bucket.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:stack_money/data/models/bucket.dart';
 
 class FirebaseParameterRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance; // 👈 Instância de autenticação
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<List<Bucket>> fetchParameters() async {
     try {

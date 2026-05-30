@@ -4,9 +4,9 @@ import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/domain/data/enum/chart_filter.dart';
-import 'package:stack_money/domain/data/models/chart_filter_state.dart';
-import 'package:stack_money/domain/data/models/history.dart';
+import 'package:stack_money/data/enum/chart_filter.dart';
+import 'package:stack_money/data/models/chart_filter_state.dart';
+import 'package:stack_money/data/models/history.dart';
 
 class TelemetryLineChart extends StatelessWidget {
   final List<History> rawHistoryData;

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // 👈 Import necessário
-import 'package:stack_money/domain/data/models/history.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:stack_money/data/models/history.dart';
 
 class FirebaseHistoryRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance; // 👈 Instância de autenticação
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<List<History>> fetchHistoryTimeline() async {
     try {

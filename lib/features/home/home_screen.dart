@@ -8,16 +8,16 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/bucket_card.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
-import 'package:stack_money/domain/data/enum/chart_filter.dart';
-import 'package:stack_money/domain/data/models/chart_filter_state.dart';
-import 'package:stack_money/domain/data/models/history.dart';
-import 'package:stack_money/domain/data/models/bucket.dart';
+import 'package:stack_money/data/enum/chart_filter.dart';
+import 'package:stack_money/data/models/bucket.dart';
+import 'package:stack_money/data/models/chart_filter_state.dart';
+import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/domain/service/history_service.dart';
 import 'package:stack_money/domain/service/parameter_service.dart';
-import 'package:stack_money/features/home/widgets/home_header.dart';
-import 'package:stack_money/features/home/widgets/patrimonial_hud.dart';
-import 'package:stack_money/features/home/widgets/telemetry_filter_bar.dart';
-import 'package:stack_money/features/home/widgets/telemetry_line_chart.dart';
+import 'package:stack_money/features/home/presentation/widgets/home_header.dart';
+import 'package:stack_money/features/home/presentation/widgets/patrimonial_hud.dart';
+import 'package:stack_money/features/home/presentation/widgets/telemetry_filter_bar.dart';
+import 'package:stack_money/features/home/presentation/widgets/telemetry_line_chart.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
