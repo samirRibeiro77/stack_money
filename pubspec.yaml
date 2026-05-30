@@ -24,6 +24,7 @@ dependencies:
   cloud_firestore: ^5.1.0
   fl_chart: ^0.69.0
   flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.0
 
 dev_dependencies:
   flutter_test:
@@ -38,9 +39,24 @@ flutter:
   assets:
     - assets/images/app_icon.png
     - assets/images/app_icon_nobackground.png
+    - assets/images/app_icon_safe.png
 
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/app_icon_nobackground.png"
-  background_color: "#09090B"
+
+  image_path_android: "assets/images/app_icon_safe.png"
+  adaptive_icon_background: "#141416"
+  adaptive_icon_foreground: "assets/images/app_icon_safe.png"
+
+  image_path_ios: "assets/images/app_icon_safe.png"
+
+flutter_native_splash:
+  color: "#141416"
+  image: assets/images/app_icon_safe.png
+
+  fullscreen: true
+
+  android_12:
+    color: "#141416"
+    image: assets/images/app_icon_safe.png
