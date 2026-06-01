@@ -10,6 +10,10 @@ class UserHeader extends StatelessWidget {
 
   final ValueNotifier<bool> visibilityNotifier;
 
+  void _openConfig() {
+    print('Open config page');
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -30,74 +34,91 @@ class UserHeader extends StatelessWidget {
       leadingWidth: AppSizes.max,
 
       // --- 1. User image
-      leading: Padding(
+      leading: _buildAvatar(photoUrl),
+
+      // --- 2. DISPLAY NAME ---
+      title: _buildName(displayName, textTheme),
+
+      // --- 3. BOTÃO DE ENGRENAGEM ---
+      actions: [_buildVisibilityAction()],
+    );
+  }
+
+  Widget _buildAvatar(String? photoUrl) {
+    return GestureDetector(
+      onTap: _openConfig,
+      child: Padding(
         padding: const EdgeInsets.only(left: AppSizes.x8),
         child: Center(
-          child: Container(
-            padding: const EdgeInsets.all(AppSizes.min),
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                colors: [StackMoneyTheme.cyanNeon, StackMoneyTheme.background],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child: CircleAvatar(
-              radius: AppSizes.x9,
-              backgroundColor: StackMoneyTheme.surface,
-              backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-              child: photoUrl == null
-                  ? const Icon(
-                      Icons.person,
-                      color: StackMoneyTheme.magentaNeon,
-                      size: AppSizes.x9,
-                    )
-                  : null,
-            ),
+          child: ValueListenableBuilder<bool>(
+            valueListenable: visibilityNotifier,
+            builder: (_, isVisible, _) {
+              final gradientColors = isVisible
+                  ? [StackMoneyTheme.cyanNeon, StackMoneyTheme.background]
+                  : [StackMoneyTheme.background, StackMoneyTheme.magentaNeon];
+
+              return Container(
+                padding: const EdgeInsets.all(AppSizes.min),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: gradientColors,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: CircleAvatar(
+                  radius: AppSizes.x9,
+                  backgroundColor: StackMoneyTheme.surface,
+                  backgroundImage: photoUrl != null
+                      ? NetworkImage(photoUrl)
+                      : null,
+                  child: photoUrl == null
+                      ? const Icon(
+                          Icons.person,
+                          color: StackMoneyTheme.platinumSilver,
+                          size: AppSizes.x9,
+                        )
+                      : null,
+                ),
+              );
+            },
           ),
         ),
       ),
+    );
+  }
 
-      // --- 2. DISPLAY NAME EM CIANO ---
-      title: Text(
+  Widget _buildName(String displayName, TextTheme textTheme) {
+    return GestureDetector(
+      onTap: _openConfig,
+      child: Text(
         displayName,
         style: textTheme.titleLarge?.copyWith(
-          color: StackMoneyTheme.magentaNeon,
+          color: StackMoneyTheme.platinumSilver,
           letterSpacing: 0.5,
           fontSize: AppSizes.x10,
         ),
       ),
+    );
+  }
 
-      // --- 3. BOTÃO DE ENGRENAGEM ---
-      actions: [
-        ValueListenableBuilder<bool>(
-          valueListenable: visibilityNotifier,
-          builder: (context, isVisible, child) {
-            return IconButton(
-              icon: Icon(
-                isVisible
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                color: isVisible
-                    ? StackMoneyTheme.cyanNeon
-                    : StackMoneyTheme.mutedGrey,
-              ),
-              onPressed: () => visibilityNotifier.value = !isVisible,
-            );
-          },
-        ),
-        IconButton(
-          icon: const Icon(
-            Icons.settings_outlined,
-            color: StackMoneyTheme.mutedGrey,
+  Widget _buildVisibilityAction() {
+    return ValueListenableBuilder<bool>(
+      valueListenable: visibilityNotifier,
+      builder: (_, isVisible, _) {
+        return IconButton(
+          icon: Icon(
+            isVisible
+                ? Icons.visibility_outlined
+                : Icons.visibility_off_outlined,
+            color: isVisible
+                ? StackMoneyTheme.cyanNeon
+                : StackMoneyTheme.mutedGrey,
           ),
-          onPressed: () {
-            // TODO: Abrir configurações
-          },
-        ),
-        const SizedBox(width: AppSizes.x4),
-      ],
+          onPressed: () => visibilityNotifier.value = !isVisible,
+        );
+      },
     );
   }
 }

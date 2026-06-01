@@ -31,4 +31,5 @@ class AppSizes {
   static const double navBarPaddingBottom = 30.0;
   static const double navBarRadius = 64.0;
   static const double navBarIconSize = 20.0;
+  static const double navBarContentPadding = 100.0;
 }

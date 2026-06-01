@@ -11,18 +11,18 @@ class MatrixCapsuleItem extends StatelessWidget {
   });
 
   final MatrixNavTabs tab;
-  final ValueNotifier currentTabIndex;
+  final ValueNotifier<MatrixNavTabs> currentTabIndex;
 
   @override
   Widget build(BuildContext context) {
-    final bool isActive = currentTabIndex.value == tab.index;
+    final bool isActive = currentTabIndex.value == tab;
     final Color itemColor = isActive
         ? StackMoneyTheme.cyanNeon
         : StackMoneyTheme.mutedGrey;
     final double increaseSize = isActive ? 2 : 0;
 
     return GestureDetector(
-      onTap: () => currentTabIndex.value = tab.index,
+      onTap: () => currentTabIndex.value = tab,
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),

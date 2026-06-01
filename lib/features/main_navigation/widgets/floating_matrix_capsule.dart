@@ -6,7 +6,7 @@ import 'package:stack_money/features/main_navigation/widgets/matrix_capsule_item
 class FloatingMatrixCapsule extends StatelessWidget {
   const FloatingMatrixCapsule({super.key, required this.currentTabIndex});
 
-  final ValueNotifier currentTabIndex;
+  final ValueNotifier<MatrixNavTabs> currentTabIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +16,19 @@ class FloatingMatrixCapsule extends StatelessWidget {
       child: SizedBox(
         width: customWidth,
         child: GlassmorphismEffect(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: MatrixNavTabs.values
-                .map(
-                  (t) => MatrixCapsuleItem(
-                    tab: t,
-                    currentTabIndex: currentTabIndex,
-                  ),
-                )
-                .toList(),
-          ),
+          child: ValueListenableBuilder(valueListenable: currentTabIndex, builder: (_, currentIndex, _) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: MatrixNavTabs.values
+                  .map(
+                    (t) => MatrixCapsuleItem(
+                  tab: t,
+                  currentTabIndex: currentTabIndex,
+                ),
+              )
+                  .toList(),
+            );
+          }),
         ),
       ),
     );

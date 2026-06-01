@@ -6,7 +6,6 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/bucket_card.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
-import 'package:stack_money/core/widgets/user_header.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
@@ -18,17 +17,17 @@ import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart
 import 'package:stack_money/features/dashboard/widgets/telemetry_line_chart.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  const DashboardScreen({required this.globalVisibility, super.key});
 
   static const route = '/dashboard';
+
+  final ValueNotifier<bool> globalVisibility;
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final ValueNotifier<bool> _visibilityNotifier = ValueNotifier<bool>(false);
-
   ChartFilterState _chartFilter = const ChartFilterState(
     filter: ChartFilter.threeMonths,
   );
@@ -39,10 +38,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool _isLoading = true;
   bool _hasError = false;
 
-  // 🗝️ REGISTRO DE CHAVES GLOBAIS PARA CONTROLAR OS POTES EM LOTE
   final List<GlobalKey<BucketCardState>> _bucketKeys = [];
-
-  // Estado visual do botão mestre (True = Próxima ação vai expandir tudo | False = Vai fechar tudo)
   bool _masterExpandState = true;
 
   @override
@@ -67,7 +63,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         _realParameters = results[0] as List<Bucket>;
         _realHistoryTimeline = results[1] as List<History>;
 
-        // 🛠️ Cria uma chave global única para cada pote carregado do Firebase
         _bucketKeys.clear();
         for (var i = 0; i < _realParameters.length; i++) {
           _bucketKeys.add(GlobalKey<BucketCardState>());
@@ -84,7 +79,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  // 🎯 DISPARA O COMANDO EM LOTE NAS GLOBAL KEYS
   void _toggleAllBuckets() {
     for (var key in _bucketKeys) {
       key.currentState?.setExpandedState(_masterExpandState);
@@ -94,11 +88,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
-  // 🔄 REGRA DE SINCRONIA INVERSA: Só altera o botão se TODOS mudarem juntos
   void _checkGlobalCardsState() {
     if (_bucketKeys.isEmpty) return;
 
-    // Varre as chaves lendo o booleano de expansão interno de cada State público
     final states = _bucketKeys
         .map((k) => k.currentState?.isExpanded ?? false)
         .toList();
@@ -107,22 +99,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final allClosed = states.every((expanded) => expanded == false);
 
     if (allOpen && _masterExpandState == true) {
-      setState(() {
-        _masterExpandState =
-        false; // Se todos abriram manualmente, o mestre vira comando de fechar
-      });
+      setState(() => _masterExpandState = false);
     } else if (allClosed && _masterExpandState == false) {
-      setState(() {
-        _masterExpandState =
-        true; // Se todos fecharam manualmente, o mestre vira comando de abrir
-      });
+      setState(() => _masterExpandState = true);
     }
-  }
-
-  @override
-  void dispose() {
-    _visibilityNotifier.dispose();
-    super.dispose();
   }
 
   @override
@@ -130,30 +110,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      backgroundColor: StackMoneyTheme.background,
-      body: SafeArea(
-        bottom: true,
-        top: false,
-        child: CustomScrollView(
-          slivers: [
-            UserHeader(visibilityNotifier: _visibilityNotifier),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 16.0,
-              ),
-              sliver: SliverToBoxAdapter(
-                child: Container(
-                  width: MediaQuery.of(context).size.width - 32,
-                  color: Colors.transparent,
-                  child: _buildBodyContent(l10n, textTheme),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    // 🔄 CORREÇÃO: Retornamos um Box tradicional (Padding) em vez de SliverPadding!
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+      child: _buildBodyContent(l10n, textTheme),
     );
   }
 
@@ -183,7 +143,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 color: StackMoneyTheme.magentaNeon,
                 size: AppSizes.x24,
               ),
-              SizedBox(height: AppSizes.x8),
+              const SizedBox(height: AppSizes.x8),
               Text(
                 StackMoneyString.formatTitle(l10n.systemLinkFailed),
                 style: textTheme.headlineMedium?.copyWith(
@@ -212,20 +172,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
+        // 🔐 Vinculado diretamente ao sinalizador global de privacidade
         PatrimonialHud(
           totalAmount: latestAudit.total,
           liquidityAmount: latestAudit.immediateLiquidityTotal,
-          visibilityListenable: _visibilityNotifier,
+          visibilityListenable: widget.globalVisibility,
         ),
 
-        SizedBox(height: AppSizes.x10),
+        const SizedBox(height: AppSizes.x10),
 
         ValueListenableBuilder<bool>(
-          valueListenable: _visibilityNotifier,
+          valueListenable: widget.globalVisibility,
           builder: (context, isVisible, child) {
             return StackMoneyCard(
               title: l10n.telemetryStream,
-              visibilityNotifier: _visibilityNotifier,
+              visibilityNotifier: widget.globalVisibility,
               children: [
                 SizedBox(
                   height: 220,
@@ -241,22 +202,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 TelemetryFilterBar(
                   currentState: _chartFilter,
                   isEnabled: isVisible,
-                  onFilterChanged: (newState) {
-                    setState(() {
-                      _chartFilter = newState;
-                    });
-                  },
+                  onFilterChanged: (newState) =>
+                      setState(() => _chartFilter = newState),
                 ),
               ],
             );
           },
         ),
 
-        SizedBox(height: AppSizes.x12),
+        const SizedBox(height: AppSizes.x12),
 
-        // 🎛️ RÓTULO TÁTICO DA SEÇÃO + ÍCONE MESTRE COLORIDO REATIVO
         ValueListenableBuilder<bool>(
-          valueListenable: _visibilityNotifier,
+          valueListenable: widget.globalVisibility,
           builder: (context, isVisible, child) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -268,7 +225,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     letterSpacing: 1.5,
                   ),
                 ),
-                // Exibe o ícone de controle apenas se o app estiver aberto no protocolo stealth
                 if (isVisible)
                   IconButton(
                     onPressed: _toggleAllBuckets,
@@ -276,7 +232,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       _masterExpandState
                           ? Icons.unfold_more
                           : Icons.unfold_less,
-                      // Ciano se a próxima ação for Expandir tudo | Magenta se for Colapsar tudo!
                       color: _masterExpandState
                           ? StackMoneyTheme.cyanNeon
                           : StackMoneyTheme.magentaNeon,
@@ -287,22 +242,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
             );
           },
         ),
-        SizedBox(height: AppSizes.x8),
+        const SizedBox(height: AppSizes.x8),
 
-        // 🔋 RENDERIZAÇÃO DOS POTES COM VINCULAÇÃO DE CHAVES GLOBAIS
         ...List.generate(_realParameters.length, (index) {
           final param = _realParameters[index];
           return BucketCard(
             key: _bucketKeys[index],
             parameter: param,
             historyList: _realHistoryTimeline,
-            visibilityNotifier: _visibilityNotifier,
-            onStateChanged:
-            _checkGlobalCardsState, // Escuta as interações manuais do usuário
+            visibilityNotifier: widget.globalVisibility,
+            onStateChanged: _checkGlobalCardsState,
           );
         }),
 
-        SizedBox(height: AppSizes.x24),
+        const SizedBox(height: AppSizes.navBarContentPadding),
       ],
     );
   }
