@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/features/auth/presentation/manager/login_manager.dart';
+import 'package:stack_money/features/auth/manager/login_manager.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

@@ -5,8 +5,8 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
 
-class HomeHeader extends StatelessWidget {
-  const HomeHeader({required this.visibilityNotifier, super.key});
+class UserHeader extends StatelessWidget {
+  const UserHeader({required this.visibilityNotifier, super.key});
 
   final ValueNotifier<bool> visibilityNotifier;
 

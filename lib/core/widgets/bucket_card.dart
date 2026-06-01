@@ -9,7 +9,7 @@ import 'package:stack_money/data/enum/chart_filter.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
-import 'package:stack_money/features/home/presentation/widgets/telemetry_filter_bar.dart';
+import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart';
 
 class BucketCard extends StatefulWidget {
   final Bucket parameter;

@@ -1,5 +1,3 @@
-// Substitua o arquivo home_screen.dart por esta versão com o controle em lote implementado:
-
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
@@ -8,27 +6,27 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/bucket_card.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/user_header.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/domain/service/history_service.dart';
 import 'package:stack_money/domain/service/parameter_service.dart';
-import 'package:stack_money/features/home/presentation/widgets/home_header.dart';
-import 'package:stack_money/features/home/presentation/widgets/patrimonial_hud.dart';
-import 'package:stack_money/features/home/presentation/widgets/telemetry_filter_bar.dart';
-import 'package:stack_money/features/home/presentation/widgets/telemetry_line_chart.dart';
+import 'package:stack_money/features/dashboard/widgets/patrimonial_hud.dart';
+import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart';
+import 'package:stack_money/features/dashboard/widgets/telemetry_line_chart.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
 
-  static const route = '/home';
+  static const route = '/dashboard';
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _DashboardScreenState extends State<DashboardScreen> {
   final ValueNotifier<bool> _visibilityNotifier = ValueNotifier<bool>(false);
 
   ChartFilterState _chartFilter = const ChartFilterState(
@@ -111,12 +109,12 @@ class _HomeScreenState extends State<HomeScreen> {
     if (allOpen && _masterExpandState == true) {
       setState(() {
         _masterExpandState =
-            false; // Se todos abriram manualmente, o mestre vira comando de fechar
+        false; // Se todos abriram manualmente, o mestre vira comando de fechar
       });
     } else if (allClosed && _masterExpandState == false) {
       setState(() {
         _masterExpandState =
-            true; // Se todos fecharam manualmente, o mestre vira comando de abrir
+        true; // Se todos fecharam manualmente, o mestre vira comando de abrir
       });
     }
   }
@@ -139,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
         top: false,
         child: CustomScrollView(
           slivers: [
-            HomeHeader(visibilityNotifier: _visibilityNotifier),
+            UserHeader(visibilityNotifier: _visibilityNotifier),
             SliverPadding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -300,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
             historyList: _realHistoryTimeline,
             visibilityNotifier: _visibilityNotifier,
             onStateChanged:
-                _checkGlobalCardsState, // Escuta as interações manuais do usuário
+            _checkGlobalCardsState, // Escuta as interações manuais do usuário
           );
         }),
 
