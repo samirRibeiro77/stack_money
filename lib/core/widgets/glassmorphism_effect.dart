@@ -6,26 +6,34 @@ import 'package:stack_money/core/theme/theme.dart';
 class GlassmorphismEffect extends StatelessWidget {
   const GlassmorphismEffect({
     super.key,
-    this.containerHeight = 60.0,
+    this.containerHeight = AppSizes.x30,
     required this.child,
+    this.borderColor = StackMoneyTheme.mutedGrey,
+    this.backgroundColor = StackMoneyTheme.carbonGrey,
   });
 
-  final double containerHeight;
+  final double? containerHeight;
   final Widget child;
+  final Color? borderColor;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
+    final borderColorFixed = borderColor ?? StackMoneyTheme.mutedGrey;
+    final backgroundColorFixed = backgroundColor ?? StackMoneyTheme.carbonGrey;
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
           height: containerHeight,
           decoration: BoxDecoration(
-            color: StackMoneyTheme.carbonGrey.withOpacity(0.25),
+            color: backgroundColorFixed.withOpacity(0.25),
             borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
             border: Border.all(
-              color: StackMoneyTheme.mutedGrey.withOpacity(0.30),
+              color: borderColorFixed.withOpacity(0.30),
               width: 0.6,
             ),
           ),
