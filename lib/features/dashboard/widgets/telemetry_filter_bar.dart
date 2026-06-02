@@ -10,12 +10,14 @@ class TelemetryFilterBar extends StatelessWidget {
   final ChartFilterState currentState;
   final ValueChanged<ChartFilterState> onFilterChanged;
   final bool isEnabled;
+  final Color chipColor;
 
   const TelemetryFilterBar({
     super.key,
     required this.currentState,
     required this.onFilterChanged,
     required this.isEnabled,
+    this.chipColor = StackMoneyTheme.cyanNeon
   });
 
   Future<void> _openCustomDatePicker(
@@ -76,6 +78,7 @@ class TelemetryFilterBar extends StatelessWidget {
           TelemetryFilterChip(
             label: l10n.threeMonths,
             isSelected: currentState.filter == ChartFilter.threeMonths,
+            borderColor: chipColor,
             onTap: isEnabled
                 ? () => onFilterChanged(
                     ChartFilterState(filter: ChartFilter.threeMonths),
@@ -85,6 +88,7 @@ class TelemetryFilterBar extends StatelessWidget {
           TelemetryFilterChip(
             label: l10n.sixMonths,
             isSelected: currentState.filter == ChartFilter.sixMonths,
+            borderColor: chipColor,
             onTap: isEnabled
                 ? () => onFilterChanged(
                     ChartFilterState(filter: ChartFilter.sixMonths),
@@ -94,6 +98,7 @@ class TelemetryFilterBar extends StatelessWidget {
           TelemetryFilterChip(
             label: l10n.oneYear,
             isSelected: currentState.filter == ChartFilter.oneYear,
+            borderColor: chipColor,
             onTap: isEnabled
                 ? () => onFilterChanged(
                     ChartFilterState(filter: ChartFilter.oneYear),
@@ -103,6 +108,7 @@ class TelemetryFilterBar extends StatelessWidget {
           TelemetryFilterChip(
             label: currentState.customLabel,
             isSelected: currentState.filter == ChartFilter.custom,
+            borderColor: chipColor,
             onTap: isEnabled
                 ? () => _openCustomDatePicker(context, l10n)
                 : null,

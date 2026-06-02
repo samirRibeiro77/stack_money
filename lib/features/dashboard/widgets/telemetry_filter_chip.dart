@@ -10,10 +10,12 @@ class TelemetryFilterChip extends StatelessWidget {
     required this.label,
     required this.isSelected,
     this.onTap,
+    this.borderColor = StackMoneyTheme.cyanNeon,
   });
 
   final String label;
   final bool isSelected;
+  final Color borderColor;
   final GestureTapCallback? onTap;
 
   @override
@@ -28,14 +30,15 @@ class TelemetryFilterChip extends StatelessWidget {
           child: GlassmorphismEffect(
             backgroundColor: StackMoneyTheme.background,
             containerHeight: AppSizes.x20,
-            borderColor: isSelected ? StackMoneyTheme.magentaNeon : null,
+            borderColor: isSelected ? borderColor : null,
+            borderWidth: 2,
             child: Center(
               child: Text(
                 label,
                 textAlign: TextAlign.center,
                 style: textTheme.bodySmall?.copyWith(
                   color: isSelected
-                      ? StackMoneyTheme.cyanNeon
+                      ? StackMoneyTheme.platinumSilver
                       : StackMoneyTheme.mutedGrey,
                   fontWeight: isSelected
                       ? AppTypography.weightBold

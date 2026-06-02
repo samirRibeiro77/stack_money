@@ -10,12 +10,14 @@ class GlassmorphismEffect extends StatelessWidget {
     required this.child,
     this.borderColor = StackMoneyTheme.mutedGrey,
     this.backgroundColor = StackMoneyTheme.carbonGrey,
+    this.borderWidth = 0.6,
   });
 
   final double? containerHeight;
   final Widget child;
   final Color? borderColor;
   final Color? backgroundColor;
+  final double borderWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class GlassmorphismEffect extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
             border: Border.all(
               color: borderColorFixed.withOpacity(0.30),
-              width: 0.6,
+              width: borderWidth,
             ),
           ),
           padding: const EdgeInsets.symmetric(horizontal: AppSizes.x4),

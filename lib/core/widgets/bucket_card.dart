@@ -143,6 +143,7 @@ class BucketCardState extends State<BucketCard> {
                   TelemetryFilterBar(
                     currentState: _chartFilter,
                     isEnabled: true,
+                    chipColor: healthColor,
                     onFilterChanged: (newState) {
                       setState(() {
                         _chartFilter = newState;

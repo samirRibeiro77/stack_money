@@ -5,6 +5,7 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
+import 'package:stack_money/data/enum/currency_format.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
 
@@ -95,7 +96,7 @@ class TelemetryLineChart extends StatelessWidget {
           lineTouchData: LineTouchData(
             enabled: isSystemVisible, // Desativa toque se estiver encriptado
             touchTooltipData: LineTouchTooltipData(
-              getTooltipColor: (spot) => StackMoneyTheme.surface,
+              getTooltipColor: (spot) => StackMoneyTheme.surface.withOpacity(0.95),
               tooltipBorder: const BorderSide(
                 color: StackMoneyTheme.magentaNeon,
                 width: 1.5,
@@ -105,7 +106,7 @@ class TelemetryLineChart extends StatelessWidget {
                 horizontal: AppSizes.x7,
                 vertical: AppSizes.x4,
               ),
-              tooltipRoundedRadius: 2,
+              tooltipRoundedRadius: AppSizes.navBarRadius,
               // Quase zero para cantos vivos e retos
               getTooltipItems: (touchedSpots) {
                 return touchedSpots.map((spot) {
@@ -183,7 +184,7 @@ class TelemetryLineChart extends StatelessWidget {
                   return Text(
                     StackMoneyString.formatMoney(
                       doubleValue: value,
-                      short: true,
+                      format: CurrencyFormat.compact
                     ),
                     style: textTheme.labelSmall,
                   );

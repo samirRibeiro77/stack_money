@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:stack_money/data/enum/currency_format.dart';
 
 class StackMoneyString {
   static final NumberFormat _currencyFormat = NumberFormat.currency(
@@ -9,6 +10,10 @@ class StackMoneyString {
   static final NumberFormat _shortCurrencyFormat =
       NumberFormat.compactSimpleCurrency(locale: 'pt_BR');
 
+  static final NumberFormat _compactCurrencFormat = NumberFormat.compact(
+    locale: 'en_US',
+  );
+
   static String formatTitle(String s) {
     return s.replaceAll(' ', '_').toUpperCase();
   }
@@ -16,11 +21,15 @@ class StackMoneyString {
   static String formatMoney({
     String? stringValue,
     double? doubleValue,
-    bool short = false,
+    CurrencyFormat format = CurrencyFormat.full,
   }) {
-    return short
-        ? _shortCurrencyFormat.format(doubleValue ?? stringValue)
-        : _currencyFormat.format(doubleValue ?? stringValue);
+    final number = doubleValue ?? stringValue;
+
+    switch (format){
+      case CurrencyFormat.full: return _currencyFormat.format(number);
+      case CurrencyFormat.short: return _shortCurrencyFormat.format(number);
+      case CurrencyFormat.compact: return 'R\$ ${_compactCurrencFormat.format(number)}';
+    }
   }
 
   static String formatPercentage({
@@ -37,7 +46,11 @@ class StackMoneyString {
         '0.00';
   }
 
-  static String formatDate(DateTime date, {bool hideSameYear = true, bool showYear = false}) {
+  static String formatDate(
+    DateTime date, {
+    bool hideSameYear = true,
+    bool showYear = false,
+  }) {
     var format = "dd/MM${showYear ? '/yy' : ''}";
     if (hideSameYear) {
       final now = DateTime.now();
