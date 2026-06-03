@@ -73,4 +73,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get retryHandshake => 'Tentar novamente';
+
+  @override
+  String get auditLogs => 'Auditoria';
 }

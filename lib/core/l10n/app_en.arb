@@ -79,5 +79,9 @@
   "retryHandshake": "Retry Handshake",
   "@retryHandshake": {
     "description": "Retry message for data management"
+  },
+  "auditLogs": "Audit Logs",
+  "@auditLogs": {
+    "description": "Audit ledger logs title"
   }
 }

@@ -217,6 +217,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry Handshake'**
   String get retryHandshake;
+
+  /// Audit ledger logs title
+  ///
+  /// In en, this message translates to:
+  /// **'Audit Logs'**
+  String get auditLogs;
 }
 
 class _AppLocalizationsDelegate

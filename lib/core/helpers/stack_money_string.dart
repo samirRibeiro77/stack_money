@@ -25,10 +25,13 @@ class StackMoneyString {
   }) {
     final number = doubleValue ?? stringValue;
 
-    switch (format){
-      case CurrencyFormat.full: return _currencyFormat.format(number);
-      case CurrencyFormat.short: return _shortCurrencyFormat.format(number);
-      case CurrencyFormat.compact: return 'R\$ ${_compactCurrencFormat.format(number)}';
+    switch (format) {
+      case CurrencyFormat.full:
+        return _currencyFormat.format(number);
+      case CurrencyFormat.short:
+        return _shortCurrencyFormat.format(number);
+      case CurrencyFormat.compact:
+        return 'R\$ ${_compactCurrencFormat.format(number)}';
     }
   }
 
@@ -50,8 +53,10 @@ class StackMoneyString {
     DateTime date, {
     bool hideSameYear = true,
     bool showYear = false,
+    bool fullYear = false,
   }) {
-    var format = "dd/MM${showYear ? '/yy' : ''}";
+    final yearFormat = '/yy${fullYear ? 'yy' : ''}';
+    var format = "dd/MM${showYear ? yearFormat : ''}";
     if (hideSameYear) {
       final now = DateTime.now();
       if (date.year == now.year) {

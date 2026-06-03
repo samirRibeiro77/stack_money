@@ -19,5 +19,6 @@
   "customLabel": "{start} a {end}",
   "noData": "Sem dados",
   "systemLinkFailed": "Falha ao carregar sistema",
-  "retryHandshake": "Tentar novamente"
+  "retryHandshake": "Tentar novamente",
+  "auditLogs": "Auditoria"
 }

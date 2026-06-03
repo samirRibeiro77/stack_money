@@ -13,7 +13,7 @@ class StackMoneyTheme {
   static const Color magentaNeon = Color(0xFFFF007F);
   static const Color platinumSilver = Color(0xFFE4E4E7);
   static const Color mutedGrey = Color(0xFF71717A);
-  static const Color textPrimary = Color(0xFFFFFFFF);
+  static const Color textPrimary = platinumSilver;
 
   /// Custom ButtonStyle for the Quick Action Buttons (+ and -)
   /// Features a Platinum Silver background with high-contrast text/icons
@@ -144,19 +144,19 @@ class StackMoneyTheme {
         labelLarge: TextStyle(
           color: mutedGrey,
           fontSize: AppTypography.fontLabelLarge,
-          fontWeight: AppTypography.weightNormal,
+          fontWeight: AppTypography.weightMedium,
           fontFamily: 'Orbitron',
         ),
         labelMedium: TextStyle(
           color: mutedGrey,
           fontSize: AppTypography.fontLabelMedium,
-          fontWeight: AppTypography.weightNormal,
+          fontWeight: AppTypography.weightMedium,
           fontFamily: 'Orbitron',
         ),
         labelSmall: TextStyle(
           color: mutedGrey,
           fontSize: AppTypography.fontLabelSmall,
-          fontWeight: AppTypography.weightNormal,
+          fontWeight: AppTypography.weightMedium,
           fontFamily: 'Orbitron',
         ),
       ),
