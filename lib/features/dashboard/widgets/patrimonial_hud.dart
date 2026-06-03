@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
@@ -9,13 +10,13 @@ import 'package:stack_money/core/widgets/stack_money_card.dart';
 class PatrimonialHud extends StatefulWidget {
   final double totalAmount;
   final double liquidityAmount;
-  final ValueNotifier<bool> visibilityListenable;
+  final ValueListenable<bool> securityMode;
 
   const PatrimonialHud({
     super.key,
     required this.totalAmount,
     required this.liquidityAmount,
-    required this.visibilityListenable,
+    required this.securityMode,
   });
 
   @override
@@ -41,7 +42,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
 
     // Simplificado: Se começar aberto roda, senão fica em standby
-    if (widget.visibilityListenable.value) {
+    if (widget.securityMode.value) {
       _controller.forward();
     }
   }
@@ -59,10 +60,10 @@ class _PatrimonialHudState extends State<PatrimonialHud>
 
     return StackMoneyCard(
       title: l10n.netWorth,
-      visibilityNotifier: widget.visibilityListenable,
+      securityMode: widget.securityMode,
       children: [
         ValueListenableBuilder<bool>(
-          valueListenable: widget.visibilityListenable,
+          valueListenable: widget.securityMode,
           builder: (context, isVisible, child) {
             // Gatilho de segurança controlado diretamente na renderização do build, sem rodar loops estáticos
             if (isVisible &&

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
@@ -6,14 +7,14 @@ import 'package:stack_money/core/theme/theme.dart';
 
 class StackMoneyCard extends StatelessWidget {
   final String? title;
-  final ValueNotifier<bool> visibilityNotifier;
+  final ValueListenable<bool> securityMode;
   final List<Widget> children;
   final Color shadowColor;
 
   const StackMoneyCard({
     super.key,
     this.title,
-    required this.visibilityNotifier,
+    required this.securityMode,
     required this.children,
     this.shadowColor = StackMoneyTheme.cyanNeon,
   });
@@ -23,7 +24,7 @@ class StackMoneyCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return ValueListenableBuilder<bool>(
-      valueListenable: visibilityNotifier,
+      valueListenable: securityMode,
       builder: (context, isVisible, child) {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),

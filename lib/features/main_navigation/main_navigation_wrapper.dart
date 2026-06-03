@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
-import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/user_header.dart';
 import 'package:stack_money/data/enum/matrix_nav_tabs.dart';
-import 'package:stack_money/features/dashboard/dashboard_screen.dart';
+import 'package:stack_money/features/main_navigation/manager/main_navigation_manager.dart';
 import 'package:stack_money/features/main_navigation/widgets/floating_matrix_capsule.dart';
 
 class MainNavigationWrapper extends StatefulWidget {
@@ -16,17 +15,14 @@ class MainNavigationWrapper extends StatefulWidget {
 }
 
 class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
-  final _currentTabIndex = ValueNotifier<MatrixNavTabs>(MatrixNavTabs.hud);
-  final _globalVisibilityNotifier = ValueNotifier<bool>(false);
-  final ScrollController _mainScrollController = ScrollController();
+  final _manager = MainNavigationManager();
 
   @override
   void initState() {
     super.initState();
-    // Reseta o scroll automaticamente para o topo sempre que o usuário mudar de aba
-    _currentTabIndex.addListener(() {
-      if (_mainScrollController.hasClients) {
-        _mainScrollController.animateTo(
+    _manager.addTabListener(() {
+      if (_manager.scrollController.hasClients) {
+        _manager.scrollController.animateTo(
           0.0,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOutCubic,
@@ -37,30 +33,27 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
 
   @override
   void dispose() {
-    _currentTabIndex.dispose();
-    _globalVisibilityNotifier.dispose();
-    _mainScrollController.dispose();
+    _manager.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: StackMoneyTheme.background,
       body: Stack(
         children: [
           // 📺 CAMADA 0: O Scroll Mestre Unificado do App (Sliver Viewport Matrix)
           CustomScrollView(
-            controller: _mainScrollController,
+            controller: _manager.scrollController,
             slivers: [
               // 🛰️ HEADER GLOBAL: Fixo no topo
-              UserHeader(visibilityNotifier: _globalVisibilityNotifier),
+              UserHeader(isSecurity: _manager.securityMode, switchSecurity: _manager.switchSecurityMode,),
 
               // 🧪 ADAPTADOR ANIMADO: Gerencia o Cross-Fade entre os Boxes das abas
               SliverFillRemaining(
                 hasScrollBody: false, // 💥 ESSENCIAL: Permite que a Column interna mande no scroll
                 child: ValueListenableBuilder<MatrixNavTabs>(
-                  valueListenable: _currentTabIndex,
+                  valueListenable: _manager.currentTab,
                   builder: (context, activeIndex, _) {
                     return AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
@@ -69,7 +62,7 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
                       transitionBuilder: (Widget child, Animation<double> animation) {
                         return FadeTransition(opacity: animation, child: child);
                       },
-                      child: _buildActiveSliverFragment(activeIndex),
+                      child: _manager.activeSliverFragment(activeIndex),
                     );
                   },
                 ),
@@ -82,45 +75,10 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
             left: AppSizes.x12,
             right: AppSizes.x12,
             bottom: AppSizes.navBarPaddingBottom,
-            child: FloatingMatrixCapsule(currentTabIndex: _currentTabIndex),
+            child: FloatingMatrixCapsule(changeTab: (t) => _manager.changeTab(t), currentTab: _manager.currentTab,),
           ),
         ],
       ),
     );
   }
-
-  /// 🛠️ Fábrica de Fragmentos: Injeta o estado global de privacidade em cada tela filha
-  Widget _buildActiveSliverFragment(MatrixNavTabs index) {
-    // Usamos chaves únicas para forçar o AnimatedSwitcher a disparar o Cross-Fade
-    switch (index) {
-      case MatrixNavTabs.hud:
-        return DashboardScreen(
-          key: const ValueKey('dashboard_fragment'),
-          globalVisibility: _globalVisibilityNotifier,
-        );
-      case MatrixNavTabs.history:
-        return HistoryScreenPlaceholder(
-          key: const ValueKey('history_fragment'),
-          globalVisibility: _globalVisibilityNotifier,
-        );
-      case MatrixNavTabs.plans:
-        return PlansScreenPlaceholder(
-          key: const ValueKey('plans_fragment'),
-          globalVisibility: _globalVisibilityNotifier,
-        );
-    }
-  }
-}
-
-// 📌 Placeholders temporários preparados para receber o protocolo de segurança
-class HistoryScreenPlaceholder extends StatelessWidget {
-  final ValueNotifier<bool> globalVisibility;
-  const HistoryScreenPlaceholder({required this.globalVisibility, super.key});
-  @override Widget build(BuildContext context) => const Center(child: Text('HISTORY_LOG_STREAM', style: TextStyle(fontFamily: 'Orbitron', color: Colors.white)));
-}
-
-class PlansScreenPlaceholder extends StatelessWidget {
-  final ValueNotifier<bool> globalVisibility;
-  const PlansScreenPlaceholder({required this.globalVisibility, super.key});
-  @override Widget build(BuildContext context) => const Center(child: Text('PLANS_CORE_GATEWAY', style: TextStyle(fontFamily: 'Orbitron', color: Colors.white)));
 }

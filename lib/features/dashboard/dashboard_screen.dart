@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
@@ -17,11 +18,11 @@ import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart
 import 'package:stack_money/features/dashboard/widgets/telemetry_line_chart.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({required this.globalVisibility, super.key});
+  const DashboardScreen({required this.securityMode, super.key});
 
   static const route = '/dashboard';
 
-  final ValueNotifier<bool> globalVisibility;
+  final ValueListenable<bool> securityMode;
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -176,17 +177,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
         PatrimonialHud(
           totalAmount: latestAudit.total,
           liquidityAmount: latestAudit.immediateLiquidityTotal,
-          visibilityListenable: widget.globalVisibility,
+          securityMode: widget.securityMode,
         ),
 
         const SizedBox(height: AppSizes.x10),
 
         ValueListenableBuilder<bool>(
-          valueListenable: widget.globalVisibility,
+          valueListenable: widget.securityMode,
           builder: (context, isVisible, child) {
             return StackMoneyCard(
               title: l10n.telemetryStream,
-              visibilityNotifier: widget.globalVisibility,
+              securityMode: widget.securityMode,
               children: [
                 SizedBox(
                   height: 220,
@@ -213,7 +214,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const SizedBox(height: AppSizes.x12),
 
         ValueListenableBuilder<bool>(
-          valueListenable: widget.globalVisibility,
+          valueListenable: widget.securityMode,
           builder: (context, isVisible, child) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -250,7 +251,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             key: _bucketKeys[index],
             parameter: param,
             historyList: _realHistoryTimeline,
-            visibilityNotifier: widget.globalVisibility,
+            securityMode: widget.securityMode,
             onStateChanged: _checkGlobalCardsState,
           );
         }),

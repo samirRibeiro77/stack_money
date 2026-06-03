@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
@@ -14,14 +15,14 @@ import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart
 class BucketCard extends StatefulWidget {
   final Bucket parameter;
   final List<History> historyList;
-  final ValueNotifier<bool> visibilityNotifier;
+  final ValueListenable<bool> securityMode;
   final VoidCallback? onStateChanged;
 
   const BucketCard({
     super.key,
     required this.parameter,
     required this.historyList,
-    required this.visibilityNotifier,
+    required this.securityMode,
     this.onStateChanged,
   });
 
@@ -64,7 +65,7 @@ class BucketCardState extends State<BucketCard> {
         : StackMoneyTheme.cyanNeon;
 
     return ValueListenableBuilder<bool>(
-      valueListenable: widget.visibilityNotifier,
+      valueListenable: widget.securityMode,
       builder: (context, isVisible, child) {
         return Padding(
           padding: const EdgeInsets.only(bottom: AppSizes.x8),
@@ -77,7 +78,7 @@ class BucketCardState extends State<BucketCard> {
                 : null,
             child: StackMoneyCard(
               shadowColor: healthColor,
-              visibilityNotifier: widget.visibilityNotifier,
+              securityMode: widget.securityMode,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

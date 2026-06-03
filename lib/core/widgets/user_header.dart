@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
@@ -6,9 +7,10 @@ import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
 
 class UserHeader extends StatelessWidget {
-  const UserHeader({required this.visibilityNotifier, super.key});
+  const UserHeader({required this.switchSecurity, required this.isSecurity, super.key});
 
-  final ValueNotifier<bool> visibilityNotifier;
+  final VoidCallback switchSecurity;
+  final ValueListenable<bool> isSecurity;
 
   void _openConfig() {
     print('Open config page');
@@ -51,7 +53,7 @@ class UserHeader extends StatelessWidget {
         padding: const EdgeInsets.only(left: AppSizes.x8),
         child: Center(
           child: ValueListenableBuilder<bool>(
-            valueListenable: visibilityNotifier,
+            valueListenable: isSecurity,
             builder: (_, isVisible, _) {
               final gradientColors = isVisible
                   ? [StackMoneyTheme.cyanNeon, StackMoneyTheme.background]
@@ -105,7 +107,7 @@ class UserHeader extends StatelessWidget {
 
   Widget _buildVisibilityAction() {
     return ValueListenableBuilder<bool>(
-      valueListenable: visibilityNotifier,
+      valueListenable: isSecurity,
       builder: (_, isVisible, _) {
         return IconButton(
           icon: Icon(
@@ -116,7 +118,7 @@ class UserHeader extends StatelessWidget {
                 ? StackMoneyTheme.cyanNeon
                 : StackMoneyTheme.mutedGrey,
           ),
-          onPressed: () => visibilityNotifier.value = !isVisible,
+          onPressed: switchSecurity,
         );
       },
     );
