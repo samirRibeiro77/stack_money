@@ -79,6 +79,8 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
 
   // ➕ MATRIX SLOT INSERTION: Cria o frame fantasma com UUID instantâneo
   void _initializeNewBucketSlot() {
+    if (!widget.securityMode.value) return;
+
     final newUuid = const Uuid().v4();
     final newBucket = Bucket.withId(
       id: newUuid,
@@ -132,21 +134,51 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
           backgroundColor: StackMoneyTheme.surface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
-            side: const BorderSide(color: StackMoneyTheme.magentaNeon, width: 0.5),
+            side: const BorderSide(
+              color: StackMoneyTheme.magentaNeon,
+              width: 0.5,
+            ),
           ),
-          title: const Text('[SYSTEM_WARNING]', style: TextStyle(fontFamily: 'Orbitron', color: StackMoneyTheme.magentaNeon, fontSize: 14)),
+          title: const Text(
+            '[SYSTEM_WARNING]',
+            style: TextStyle(
+              fontFamily: 'Orbitron',
+              color: StackMoneyTheme.magentaNeon,
+              fontSize: 14,
+            ),
+          ),
           content: Text(
             'EXECUTE PURGE PROTOCOL ON BUCKET:\n"${bucketName.toUpperCase()}"?\n\nALL ALLOCATION PARAMETERS WILL BE EXPURGED.',
-            style: const TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.platinumSilver, fontSize: 11, height: 1.5),
+            style: const TextStyle(
+              fontFamily: 'JetBrainsMono',
+              color: StackMoneyTheme.platinumSilver,
+              fontSize: 11,
+              height: 1.5,
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('[CANCEL]', style: TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.mutedGrey, fontSize: 12)),
+              child: const Text(
+                '[CANCEL]',
+                style: TextStyle(
+                  fontFamily: 'JetBrainsMono',
+                  color: StackMoneyTheme.mutedGrey,
+                  fontSize: 12,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('[PURGE_DATA]', style: TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.magentaNeon, fontSize: 12, fontWeight: FontWeight.bold)),
+              child: const Text(
+                '[PURGE_DATA]',
+                style: TextStyle(
+                  fontFamily: 'JetBrainsMono',
+                  color: StackMoneyTheme.magentaNeon,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         );
@@ -209,12 +241,15 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
           // 🔋 DECK DE CONFIGURAÇÃO INTEGRADO AO SWIPE-TO-DELETE (DISMISSIBLE)
           ...List.generate(_bucketDeck.length, (index) {
             final bucket = _bucketDeck[index];
-            final displayName = bucket.where.isEmpty ? "UNINITIALIZED_SLOT" : "${bucket.category}_${bucket.where}";
+            final displayName = bucket.where.isEmpty
+                ? "UNINITIALIZED_SLOT"
+                : "${bucket.category}_${bucket.where}";
 
             return Dismissible(
               key: Key(bucket.id),
               direction: DismissDirection.endToStart,
-              confirmDismiss: (direction) => _showTerminalConfirmDialog(displayName),
+              confirmDismiss: (direction) =>
+                  _showTerminalConfirmDialog(displayName),
               onDismissed: (direction) => _purgeBucket(bucket.id),
               background: Container(
                 margin: const EdgeInsets.symmetric(vertical: 6.0),
@@ -222,14 +257,23 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
                 decoration: BoxDecoration(
                   color: StackMoneyTheme.magentaNeon.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(12.0),
-                  border: Border.all(color: StackMoneyTheme.magentaNeon.withOpacity(0.3), width: 0.5),
+                  border: Border.all(
+                    color: StackMoneyTheme.magentaNeon.withOpacity(0.3),
+                    width: 0.5,
+                  ),
                 ),
                 alignment: Alignment.centerRight,
-                child: const Icon(Icons.delete_forever_rounded, color: StackMoneyTheme.magentaNeon, size: 24),
+                child: const Icon(
+                  Icons.delete_forever_rounded,
+                  color: StackMoneyTheme.magentaNeon,
+                  size: 24,
+                ),
               ),
               child: BucketEditCard(
-                key: _bucketKeys[index], // 🔥 VINCULAÇÃO DE CHAVE HISTÓRICA
+                key: _bucketKeys[index],
+                // 🔥 VINCULAÇÃO DE CHAVE HISTÓRICA
                 bucket: bucket,
+                initiallyExpanded: bucket.where.isEmpty ? true : false,
                 securityMode: widget.securityMode,
                 onAutoSave: _saveBucketToFirebase,
               ),
@@ -246,7 +290,9 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
               height: 52,
               margin: const EdgeInsets.symmetric(vertical: 8.0),
               child: CustomPaint(
-                painter: _MatrixDashedPainter(color: StackMoneyTheme.mutedGrey.withOpacity(0.35)),
+                painter: _MatrixDashedPainter(
+                  color: StackMoneyTheme.mutedGrey.withOpacity(0.35),
+                ),
                 child: const Center(
                   child: Text(
                     '+ INITIALIZE_NEW_BUCKET_SLOT',
@@ -262,7 +308,8 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
             ),
           ),
 
-          const SizedBox(height: 120), // Margem tática para isolar a Floating Matrix Capsule
+          const SizedBox(height: 120),
+          // Margem tática para isolar a Floating Matrix Capsule
         ],
       ),
     );
@@ -272,6 +319,7 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
 /// 🎨 ENGINE DE PINTURA TRACEJADA CYBERPUNK NATIVA
 class _MatrixDashedPainter extends CustomPainter {
   _MatrixDashedPainter({required this.color});
+
   final Color color;
 
   @override
@@ -294,8 +342,13 @@ class _MatrixDashedPainter extends CustomPainter {
     for (final PathMetric metric in path.computeMetrics()) {
       double distance = 0.0;
       while (distance < metric.length) {
-        final double length = (distance + dashWidth < metric.length) ? dashWidth : metric.length - distance;
-        metricsPath.addPath(metric.extractPath(distance, distance + length), Offset.zero);
+        final double length = (distance + dashWidth < metric.length)
+            ? dashWidth
+            : metric.length - distance;
+        metricsPath.addPath(
+          metric.extractPath(distance, distance + length),
+          Offset.zero,
+        );
         distance += dashWidth + dashSpace;
       }
     }

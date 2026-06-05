@@ -9,7 +9,7 @@ class Bucket {
     required this.category,
     required this.where,
     required this.minValue,
-    required this.isImmediateLiquidity
+    required this.isImmediateLiquidity,
   }) : id = '${category.replaceAll(' ', '')}_${where.replaceAll(' ', '')}';
 
   const Bucket.withId({
@@ -17,7 +17,7 @@ class Bucket {
     required this.category,
     required this.where,
     required this.minValue,
-    required this.isImmediateLiquidity
+    required this.isImmediateLiquidity,
   });
 
   factory Bucket.fromJson(Map<String, dynamic> json) {
@@ -38,5 +38,12 @@ class Bucket {
       'minValue': minValue,
       'isImmediateLiquidity': isImmediateLiquidity,
     };
+  }
+
+  bool equalsTo(Bucket b) {
+    return where == b.where &&
+        category == b.category &&
+        minValue == b.minValue &&
+        isImmediateLiquidity == b.isImmediateLiquidity;
   }
 }
