@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/data/enum/matrix_nav_tabs.dart';
+import 'package:stack_money/features/buckets/buckets_screen.dart';
 import 'package:stack_money/features/dashboard/dashboard_screen.dart';
 import 'package:stack_money/features/history/history_screen.dart';
 
@@ -38,6 +39,11 @@ class MainNavigationManager {
         return Container(
           key: const ValueKey('plans_fragment'),
           child: Center(child: Text('Plans Tab')),
+        );
+      case MatrixNavTabs.buckets:
+        return BucketControlScreen(
+          key: const ValueKey('buckets_fragment'),
+          securityMode: securityMode,
         );
       case MatrixNavTabs.log:
         return HistoryScreen(

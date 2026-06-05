@@ -12,7 +12,7 @@ class Bucket {
     required this.isImmediateLiquidity
   }) : id = '${category.replaceAll(' ', '')}_${where.replaceAll(' ', '')}';
 
-  const Bucket._withId({
+  const Bucket.withId({
     required this.id,
     required this.category,
     required this.where,
@@ -21,7 +21,7 @@ class Bucket {
   });
 
   factory Bucket.fromJson(Map<String, dynamic> json) {
-    return Bucket._withId(
+    return Bucket.withId(
       id: json['id'] ?? '${json['category']}_${json['where']}',
       category: json['category'] ?? '',
       where: json['where'] ?? '',

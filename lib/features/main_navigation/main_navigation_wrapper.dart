@@ -39,6 +39,8 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isKeyboardActive = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -71,11 +73,18 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
           ),
 
           // 🛸 CAMADA 1: A Floating Matrix Capsule Orbital (70% compacta e transparente)
-          Positioned(
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.fastOutSlowIn,
             left: AppSizes.x12,
             right: AppSizes.x12,
-            bottom: AppSizes.navBarPaddingBottom,
-            child: FloatingMatrixCapsule(changeTab: (t) => _manager.changeTab(t), currentTab: _manager.currentTab,),
+            // 🔥 Se o teclado estiver ativo, empurra a capsule para baixo da tela (sumindo com slide)
+            bottom: isKeyboardActive ? -80 : AppSizes.navBarPaddingBottom,
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 200),
+              opacity: isKeyboardActive ? 0.0 : 1.0, // 🔥 Aplica o Fade junto com o Slide
+              child: FloatingMatrixCapsule(changeTab: (t) => _manager.changeTab(t), currentTab: _manager.currentTab,),
+            ),
           ),
         ],
       ),
