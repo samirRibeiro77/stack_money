@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stack_money/data/enum/matrix_nav_tabs.dart';
+import 'package:stack_money/data/enum/nav_bar_tabs.dart';
 import 'package:stack_money/features/buckets/buckets_screen.dart';
 import 'package:stack_money/features/dashboard/dashboard_screen.dart';
 import 'package:stack_money/features/history/history_screen.dart';
 
 class MainNavigationManager {
-  final _tabIndex = ValueNotifier<MatrixNavTabs>(MatrixNavTabs.hud);
+  final _tabIndex = ValueNotifier<NavBarTabs>(NavBarTabs.hud);
   final _securityMode = ValueNotifier<bool>(false);
   final _scrollController = ScrollController();
 
-  ValueListenable<MatrixNavTabs> get currentTab => _tabIndex;
+  ValueListenable<NavBarTabs> get currentTab => _tabIndex;
 
   ValueListenable<bool> get securityMode => _securityMode;
 
@@ -26,30 +26,21 @@ class MainNavigationManager {
 
   void switchSecurityMode() => _securityMode.value = !_securityMode.value;
 
-  void changeTab(MatrixNavTabs tab) => _tabIndex.value = tab;
+  void changeTab(NavBarTabs tab) => _tabIndex.value = tab;
 
-  Widget activeSliverFragment(MatrixNavTabs index) {
+  Widget activeSliverFragment(NavBarTabs index) {
     switch (index) {
-      case MatrixNavTabs.hud:
-        return DashboardScreen(
-          key: const ValueKey('dashboard_fragment'),
-          securityMode: securityMode,
-        );
-      case MatrixNavTabs.plans:
+      case NavBarTabs.hud:
+        return DashboardScreen(securityMode: securityMode);
+      case NavBarTabs.plans:
         return Container(
           key: const ValueKey('plans_fragment'),
           child: Center(child: Text('Plans Tab')),
         );
-      case MatrixNavTabs.buckets:
-        return BucketControlScreen(
-          key: const ValueKey('buckets_fragment'),
-          securityMode: securityMode,
-        );
-      case MatrixNavTabs.log:
-        return HistoryScreen(
-          key: const ValueKey('history_fragment'),
-          securityMode: securityMode,
-        );
+      case NavBarTabs.buckets:
+        return BucketControlScreen(securityMode: securityMode);
+      case NavBarTabs.log:
+        return HistoryScreen(securityMode: securityMode);
     }
   }
 }

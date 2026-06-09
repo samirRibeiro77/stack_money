@@ -1,18 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
-import 'package:stack_money/data/enum/matrix_nav_tabs.dart';
-import 'package:stack_money/features/main_navigation/widgets/matrix_capsule_item.dart';
+import 'package:stack_money/data/enum/nav_bar_tabs.dart';
+import 'package:stack_money/features/main_navigation/widgets/nav_bar_item.dart';
 
-class FloatingMatrixCapsule extends StatelessWidget {
-  const FloatingMatrixCapsule({
+class FloatingNavBar extends StatelessWidget {
+  const FloatingNavBar({
     super.key,
     required this.currentTab,
     required this.changeTab,
   });
 
-  final ValueListenable<MatrixNavTabs> currentTab;
-  final ValueChanged<MatrixNavTabs> changeTab;
+  final ValueListenable<NavBarTabs> currentTab;
+  final ValueChanged<NavBarTabs> changeTab;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,9 @@ class FloatingMatrixCapsule extends StatelessWidget {
             builder: (_, currentIndex, _) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: MatrixNavTabs.values
+                children: NavBarTabs.values
                     .map(
-                      (t) => MatrixCapsuleItem(
+                      (t) => NavBarItem(
                         tab: t,
                         changeTab: (t) => changeTab(t),
                         isActive: currentTab.value == t,

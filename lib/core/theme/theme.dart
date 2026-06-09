@@ -134,7 +134,8 @@ class StackMoneyTheme {
           fontWeight: AppTypography.weightMedium,
           color: textPrimary,
         ),
-        bodySmall: GoogleFonts.jetBrainsMono(
+        bodySmall: TextStyle(
+          fontFamily: 'JetBrainsMono',
           fontSize: AppTypography.fontBodySmall,
           fontWeight: AppTypography.weightNormal,
           color: textPrimary,

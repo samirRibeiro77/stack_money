@@ -18,7 +18,10 @@ import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart
 import 'package:stack_money/features/dashboard/widgets/telemetry_line_chart.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({required this.securityMode, super.key});
+  const DashboardScreen({
+    required this.securityMode,
+    super.key = const ValueKey(route),
+  });
 
   static const route = '/dashboard';
 

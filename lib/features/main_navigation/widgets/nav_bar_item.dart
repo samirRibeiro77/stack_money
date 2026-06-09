@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/data/enum/matrix_nav_tabs.dart';
+import 'package:stack_money/data/enum/nav_bar_tabs.dart';
 
-class MatrixCapsuleItem extends StatelessWidget {
-  const MatrixCapsuleItem({
+class NavBarItem extends StatelessWidget {
+  const NavBarItem({
     super.key,
     required this.tab,
-    required this.changeTab, required this.isActive,
+    required this.changeTab,
+    required this.isActive,
   });
 
-  final MatrixNavTabs tab;
+  final NavBarTabs tab;
   final bool isActive;
-  final ValueChanged<MatrixNavTabs> changeTab;
+  final ValueChanged<NavBarTabs> changeTab;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class MatrixCapsuleItem extends StatelessWidget {
         ? StackMoneyTheme.cyanNeon
         : StackMoneyTheme.mutedGrey;
     final double increaseSize = isActive ? 2 : 0;
+    final textTheme = Theme.of(context).textTheme;
 
     return GestureDetector(
       onTap: () => changeTab(tab),
@@ -52,9 +55,8 @@ class MatrixCapsuleItem extends StatelessWidget {
             const SizedBox(height: 4),
             AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 200),
-              style: TextStyle(
-                fontFamily: 'JetBrainsMono',
-                fontSize: (9 + increaseSize),
+              style: textTheme.bodySmall!.copyWith(
+                fontSize: (AppTypography.fontBodySmall + increaseSize),
                 fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                 color: itemColor,
                 letterSpacing: 0.5,

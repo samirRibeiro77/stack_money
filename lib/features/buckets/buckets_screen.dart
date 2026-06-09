@@ -12,7 +12,10 @@ import 'package:stack_money/domain/service/parameter_service.dart';
 import 'package:stack_money/features/buckets/widgets/bucket_edit_card.dart';
 
 class BucketControlScreen extends StatefulWidget {
-  const BucketControlScreen({required this.securityMode, super.key});
+  const BucketControlScreen({
+    required this.securityMode,
+    super.key = const ValueKey(route),
+  });
 
   static const route = '/buckets_control';
   final ValueListenable<bool> securityMode;

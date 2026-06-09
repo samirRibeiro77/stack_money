@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum MatrixNavTabs {
+enum NavBarTabs {
   hud(Icons.bar_chart_rounded),
   plans(Icons.assignment_outlined),
   buckets(Icons.tune_rounded),
@@ -8,5 +8,5 @@ enum MatrixNavTabs {
 
   final IconData icon;
 
-  const MatrixNavTabs(this.icon);
+  const NavBarTabs(this.icon);
 }
