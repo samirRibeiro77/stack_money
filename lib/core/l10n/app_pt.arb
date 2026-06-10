@@ -20,5 +20,7 @@
   "noData": "Sem dados",
   "systemLinkFailed": "Falha ao carregar sistema",
   "retryHandshake": "Tentar novamente",
-  "auditLogs": "Auditoria"
+  "auditLogs": "Auditoria",
+  "securityBiometricReason": "Autentique-se para visualizar seus dados sensíveis e saldos.",
+  "cancel": "Cancelar"
 }

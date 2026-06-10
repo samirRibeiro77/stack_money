@@ -76,4 +76,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get auditLogs => 'Audit Logs';
+
+  @override
+  String get securityBiometricReason =>
+      'Authenticate to view your sensitive data and balances.';
+
+  @override
+  String get cancel => 'Cancel';
 }

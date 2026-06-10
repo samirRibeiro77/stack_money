@@ -105,7 +105,7 @@ class UserHeader extends StatelessWidget {
         isSecure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
         color: isSecure ? StackMoneyTheme.mutedGrey : StackMoneyTheme.cyanNeon,
       ),
-      onPressed: () => SecurityProvider.toggleOf(context),
+      onPressed: () async => await SecurityProvider.toggleOf(context),
     );
   }
 }

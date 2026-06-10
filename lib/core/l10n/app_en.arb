@@ -83,5 +83,13 @@
   "auditLogs": "Audit Logs",
   "@auditLogs": {
     "description": "Audit ledger logs title"
+  },
+  "securityBiometricReason": "Authenticate to view your sensitive data and balances.",
+  "@securityBiometricReason": {
+    "description": "Reason to use local authentication to see sensitive data"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel message"
   }
 }

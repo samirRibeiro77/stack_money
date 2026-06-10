@@ -223,6 +223,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Audit Logs'**
   String get auditLogs;
+
+  /// Reason to use local authentication to see sensitive data
+  ///
+  /// In en, this message translates to:
+  /// **'Authenticate to view your sensitive data and balances.'**
+  String get securityBiometricReason;
+
+  /// Cancel message
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate

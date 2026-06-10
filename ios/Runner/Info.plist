@@ -81,5 +81,7 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>NSFaceIDUsageDescription</key>
+        <string>We need Face ID access to securely unlock your financial data.</string>
 	</dict>
 </plist>
