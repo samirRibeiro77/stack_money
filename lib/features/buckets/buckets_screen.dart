@@ -202,119 +202,113 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        // mainAxisSize: MainAxisSize.min,
-        children: [
-          // 🎛️ RÓTULO TÁTICO + BOTÃO MESTRE SÍNCRONO REATIVO
-          ValueListenableBuilder<bool>(
-            valueListenable: widget.securityMode,
-            builder: (context, isVisible, child) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    StackMoneyString.formatTitle('MATRIX_BUCKETS_CONFIG'),
-                    style: textTheme.labelLarge?.copyWith(
-                      fontWeight: AppTypography.weightBold,
-                      letterSpacing: 1.5,
-                    ),
-                  ),
-                  if (isVisible)
-                    IconButton(
-                      onPressed: _toggleAllBuckets,
-                      icon: Icon(
-                        _masterExpandState
-                            ? Icons.unfold_more
-                            : Icons.unfold_less,
-                        color: _masterExpandState
-                            ? StackMoneyTheme.cyanNeon
-                            : StackMoneyTheme.magentaNeon,
-                        size: AppSizes.x10,
-                      ),
-                    ),
-                ],
-              );
-            },
-          ),
-          const SizedBox(height: AppSizes.x12),
-
-          // 🔋 DECK DE CONFIGURAÇÃO INTEGRADO AO SWIPE-TO-DELETE (DISMISSIBLE)
-          ...List.generate(_bucketDeck.length, (index) {
-            final bucket = _bucketDeck[index];
-            final displayName = bucket.where.isEmpty
-                ? "UNINITIALIZED_SLOT"
-                : "${bucket.category}_${bucket.where}";
-
-            return Dismissible(
-              key: Key(bucket.id),
-              direction: DismissDirection.endToStart,
-              confirmDismiss: (direction) =>
-                  _showTerminalConfirmDialog(displayName),
-              onDismissed: (direction) => _purgeBucket(bucket.id),
-              background: Container(
-                margin: const EdgeInsets.symmetric(vertical: 6.0),
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                decoration: BoxDecoration(
-                  color: StackMoneyTheme.magentaNeon.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(12.0),
-                  border: Border.all(
-                    color: StackMoneyTheme.magentaNeon.withOpacity(0.3),
-                    width: 0.5,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      // mainAxisSize: MainAxisSize.min,
+      children: [
+        // 🎛️ RÓTULO TÁTICO + BOTÃO MESTRE SÍNCRONO REATIVO
+        ValueListenableBuilder<bool>(
+          valueListenable: widget.securityMode,
+          builder: (context, isVisible, child) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  StackMoneyString.formatTitle('MATRIX_BUCKETS_CONFIG'),
+                  style: textTheme.labelLarge?.copyWith(
+                    fontWeight: AppTypography.weightBold,
+                    letterSpacing: 1.5,
                   ),
                 ),
-                alignment: Alignment.centerRight,
-                child: const Icon(
-                  Icons.delete_forever_rounded,
-                  color: StackMoneyTheme.magentaNeon,
-                  size: 24,
-                ),
-              ),
-              child: BucketEditCard(
-                key: _bucketKeys[index],
-                // 🔥 VINCULAÇÃO DE CHAVE HISTÓRICA
-                bucket: bucket,
-                initiallyExpanded: bucket.where.isEmpty ? true : false,
-                securityMode: widget.securityMode,
-                onAutoSave: _saveBucketToFirebase,
-              ),
+                if (isVisible)
+                  IconButton(
+                    onPressed: _toggleAllBuckets,
+                    icon: Icon(
+                      _masterExpandState
+                          ? Icons.unfold_more
+                          : Icons.unfold_less,
+                      color: _masterExpandState
+                          ? StackMoneyTheme.cyanNeon
+                          : StackMoneyTheme.magentaNeon,
+                      size: AppSizes.x10,
+                    ),
+                  ),
+              ],
             );
-          }),
+          },
+        ),
+        const SizedBox(height: AppSizes.x12),
 
-          const SizedBox(height: AppSizes.x4),
+        // 🔋 DECK DE CONFIGURAÇÃO INTEGRADO AO SWIPE-TO-DELETE (DISMISSIBLE)
+        ...List.generate(_bucketDeck.length, (index) {
+          final bucket = _bucketDeck[index];
+          final displayName = bucket.where.isEmpty
+              ? "UNINITIALIZED_SLOT"
+              : "${bucket.category}_${bucket.where}";
 
-          // 🛸 MATRIX SLOT INSERTION (O frame de engenharia puramente tracejado nativo)
-          GestureDetector(
-            onTap: _initializeNewBucketSlot,
-            child: Container(
-              width: double.infinity,
-              height: 52,
-              margin: const EdgeInsets.symmetric(vertical: 8.0),
-              child: CustomPaint(
-                painter: _MatrixDashedPainter(
-                  color: StackMoneyTheme.mutedGrey.withOpacity(0.35),
+          return Dismissible(
+            key: Key(bucket.id),
+            direction: DismissDirection.endToStart,
+            confirmDismiss: (direction) =>
+                _showTerminalConfirmDialog(displayName),
+            onDismissed: (direction) => _purgeBucket(bucket.id),
+            background: Container(
+              margin: const EdgeInsets.symmetric(vertical: 6.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              decoration: BoxDecoration(
+                color: StackMoneyTheme.magentaNeon.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12.0),
+                border: Border.all(
+                  color: StackMoneyTheme.magentaNeon.withOpacity(0.3),
+                  width: 0.5,
                 ),
-                child: const Center(
-                  child: Text(
-                    '+ INITIALIZE_NEW_BUCKET_SLOT',
-                    style: TextStyle(
-                      fontFamily: 'Orbitron',
-                      color: StackMoneyTheme.mutedGrey,
-                      fontSize: 10,
-                      letterSpacing: 1.0,
-                    ),
+              ),
+              alignment: Alignment.centerRight,
+              child: const Icon(
+                Icons.delete_forever_rounded,
+                color: StackMoneyTheme.magentaNeon,
+                size: 24,
+              ),
+            ),
+            child: BucketEditCard(
+              key: _bucketKeys[index],
+              // 🔥 VINCULAÇÃO DE CHAVE HISTÓRICA
+              bucket: bucket,
+              initiallyExpanded: bucket.where.isEmpty ? true : false,
+              securityMode: widget.securityMode,
+              onAutoSave: _saveBucketToFirebase,
+            ),
+          );
+        }),
+
+        const SizedBox(height: AppSizes.x4),
+
+        // 🛸 MATRIX SLOT INSERTION (O frame de engenharia puramente tracejado nativo)
+        GestureDetector(
+          onTap: _initializeNewBucketSlot,
+          child: Container(
+            width: double.infinity,
+            height: 52,
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
+            child: CustomPaint(
+              painter: _MatrixDashedPainter(
+                color: StackMoneyTheme.mutedGrey.withOpacity(0.35),
+              ),
+              child: const Center(
+                child: Text(
+                  '+ INITIALIZE_NEW_BUCKET_SLOT',
+                  style: TextStyle(
+                    fontFamily: 'Orbitron',
+                    color: StackMoneyTheme.mutedGrey,
+                    fontSize: 10,
+                    letterSpacing: 1.0,
                   ),
                 ),
               ),
             ),
           ),
-
-          const SizedBox(height: 120),
-          // Margem tática para isolar a Floating Matrix Capsule
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -35,67 +35,64 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-      child: ValueListenableBuilder(
-        valueListenable: _manager.isLoading,
-        builder: (_, isLoading, _) {
-          if (isLoading) {
-            return const SizedBox(
-              height: 400,
-              child: Center(
-                child: CircularProgressIndicator(
-                  color: StackMoneyTheme.cyanNeon,
-                  backgroundColor: StackMoneyTheme.surface,
-                  strokeWidth: 3,
-                ),
+    return ValueListenableBuilder(
+      valueListenable: _manager.isLoading,
+      builder: (_, isLoading, _) {
+        if (isLoading) {
+          return const SizedBox(
+            height: 400,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: StackMoneyTheme.cyanNeon,
+                backgroundColor: StackMoneyTheme.surface,
+                strokeWidth: 3,
               ),
-            );
-          }
-
-          return ValueListenableBuilder(
-            valueListenable: _manager.hasError,
-            builder: (_, hasError, _) {
-              if (hasError || _manager.logs.isEmpty) {
-                return SizedBox(
-                  height: 300,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.gpp_maybe_outlined,
-                          color: StackMoneyTheme.magentaNeon,
-                          size: AppSizes.x24,
-                        ),
-                        const SizedBox(height: AppSizes.x8),
-                        Text(
-                          StackMoneyString.formatTitle(l10n.systemLinkFailed),
-                          style: textTheme.headlineMedium?.copyWith(
-                            color: StackMoneyTheme.magentaNeon,
-                          ),
-                        ),
-                        const SizedBox(height: AppSizes.x4),
-                        TextButton(
-                          onPressed: _manager.loadFirebaseHistoryData,
-                          child: Text(
-                            StackMoneyString.formatTitle(l10n.retryHandshake),
-                            style: textTheme.titleMedium?.copyWith(
-                              color: StackMoneyTheme.cyanNeon,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }
-
-              return _buildHistoryContent(l10n, textTheme);
-            },
+            ),
           );
-        },
-      ),
+        }
+
+        return ValueListenableBuilder(
+          valueListenable: _manager.hasError,
+          builder: (_, hasError, _) {
+            if (hasError || _manager.logs.isEmpty) {
+              return SizedBox(
+                height: 300,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.gpp_maybe_outlined,
+                        color: StackMoneyTheme.magentaNeon,
+                        size: AppSizes.x24,
+                      ),
+                      const SizedBox(height: AppSizes.x8),
+                      Text(
+                        StackMoneyString.formatTitle(l10n.systemLinkFailed),
+                        style: textTheme.headlineMedium?.copyWith(
+                          color: StackMoneyTheme.magentaNeon,
+                        ),
+                      ),
+                      const SizedBox(height: AppSizes.x4),
+                      TextButton(
+                        onPressed: _manager.loadFirebaseHistoryData,
+                        child: Text(
+                          StackMoneyString.formatTitle(l10n.retryHandshake),
+                          style: textTheme.titleMedium?.copyWith(
+                            color: StackMoneyTheme.cyanNeon,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            return _buildHistoryContent(l10n, textTheme);
+          },
+        );
+      },
     );
   }
 
@@ -121,8 +118,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
             securityMode: widget.securityMode,
           );
         }),
-
-        const SizedBox(height: 120),
       ],
     );
   }

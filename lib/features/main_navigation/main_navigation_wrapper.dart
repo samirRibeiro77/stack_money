@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/widgets/tab_content.dart';
 import 'package:stack_money/core/widgets/user_header.dart';
 import 'package:stack_money/data/enum/nav_bar_tabs.dart';
 import 'package:stack_money/features/main_navigation/manager/main_navigation_manager.dart';
@@ -70,7 +71,9 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
                               child: child,
                             );
                           },
-                      child: _manager.activeSliverFragment(activeIndex),
+                      child: TabContent(
+                        child: _manager.activeSliverFragment(activeIndex),
+                      ),
                     );
                   },
                 ),

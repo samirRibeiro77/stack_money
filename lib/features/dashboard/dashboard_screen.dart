@@ -114,11 +114,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    // 🔄 CORREÇÃO: Retornamos um Box tradicional (Padding) em vez de SliverPadding!
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-      child: _buildBodyContent(l10n, textTheme),
-    );
+    return _buildBodyContent(l10n, textTheme);
   }
 
   Widget _buildBodyContent(AppLocalizations l10n, TextTheme textTheme) {
@@ -258,8 +254,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             onStateChanged: _checkGlobalCardsState,
           );
         }),
-
-        const SizedBox(height: AppSizes.navBarContentPadding),
       ],
     );
   }
