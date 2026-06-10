@@ -38,15 +38,14 @@ class HistoryLog extends StatelessWidget {
           style: textTheme.labelMedium,
         ),
         const Padding(
-          padding: EdgeInsets.symmetric(vertical: 4.0),
+          padding: EdgeInsets.symmetric(vertical: AppSizes.x2),
           child: Divider(color: StackMoneyTheme.carbonGrey, thickness: 0.5),
         ),
 
         ...history.transactions.values.map((tx) {
-          return DayLog(transaction: tx, securityMode: securityMode);
-        }).toList(),
+          return DayLog(transaction: tx);
+        }),
 
-        // 💥 ESSENCIAL: Garanta o .toList() no final do .map() para o spread (...) funcionar!,
         const SizedBox(height: AppSizes.x6),
       ],
     );

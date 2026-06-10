@@ -1,47 +1,37 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/security_text.dart';
+import 'package:stack_money/data/enum/security_type.dart';
 import 'package:stack_money/data/models/transaction.dart';
 
 class DayLog extends StatelessWidget {
-  const DayLog({
-    required this.securityMode,
-    required this.transaction,
-    super.key,
-  });
+  const DayLog({required this.transaction, super.key});
 
   final Transaction transaction;
-  final ValueListenable<bool> securityMode;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    return ValueListenableBuilder<bool>(
-      valueListenable: securityMode,
-      builder: (_, isVisible, _) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
             children: [
-              // Esquerda: Ícone Tático + Informações (where e category)
-              Row(
-                children: [
-                  _buildIcon(),
-                  const SizedBox(width: AppSizes.x6),
-                  _buildInfo(isVisible, textTheme, l10n),
-                ],
-              ),
-              _buildValues(isVisible, textTheme, l10n),
+              _buildIcon(),
+              const SizedBox(width: AppSizes.x6),
+              _buildInfo(textTheme, l10n),
             ],
           ),
-        );
-      },
+          _buildValues(textTheme),
+        ],
+      ),
     );
   }
 
@@ -57,46 +47,31 @@ class DayLog extends StatelessWidget {
     );
   }
 
-  Widget _buildInfo(
-    bool isVisible,
-    TextTheme textTheme,
-    AppLocalizations l10n,
-  ) {
+  Widget _buildInfo(TextTheme textTheme, AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          StackMoneyString.formatTitle(
-            isVisible ? transaction.category : l10n.systemLocked,
-          ),
+        SecurityText(
+          StackMoneyString.formatTitle(transaction.category),
+          type: SecurityType.systemLocked,
           style: textTheme.titleSmall,
+          mutedColor: StackMoneyTheme.magentaNeon,
         ),
-        Text(
-          StackMoneyString.formatTitle(
-            isVisible ? transaction.where : l10n.systemLocked,
-          ),
-          style: textTheme.bodySmall?.copyWith(
-            color: StackMoneyTheme.mutedGrey,
-          ),
+        SecurityText(
+          StackMoneyString.formatTitle(transaction.where),
+          type: SecurityType.systemLocked,
+          style: textTheme.bodySmall,
+          activeColor: StackMoneyTheme.mutedGrey,
         ),
       ],
     );
   }
 
-  Widget _buildValues(
-    bool isVisible,
-    TextTheme textTheme,
-    AppLocalizations l10n,
-  ) {
-    return Text(
-      isVisible
-          ? StackMoneyString.formatMoney(doubleValue: transaction.actualValue)
-          : l10n.hiddenValues,
-      style: textTheme.titleMedium?.copyWith(
-        color: isVisible
-            ? StackMoneyTheme.platinumSilver
-            : StackMoneyTheme.mutedGrey,
-      ),
+  Widget _buildValues(TextTheme textTheme) {
+    return SecurityText(
+      StackMoneyString.formatMoney(doubleValue: transaction.actualValue),
+      type: SecurityType.mask,
+      style: textTheme.titleMedium,
     );
   }
 }

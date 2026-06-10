@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/widgets/tab_content.dart';
 import 'package:stack_money/core/widgets/user_header.dart';
 import 'package:stack_money/data/enum/nav_bar_tabs.dart';
@@ -17,6 +18,7 @@ class MainNavigationWrapper extends StatefulWidget {
 
 class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
   final _manager = MainNavigationManager();
+  final _securityMode = ValueNotifier<bool>(true);
 
   @override
   void initState() {
@@ -35,6 +37,7 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
   @override
   void dispose() {
     _manager.dispose();
+    _securityMode.dispose();
     super.dispose();
   }
 
@@ -42,64 +45,64 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
   Widget build(BuildContext context) {
     final bool isKeyboardActive = MediaQuery.of(context).viewInsets.bottom > 0;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          CustomScrollView(
-            controller: _manager.scrollController,
-            slivers: [
-              /// User header info and options
-              UserHeader(
-                isSecurity: _manager.securityMode,
-                switchSecurity: _manager.switchSecurityMode,
-              ),
+    return SecurityProvider(
+      notifier: _securityMode,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            CustomScrollView(
+              controller: _manager.scrollController,
+              slivers: [
+                /// User header info and options
+                UserHeader(),
 
-              /// Body
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: ValueListenableBuilder<NavBarTabs>(
-                  valueListenable: _manager.currentTab,
-                  builder: (_, activeIndex, _) {
-                    return AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      switchInCurve: Curves.easeInCubic,
-                      switchOutCurve: Curves.easeOutCubic,
-                      transitionBuilder:
-                          (Widget child, Animation<double> animation) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: child,
-                            );
-                          },
-                      child: TabContent(
-                        child: _manager.activeSliverFragment(activeIndex),
-                      ),
-                    );
-                  },
+                /// Body
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: ValueListenableBuilder<NavBarTabs>(
+                    valueListenable: _manager.currentTab,
+                    builder: (_, activeIndex, _) {
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        switchInCurve: Curves.easeInCubic,
+                        switchOutCurve: Curves.easeOutCubic,
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                        child: TabContent(
+                          child: _manager.activeSliverFragment(activeIndex),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+
+            /// Bottom nav bar
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 250),
+              curve: Curves.fastOutSlowIn,
+              left: AppSizes.x12,
+              right: AppSizes.x12,
+              bottom: isKeyboardActive
+                  ? -AppSizes.navBarContentPadding
+                  : AppSizes.navBarPaddingBottom,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: isKeyboardActive ? 0.0 : 1.0,
+                child: FloatingNavBar(
+                  changeTab: (t) => _manager.changeTab(t),
+                  currentTab: _manager.currentTab,
                 ),
               ),
-            ],
-          ),
-
-          /// Bottom nav bar
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.fastOutSlowIn,
-            left: AppSizes.x12,
-            right: AppSizes.x12,
-            bottom: isKeyboardActive
-                ? -AppSizes.navBarContentPadding
-                : AppSizes.navBarPaddingBottom,
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
-              opacity: isKeyboardActive ? 0.0 : 1.0,
-              child: FloatingNavBar(
-                changeTab: (t) => _manager.changeTab(t),
-                currentTab: _manager.currentTab,
-              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

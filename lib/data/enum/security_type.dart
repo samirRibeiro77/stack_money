@@ -1,0 +1,1 @@
+enum SecurityType { systemLocked, mask }
