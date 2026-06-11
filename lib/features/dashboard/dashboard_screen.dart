@@ -187,8 +187,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         // Cabeçalho da listagem de alocação de Potes
         ExpandableHeader(
           title: l10n.allocationBuckets,
-          toggleExpand: _manager.toggleAllBuckets,
-          expandState: _manager.masterExpandState,
+          toggle: _manager.toggleAllBuckets,
+          validation: _manager.masterExpandState,
+          activeIcon: Icons.unfold_more,
+          inactiveIcon: Icons.unfold_less,
         ),
         const SizedBox(height: AppSizes.x8),
 
