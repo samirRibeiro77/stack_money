@@ -27,6 +27,7 @@ dependencies:
   flutter_native_splash: ^2.4.0
   uuid: ^4.3.3
   local_auth: ^3.0.1
+  currency_formatter: ^2.3.0
 
 dev_dependencies:
   flutter_test:

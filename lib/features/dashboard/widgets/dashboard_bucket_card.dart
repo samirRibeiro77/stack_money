@@ -37,7 +37,8 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
   );
 
   double _getBucketValueAt(History history) {
-    final transaction = history.transactions[widget.parameter.id.replaceAll(' ', '')];
+    final transaction =
+        history.transactions[widget.parameter.id.replaceAll(' ', '')];
     return transaction?.actualValue ?? 0.0;
   }
 
@@ -53,7 +54,9 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
     final double currentBalance = _getBucketValueAt(latestHistory);
     final bool isUnderclock = currentBalance < widget.parameter.minValue;
 
-    final Color healthColor = isUnderclock ? StackMoneyTheme.magentaNeon : StackMoneyTheme.cyanNeon;
+    final Color healthColor = isUnderclock
+        ? StackMoneyTheme.magentaNeon
+        : StackMoneyTheme.cyanNeon;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSizes.x8),
@@ -65,7 +68,9 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
             color: StackMoneyTheme.surface,
             borderRadius: BorderRadius.circular(14.0),
             border: Border.all(
-              color: widget.isExpanded && !isSecureActive ? healthColor.withValues(alpha: 0.4) : Colors.white.withValues(alpha: 0.04),
+              color: widget.isExpanded && !isSecureActive
+                  ? healthColor.withValues(alpha: 0.4)
+                  : Colors.white.withValues(alpha: 0.04),
               width: 0.5,
             ),
           ),
@@ -89,7 +94,9 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                             Text(
                               l10n.allocation(
                                 StackMoneyString.formatPercentage(
-                                  doubleValue: (currentBalance / latestHistory.total) * 100,
+                                  doubleValue:
+                                      (currentBalance / latestHistory.total) *
+                                      100,
                                 ),
                               ),
                               style: textTheme.labelSmall,
@@ -98,7 +105,11 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                       ),
                       const SizedBox(height: AppSizes.x3),
                       SecurityText(
-                        l10n.min(StackMoneyString.formatMoney(doubleValue: widget.parameter.minValue)),
+                        l10n.min(
+                          StackMoneyString.formatMoney(
+                            doubleValue: widget.parameter.minValue,
+                          ),
+                        ),
                         style: textTheme.bodySmall,
                         type: SecurityType.systemLocked,
                         activeColor: StackMoneyTheme.mutedGrey,
@@ -109,7 +120,9 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                   SecurityText(
                     StackMoneyString.formatMoney(doubleValue: currentBalance),
                     type: SecurityType.mask,
-                    style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+                    style: textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                     activeColor: healthColor,
                     mutedColor: StackMoneyTheme.mutedGrey,
                   ),
@@ -148,14 +161,17 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
 
     List<History> filteredHistory = widget.historyList.where((h) {
       if (_chartFilter.filter == ChartFilter.custom && _chartFilter.hasDates) {
-        return h.date.isAfter(_chartFilter.start!) && h.date.isBefore(_chartFilter.end!);
+        return h.date.isAfter(_chartFilter.start!) &&
+            h.date.isBefore(_chartFilter.end!);
       }
       return latestDate.difference(h.date).inDays <= _chartFilter.filter.days;
     }).toList();
 
     if (filteredHistory.isEmpty) filteredHistory = [widget.historyList.last];
 
-    List<double> values = filteredHistory.map((h) => _getBucketValueAt(h)).toList();
+    List<double> values = filteredHistory
+        .map((h) => _getBucketValueAt(h))
+        .toList();
     values.add(widget.parameter.minValue);
 
     double absoluteMin = values.reduce((a, b) => a < b ? a : b);
@@ -188,16 +204,20 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
             touchTooltipData: LineTouchTooltipData(
               getTooltipColor: (spot) => StackMoneyTheme.surface,
               tooltipBorder: BorderSide(color: activeColor, width: 1),
-              tooltipPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              tooltipPadding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 4,
+              ),
               tooltipRoundedRadius: 2,
               getTooltipItems: (touchedSpots) {
                 return touchedSpots.map((spot) {
                   final deltaValue = spot.y - widget.parameter.minValue;
-                  final prefix = deltaValue >= 0 ? '+' : '';
                   return LineTooltipItem(
-                    '$prefix${StackMoneyString.formatMoney(doubleValue: deltaValue)}',
+                    StackMoneyString.formatMoney(doubleValue: spot.y),
                     TextStyle(
-                      color: deltaValue >= 0 ? StackMoneyTheme.cyanNeon : StackMoneyTheme.magentaNeon,
+                      color: deltaValue >= 0
+                          ? StackMoneyTheme.cyanNeon
+                          : StackMoneyTheme.magentaNeon,
                       fontFamily: 'Orbitron',
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -227,7 +247,10 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
               belowBarData: BarAreaData(
                 show: true,
                 gradient: LinearGradient(
-                  colors: [activeColor.withValues(alpha: 0.06), Colors.transparent],
+                  colors: [
+                    activeColor.withValues(alpha: 0.06),
+                    Colors.transparent,
+                  ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),

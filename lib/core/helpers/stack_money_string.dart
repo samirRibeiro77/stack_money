@@ -1,15 +1,17 @@
+import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:stack_money/data/enum/currency_format.dart';
 
 class StackMoneyString {
-  static final NumberFormat _currencyFormat = NumberFormat.currency(
-    locale: 'pt_BR',
-    symbol: 'R\$',
+  static final _brlSymbol = 'R\$';
+  static final CurrencyFormat _realSettings = CurrencyFormat(
+    code: 'brl',
+    symbol: _brlSymbol,
+    symbolSide: SymbolSide.left,
+    thousandSeparator: '.',
+    decimalSeparator: ',',
+    symbolSeparator: ' ',
   );
-
-  static final NumberFormat _shortCurrencyFormat =
-      NumberFormat.compactSimpleCurrency(locale: 'pt_BR');
 
   static final NumberFormat _compactCurrencFormat = NumberFormat.compact(
     locale: 'en_US',
@@ -22,24 +24,15 @@ class StackMoneyString {
   static String formatMoney({
     String? stringValue,
     double? doubleValue,
-    CurrencyFormat format = CurrencyFormat.full,
+    bool compact = false,
   }) {
-    final number = doubleValue ?? stringValue;
+    final number = doubleValue ?? double.tryParse(stringValue ?? '0.0');
 
-    switch (format) {
-      case CurrencyFormat.full:
-        return _currencyFormat
-            .format(number)
-            .replaceAll('-R\$', 'R\$ -')
-            .trim();
-      case CurrencyFormat.short:
-        return _shortCurrencyFormat
-            .format(number)
-            .replaceAll('-R\$', 'R\$-')
-            .trim();
-      case CurrencyFormat.compact:
-        return 'R\$ ${_compactCurrencFormat.format(number)}';
+    if (compact) {
+      return '$_brlSymbol ${_compactCurrencFormat.format(number)}';
     }
+
+    return CurrencyFormatter.format(number, _realSettings);
   }
 
   static String formatPercentage({

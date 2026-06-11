@@ -5,7 +5,6 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
-import 'package:stack_money/data/enum/currency_format.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
 
@@ -96,7 +95,8 @@ class TelemetryLineChart extends StatelessWidget {
           lineTouchData: LineTouchData(
             enabled: isSystemVisible, // Desativa toque se estiver encriptado
             touchTooltipData: LineTouchTooltipData(
-              getTooltipColor: (spot) => StackMoneyTheme.surface.withValues(alpha: 0.95),
+              getTooltipColor: (spot) =>
+                  StackMoneyTheme.surface.withValues(alpha: 0.95),
               tooltipBorder: const BorderSide(
                 color: StackMoneyTheme.magentaNeon,
                 width: 1.5,
@@ -127,7 +127,9 @@ class TelemetryLineChart extends StatelessWidget {
                   return spotIndexes.map((index) {
                     return TouchedSpotIndicatorData(
                       FlLine(
-                        color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.8),
+                        color: StackMoneyTheme.magentaNeon.withValues(
+                          alpha: 0.8,
+                        ),
                         strokeWidth: 1.5,
                         dashArray: [
                           AppSizes.x2.toInt(),
@@ -158,10 +160,14 @@ class TelemetryLineChart extends StatelessWidget {
                 ? 1.0
                 : (maxValue - minValue) / 4,
             verticalInterval: 1,
-            getDrawingHorizontalLine: (value) =>
-                FlLine(color: Colors.white.withValues(alpha: 0.04), strokeWidth: 1),
-            getDrawingVerticalLine: (value) =>
-                FlLine(color: Colors.white.withValues(alpha: 0.04), strokeWidth: 1),
+            getDrawingHorizontalLine: (value) => FlLine(
+              color: Colors.white.withValues(alpha: 0.04),
+              strokeWidth: 1,
+            ),
+            getDrawingVerticalLine: (value) => FlLine(
+              color: Colors.white.withValues(alpha: 0.04),
+              strokeWidth: 1,
+            ),
           ),
 
           titlesData: FlTitlesData(
@@ -184,7 +190,7 @@ class TelemetryLineChart extends StatelessWidget {
                   return Text(
                     StackMoneyString.formatMoney(
                       doubleValue: value,
-                      format: CurrencyFormat.compact
+                      compact: true,
                     ),
                     style: textTheme.labelSmall,
                   );

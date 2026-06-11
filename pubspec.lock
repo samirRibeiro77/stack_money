@@ -145,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.9"
+  currency_formatter:
+    dependency: "direct main"
+    description:
+      name: currency_formatter
+      sha256: c2a32f8ab74649fa8df22e6d2e0288fdcddd733655bb95ccbabbf181e98f280a
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   equatable:
     dependency: transitive
     description:
