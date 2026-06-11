@@ -65,7 +65,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
             color: StackMoneyTheme.surface,
             borderRadius: BorderRadius.circular(14.0),
             border: Border.all(
-              color: widget.isExpanded && !isSecureActive ? healthColor.withOpacity(0.4) : Colors.white.withOpacity(0.04),
+              color: widget.isExpanded && !isSecureActive ? healthColor.withValues(alpha: 0.4) : Colors.white.withValues(alpha: 0.04),
               width: 0.5,
             ),
           ),
@@ -211,7 +211,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
             horizontalLines: [
               HorizontalLine(
                 y: widget.parameter.minValue,
-                color: Colors.white.withOpacity(0.15),
+                color: Colors.white.withValues(alpha: 0.15),
                 strokeWidth: 1,
                 dashArray: [4, 4],
               ),
@@ -227,7 +227,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
               belowBarData: BarAreaData(
                 show: true,
                 gradient: LinearGradient(
-                  colors: [activeColor.withOpacity(0.06), Colors.transparent],
+                  colors: [activeColor.withValues(alpha: 0.06), Colors.transparent],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),

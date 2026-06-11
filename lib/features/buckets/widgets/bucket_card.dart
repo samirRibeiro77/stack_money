@@ -35,10 +35,10 @@ class BucketCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 6.0),
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         decoration: BoxDecoration(
-          color: StackMoneyTheme.magentaNeon.withOpacity(0.12),
+          color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(12.0),
           border: Border.all(
-            color: StackMoneyTheme.magentaNeon.withOpacity(0.3),
+            color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.3),
             width: 0.5,
           ),
         ),

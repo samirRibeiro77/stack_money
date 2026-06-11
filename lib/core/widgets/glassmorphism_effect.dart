@@ -32,10 +32,10 @@ class GlassmorphismEffect extends StatelessWidget {
           duration: const Duration(milliseconds: 250),
           height: containerHeight,
           decoration: BoxDecoration(
-            color: backgroundColorFixed.withOpacity(0.25),
+            color: backgroundColorFixed.withValues(alpha: 0.25),
             borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
             border: Border.all(
-              color: borderColorFixed.withOpacity(0.30),
+              color: borderColorFixed.withValues(alpha: 0.30),
               width: borderWidth,
             ),
           ),

@@ -25,7 +25,7 @@ class CardInitializeSlot extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: AppSizes.x4),
         child: CustomPaint(
           painter: _MatrixDashedPainter(
-            color: StackMoneyTheme.mutedGrey.withOpacity(0.35),
+            color: StackMoneyTheme.mutedGrey.withValues(alpha: 0.35),
           ),
           child: Center(
             child: Text(

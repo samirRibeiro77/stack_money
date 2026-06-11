@@ -161,13 +161,13 @@ class _BucketEditCardState extends State<BucketEditCard> {
         color: StackMoneyTheme.surface,
         borderRadius: BorderRadius.circular(14.0),
         border: Border.all(
-          color: _isSaving ? techColor : Colors.white.withOpacity(0.04),
+          color: _isSaving ? techColor : Colors.white.withValues(alpha: 0.04),
           width: _isSaving ? 1.0 : 0.5,
         ),
         boxShadow: _isSaving
             ? [
                 BoxShadow(
-                  color: techColor.withOpacity(0.3),
+                  color: techColor.withValues(alpha: 0.3),
                   blurRadius: 12,
                   spreadRadius: 1,
                 ),
@@ -195,7 +195,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                         decoration: BoxDecoration(
                           color: _isImmediateLiquidity
                               ? techColor
-                              : StackMoneyTheme.mutedGrey.withOpacity(0.3),
+                              : StackMoneyTheme.mutedGrey.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -288,7 +288,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                             color: StackMoneyTheme.surface,
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color: techColor.withOpacity(0.3),
+                              color: techColor.withValues(alpha: 0.3),
                               width: 1,
                             ),
                           ),
@@ -391,7 +391,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
-              color: Colors.white.withOpacity(0.08),
+              color: Colors.white.withValues(alpha: 0.08),
               width: 1,
             ),
           ),
@@ -412,8 +412,8 @@ class _BucketEditCardState extends State<BucketEditCard> {
           fit: BoxFit.contain,
           child: Switch(
             value: _isImmediateLiquidity,
-            activeColor: techColor,
-            activeTrackColor: techColor.withOpacity(0.15),
+            activeThumbColor: techColor,
+            activeTrackColor: techColor.withValues(alpha: 0.15),
             inactiveThumbColor: StackMoneyTheme.mutedGrey,
             inactiveTrackColor: StackMoneyTheme.surface,
             onChanged: (value) {

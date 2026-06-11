@@ -96,7 +96,7 @@ class TelemetryLineChart extends StatelessWidget {
           lineTouchData: LineTouchData(
             enabled: isSystemVisible, // Desativa toque se estiver encriptado
             touchTooltipData: LineTouchTooltipData(
-              getTooltipColor: (spot) => StackMoneyTheme.surface.withOpacity(0.95),
+              getTooltipColor: (spot) => StackMoneyTheme.surface.withValues(alpha: 0.95),
               tooltipBorder: const BorderSide(
                 color: StackMoneyTheme.magentaNeon,
                 width: 1.5,
@@ -127,7 +127,7 @@ class TelemetryLineChart extends StatelessWidget {
                   return spotIndexes.map((index) {
                     return TouchedSpotIndicatorData(
                       FlLine(
-                        color: StackMoneyTheme.magentaNeon.withOpacity(0.8),
+                        color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.8),
                         strokeWidth: 1.5,
                         dashArray: [
                           AppSizes.x2.toInt(),
@@ -159,9 +159,9 @@ class TelemetryLineChart extends StatelessWidget {
                 : (maxValue - minValue) / 4,
             verticalInterval: 1,
             getDrawingHorizontalLine: (value) =>
-                FlLine(color: Colors.white.withOpacity(0.04), strokeWidth: 1),
+                FlLine(color: Colors.white.withValues(alpha: 0.04), strokeWidth: 1),
             getDrawingVerticalLine: (value) =>
-                FlLine(color: Colors.white.withOpacity(0.04), strokeWidth: 1),
+                FlLine(color: Colors.white.withValues(alpha: 0.04), strokeWidth: 1),
           ),
 
           titlesData: FlTitlesData(
@@ -226,7 +226,7 @@ class TelemetryLineChart extends StatelessWidget {
               preventCurveOverShooting: true,
               color: isSystemVisible
                   ? StackMoneyTheme.cyanNeon
-                  : StackMoneyTheme.cyanNeon.withOpacity(0.05),
+                  : StackMoneyTheme.cyanNeon.withValues(alpha: 0.05),
               barWidth: AppSizes.min,
               // Mini-quadrados nos pontos de auditoria
               dotData: FlDotData(
@@ -244,10 +244,10 @@ class TelemetryLineChart extends StatelessWidget {
                 show: true,
                 gradient: LinearGradient(
                   colors: [
-                    StackMoneyTheme.cyanNeon.withOpacity(
-                      isSystemVisible ? 0.12 : 0.0,
+                    StackMoneyTheme.cyanNeon.withValues(
+                      alpha: isSystemVisible ? 0.12 : 0.0,
                     ),
-                    StackMoneyTheme.cyanNeon.withOpacity(0.0),
+                    StackMoneyTheme.cyanNeon.withValues(alpha: 0.0),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,

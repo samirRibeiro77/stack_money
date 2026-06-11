@@ -68,7 +68,7 @@ class FirebaseParameterRepository {
           .set(bkpBucket.toJson(), SetOptions(merge: true))
           .then((_) {
             print(
-              '✅ [FIRESTORE_SUCCESS] -> Document synced in background: ${bkpBucket.id} (${cleanCategory}_${cleanWhere})',
+              '✅ [FIRESTORE_SUCCESS] -> Document synced in background: ${bkpBucket.id} (${cleanCategory}_$cleanWhere)',
             );
           })
           .catchError((error) {

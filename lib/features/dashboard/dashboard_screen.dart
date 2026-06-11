@@ -163,7 +163,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             color: StackMoneyTheme.surface,
             borderRadius: BorderRadius.circular(14.0),
             border: Border.all(
-              color: Colors.white.withOpacity(0.04),
+              color: Colors.white.withValues(alpha: 0.04),
               width: 0.5,
             ),
           ),

@@ -46,7 +46,7 @@ class NavBarItem extends StatelessWidget {
               shadows: isActive
                   ? [
                       Shadow(
-                        color: StackMoneyTheme.cyanNeon.withOpacity(0.5),
+                        color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.5),
                         blurRadius: 10,
                       ),
                     ]

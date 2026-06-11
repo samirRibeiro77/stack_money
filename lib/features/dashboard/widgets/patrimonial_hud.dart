@@ -68,7 +68,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
       decoration: BoxDecoration(
         color: StackMoneyTheme.surface,
         borderRadius: BorderRadius.circular(14.0),
-        border: Border.all(color: Colors.white.withOpacity(0.04), width: 0.5),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
