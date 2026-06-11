@@ -91,5 +91,13 @@
   "cancel": "Cancel",
   "@cancel": {
     "description": "Cancel message"
+  },
+  "bucketsConfig": "Buckets Config",
+  "@bucketsConfig": {
+    "description": "Buckets Config title"
+  },
+  "newBucket": "Add new bucket",
+  "@newBucket": {
+    "description": "Add new bucket slot text"
   }
 }

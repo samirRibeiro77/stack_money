@@ -1,18 +1,13 @@
+import 'package:uuid/uuid.dart';
+
 class Bucket {
-  final String id; // "Category_Where"
+  final String id;
   final String category;
   final String where;
   final double minValue;
   final bool isImmediateLiquidity;
 
   Bucket({
-    required this.category,
-    required this.where,
-    required this.minValue,
-    required this.isImmediateLiquidity,
-  }) : id = '${category.replaceAll(' ', '')}_${where.replaceAll(' ', '')}';
-
-  const Bucket.withId({
     required this.id,
     required this.category,
     required this.where,
@@ -20,15 +15,27 @@ class Bucket {
     required this.isImmediateLiquidity,
   });
 
+  factory Bucket.empty() {
+    return Bucket(
+      id: Uuid().v4(),
+      category: 'NEW',
+      where: 'BUCKET',
+      minValue: 0.0,
+      isImmediateLiquidity: false,
+    );
+  }
+
   factory Bucket.fromJson(Map<String, dynamic> json) {
-    return Bucket.withId(
-      id: json['id'] ?? '${json['category']}_${json['where']}',
+    return Bucket(
+      id: json['id'],
       category: json['category'] ?? '',
       where: json['where'] ?? '',
       minValue: (json['minValue'] as num).toDouble(),
       isImmediateLiquidity: json['isImmediateLiquidity'] ?? false,
     );
   }
+
+  String get name => '$category $where';
 
   Map<String, dynamic> toJson() {
     return {

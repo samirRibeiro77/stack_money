@@ -235,6 +235,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// Buckets Config title
+  ///
+  /// In en, this message translates to:
+  /// **'Buckets Config'**
+  String get bucketsConfig;
+
+  /// Add new bucket slot text
+  ///
+  /// In en, this message translates to:
+  /// **'Add new bucket'**
+  String get newBucket;
 }
 
 class _AppLocalizationsDelegate

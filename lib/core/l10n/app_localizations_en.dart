@@ -83,4 +83,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get bucketsConfig => 'Buckets Config';
+
+  @override
+  String get newBucket => 'Add new bucket';
 }

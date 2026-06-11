@@ -12,14 +12,16 @@ class SecurityProvider extends InheritedNotifier<ValueNotifier<bool>> {
   static final LocalAuthentication _auth = LocalAuthentication();
 
   static bool isSecureOf(BuildContext context) {
-    final inherited = context.dependOnInheritedWidgetOfExactType<SecurityProvider>();
+    final inherited = context
+        .dependOnInheritedWidgetOfExactType<SecurityProvider>();
     return inherited?.notifier?.value ?? false;
   }
 
   static Future<void> toggleOf(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
 
-    final inherited = context.dependOnInheritedWidgetOfExactType<SecurityProvider>();
+    final inherited = context
+        .dependOnInheritedWidgetOfExactType<SecurityProvider>();
     if (inherited?.notifier == null) return;
 
     final ValueNotifier<bool> notifier = inherited!.notifier!;
@@ -30,7 +32,8 @@ class SecurityProvider extends InheritedNotifier<ValueNotifier<bool>> {
     }
 
     try {
-      final bool canAuthenticate = await _auth.canCheckBiometrics || await _auth.isDeviceSupported();
+      final bool canAuthenticate =
+          await _auth.canCheckBiometrics || await _auth.isDeviceSupported();
 
       if (!canAuthenticate) {
         notifier.value = false;
@@ -47,7 +50,14 @@ class SecurityProvider extends InheritedNotifier<ValueNotifier<bool>> {
         notifier.value = false;
       }
     } on LocalAuthException catch (e) {
-      debugPrint('Erro de autenticação local (v3): ${e.code} - ${e.description}');
+      if (e.code == LocalAuthExceptionCode.noCredentialsSet) {
+        notifier.value = false;
+        return;
+      }
+
+      debugPrint(
+        'Erro de autenticação local (v3): ${e.code} - ${e.description}',
+      );
     } catch (e) {
       debugPrint('Erro genérico: $e');
     }

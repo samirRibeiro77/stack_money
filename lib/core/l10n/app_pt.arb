@@ -22,5 +22,7 @@
   "retryHandshake": "Tentar novamente",
   "auditLogs": "Auditoria",
   "securityBiometricReason": "Autentique-se para visualizar seus dados sensíveis e saldos.",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "bucketsConfig": "Configuração Das Caixinhas",
+  "newBucket": "Adicionar nova caixinha"
 }

@@ -38,7 +38,7 @@ class MainNavigationManager {
           child: Center(child: Text('Plans Tab')),
         );
       case NavBarTabs.buckets:
-        return BucketControlScreen(securityMode: securityMode);
+        return BucketControlScreen();
       case NavBarTabs.log:
         return HistoryScreen(securityMode: securityMode);
     }
