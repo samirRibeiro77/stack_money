@@ -19,7 +19,7 @@ class HistoryManager {
       _hasError.value = false;
 
       // Puxa a lista de snapshots consolidados por data (Documentos do Firebase)
-      final logs = await HistoryManagementService().getConsolidatedHistory();
+      final logs = await HistoryManagementService().fetch();
 
       _consolidatedDays = logs.reversed.toList();
       _isLoading.value = false;

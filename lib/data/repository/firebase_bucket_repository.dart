@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stack_money/data/models/bucket.dart';
 
-class FirebaseParameterRepository {
+class FirebaseBucketRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<List<Bucket>> fetchParameters() async {
+  Future<List<Bucket>> fetch() async {
     try {
       final currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');
@@ -22,7 +22,7 @@ class FirebaseParameterRepository {
       );
 
       return snapshot.docs.map((doc) {
-        return Bucket.fromJson(doc.data());
+        return Bucket.fromJson(doc.data(), id: doc.id);
       }).toList();
     } catch (e) {
       print(
@@ -33,17 +33,17 @@ class FirebaseParameterRepository {
   }
 
   // 🚀 SILENT SYNC PROTOCOL + FALLBACK TEMPORÁRIO
-  Future<void> saveParameter(Bucket bucket) async {
+  Future<void> save(Bucket bucket) async {
     try {
       final currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');
 
       // 🧪 FALLBACK: Injeta strings temporárias se o usuário inicializou o slot mas não digitou nada ainda
       final cleanWhere = bucket.where.trim().isEmpty
-          ? 'BUCKET'
+          ? 'New'
           : bucket.where.trim();
       final cleanCategory = bucket.category.trim().isEmpty
-          ? 'NEW'
+          ? 'Bucket'
           : bucket.category.trim();
 
       final bkpBucket = Bucket(
@@ -85,7 +85,7 @@ class FirebaseParameterRepository {
   }
 
   // 🗑️ SAFE DELETE INTERCEPTOR (BLOQUEIO DE SEGURANÇA)
-  Future<void> deleteParameter(String id) async {
+  Future<void> delete(String id) async {
     try {
       final currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');

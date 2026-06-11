@@ -4,7 +4,7 @@ import 'package:stack_money/data/repository/firebase_networth_repository.dart';
 class NetworthManagementService {
   final FirebaseNetworthRepository _networthRepository = FirebaseNetworthRepository();
 
-  Future<NetWorth> getUserNetworth() async {
-    return await _networthRepository.getUserNetworth();
+  Future<NetWorth> get() async {
+    return await _networthRepository.get();
   }
 }

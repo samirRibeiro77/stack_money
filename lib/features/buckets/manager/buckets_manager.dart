@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/models/bucket.dart';
-import 'package:stack_money/domain/service/parameter_service.dart';
+import 'package:stack_money/domain/service/bucket_service.dart';
 
 class BucketsManager {
   final ValueNotifier<List<Bucket>> _bucketDeck = ValueNotifier([]);
@@ -24,7 +24,7 @@ class BucketsManager {
   Future<void> loadFirebaseBuckets() async {
     try {
       _isLoading.value = true;
-      final data = await ParameterManagementService().getActiveParameters();
+      final data = await BucketManagementService().fetch();
       _bucketDeck.value = data;
       _isLoading.value = false;
     } catch (e) {
@@ -46,7 +46,7 @@ class BucketsManager {
 
   Future<void> saveBucketToFirebase(Bucket updatedBucket) async {
     try {
-      await ParameterManagementService().saveParameter(updatedBucket);
+      await BucketManagementService().save(updatedBucket);
       final index = _bucketDeck.value.indexWhere(
         (b) => b.id == updatedBucket.id,
       );
@@ -75,7 +75,7 @@ class BucketsManager {
 
   Future<void> purgeBucket(String id) async {
     try {
-      await ParameterManagementService().deleteParameter(id);
+      await BucketManagementService().delete(id);
       final index = _bucketDeck.value.indexWhere((b) => b.id == id);
       if (index != -1) {
         final updatedList = List<Bucket>.from(_bucketDeck.value);

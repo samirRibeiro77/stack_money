@@ -6,7 +6,7 @@ class FirebaseNetworthRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<NetWorth> getUserNetworth() async {
+  Future<NetWorth> get() async {
     try {
       final currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');

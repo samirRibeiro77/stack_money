@@ -6,7 +6,7 @@ class FirebaseHistoryRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<List<History>> fetchHistoryTimeline() async {
+  Future<List<History>> fetch() async {
     try {
       final currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');

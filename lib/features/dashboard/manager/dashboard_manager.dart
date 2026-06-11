@@ -4,7 +4,7 @@ import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/domain/service/history_service.dart';
-import 'package:stack_money/domain/service/parameter_service.dart';
+import 'package:stack_money/domain/service/bucket_service.dart';
 
 class DashboardManager {
   final ValueNotifier<bool> _isLoading = ValueNotifier(true);
@@ -37,8 +37,8 @@ class DashboardManager {
       _hasError.value = false;
 
       final results = await Future.wait([
-        ParameterManagementService().getActiveParameters(),
-        HistoryManagementService().getConsolidatedHistory(),
+        BucketManagementService().fetch(),
+        HistoryManagementService().fetch(),
       ]);
 
       _realParameters.value = results[0] as List<Bucket>;
