@@ -102,7 +102,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         TitleText(l10n.auditLogs),
-        const SizedBox(height: AppSizes.x12),
+        const SizedBox(height: AppSizes.x6),
 
         // 🛰️ ITERAÇÃO 1: Varre cada documento de dia consolidado (ex: 2026_05_22)
         ..._manager.logs.map((historyDay) {

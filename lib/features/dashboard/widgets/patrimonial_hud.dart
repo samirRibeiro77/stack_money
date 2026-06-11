@@ -92,10 +92,10 @@ class _PatrimonialHudState extends State<PatrimonialHud>
             )
           else
             SecurityText(
-              "",
-              // O texto cru é omitido pois a engine do SecurityText aplica a tag systemLocked nativa
+              "", // O texto cru é omitido pois a engine do SecurityText aplica a tag systemLocked nativa
               type: SecurityType.systemLocked,
               style: textTheme.headlineSmall?.copyWith(
+                fontSize: AppTypography.fontDisplaySmall,
                 fontWeight: FontWeight.bold,
               ),
               mutedColor: StackMoneyTheme.magentaNeon,

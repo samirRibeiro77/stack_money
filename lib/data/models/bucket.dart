@@ -18,16 +18,16 @@ class Bucket {
   factory Bucket.empty() {
     return Bucket(
       id: Uuid().v4(),
-      category: 'NEW',
-      where: 'BUCKET',
+      category: 'New',
+      where: 'Bucket',
       minValue: 0.0,
       isImmediateLiquidity: false,
     );
   }
 
-  factory Bucket.fromJson(Map<String, dynamic> json) {
+  factory Bucket.fromJson(Map<String, dynamic> json, {String? id}) {
     return Bucket(
-      id: json['id'],
+      id: id ?? json['id'] ?? '',
       category: json['category'] ?? '',
       where: json['where'] ?? '',
       minValue: (json['minValue'] as num).toDouble(),

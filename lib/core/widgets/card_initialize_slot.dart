@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
+import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 
 class CardInitializeSlot extends StatelessWidget {
@@ -14,9 +15,10 @@ class CardInitializeSlot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final isSecureActive = SecurityProvider.isSecureOf(context);
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: !isSecureActive ? onTap : null,
       child: Container(
         width: double.infinity,
         height: AppSizes.x26,
