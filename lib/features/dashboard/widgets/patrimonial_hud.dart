@@ -1,22 +1,21 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/security_text.dart';
+import 'package:stack_money/data/enum/security_type.dart';
 
 class PatrimonialHud extends StatefulWidget {
   final double totalAmount;
   final double liquidityAmount;
-  final ValueListenable<bool> securityMode;
 
   const PatrimonialHud({
     super.key,
     required this.totalAmount,
     required this.liquidityAmount,
-    required this.securityMode,
   });
 
   @override
@@ -40,11 +39,6 @@ class _PatrimonialHudState extends State<PatrimonialHud>
       begin: 0.0,
       end: widget.totalAmount,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
-
-    // Simplificado: Se começar aberto roda, senão fica em standby
-    if (widget.securityMode.value) {
-      _controller.forward();
-    }
   }
 
   @override
@@ -57,87 +51,80 @@ class _PatrimonialHudState extends State<PatrimonialHud>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
+    final isSecureActive = SecurityProvider.isSecureOf(context);
 
-    return StackMoneyCard(
-      title: l10n.netWorth,
-      securityMode: widget.securityMode,
-      children: [
-        ValueListenableBuilder<bool>(
-          valueListenable: widget.securityMode,
-          builder: (context, isVisible, child) {
-            // Gatilho de segurança controlado diretamente na renderização do build, sem rodar loops estáticos
-            if (isVisible &&
-                !_controller.isAnimating &&
-                _controller.value == 0.0) {
-              _controller.forward(from: 0.0);
-            } else if (!isVisible && _controller.value > 0.0) {
-              _controller.reset();
-            }
+    // Gerencia o fluxo da animação com base no destravamento biométrico em tempo de renderização
+    if (!isSecureActive && !_controller.isAnimating && _controller.value == 0.0) {
+      _controller.forward(from: 0.0);
+    } else if (isSecureActive && _controller.value > 0.0) {
+      _controller.reset();
+    }
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (isVisible)
-                  AnimatedBuilder(
-                    animation: _animation,
-                    builder: (context, child) {
-                      return Text(
-                        StackMoneyString.formatMoney(
-                          doubleValue: _animation.value,
-                        ),
-                        style: textTheme.bodyLarge?.copyWith(
-                          fontSize: AppTypography.fontDisplaySmall,
-                          color: StackMoneyTheme.platinumSilver,
-                        ),
-                      );
-                    },
-                  )
-                else
-                  Text(
-                    StackMoneyString.formatTitle(l10n.systemLocked),
-                    style: textTheme.headlineSmall?.copyWith(
-                      color: StackMoneyTheme.magentaNeon,
-                    ),
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: StackMoneyTheme.surface,
+        borderRadius: BorderRadius.circular(14.0),
+        border: Border.all(color: Colors.white.withOpacity(0.04), width: 0.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            StackMoneyString.formatTitle(l10n.netWorth),
+            style: textTheme.titleSmall?.copyWith(color: StackMoneyTheme.mutedGrey),
+          ),
+          const SizedBox(height: AppSizes.x6),
+
+          if (!isSecureActive)
+            AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return Text(
+                  StackMoneyString.formatMoney(doubleValue: _animation.value),
+                  style: textTheme.bodyLarge?.copyWith(
+                    fontSize: AppTypography.fontDisplaySmall,
+                    color: StackMoneyTheme.platinumSilver,
+                    fontWeight: FontWeight.bold,
                   ),
-                const SizedBox(height: AppSizes.x8),
-                const Divider(color: Colors.white10, height: 1),
-                const SizedBox(height: AppSizes.x8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.bolt,
-                          color: StackMoneyTheme.cyanNeon,
-                          size: AppSizes.x8,
-                        ),
-                        const SizedBox(width: AppSizes.x2),
-                        Text(
-                          l10n.liquidityBuffer,
-                          style: textTheme.labelMedium,
-                        ),
-                      ],
-                    ),
-                    Text(
-                      isVisible
-                          ? StackMoneyString.formatMoney(
-                              doubleValue: widget.liquidityAmount,
-                            )
-                          : l10n.hiddenValues,
-                      style: textTheme.labelLarge?.copyWith(
-                        color: isVisible
-                            ? StackMoneyTheme.platinumSilver
-                            : StackMoneyTheme.mutedGrey,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
-          },
-        ),
-      ],
+                );
+              },
+            )
+          else
+            SecurityText(
+              "", // O texto cru é omitido pois a engine do SecurityText aplica a tag systemLocked nativa
+              type: SecurityType.systemLocked,
+              style: textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+              mutedColor: StackMoneyTheme.magentaNeon,
+            ),
+
+          const SizedBox(height: AppSizes.x8),
+          const Divider(color: Colors.white10, height: 1),
+          const SizedBox(height: AppSizes.x8),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.bolt, color: StackMoneyTheme.cyanNeon, size: 18),
+                  const SizedBox(width: AppSizes.x2),
+                  Text(l10n.liquidityBuffer, style: textTheme.labelMedium),
+                ],
+              ),
+              SecurityText(
+                StackMoneyString.formatMoney(doubleValue: widget.liquidityAmount),
+                type: SecurityType.mask,
+                style: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
+                activeColor: StackMoneyTheme.platinumSilver,
+                mutedColor: StackMoneyTheme.mutedGrey,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

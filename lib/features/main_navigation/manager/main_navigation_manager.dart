@@ -31,7 +31,7 @@ class MainNavigationManager {
   Widget activeSliverFragment(NavBarTabs index) {
     switch (index) {
       case NavBarTabs.hud:
-        return DashboardScreen(securityMode: securityMode);
+        return DashboardScreen();
       case NavBarTabs.plans:
         return Container(
           key: const ValueKey('plans_fragment'),
