@@ -99,5 +99,21 @@
   "newBucket": "Add new bucket",
   "@newBucket": {
     "description": "Add new bucket slot text"
+  },
+  "category": "Category",
+  "@category": {
+    "description": "Category"
+  },
+  "where": "Where",
+  "@where": {
+    "description": "Where"
+  },
+  "minValue": "Min Value",
+  "@minValue": {
+    "description": "Min Value"
+  },
+  "liquidity": "Liquidity",
+  "@liquidity": {
+    "description": "Liquidity"
   }
 }

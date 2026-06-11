@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
-import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/expandable_header.dart';
+import 'package:stack_money/core/widgets/title_text.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
@@ -15,9 +16,7 @@ import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart
 import 'package:stack_money/features/dashboard/widgets/telemetry_line_chart.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({
-    super.key = const ValueKey(route),
-  });
+  const DashboardScreen({super.key = const ValueKey(route)});
 
   static const route = '/dashboard';
 
@@ -75,7 +74,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         return ValueListenableBuilder<ChartFilterState>(
                           valueListenable: _manager.chartFilterNotifier,
                           builder: (context, currentFilter, _) {
-                            return _buildBodyContent(l10n, textTheme, paramList, historyList, expandedIds, currentFilter);
+                            return _buildBodyContent(
+                              l10n,
+                              textTheme,
+                              paramList,
+                              historyList,
+                              expandedIds,
+                              currentFilter,
+                            );
                           },
                         );
                       },
@@ -97,18 +103,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.gpp_maybe_outlined, color: StackMoneyTheme.magentaNeon, size: AppSizes.x24),
+            const Icon(
+              Icons.gpp_maybe_outlined,
+              color: StackMoneyTheme.magentaNeon,
+              size: AppSizes.x24,
+            ),
             const SizedBox(height: AppSizes.x8),
             Text(
               StackMoneyString.formatTitle(l10n.systemLinkFailed),
-              style: textTheme.headlineMedium?.copyWith(color: StackMoneyTheme.magentaNeon),
+              style: textTheme.headlineMedium?.copyWith(
+                color: StackMoneyTheme.magentaNeon,
+              ),
             ),
             const SizedBox(height: AppSizes.x4),
             TextButton(
               onPressed: _manager.loadFirebaseDashboardData,
               child: Text(
                 StackMoneyString.formatTitle(l10n.retryHandshake),
-                style: textTheme.titleMedium?.copyWith(color: StackMoneyTheme.cyanNeon),
+                style: textTheme.titleMedium?.copyWith(
+                  color: StackMoneyTheme.cyanNeon,
+                ),
               ),
             ),
           ],
@@ -118,15 +132,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildBodyContent(
-      AppLocalizations l10n,
-      TextTheme textTheme,
-      List<Bucket> paramList,
-      List<History> historyList,
-      Set<String> expandedIds,
-      ChartFilterState currentFilter,
-      ) {
+    AppLocalizations l10n,
+    TextTheme textTheme,
+    List<Bucket> paramList,
+    List<History> historyList,
+    Set<String> expandedIds,
+    ChartFilterState currentFilter,
+  ) {
     final isSecureActive = SecurityProvider.isSecureOf(context);
-    final isVisible = !isSecureActive; // Lógica inversa unificada: visível se segurança biométrica estiver aberta
+    final isVisible =
+        !isSecureActive; // Lógica inversa unificada: visível se segurança biométrica estiver aberta
 
     final latestAudit = historyList.last;
 
@@ -147,15 +162,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
           decoration: BoxDecoration(
             color: StackMoneyTheme.surface,
             borderRadius: BorderRadius.circular(14.0),
-            border: Border.all(color: Colors.white.withOpacity(0.04), width: 0.5),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.04),
+              width: 0.5,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                StackMoneyString.formatTitle(l10n.telemetryStream),
-                style: textTheme.titleSmall?.copyWith(color: StackMoneyTheme.mutedGrey),
-              ),
+              TitleText(l10n.telemetryStream),
               const SizedBox(height: AppSizes.x4),
               SizedBox(
                 height: 220,
@@ -180,31 +195,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const SizedBox(height: AppSizes.x12),
 
         // Cabeçalho da listagem de alocação de Potes
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              StackMoneyString.formatTitle(l10n.allocationBuckets),
-              style: textTheme.labelLarge?.copyWith(
-                fontWeight: AppTypography.weightBold,
-                letterSpacing: 1.5,
-              ),
-            ),
-            if (isVisible)
-              ValueListenableBuilder<bool>(
-                valueListenable: _manager.masterExpandState,
-                builder: (context, expandAll, child) {
-                  return IconButton(
-                    onPressed: _manager.toggleAllBuckets,
-                    icon: Icon(
-                      expandAll ? Icons.unfold_more : Icons.unfold_less,
-                      color: expandAll ? StackMoneyTheme.cyanNeon : StackMoneyTheme.magentaNeon,
-                      size: AppSizes.x10,
-                    ),
-                  );
-                },
-              ),
-          ],
+        ExpandableHeader(
+          title: l10n.allocationBuckets,
+          toggleExpand: _manager.toggleAllBuckets,
+          expandState: _manager.masterExpandState,
         ),
         const SizedBox(height: AppSizes.x8),
 

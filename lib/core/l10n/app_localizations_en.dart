@@ -89,4 +89,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newBucket => 'Add new bucket';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get where => 'Where';
+
+  @override
+  String get minValue => 'Min Value';
+
+  @override
+  String get liquidity => 'Liquidity';
 }

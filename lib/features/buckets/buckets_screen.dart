@@ -3,7 +3,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/widgets/card_initialize_slot.dart';
 import 'package:stack_money/features/buckets/manager/buckets_manager.dart';
 import 'package:stack_money/features/buckets/widgets/bucket_card.dart';
-import 'package:stack_money/features/buckets/widgets/buckets_title.dart';
+import 'package:stack_money/core/widgets/expandable_header.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -64,17 +64,18 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
   ) {
     return Column(
       children: [
-        BucketsTitle(
+        ExpandableHeader(
+          title: l10n.bucketsConfig,
           expandState: _manager.expandState,
-          toggleBuckets: _manager.toggleAllBuckets,
+          toggleExpand: _manager.toggleAllBuckets,
         ),
-        const SizedBox(height: AppSizes.x12),
+        const SizedBox(height: AppSizes.x6),
 
         CardInitializeSlot(
           l10n.newBucket,
           onTap: _manager.initializeNewBucketSlot,
         ),
-        const SizedBox(height: AppSizes.x12),
+        const SizedBox(height: AppSizes.x3),
 
         ...List.generate(bucketList.length, (index) {
           final bucket = bucketList[index];

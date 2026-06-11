@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
-import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/title_text.dart';
 import 'package:stack_money/features/history/manager/history_manager.dart';
 import 'package:stack_money/features/history/widgets/history_log.dart';
 
@@ -101,14 +101,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          StackMoneyString.formatTitle(l10n.auditLogs),
-          style: textTheme.labelLarge?.copyWith(
-            fontWeight: AppTypography.weightBold,
-            letterSpacing: 1.5,
-            color: StackMoneyTheme.mutedGrey,
-          ),
-        ),
+        TitleText(l10n.auditLogs),
         const SizedBox(height: AppSizes.x12),
 
         // 🛰️ ITERAÇÃO 1: Varre cada documento de dia consolidado (ex: 2026_05_22)

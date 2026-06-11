@@ -24,5 +24,9 @@
   "securityBiometricReason": "Autentique-se para visualizar seus dados sensíveis e saldos.",
   "cancel": "Cancelar",
   "bucketsConfig": "Configuração Das Caixinhas",
-  "newBucket": "Adicionar nova caixinha"
+  "newBucket": "Adicionar nova caixinha",
+  "category": "Categoria",
+  "where": "Onde",
+  "minValue": "Valor minimo",
+  "liquidity": "Liquidez"
 }

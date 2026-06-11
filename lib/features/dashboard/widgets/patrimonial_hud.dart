@@ -6,6 +6,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
+import 'package:stack_money/core/widgets/title_text.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 
 class PatrimonialHud extends StatefulWidget {
@@ -54,7 +55,9 @@ class _PatrimonialHudState extends State<PatrimonialHud>
     final isSecureActive = SecurityProvider.isSecureOf(context);
 
     // Gerencia o fluxo da animação com base no destravamento biométrico em tempo de renderização
-    if (!isSecureActive && !_controller.isAnimating && _controller.value == 0.0) {
+    if (!isSecureActive &&
+        !_controller.isAnimating &&
+        _controller.value == 0.0) {
       _controller.forward(from: 0.0);
     } else if (isSecureActive && _controller.value > 0.0) {
       _controller.reset();
@@ -70,10 +73,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            StackMoneyString.formatTitle(l10n.netWorth),
-            style: textTheme.titleSmall?.copyWith(color: StackMoneyTheme.mutedGrey),
-          ),
+          TitleText(l10n.netWorth),
           const SizedBox(height: AppSizes.x6),
 
           if (!isSecureActive)
@@ -92,7 +92,8 @@ class _PatrimonialHudState extends State<PatrimonialHud>
             )
           else
             SecurityText(
-              "", // O texto cru é omitido pois a engine do SecurityText aplica a tag systemLocked nativa
+              "",
+              // O texto cru é omitido pois a engine do SecurityText aplica a tag systemLocked nativa
               type: SecurityType.systemLocked,
               style: textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
@@ -109,15 +110,23 @@ class _PatrimonialHudState extends State<PatrimonialHud>
             children: [
               Row(
                 children: [
-                  const Icon(Icons.bolt, color: StackMoneyTheme.cyanNeon, size: 18),
+                  const Icon(
+                    Icons.bolt,
+                    color: StackMoneyTheme.cyanNeon,
+                    size: 18,
+                  ),
                   const SizedBox(width: AppSizes.x2),
                   Text(l10n.liquidityBuffer, style: textTheme.labelMedium),
                 ],
               ),
               SecurityText(
-                StackMoneyString.formatMoney(doubleValue: widget.liquidityAmount),
+                StackMoneyString.formatMoney(
+                  doubleValue: widget.liquidityAmount,
+                ),
                 type: SecurityType.mask,
-                style: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
                 activeColor: StackMoneyTheme.platinumSilver,
                 mutedColor: StackMoneyTheme.mutedGrey,
               ),

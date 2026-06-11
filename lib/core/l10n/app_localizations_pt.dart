@@ -89,4 +89,16 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get newBucket => 'Adicionar nova caixinha';
+
+  @override
+  String get category => 'Categoria';
+
+  @override
+  String get where => 'Onde';
+
+  @override
+  String get minValue => 'Valor minimo';
+
+  @override
+  String get liquidity => 'Liquidez';
 }

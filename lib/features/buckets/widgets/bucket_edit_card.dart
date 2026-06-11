@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
@@ -147,6 +148,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
   @override
   Widget build(BuildContext context) {
     final isSecureActive = SecurityProvider.isSecureOf(context);
+    final l10n = AppLocalizations.of(context)!;
     final Color techColor = _isNegative
         ? StackMoneyTheme.magentaNeon
         : StackMoneyTheme.cyanNeon;
@@ -202,11 +204,9 @@ class _BucketEditCardState extends State<BucketEditCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SecurityText(
-                            _categoryController.text.isEmpty
-                                ? "UNINITIALIZED"
-                                : StackMoneyString.formatTitle(
-                                    _categoryController.text,
-                                  ),
+                            StackMoneyString.formatTitle(
+                              _categoryController.text,
+                            ),
                             style: const TextStyle(
                               fontFamily: 'JetBrainsMono',
                               fontSize: 12,
@@ -215,11 +215,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                             type: SecurityType.systemLocked,
                           ),
                           SecurityText(
-                            _whereController.text.isEmpty
-                                ? "SLOT"
-                                : StackMoneyString.formatTitle(
-                                    _whereController.text,
-                                  ),
+                            StackMoneyString.formatTitle(_whereController.text),
                             style: const TextStyle(
                               fontFamily: 'JetBrainsMono',
                               fontSize: 9,
@@ -262,7 +258,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                     children: [
                       Expanded(
                         child: _buildOutlineField(
-                          label: 'CATEGORY',
+                          label: l10n.category,
                           controller: _categoryController,
                           focusNode: _categoryFocus,
                           activeColor: techColor,
@@ -271,7 +267,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _buildOutlineField(
-                          label: 'WHERE',
+                          label: l10n.where,
                           controller: _whereController,
                           focusNode: _whereFocus,
                           activeColor: techColor,
@@ -313,7 +309,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                       Expanded(
                         flex: 3,
                         child: _buildOutlineField(
-                          label: 'MIN_VALUE',
+                          label: l10n.minValue,
                           controller: _minValueController,
                           focusNode: _minValueFocus,
                           keyboardType: TextInputType.number,
@@ -329,7 +325,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              StackMoneyString.formatTitle('Liquidity'),
+                              StackMoneyString.formatTitle(l10n.liquidity),
                               style: const TextStyle(
                                 fontFamily: 'JetBrainsMono',
                                 color: StackMoneyTheme.mutedGrey,
@@ -375,7 +371,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
           fontSize: 13,
         ),
         decoration: InputDecoration(
-          labelText: label,
+          labelText: StackMoneyString.formatTitle(label),
           labelStyle: const TextStyle(
             fontFamily: 'JetBrainsMono',
             color: StackMoneyTheme.mutedGrey,

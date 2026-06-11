@@ -247,6 +247,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add new bucket'**
   String get newBucket;
+
+  /// Category
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// Where
+  ///
+  /// In en, this message translates to:
+  /// **'Where'**
+  String get where;
+
+  /// Min Value
+  ///
+  /// In en, this message translates to:
+  /// **'Min Value'**
+  String get minValue;
+
+  /// Liquidity
+  ///
+  /// In en, this message translates to:
+  /// **'Liquidity'**
+  String get liquidity;
 }
 
 class _AppLocalizationsDelegate
