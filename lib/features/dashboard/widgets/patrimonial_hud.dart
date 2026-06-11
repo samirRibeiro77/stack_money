@@ -6,7 +6,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
-import 'package:stack_money/core/widgets/title_text.dart';
+import 'package:stack_money/core/widgets/stack_money_card.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 
 class PatrimonialHud extends StatefulWidget {
@@ -63,19 +63,11 @@ class _PatrimonialHudState extends State<PatrimonialHud>
       _controller.reset();
     }
 
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: StackMoneyTheme.surface,
-        borderRadius: BorderRadius.circular(14.0),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.04), width: 0.5),
-      ),
+    return StackMoneyCard(
+      title: l10n.netWorth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TitleText(l10n.netWorth),
-          const SizedBox(height: AppSizes.x6),
-
           if (!isSecureActive)
             AnimatedBuilder(
               animation: _animation,
@@ -92,7 +84,8 @@ class _PatrimonialHudState extends State<PatrimonialHud>
             )
           else
             SecurityText(
-              "", // O texto cru é omitido pois a engine do SecurityText aplica a tag systemLocked nativa
+              "",
+              // O texto cru é omitido pois a engine do SecurityText aplica a tag systemLocked nativa
               type: SecurityType.systemLocked,
               style: textTheme.headlineSmall?.copyWith(
                 fontSize: AppTypography.fontDisplaySmall,

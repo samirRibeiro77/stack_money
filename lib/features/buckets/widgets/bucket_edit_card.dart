@@ -6,6 +6,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
+import 'package:stack_money/core/widgets/stack_money_card.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
 
@@ -174,177 +175,185 @@ class _BucketEditCardState extends State<BucketEditCard> {
               ]
             : null,
       ),
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              if (isSecureActive) return;
-              widget.onHeaderTap();
-            },
-            behavior: HitTestBehavior.opaque,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 4,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          color: _isImmediateLiquidity
-                              ? techColor
-                              : StackMoneyTheme.mutedGrey.withValues(alpha: 0.3),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                      const SizedBox(width: AppSizes.x4),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SecurityText(
-                            StackMoneyString.formatTitle(
-                              _categoryController.text,
-                            ),
-                            style: const TextStyle(
-                              fontFamily: 'JetBrainsMono',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            type: SecurityType.systemLocked,
-                          ),
-                          SecurityText(
-                            StackMoneyString.formatTitle(_whereController.text),
-                            style: const TextStyle(
-                              fontFamily: 'JetBrainsMono',
-                              fontSize: 9,
-                            ),
-                            activeColor: StackMoneyTheme.mutedGrey,
-                            type: SecurityType.systemLocked,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SecurityText(
-                    StackMoneyString.formatMoney(
-                      doubleValue: _parseCurrentValue(),
-                    ),
-                    type: SecurityType.mask,
-                    style: const TextStyle(
-                      fontFamily: 'JetBrainsMono',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                    ),
-                    activeColor: techColor,
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          if (widget.isExpanded && !isSecureActive) ...[
-            const Divider(
-              color: StackMoneyTheme.background,
-              height: 1,
-              thickness: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildOutlineField(
-                          label: l10n.category,
-                          controller: _categoryController,
-                          focusNode: _categoryFocus,
-                          activeColor: techColor,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildOutlineField(
-                          label: l10n.where,
-                          controller: _whereController,
-                          focusNode: _whereFocus,
-                          activeColor: techColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: _toggleValueSign,
-                        child: Container(
-                          height: 44,
-                          width: 44,
+      child: StackMoneyCard(
+        shadowColor: techColor,
+        removePadding: true,
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                if (isSecureActive) return;
+                widget.onHeaderTap();
+              },
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 4,
+                          height: 24,
                           decoration: BoxDecoration(
-                            color: StackMoneyTheme.surface,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: techColor.withValues(alpha: 0.3),
-                              width: 1,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              _isNegative ? ' - ' : ' + ',
-                              style: TextStyle(
-                                fontFamily: 'Orbitron',
-                                color: techColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
+                            color: _isImmediateLiquidity
+                                ? techColor
+                                : StackMoneyTheme.mutedGrey.withValues(
+                                    alpha: 0.3,
+                                  ),
+                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        flex: 3,
-                        child: _buildOutlineField(
-                          label: l10n.minValue,
-                          controller: _minValueController,
-                          focusNode: _minValueFocus,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [PureDigitCurrencyFormatter()],
-                          activeColor: techColor,
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        const SizedBox(width: AppSizes.x4),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              StackMoneyString.formatTitle(l10n.liquidity),
+                            SecurityText(
+                              StackMoneyString.formatTitle(
+                                _categoryController.text,
+                              ),
                               style: const TextStyle(
                                 fontFamily: 'JetBrainsMono',
-                                color: StackMoneyTheme.mutedGrey,
-                                fontSize: 9,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
+                              type: SecurityType.systemLocked,
                             ),
-                            const SizedBox(height: 4),
-                            _buildLiquiditySwitch(techColor: techColor),
+                            SecurityText(
+                              StackMoneyString.formatTitle(
+                                _whereController.text,
+                              ),
+                              style: const TextStyle(
+                                fontFamily: 'JetBrainsMono',
+                                fontSize: 9,
+                              ),
+                              activeColor: StackMoneyTheme.mutedGrey,
+                              type: SecurityType.systemLocked,
+                            ),
                           ],
                         ),
+                      ],
+                    ),
+                    SecurityText(
+                      StackMoneyString.formatMoney(
+                        doubleValue: _parseCurrentValue(),
                       ),
-                    ],
-                  ),
-                ],
+                      type: SecurityType.mask,
+                      style: const TextStyle(
+                        fontFamily: 'JetBrainsMono',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                      activeColor: techColor,
+                    ),
+                  ],
+                ),
               ),
             ),
+
+            if (widget.isExpanded && !isSecureActive) ...[
+              const Divider(
+                color: StackMoneyTheme.background,
+                height: 1,
+                thickness: 1,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildOutlineField(
+                            label: l10n.category,
+                            controller: _categoryController,
+                            focusNode: _categoryFocus,
+                            activeColor: techColor,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _buildOutlineField(
+                            label: l10n.where,
+                            controller: _whereController,
+                            focusNode: _whereFocus,
+                            activeColor: techColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: _toggleValueSign,
+                          child: Container(
+                            height: 44,
+                            width: 44,
+                            decoration: BoxDecoration(
+                              color: StackMoneyTheme.surface,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: techColor.withValues(alpha: 0.3),
+                                width: 1,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                _isNegative ? ' - ' : ' + ',
+                                style: TextStyle(
+                                  fontFamily: 'Orbitron',
+                                  color: techColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          flex: 3,
+                          child: _buildOutlineField(
+                            label: l10n.minValue,
+                            controller: _minValueController,
+                            focusNode: _minValueFocus,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [PureDigitCurrencyFormatter()],
+                            activeColor: techColor,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                StackMoneyString.formatTitle(l10n.liquidity),
+                                style: const TextStyle(
+                                  fontFamily: 'JetBrainsMono',
+                                  color: StackMoneyTheme.mutedGrey,
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              _buildLiquiditySwitch(techColor: techColor),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
