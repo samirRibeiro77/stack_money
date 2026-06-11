@@ -161,14 +161,14 @@ abstract class AppLocalizations {
   /// Allocation on wallet
   ///
   /// In en, this message translates to:
-  /// **'Alloc: {value}%'**
-  String allocation(Object value);
+  /// **'Allocation: '**
+  String get allocation;
 
   /// Min value for bucket
   ///
   /// In en, this message translates to:
-  /// **'Min: {value}'**
-  String min(Object value);
+  /// **'Min: '**
+  String get min;
 
   /// 3 months filter
   ///
@@ -271,6 +271,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Liquidity'**
   String get liquidity;
+
+  /// Percent signal
+  ///
+  /// In en, this message translates to:
+  /// **'%'**
+  String get percentSignal;
 }
 
 class _AppLocalizationsDelegate

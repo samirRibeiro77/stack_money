@@ -39,14 +39,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allocationBuckets => 'Allocation Buckets';
 
   @override
-  String allocation(Object value) {
-    return 'Alloc: $value%';
-  }
+  String get allocation => 'Allocation: ';
 
   @override
-  String min(Object value) {
-    return 'Min: $value';
-  }
+  String get min => 'Min: ';
 
   @override
   String get threeMonths => '3M';
@@ -101,4 +97,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get liquidity => 'Liquidity';
+
+  @override
+  String get percentSignal => '%';
 }

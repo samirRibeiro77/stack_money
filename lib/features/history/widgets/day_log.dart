@@ -58,7 +58,6 @@ class DayLog extends StatelessWidget {
         ),
         SecurityText(
           StackMoneyString.formatTitle(transaction.where),
-          type: SecurityType.systemLocked,
           style: textTheme.bodySmall,
           activeColor: StackMoneyTheme.mutedGrey,
         ),

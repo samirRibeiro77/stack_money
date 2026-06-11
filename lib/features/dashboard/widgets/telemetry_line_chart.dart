@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -192,7 +193,7 @@ class TelemetryLineChart extends StatelessWidget {
                       doubleValue: value,
                       compact: true,
                     ),
-                    style: textTheme.labelSmall,
+                    style: textTheme.labelSmall?.copyWith(fontSize: AppTypography.fontSmallest),
                   );
                 },
               ),
@@ -210,7 +211,7 @@ class TelemetryLineChart extends StatelessWidget {
                       padding: EdgeInsets.only(top: AppSizes.x3),
                       child: Text(
                         StackMoneyString.formatDate(data[idx].date),
-                        style: textTheme.bodySmall,
+                        style: textTheme.bodySmall?.copyWith(fontSize: AppTypography.fontSmallest),
                       ),
                     );
                   }

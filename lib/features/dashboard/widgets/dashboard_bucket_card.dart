@@ -82,49 +82,59 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SecurityText(
+                        StackMoneyString.formatTitle(widget.parameter.id),
+                        style: textTheme.titleSmall,
+                        type: SecurityType.systemLocked,
+                      ),
+                      const SizedBox(height: AppSizes.x3),
                       Row(
                         children: [
+                          Text(l10n.allocation, style: textTheme.labelSmall),
                           SecurityText(
-                            StackMoneyString.formatTitle(widget.parameter.id),
-                            style: textTheme.titleSmall,
-                            type: SecurityType.systemLocked,
+                            StackMoneyString.formatPercentage(
+                              doubleValue:
+                                  (currentBalance / latestHistory.total) * 100,
+                            ),
+                            style: textTheme.labelSmall,
+                            activeColor: StackMoneyTheme.mutedGrey,
                           ),
-                          const SizedBox(width: AppSizes.x4),
                           if (!isSecureActive)
                             Text(
-                              l10n.allocation(
-                                StackMoneyString.formatPercentage(
-                                  doubleValue:
-                                      (currentBalance / latestHistory.total) *
-                                      100,
-                                ),
-                              ),
+                              l10n.percentSignal,
                               style: textTheme.labelSmall,
                             ),
                         ],
                       ),
-                      const SizedBox(height: AppSizes.x3),
-                      SecurityText(
-                        l10n.min(
-                          StackMoneyString.formatMoney(
-                            doubleValue: widget.parameter.minValue,
-                          ),
-                        ),
-                        style: textTheme.bodySmall,
-                        type: SecurityType.systemLocked,
-                        activeColor: StackMoneyTheme.mutedGrey,
-                        mutedColor: StackMoneyTheme.mutedGrey,
-                      ),
                     ],
                   ),
-                  SecurityText(
-                    StackMoneyString.formatMoney(doubleValue: currentBalance),
-                    type: SecurityType.mask,
-                    style: textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    activeColor: healthColor,
-                    mutedColor: StackMoneyTheme.mutedGrey,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SecurityText(
+                        StackMoneyString.formatMoney(
+                          doubleValue: currentBalance,
+                        ),
+                        type: SecurityType.mask,
+                        style: textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        activeColor: healthColor,
+                      ),
+                      const SizedBox(height: AppSizes.x3),
+                      Row(
+                        children: [
+                          Text(l10n.min, style: textTheme.labelSmall),
+                          SecurityText(
+                            StackMoneyString.formatMoney(
+                              doubleValue: widget.parameter.minValue,
+                            ),
+                            style: textTheme.labelSmall,
+                            activeColor: StackMoneyTheme.mutedGrey,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),

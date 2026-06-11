@@ -10,8 +10,8 @@
   "hiddenValues": "••••••",
   "liquidityBuffer": "Liquidez imediata",
   "allocationBuckets": "Caixinhas",
-  "allocation": "Aloc: {value}%",
-  "min": "Min: {value}",
+  "allocation": "Alocação: ",
+  "min": "Min: ",
   "threeMonths": "3M",
   "sixMonths": "6M",
   "oneYear": "1A",
@@ -28,5 +28,6 @@
   "category": "Categoria",
   "where": "Onde",
   "minValue": "Valor minimo",
-  "liquidity": "Liquidez"
+  "liquidity": "Liquidez",
+  "percentSignal": "%"
 }

@@ -40,11 +40,11 @@
   "@allocationBuckets": {
     "description": "Allocation buckets title"
   },
-  "allocation": "Alloc: {value}%",
+  "allocation": "Allocation: ",
   "@allocation": {
     "description": "Allocation on wallet"
   },
-  "min": "Min: {value}",
+  "min": "Min: ",
   "@min": {
     "description": "Min value for bucket"
   },
@@ -115,5 +115,9 @@
   "liquidity": "Liquidity",
   "@liquidity": {
     "description": "Liquidity"
+  },
+  "percentSignal": "%",
+  "@percentSignal": {
+    "description": "Percent signal"
   }
 }
