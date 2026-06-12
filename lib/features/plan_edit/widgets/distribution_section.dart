@@ -1,0 +1,195 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
+import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/card_initialize_slot.dart';
+import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/data/enum/allocation_type.dart';
+import 'package:stack_money/data/models/salary_plan.dart';
+
+class DistributionSection extends StatelessWidget {
+  final SalaryPlan plan;
+  final VoidCallback onAddSlot;
+  final Function(int index, {String? cat, String? sub, AllocationType? type, double? value, int? targetDay}) onUpdate;
+  final Function(int index) onRemove;
+
+  const DistributionSection({
+    required this.plan,
+    required this.onAddSlot,
+    required this.onUpdate,
+    required this.onRemove,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final availableDays = plan.inflows.where((e) => e.value > 0).map((e) => e.day).toSet().toList();
+    if (availableDays.isEmpty) availableDays.add(5);
+
+    final Color techColor = plan.isOverflowed ? StackMoneyTheme.magentaNeon : StackMoneyTheme.cyanNeon;
+
+    return Column(
+      children: [
+        // ➕ Primeiro Card é o tracejado nativo de inclusão
+        CardInitializeSlot(
+          'ADD_DISTRIBUTION_RULE',
+          onTap: onAddSlot,
+        ),
+        const SizedBox(height: AppSizes.x4),
+
+        ...List.generate(plan.distributions.length, (index) {
+          final row = plan.distributions[index];
+          final double computedValue = plan.calculateRowAbsoluteValue(row);
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: StackMoneyCard(
+              shadowColor: techColor,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          initialValue: row.category,
+                          style: const TextStyle(fontFamily: 'JetBrainsMono', fontSize: 12),
+                          decoration: _buildInputDecoration('CATEGORY'),
+                          onChanged: (val) => onUpdate(index, cat: val),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextFormField(
+                          initialValue: row.subCategory,
+                          style: const TextStyle(fontFamily: 'JetBrainsMono', fontSize: 12),
+                          decoration: _buildInputDecoration('SUBCATEGORY'),
+                          onChanged: (val) => onUpdate(index, sub: val),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete_forever_rounded, color: StackMoneyTheme.magentaNeon, size: 20),
+                        onPressed: () => onRemove(index),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      // Dropdown de Tipo de Distribuição (Fixo, % Líquido, % Bruto)
+                      Expanded(
+                        flex: 3,
+                        child: DropdownButtonFormField<AllocationType>(
+                          value: row.type,
+                          isDense: true,
+                          decoration: _buildInputDecoration('RULE_TYPE'),
+                          dropdownColor: StackMoneyTheme.surface,
+                          items: const [
+                            DropdownMenuItem(value: AllocationType.fixed, child: Text('R\$ FIXED', style: TextStyle(fontSize: 11, fontFamily: 'JetBrainsMono'))),
+                            DropdownMenuItem(value: AllocationType.percentageNet, child: Text('% OF NET', style: TextStyle(fontSize: 11, fontFamily: 'JetBrainsMono'))),
+                            DropdownMenuItem(value: AllocationType.percentageGross, child: Text('% OF GROSS', style: TextStyle(fontSize: 11, fontFamily: 'JetBrainsMono'))),
+                          ],
+                          onChanged: (val) => onUpdate(index, type: val, value: 0.0),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+
+                      // Input do Valor/Percentual
+                      Expanded(
+                        flex: 2,
+                        child: TextFormField(
+                          key: ValueKey('${row.id}_${row.type.name}'),
+                          initialValue: row.value > 0
+                              ? (row.type == AllocationType.fixed
+                              ? StackMoneyString.formatMoney(doubleValue: row.value)
+                              : row.value.toStringAsFixed(0))
+                              : '',
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(fontFamily: 'JetBrainsMono', fontSize: 12),
+                          decoration: _buildInputDecoration(row.type == AllocationType.fixed ? 'VALUE' : 'FACTOR (%)'),
+                          inputFormatters: row.type == AllocationType.fixed ? [PureDigitCurrencyFormatter()] : [FilteringTextInputFormatter.digitsOnly],
+                          onChanged: (val) {
+                            double parsed = double.tryParse(val.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0.0;
+                            if (row.type == AllocationType.fixed) parsed /= 100.0;
+                            onUpdate(index, value: parsed);
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+
+                      // SegmentedButton de Gatilho de Dia
+                      Container(
+                        height: 38,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: Colors.white.withOpacity(0.06)),
+                        ),
+                        child: Row(
+                          children: availableDays.map((d) {
+                            final bool isSelected = row.targetDay == d;
+                            return GestureDetector(
+                              onTap: () => onUpdate(index, targetDay: d),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: isSelected ? techColor.withOpacity(0.15) : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  'D$d',
+                                  style: TextStyle(
+                                    fontFamily: 'Orbitron',
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: isSelected ? techColor : StackMoneyTheme.mutedGrey,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // HUD de Telemetria Interna do Card (Mostra a conversão real em R$ se for %)
+                  if (row.type != AllocationType.fixed) ...[
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'CONVERTED_VALUE: ${StackMoneyString.formatMoney(doubleValue: computedValue)}',
+                          style: const TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.mutedGrey, fontSize: 10, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  InputDecoration _buildInputDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.mutedGrey, fontSize: 9),
+      isDense: true,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(6),
+        borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(6),
+        borderSide: const BorderSide(color: StackMoneyTheme.cyanNeon, width: 1),
+      ),
+    );
+  }
+}

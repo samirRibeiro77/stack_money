@@ -10,12 +10,14 @@ class DismissiblePlanCard extends StatelessWidget {
     this.plan, {
     required this.confirmDismiss,
     required this.onDismissed,
+    required this.onTap,
     super.key,
   });
 
   final SalaryPlan plan;
   final ConfirmDismissCallback confirmDismiss;
   final DismissDirectionCallback onDismissed;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,7 @@ class DismissiblePlanCard extends StatelessWidget {
           size: 24,
         ),
       ),
-      child: PlanListCard(plan),
+      child: PlanListCard(plan, onTap: onTap),
     );
   }
 }

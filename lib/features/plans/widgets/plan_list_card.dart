@@ -12,17 +12,14 @@ import 'package:stack_money/features/plans/widgets/active_plan.dart';
 
 class PlanListCard extends StatelessWidget {
   final SalaryPlan plan;
+  final VoidCallback onTap;
 
-  const PlanListCard(this.plan, {super.key});
+  const PlanListCard(this.plan, {required this.onTap, super.key});
 
   Color get shadowColor {
     if (plan.isActive) return StackMoneyTheme.cyanNeon;
     if (plan.isArchived) return StackMoneyTheme.magentaNeon;
     return Colors.white;
-  }
-
-  void _navigateToDetails() {
-    print('Navigate to plan ${plan.name} details');
   }
 
   @override
@@ -33,7 +30,7 @@ class PlanListCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSizes.x3),
       child: GestureDetector(
-        onTap: _navigateToDetails,
+        onTap: onTap,
         child: StackMoneyCard(
           shadowColor: shadowColor,
           child: Column(

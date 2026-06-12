@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
 class PlansManager {
   final PlanManagementService _service = PlanManagementService();
@@ -18,6 +19,12 @@ class PlansManager {
   ValueListenable<bool> get showArchivedNotifier => _showArchived;
 
   List<SalaryPlan> get plans => _planDeck.value;
+
+  void navigateToPlanDetails(BuildContext context, SalaryPlan plan) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => PlanEditScreen(plan: plan)),
+    ).then((_) => loadFirebasePlans());
+  }
 
   Future<void> loadFirebasePlans() async {
     try {
@@ -35,7 +42,7 @@ class PlansManager {
     _showArchived.value = !_showArchived.value;
   }
 
-  void initializeNewPlanSlot() {
+  void initializeNewPlanSlot(BuildContext context) {
     final newPlan = SalaryPlan.empty(isActive: _planDeck.value.isEmpty);
 
     final updatedList = List<SalaryPlan>.from(_planDeck.value)
@@ -43,6 +50,7 @@ class PlansManager {
     _planDeck.value = updatedList;
 
     _service.saveSalaryPlan(newPlan);
+    navigateToPlanDetails(context, newPlan);
   }
 
   /// 📦 INTERCEPTOR DE ARQUIVAMENTO OTIMISTA: UI atualiza no mesmo milissegundo do gesto

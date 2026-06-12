@@ -82,7 +82,7 @@ class _PlansScreenState extends State<PlansScreen> {
 
             CardInitializeSlot(
               l10n.newPlan,
-              onTap: _manager.initializeNewPlanSlot,
+              onTap: () => _manager.initializeNewPlanSlot(context),
             ),
             const SizedBox(height: AppSizes.x3),
 
@@ -90,6 +90,7 @@ class _PlansScreenState extends State<PlansScreen> {
               final plan = filteredList[index];
               return DismissiblePlanCard(
                 plan,
+                onTap: () => _manager.navigateToPlanDetails(context, plan),
                 confirmDismiss: (direction) async {
                   if (direction == DismissDirection.endToStart) {
                     return await _manager.showTerminalConfirmDialog(plan.name, context);
