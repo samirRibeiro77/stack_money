@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:uuid/uuid.dart';
 
 class PlansManager {
   final PlanManagementService _service = PlanManagementService();
@@ -37,18 +36,7 @@ class PlansManager {
   }
 
   void initializeNewPlanSlot() {
-    final newUuid = const Uuid().v4();
-    final newPlan = SalaryPlan(
-      id: newUuid,
-      name: 'New plan',
-      isActive: _planDeck.value.isEmpty,
-      isArchived: false,
-      sortOrder: 0,
-      createdAt: DateTime.now(),
-      inflows: [],
-      outflows: [],
-      distributions: [],
-    );
+    final newPlan = SalaryPlan.empty(isActive: _planDeck.value.isEmpty);
 
     final updatedList = List<SalaryPlan>.from(_planDeck.value)
       ..insert(0, newPlan);

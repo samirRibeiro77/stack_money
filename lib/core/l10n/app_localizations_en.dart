@@ -106,4 +106,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newPlan => 'Add new plan';
+
+  @override
+  String get activePlan => 'Active plan';
+
+  @override
+  String get grossRevenue => 'Gross Revenue';
+
+  @override
+  String get remainingRest => 'Remaining Rest';
 }

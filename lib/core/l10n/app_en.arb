@@ -127,5 +127,17 @@
   "newPlan": "Add new plan",
   "@newPlan": {
     "description": "Add new plan slot text"
+  },
+  "activePlan": "Active plan",
+  "@activePlan": {
+    "description": "Active plan tag"
+  },
+  "grossRevenue": "Gross Revenue",
+  "@grossRevenue": {
+    "description": "Gross Revenue text"
+  },
+  "remainingRest": "Remaining Rest",
+  "@remainingRest": {
+    "description": "Remaining Rest text"
   }
 }

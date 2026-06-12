@@ -106,4 +106,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get newPlan => 'Adicionar novo plano';
+
+  @override
+  String get activePlan => 'Plano ativo';
+
+  @override
+  String get grossRevenue => 'Salário Bruto';
+
+  @override
+  String get remainingRest => 'Restante livre';
 }

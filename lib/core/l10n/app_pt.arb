@@ -31,5 +31,8 @@
   "liquidity": "Liquidez",
   "percentSignal": "%",
   "plansConfig": "Configurações dos planos",
-  "newPlan": "Adicionar novo plano"
+  "newPlan": "Adicionar novo plano",
+  "activePlan": "Plano ativo",
+  "grossRevenue": "Salário Bruto",
+  "remainingRest": "Restante livre"
 }

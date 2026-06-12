@@ -2,13 +2,13 @@ import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/models/inflow_row.dart';
 import 'package:stack_money/data/models/outflow_row.dart';
 import 'package:stack_money/data/models/distribution_row.dart';
+import 'package:uuid/uuid.dart';
 
 class SalaryPlan {
   final String id;
   final String name;
   final bool isActive;
-  final bool isArchived; // 🔥 PONTO 1: Sinalizador de arquivamento lógico
-  final int sortOrder;   // 🔥 PONTO 3 & 5: Index de ordenação manual para o ReorderableListView
+  final bool isArchived;
   final DateTime createdAt;
   final List<InflowRow> inflows;
   final List<OutflowRow> outflows;
@@ -19,12 +19,24 @@ class SalaryPlan {
     required this.name,
     required this.isActive,
     required this.isArchived,
-    required this.sortOrder,
     required this.createdAt,
     required this.inflows,
     required this.outflows,
     required this.distributions,
   });
+
+  factory SalaryPlan.empty({bool? isActive}) {
+    return SalaryPlan(
+      id: Uuid().v4(),
+      name: 'New plan',
+      isActive: isActive ?? false,
+      isArchived: false,
+      createdAt: DateTime.now(),
+      inflows: [],
+      outflows: [],
+      distributions: [],
+    );
+  }
 
   // --- 📐 MOTOR MATEMÁTICO DE TELEMETRIA EM TEMPO REAL ---
 
@@ -69,7 +81,6 @@ class SalaryPlan {
       'name': name,
       'is_active': isActive,
       'is_archived': isArchived,
-      'sort_order': sortOrder,
       'created_at': createdAt.toIso8601String(),
       'inflows': inflows.map((e) => e.toJson()).toList(),
       'outflows': outflows.map((e) => e.toJson()).toList(),
@@ -83,7 +94,6 @@ class SalaryPlan {
       name: json['name'] as String,
       isActive: json['is_active'] as bool? ?? false,
       isArchived: json['is_archived'] as bool? ?? false,
-      sortOrder: json['sort_order'] as int? ?? 0,
       createdAt: DateTime.parse(json['created_at'] as String),
       inflows: (json['inflows'] as List<dynamic>?)
           ?.map((e) => InflowRow.fromJson(e as Map<String, dynamic>))
@@ -114,7 +124,6 @@ class SalaryPlan {
       name: name ?? this.name,
       isActive: isActive ?? this.isActive,
       isArchived: isArchived ?? this.isArchived,
-      sortOrder: sortOrder ?? this.sortOrder,
       createdAt: createdAt ?? this.createdAt,
       inflows: inflows ?? this.inflows,
       outflows: outflows ?? this.outflows,

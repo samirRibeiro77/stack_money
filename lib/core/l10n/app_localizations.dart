@@ -289,6 +289,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add new plan'**
   String get newPlan;
+
+  /// Active plan tag
+  ///
+  /// In en, this message translates to:
+  /// **'Active plan'**
+  String get activePlan;
+
+  /// Gross Revenue text
+  ///
+  /// In en, this message translates to:
+  /// **'Gross Revenue'**
+  String get grossRevenue;
+
+  /// Remaining Rest text
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining Rest'**
+  String get remainingRest;
 }
 
 class _AppLocalizationsDelegate
