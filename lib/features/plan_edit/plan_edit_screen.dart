@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/plan_status.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/manager/plan_edit_manager.dart';
+import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
 import 'package:stack_money/features/plan_edit/widgets/inflow_section.dart';
 import 'package:stack_money/features/plan_edit/widgets/outflow_section.dart';
 import 'package:stack_money/features/plan_edit/widgets/net_salary_sticky_hud.dart';
@@ -28,54 +31,36 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      backgroundColor: StackMoneyTheme.background,
       appBar: AppBar(
-        backgroundColor: StackMoneyTheme.background,
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: StackMoneyTheme.platinumSilver, size: 20),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: AppSizes.x10,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
 
         // 🔥 MELHORIA 1.1: Título Transformado em campo de texto editável direto na barra
-        title: TextFormField(
-          initialValue: _manager.currentPlan.name,
-          style: const TextStyle(fontFamily: 'Orbitron', fontSize: 15, fontWeight: FontWeight.bold, color: StackMoneyTheme.platinumSilver),
-          decoration: InputDecoration(
-            border: InputBorder.none,       // Remove a borda padrão de erro/desabilitado
-            enabledBorder: InputBorder.none,// Sem borda quando o campo está ocioso
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: StackMoneyTheme.cyanNeon, // Cor da linha ao clicar
-                width: 1.0,                            // Espessura da linha
-              ),
-            ),
-            filled: false,                  // Garante que não haverá cor de fundo
-            isDense: true,                  // Compacta o espaço interno do campo
-            contentPadding: const EdgeInsets.symmetric(vertical: 8.0), // Ajusta o respiro acima da linha
-          ),
-          onChanged: _manager.updatePlanName,
+        title: EditableTitle(
+          _manager.currentPlan.name,
+          onSave: (newName) => _manager.updatePlanName(newName),
         ),
         centerTitle: false,
         actions: [
           ValueListenableBuilder<SalaryPlan>(
             valueListenable: _manager.planNotifier,
             builder: (context, currentPlan, _) {
-              if (currentPlan.isActive) {
-                return const Padding(
-                  padding: EdgeInsets.only(right: 16.0),
-                  child: Center(child: Text('[ ACTIVE ]', style: TextStyle(fontFamily: 'Orbitron', color: StackMoneyTheme.cyanNeon, fontSize: 10, fontWeight: FontWeight.bold))),
-                );
-              }
-
-              // 🔥 MELHORIA 1.2: Botão inerte/inativo rebaixado para cor fosca Platinum sem o ciano neon chamativo
-              return TextButton(
-                onPressed: () async {
-                  await _manager.triggerPlanActivation();
-                  if (context.mounted) Navigator.of(context).pop();
-                },
-                child: const Text('[ SET_ACTIVE ]', style: TextStyle(fontFamily: 'Orbitron', color: StackMoneyTheme.platinumSilver, fontSize: 11)),
+              return PlanStatus(
+                currentPlan.isActive ? l10n.activePlan : l10n.setActive,
+                color: currentPlan.isActive
+                    ? StackMoneyTheme.cyanNeon
+                    : StackMoneyTheme.mutedGrey,
+                onTap: currentPlan.isActive
+                    ? null
+                    : () async => await _manager.triggerPlanActivation(),
               );
             },
           ),
@@ -85,7 +70,9 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
         valueListenable: _manager.planNotifier,
         builder: (context, currentPlan, child) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSizes.x8,
+            ),
             child: CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
@@ -96,7 +83,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                     onRemove: _manager.removeInflow,
                   ),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x8)),
+                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),
 
                 SliverToBoxAdapter(
                   child: OutflowSection(
@@ -105,13 +92,13 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                     onRemove: _manager.removeOutflow,
                   ),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x8)),
+                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),
 
                 SliverPersistentHeader(
                   pinned: true,
                   delegate: NetSalaryStickyHud(plan: currentPlan),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x8)),
+                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),
 
                 SliverToBoxAdapter(
                   child: DistributionSection(
@@ -121,7 +108,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                     onRemove: _manager.removeDistribution,
                   ),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: 120)),
+                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x30)),
               ],
             ),
           );

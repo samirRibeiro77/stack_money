@@ -132,6 +132,10 @@
   "@activePlan": {
     "description": "Active plan tag"
   },
+  "setActive": "Set active",
+  "@setActive": {
+    "description": "Set active tag"
+  },
   "grossRevenue": "Gross Revenue",
   "@grossRevenue": {
     "description": "Gross Revenue text"

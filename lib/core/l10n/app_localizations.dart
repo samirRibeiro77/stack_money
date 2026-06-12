@@ -296,6 +296,12 @@ abstract class AppLocalizations {
   /// **'Active plan'**
   String get activePlan;
 
+  /// Set active tag
+  ///
+  /// In en, this message translates to:
+  /// **'Set active'**
+  String get setActive;
+
   /// Gross Revenue text
   ///
   /// In en, this message translates to:

@@ -8,7 +8,7 @@ import 'package:stack_money/core/widgets/security_text.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
-import 'package:stack_money/features/plans/widgets/active_plan.dart';
+import 'package:stack_money/core/widgets/plan_status.dart';
 
 class PlanListCard extends StatelessWidget {
   final SalaryPlan plan;
@@ -45,7 +45,7 @@ class PlanListCard extends StatelessWidget {
                     type: SecurityType.systemLocked,
                   ),
                   if (plan.isActive)
-                    ActivePlan(),
+                    PlanStatus(l10n.activePlan),
                 ],
               ),
               const Divider(),
