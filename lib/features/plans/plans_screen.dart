@@ -133,13 +133,13 @@ class _PlansScreenState extends State<PlansScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         decoration: BoxDecoration(
           color: plan.isArchived
-              ? StackMoneyTheme.cyanNeon.withOpacity(0.12)
-              : StackMoneyTheme.mutedGrey.withOpacity(0.12),
+              ? StackMoneyTheme.cyanNeon.withValues(alpha: 0.12)
+              : StackMoneyTheme.mutedGrey.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
           border: Border.all(
             color: plan.isArchived
-                ? StackMoneyTheme.cyanNeon.withOpacity(0.3)
-                : StackMoneyTheme.mutedGrey.withOpacity(0.3),
+                ? StackMoneyTheme.cyanNeon.withValues(alpha: 0.3)
+                : StackMoneyTheme.mutedGrey.withValues(alpha: 0.3),
             width: 0.5,
           ),
         ),
@@ -156,10 +156,10 @@ class _PlansScreenState extends State<PlansScreen> {
         margin: const EdgeInsets.symmetric(vertical: 6.0),
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         decoration: BoxDecoration(
-          color: StackMoneyTheme.magentaNeon.withOpacity(0.12),
+          color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
           border: Border.all(
-            color: StackMoneyTheme.magentaNeon.withOpacity(0.3),
+            color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.3),
             width: 0.5,
           ),
         ),

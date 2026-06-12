@@ -51,7 +51,7 @@ class PlanListCard extends StatelessWidget {
                         vertical: 2,
                       ),
                       decoration: BoxDecoration(
-                        color: StackMoneyTheme.cyanNeon.withOpacity(0.1),
+                        color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4),
                         border: Border.all(
                           color: StackMoneyTheme.cyanNeon,
