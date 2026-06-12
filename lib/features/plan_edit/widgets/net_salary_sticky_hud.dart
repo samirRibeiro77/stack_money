@@ -32,7 +32,7 @@ class NetSalaryStickyHud extends SliverPersistentHeaderDelegate {
         decoration: BoxDecoration(
           color: StackMoneyTheme.surface,
           borderRadius: BorderRadius.circular(percent > 0.8 ? 8 : 12),
-          border: Border.all(color: techColor.withOpacity(0.15), width: 0.5),
+          border: Border.all(color: techColor.withValues(alpha: 0.15), width: 0.5),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +78,7 @@ class NetSalaryStickyHud extends SliverPersistentHeaderDelegate {
               child: LinearProgressIndicator(
                 value: allocatedPercentage,
                 minHeight: 4,
-                backgroundColor: Colors.white.withOpacity(0.05),
+                backgroundColor: Colors.white.withValues(alpha: 0.05),
                 color: techColor,
               ),
             ),

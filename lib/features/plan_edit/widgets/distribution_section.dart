@@ -42,7 +42,7 @@ class DistributionSection extends StatelessWidget {
             background: Container(
               margin: const EdgeInsets.symmetric(vertical: 4.0),
               padding: const EdgeInsets.only(right: 20),
-              decoration: BoxDecoration(color: StackMoneyTheme.magentaNeon.withOpacity(0.12), borderRadius: BorderRadius.circular(8)),
+              decoration: BoxDecoration(color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(8)),
               alignment: Alignment.centerRight,
               child: const Icon(Icons.delete_sweep_rounded, color: StackMoneyTheme.magentaNeon, size: 24),
             ),
@@ -83,7 +83,7 @@ class DistributionSection extends StatelessWidget {
                         Expanded(
                           flex: 3,
                           child: DropdownButtonFormField<AllocationType>(
-                            value: row.type,
+                            initialValue: row.type,
                             isDense: true,
                             decoration: _buildInputDecoration('RULE_TYPE'),
                             dropdownColor: StackMoneyTheme.surface,
@@ -116,7 +116,7 @@ class DistributionSection extends StatelessWidget {
                         Container(
                           height: 38,
                           padding: const EdgeInsets.symmetric(horizontal: 4),
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), border: Border.all(color: Colors.white.withOpacity(0.06))),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), border: Border.all(color: Colors.white.withValues(alpha: 0.06))),
                           child: Row(
                             children: availableDays.map((d) {
                               final bool isSelected = row.targetDay == d;
@@ -124,7 +124,7 @@ class DistributionSection extends StatelessWidget {
                                 onTap: () => onUpdate(index, targetDay: d),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                                  decoration: BoxDecoration(color: isSelected ? techColor.withOpacity(0.15) : Colors.transparent, borderRadius: BorderRadius.circular(4)),
+                                  decoration: BoxDecoration(color: isSelected ? techColor.withValues(alpha: 0.15) : Colors.transparent, borderRadius: BorderRadius.circular(4)),
                                   child: Text('D$d', style: TextStyle(fontFamily: 'WithValues', fontSize: 10, fontWeight: FontWeight.bold, color: isSelected ? techColor : StackMoneyTheme.mutedGrey)),
                                 ),
                               );
@@ -161,7 +161,7 @@ class DistributionSection extends StatelessWidget {
       labelStyle: const TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.mutedGrey, fontSize: 9),
       isDense: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Colors.white.withOpacity(0.06))),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.06))),
       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: StackMoneyTheme.cyanNeon, width: 1)),
     );
   }

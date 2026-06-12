@@ -71,7 +71,7 @@ class InflowSection extends StatelessWidget {
                       SizedBox(
                         width: 105,
                         child: DropdownButtonFormField<InflowType>(
-                          value: row.type,
+                          initialValue: row.type,
                           isDense: true,
                           decoration: _buildInputDecoration('TYPE'),
                           dropdownColor: StackMoneyTheme.surface,
@@ -93,7 +93,7 @@ class InflowSection extends StatelessWidget {
                               : '',
                           keyboardType: TextInputType.number,
                           style: const TextStyle(fontFamily: 'JetBrainsMono', fontSize: 12),
-                          decoration: _buildInputDecoration(row.type == InflowType.fixed ? 'VAL (R\)' : 'FACTOR (%)'),
+                          decoration: _buildInputDecoration(row.type == InflowType.fixed ? 'VAL (R)' : 'FACTOR (%)'),
                           inputFormatters: row.type == InflowType.fixed ? [MoneyInputFormatter()] : [],
                           onChanged: (val) {
                             double parsed = double.tryParse(val.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0.0;
@@ -108,7 +108,7 @@ class InflowSection extends StatelessWidget {
                       SizedBox(
                         width: 80,
                         child: DropdownButtonFormField<int>(
-                          value: row.day.clamp(0, 31),
+                          initialValue: row.day.clamp(0, 31),
                           isDense: true,
                           decoration: _buildInputDecoration('DAY'),
                           dropdownColor: StackMoneyTheme.surface,
@@ -150,7 +150,7 @@ class InflowSection extends StatelessWidget {
       labelStyle: const TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.mutedGrey, fontSize: 9),
       isDense: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Colors.white.withOpacity(0.06))),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.06))),
       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: StackMoneyTheme.cyanNeon, width: 1)),
     );
   }

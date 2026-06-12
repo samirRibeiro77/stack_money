@@ -51,9 +51,9 @@ class OutflowSection extends StatelessWidget {
               margin: const EdgeInsets.symmetric(vertical: 4.0),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.01),
+                  color: Colors.white.withValues(alpha: 0.01),
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: Colors.white.withOpacity(0.03))
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.03))
               ),
               child: Column(
                 children: [
@@ -72,7 +72,7 @@ class OutflowSection extends StatelessWidget {
                       SizedBox(
                         width: 80,
                         child: DropdownButtonFormField<int>(
-                          value: availableDays.contains(row.targetDay) ? row.targetDay : availableDays.first,
+                          initialValue: availableDays.contains(row.targetDay) ? row.targetDay : availableDays.first,
                           isDense: true,
                           decoration: _buildInputDecoration('TARGET'),
                           dropdownColor: StackMoneyTheme.surface,
@@ -94,7 +94,7 @@ class OutflowSection extends StatelessWidget {
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<DeductionType>(
-                          value: row.type,
+                          initialValue: row.type,
                           isDense: true,
                           decoration: _buildInputDecoration('RULE_TYPE'),
                           dropdownColor: StackMoneyTheme.surface,
@@ -112,7 +112,7 @@ class OutflowSection extends StatelessWidget {
                           initialValue: row.value > 0 ? (row.type == DeductionType.fixed ? StackMoneyString.formatMoney(doubleValue: row.value) : row.value.toStringAsFixed(0)) : '',
                           keyboardType: TextInputType.number,
                           style: const TextStyle(fontFamily: 'JetBrainsMono', fontSize: 12),
-                          decoration: _buildInputDecoration(row.type == DeductionType.fixed ? 'VAL (R\)' : 'FACTOR (%)'),
+                          decoration: _buildInputDecoration(row.type == DeductionType.fixed ? 'VAL (R)' : 'FACTOR (%)'),
                           inputFormatters: row.type == DeductionType.fixed ? [MoneyInputFormatter()] : [],
                           onChanged: (val) {
                             double parsed = double.tryParse(val.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0.0;
@@ -143,7 +143,7 @@ class OutflowSection extends StatelessWidget {
       labelStyle: const TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.mutedGrey, fontSize: 9),
       isDense: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Colors.white.withOpacity(0.06))),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.06))),
       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: StackMoneyTheme.cyanNeon, width: 1)),
     );
   }
