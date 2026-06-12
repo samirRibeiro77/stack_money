@@ -12,25 +12,24 @@ class PlanListCard extends StatelessWidget {
   final SalaryPlan plan;
   final VoidCallback onTap;
 
-  const PlanListCard({
-    required this.plan,
-    required this.onTap,
-    super.key,
-  });
+  const PlanListCard({required this.plan, required this.onTap, super.key});
+
+  Color get shadowColor {
+    if (plan.isActive) return StackMoneyTheme.cyanNeon;
+    if (plan.isArchived) return StackMoneyTheme.magentaNeon;
+    return Colors.white;
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-
-    // 🔥 PONTO 1.3: Se o plano for o ativo do cockpit, acende em Ciano, senão aplica o sóbrio MutedGrey
-    final Color highlightColor = plan.isActive ? StackMoneyTheme.cyanNeon : StackMoneyTheme.mutedGrey;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: GestureDetector(
         onTap: onTap,
         child: StackMoneyCard(
-          shadowColor: highlightColor,
+          shadowColor: shadowColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -47,11 +46,17 @@ class PlanListCard extends StatelessWidget {
                   ),
                   if (plan.isActive)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: StackMoneyTheme.cyanNeon.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(4),
-                        border: Border.all(color: StackMoneyTheme.cyanNeon, width: 0.5),
+                        border: Border.all(
+                          color: StackMoneyTheme.cyanNeon,
+                          width: 0.5,
+                        ),
                       ),
                       child: const Text(
                         '[ ACTIVE_SYSTEM ]',
@@ -78,13 +83,21 @@ class PlanListCard extends StatelessWidget {
                     children: [
                       const Text(
                         'GROSS_REVENUE',
-                        style: TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.mutedGrey, fontSize: 9),
+                        style: TextStyle(
+                          fontFamily: 'JetBrainsMono',
+                          color: StackMoneyTheme.mutedGrey,
+                          fontSize: 9,
+                        ),
                       ),
                       const SizedBox(height: 2),
                       SecurityText(
-                        StackMoneyString.formatMoney(doubleValue: plan.totalGrossSalary),
+                        StackMoneyString.formatMoney(
+                          doubleValue: plan.totalGrossSalary,
+                        ),
                         type: SecurityType.mask,
-                        style: textTheme.bodyMedium?.copyWith(fontFamily: 'JetBrainsMono'),
+                        style: textTheme.bodyMedium?.copyWith(
+                          fontFamily: 'JetBrainsMono',
+                        ),
                         activeColor: StackMoneyTheme.platinumSilver,
                       ),
                     ],
@@ -94,17 +107,25 @@ class PlanListCard extends StatelessWidget {
                     children: [
                       const Text(
                         'REMAINING_REST',
-                        style: TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.mutedGrey, fontSize: 9),
+                        style: TextStyle(
+                          fontFamily: 'JetBrainsMono',
+                          color: StackMoneyTheme.mutedGrey,
+                          fontSize: 9,
+                        ),
                       ),
                       const SizedBox(height: 2),
                       SecurityText(
-                        StackMoneyString.formatMoney(doubleValue: plan.remainingRest),
+                        StackMoneyString.formatMoney(
+                          doubleValue: plan.remainingRest,
+                        ),
                         type: SecurityType.mask,
                         style: textTheme.bodyMedium?.copyWith(
                           fontFamily: 'JetBrainsMono',
                           fontWeight: FontWeight.bold,
                         ),
-                        activeColor: plan.isOverflowed ? StackMoneyTheme.magentaNeon : StackMoneyTheme.cyanNeon,
+                        activeColor: plan.isOverflowed
+                            ? StackMoneyTheme.magentaNeon
+                            : StackMoneyTheme.cyanNeon,
                       ),
                     ],
                   ),

@@ -10,16 +10,20 @@ class PlansManager {
 
   final ValueNotifier<List<SalaryPlan>> _planDeck = ValueNotifier([]);
   final ValueNotifier<bool> _isLoading = ValueNotifier(true);
+  final ValueNotifier<bool> _showArchived = ValueNotifier(false);
 
   ValueListenable<bool> get isLoading => _isLoading;
+
   ValueListenable<List<SalaryPlan>> get planDeckNotifier => _planDeck;
+
+  ValueListenable<bool> get showArchivedNotifier => _showArchived;
 
   List<SalaryPlan> get plans => _planDeck.value;
 
   Future<void> loadFirebasePlans() async {
     try {
       _isLoading.value = true;
-      final data = await _service.getActiveSalaryPlans();
+      final data = await _service.getAllSalaryPlans();
       _planDeck.value = data;
       _isLoading.value = false;
     } catch (e) {
@@ -28,13 +32,16 @@ class PlansManager {
     }
   }
 
-  /// ➕ MATRIX PLAN INSERTION: Cria um plano fantasma com UUID nativo e joga no topo
+  void toggleShowArchived() {
+    _showArchived.value = !_showArchived.value;
+  }
+
   void initializeNewPlanSlot() {
     final newUuid = const Uuid().v4();
     final newPlan = SalaryPlan(
       id: newUuid,
       name: 'New plan',
-      isActive: _planDeck.value.isEmpty, // Se for o primeiro do app, nasce ativo
+      isActive: _planDeck.value.isEmpty,
       isArchived: false,
       sortOrder: 0,
       createdAt: DateTime.now(),
@@ -43,86 +50,59 @@ class PlansManager {
       distributions: [],
     );
 
-    // Como as regras determinam reordenação sequencial, empurra os antigos para baixo
-    final updatedList = List<SalaryPlan>.from(_planDeck.value);
+    final updatedList = List<SalaryPlan>.from(_planDeck.value)
+      ..insert(0, newPlan);
+    _planDeck.value = updatedList;
 
-    // Se o novo for ativo, desativa o antigo topo localmente antes de salvar
-    if (newPlan.isActive && updatedList.isNotEmpty) {
-      updatedList[0] = updatedList[0].copyWith(isActive: false);
-    }
-
-    updatedList.insert(0, newPlan);
-
-    // Corrige os índices numéricos de sort_order das linhas remanescentes
-    final List<SalaryPlan> sequentialList = [];
-    for (int i = 0; i < updatedList.length; i++) {
-      sequentialList.add(updatedList[i].copyWith(sortOrder: i));
-    }
-
-    _planDeck.value = sequentialList;
     _service.saveSalaryPlan(newPlan);
   }
 
-  /// 🔄 INTERCEPTOR DE REORDER: Recomputa os índices e ativa o novo topo
-  Future<void> handlePlansReorder(int oldIndex, int newIndex) async {
-    // Preserva o estado atual em memória local e atualiza a viewport instantaneamente
-    final previousState = _planDeck.value;
+  /// 📦 INTERCEPTOR DE ARQUIVAMENTO OTIMISTA: UI atualiza no mesmo milissegundo do gesto
+  Future<void> archivePlan(String id, bool currentIsArchived) async {
+    final bool nextState = !currentIsArchived;
 
-    try {
-      final fullyUpdatedList = await _service.processPlansReorder(
-        currentList: _planDeck.value,
-        oldIndex: oldIndex,
-        newIndex: newIndex,
+    // 1. Mutação instantânea da memória local para liberar o frame do Flutter
+    final updatedList = List<SalaryPlan>.from(_planDeck.value);
+    final index = updatedList.indexWhere((p) => p.id == id);
+    if (index != -1) {
+      updatedList[index] = updatedList[index].copyWith(
+        isArchived: nextState,
+        isActive: nextState ? false : updatedList[index].isActive,
       );
-      _planDeck.value = fullyUpdatedList;
-    } catch (e) {
-      debugPrint('DEBUG_SYSTEM [PlansManager]: Reorder processing failed. Restoring rollback state.');
-      _planDeck.value = previousState;
+      _planDeck.value = updatedList;
     }
-  }
 
-  /// 📦 PROTOCOLO ARCHIVE (Swipe Esquerda -> Direita)
-  Future<void> archivePlan(String id) async {
     try {
-      await _service.archiveSalaryPlan(id);
-      _removePlanFromViewport(id);
+      // 2. Sincronização em background com o Cloud Firestore
+      await _service.toggleArchiveSalaryPlan(id, nextState);
     } catch (e) {
       debugPrint('DEBUG_SYSTEM [PlansManager]: Archive operation fail -> $e');
+      // Rollback tático de segurança se houver queda crítica de conexão
       loadFirebasePlans();
     }
   }
 
-  /// 🗑️ PROTOCOLO PURGE PERMANENTE (Swipe Direita -> Esquerda)
+  /// 🗑️ INTERCEPTOR DE EXPAREDO PROTOCOLO PURGE OTIMISTA
   Future<void> purgePlan(String id) async {
+    // 1. Remove da tela imediatamente sem travar esperando a rede
+    final updatedList = List<SalaryPlan>.from(_planDeck.value);
+    updatedList.removeWhere((p) => p.id == id);
+    _planDeck.value = updatedList;
+
     try {
+      // 2. Executa a deleção física no cluster Firebase
       await _service.purgeSalaryPlan(id);
-      _removePlanFromViewport(id);
     } catch (e) {
       debugPrint('DEBUG_SYSTEM [PlansManager]: Purge operation fail -> $e');
       loadFirebasePlans();
     }
   }
 
-  void _removePlanFromViewport(String id) {
-    final updatedList = List<SalaryPlan>.from(_planDeck.value);
-    final index = updatedList.indexWhere((p) => p.id == id);
-    if (index != -1) {
-      updatedList.removeAt(index);
-
-      // Recalcula o sequenciamento numérico restante para não deixar buracos no sort_order
-      final List<SalaryPlan> sequentialList = [];
-      for (int i = 0; i < updatedList.length; i++) {
-        bool shouldBeActive = updatedList[i].isActive;
-        if (i == 0) shouldBeActive = true; // Se o topo antigo sumiu, o próximo assume
-
-        sequentialList.add(updatedList[i].copyWith(sortOrder: i, isActive: shouldBeActive));
-      }
-      _planDeck.value = sequentialList;
-    }
-  }
-
   /// 🚨 DIALOG TERMINAL CONFIRM
-  Future<bool?> showTerminalConfirmDialog(String planName, BuildContext context) {
+  Future<bool?> showTerminalConfirmDialog(
+    String planName,
+    BuildContext context,
+  ) {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
@@ -131,21 +111,51 @@ class PlansManager {
           backgroundColor: StackMoneyTheme.surface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
-            side: const BorderSide(color: StackMoneyTheme.magentaNeon, width: 0.5),
+            side: const BorderSide(
+              color: StackMoneyTheme.magentaNeon,
+              width: 0.5,
+            ),
           ),
-          title: const Text('[SYSTEM_WARNING]', style: TextStyle(fontFamily: 'Orbitron', color: StackMoneyTheme.magentaNeon, fontSize: 14)),
+          title: const Text(
+            '[SYSTEM_WARNING]',
+            style: TextStyle(
+              fontFamily: 'Orbitron',
+              color: StackMoneyTheme.magentaNeon,
+              fontSize: 14,
+            ),
+          ),
           content: Text(
             'EXECUTE PURGE PROTOCOL ON SALARY PLAN:\n"${planName.toUpperCase()}"?\n\nALL FORECAST ALIGNMENTS WILL BE EXPURGED.',
-            style: const TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.platinumSilver, fontSize: 11, height: 1.5),
+            style: const TextStyle(
+              fontFamily: 'JetBrainsMono',
+              color: StackMoneyTheme.platinumSilver,
+              fontSize: 11,
+              height: 1.5,
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('[CANCEL]', style: TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.mutedGrey, fontSize: 12)),
+              child: const Text(
+                '[CANCEL]',
+                style: TextStyle(
+                  fontFamily: 'JetBrainsMono',
+                  color: StackMoneyTheme.mutedGrey,
+                  fontSize: 12,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('[PURGE_DATA]', style: TextStyle(fontFamily: 'JetBrainsMono', color: StackMoneyTheme.magentaNeon, fontSize: 12, fontWeight: FontWeight.bold)),
+              child: const Text(
+                '[PURGE_DATA]',
+                style: TextStyle(
+                  fontFamily: 'JetBrainsMono',
+                  color: StackMoneyTheme.magentaNeon,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         );

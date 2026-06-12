@@ -277,6 +277,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'%'**
   String get percentSignal;
+
+  /// Plans Config title
+  ///
+  /// In en, this message translates to:
+  /// **'Plans Config'**
+  String get plansConfig;
+
+  /// Add new plan slot text
+  ///
+  /// In en, this message translates to:
+  /// **'Add new plan'**
+  String get newPlan;
 }
 
 class _AppLocalizationsDelegate

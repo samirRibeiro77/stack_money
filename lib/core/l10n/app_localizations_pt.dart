@@ -81,7 +81,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get cancel => 'Cancelar';
 
   @override
-  String get bucketsConfig => 'Configuração Das Caixinhas';
+  String get bucketsConfig => 'Configuração das Caixinhas';
 
   @override
   String get newBucket => 'Adicionar nova caixinha';
@@ -100,4 +100,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get percentSignal => '%';
+
+  @override
+  String get plansConfig => 'Configurações dos planos';
+
+  @override
+  String get newPlan => 'Adicionar novo plano';
 }

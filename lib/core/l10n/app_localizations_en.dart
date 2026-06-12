@@ -100,4 +100,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get percentSignal => '%';
+
+  @override
+  String get plansConfig => 'Plans Config';
+
+  @override
+  String get newPlan => 'Add new plan';
 }

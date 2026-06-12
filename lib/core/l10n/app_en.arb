@@ -119,5 +119,13 @@
   "percentSignal": "%",
   "@percentSignal": {
     "description": "Percent signal"
+  },
+  "plansConfig": "Plans Config",
+  "@plansConfig": {
+    "description": "Plans Config title"
+  },
+  "newPlan": "Add new plan",
+  "@newPlan": {
+    "description": "Add new plan slot text"
   }
 }

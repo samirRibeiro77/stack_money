@@ -23,11 +23,13 @@
   "auditLogs": "Auditoria",
   "securityBiometricReason": "Autentique-se para visualizar seus dados sensíveis e saldos.",
   "cancel": "Cancelar",
-  "bucketsConfig": "Configuração Das Caixinhas",
+  "bucketsConfig": "Configuração das Caixinhas",
   "newBucket": "Adicionar nova caixinha",
   "category": "Categoria",
   "where": "Onde",
   "minValue": "Valor minimo",
   "liquidity": "Liquidez",
-  "percentSignal": "%"
+  "percentSignal": "%",
+  "plansConfig": "Configurações dos planos",
+  "newPlan": "Adicionar novo plano"
 }

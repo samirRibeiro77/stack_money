@@ -28,7 +28,6 @@ class _PlansScreenState extends State<PlansScreen> {
   }
 
   void _navigateToDetails(SalaryPlan plan) {
-    // 🛸 Encaminha para a tela fullscreen futura de edição (Create/Edit Plan Screen)
     debugPrint(
       '🛸 [NAVIGATION] -> Routing to target fullscreen editor for: ${plan.id}',
     );
@@ -63,120 +62,96 @@ class _PlansScreenState extends State<PlansScreen> {
   Widget _buildPlansContent(AppLocalizations l10n, List<SalaryPlan> planList) {
     final isSecureActive = SecurityProvider.isSecureOf(context);
 
-    // Separando de forma limpa o card ativo de liderança dos remanescentes legados
-    final SalaryPlan? activePlan =
-        planList.isNotEmpty && planList.first.isActive ? planList.first : null;
-    final List<SalaryPlan> legacyPlans = activePlan != null
-        ? planList.sublist(1)
-        : planList;
+    return ValueListenableBuilder<bool>(
+      valueListenable: _manager.showArchivedNotifier,
+      builder: (context, showArchived, child) {
+        final filteredList = planList
+            .where((p) => showArchived ? true : !p.isArchived)
+            .toList();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ExpandableHeader(
-          title: 'Add new plan',
-          validation: ValueNotifier(true),
-          toggle: () => print('FILTER_TRIGGER'),
-          activeIcon: Icons.archive_outlined,
-          inactiveIcon: Icons.unarchive_outlined,
-          activeColor: StackMoneyTheme.magentaNeon,
-          inactiveColor: StackMoneyTheme.cyanNeon,
-        ),
-        const SizedBox(height: AppSizes.x12),
+        filteredList.sort((a, b) {
+          if (a.isActive && !b.isActive) return -1;
+          if (!a.isActive && b.isActive) return 1;
+          return b.createdAt.compareTo(a.createdAt);
+        });
 
-        // 👑 SLOT 1: Exibe isolado o plano que está ativo no comando operacional
-        if (activePlan != null)
-          _buildDismissibleWrapper(activePlan, isSecureActive),
-
-        // ➕ SLOT 2: O card tracejado nativo fixado logo abaixo do líder da fila
-        CardInitializeSlot(
-          l10n.newBucket,
-          // Reaproveita ou consome a tag l10n equivalente a "NEW_PLAN"
-          onTap: _manager.initializeNewPlanSlot,
-        ),
-        const SizedBox(height: AppSizes.x4),
-
-        // 🔋 DECK DE ARRASTO MANUAL (Apenas para os cards legados remanescentes)
-        if (legacyPlans.isNotEmpty)
-          SizedBox(
-            // Limita o tamanho ou deixa crescer dinamicamente baseado na árvore
-            child: ReorderableListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              // Scroll orquestrado pela Sliver externa principal
-              itemCount: legacyPlans.length,
-
-              // 🔥 RESPOSTA A: Se a segurança estiver ativada (valores ocultos), TRAVA COMPLETAMENTE o drag and drop
-              buildDefaultDragHandles: !isSecureActive,
-
-              onReorder: (oldIdx, newIdx) {
-                // Como a lista que passamos para o builder é a sublist (sem o ativo),
-                // reajustamos os índices adicionando +1 para refletir a posição real do deck mestre no manager
-                _manager.handlePlansReorder(oldIdx + 1, newIdx + 1);
-              },
-              itemBuilder: (context, index) {
-                final plan = legacyPlans[index];
-                return Container(
-                  key: ValueKey(plan.id),
-                  // 🔥 SUGESTÃO ANTERIOR: UUID estável como ValueKey
-                  child: _buildDismissibleWrapper(plan, isSecureActive),
-                );
-              },
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ExpandableHeader(
+              title: l10n.plansConfig,
+              validation: _manager.showArchivedNotifier,
+              toggle: _manager.toggleShowArchived,
+              activeIcon: Icons.archive_outlined,
+              inactiveIcon: Icons.unarchive_outlined,
+              activeColor: StackMoneyTheme.magentaNeon,
+              inactiveColor: StackMoneyTheme.cyanNeon,
             ),
-          ),
-      ],
+            const SizedBox(height: AppSizes.x12),
+
+            CardInitializeSlot(
+              l10n.newPlan,
+              onTap: _manager.initializeNewPlanSlot,
+            ),
+            const SizedBox(height: AppSizes.x4),
+
+            ...List.generate(filteredList.length, (index) {
+              final plan = filteredList[index];
+              return _buildDismissibleWrapper(plan, isSecureActive);
+            }),
+          ],
+        );
+      },
     );
   }
 
-  /// Constrói o envelopamento bidirecional Dismissible com travas de segurança biométrica
   Widget _buildDismissibleWrapper(SalaryPlan plan, bool isSecureActive) {
     return Dismissible(
       key: Key('dismiss_${plan.id}'),
-
-      // 🔥 RESPOSTA A: Se o modo seguro estiver ligado, congela as direções e impede o swipe
       direction: isSecureActive
           ? DismissDirection.none
           : DismissDirection.horizontal,
-
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.endToStart) {
-          // Direita para Esquerda -> Purge Permanente
+          // Direita para Esquerda -> Purge abre modal de confirmação
           return await _manager.showTerminalConfirmDialog(plan.name, context);
         } else {
-          // Esquerda para Direita -> Arquivamento Lógico direto sem Dialog
-          return true;
+          // 🔥 SACADA MESTRE: Trata o arquivamento aqui dentro de forma síncrona e retorna false!
+          // Isso impede o widget de sumir violentamente, deixando o ValueNotifier atualizar a UI de forma ultra limpa.
+          _manager.archivePlan(plan.id, plan.isArchived);
+          return false;
         }
       },
       onDismissed: (direction) {
+        // Apenas o Purge executa no onDismissed real, pois ele de fato ranca o item do array mestre
         if (direction == DismissDirection.endToStart) {
           _manager.purgePlan(plan.id);
-        } else {
-          _manager.archivePlan(plan.id);
         }
       },
-
-      // 📦 BACKGROUND 1: Arrastar da Esquerda -> Direita revela Arquivamento (MutedGrey)
       background: Container(
         margin: const EdgeInsets.symmetric(vertical: 6.0),
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         decoration: BoxDecoration(
-          color: StackMoneyTheme.mutedGrey.withOpacity(0.12),
+          color: plan.isArchived
+              ? StackMoneyTheme.cyanNeon.withOpacity(0.12)
+              : StackMoneyTheme.mutedGrey.withOpacity(0.12),
           borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
           border: Border.all(
-            color: StackMoneyTheme.mutedGrey.withOpacity(0.3),
+            color: plan.isArchived
+                ? StackMoneyTheme.cyanNeon.withOpacity(0.3)
+                : StackMoneyTheme.mutedGrey.withOpacity(0.3),
             width: 0.5,
           ),
         ),
         alignment: Alignment.centerLeft,
-        child: const Icon(
-          Icons.archive_rounded,
-          color: StackMoneyTheme.mutedGrey,
+        child: Icon(
+          plan.isArchived ? Icons.unarchive_rounded : Icons.archive_rounded,
+          color: plan.isArchived
+              ? StackMoneyTheme.cyanNeon
+              : StackMoneyTheme.mutedGrey,
           size: 24,
         ),
       ),
-
-      // 🗑️ BACKGROUND 2: Arrastar da Direita -> Esquerda revela Purge (Magenta)
       secondaryBackground: Container(
         margin: const EdgeInsets.symmetric(vertical: 6.0),
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -195,7 +170,6 @@ class _PlansScreenState extends State<PlansScreen> {
           size: 24,
         ),
       ),
-
       child: PlanListCard(plan: plan, onTap: () => _navigateToDetails(plan)),
     );
   }
