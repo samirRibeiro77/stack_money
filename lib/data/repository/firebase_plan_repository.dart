@@ -16,56 +16,82 @@ class FirebasePlanRepository {
         .collection('salary_plans');
   }
 
-  /// 🛰️ PONTO 1.1.1 & 1.1.2: Traz TODOS os planos do cluster ordenados por data mais recente
+  /// 🛰️ BUSCA GERAL: Traz todos os planos do banco ordenados por data de criação mais recente
   Future<List<SalaryPlan>> fetchAllPlans() async {
     try {
       final snapshot = await _getPlanCollection()
           .orderBy('created_at', descending: true)
           .get();
 
-      print(
-        'DEBUG_SYSTEM [PlanRepository]: Fetch complete -> ${snapshot.docs.length} total plans loaded.',
-      );
+      print('DEBUG_SYSTEM [PlanRepository]: Fetch complete -> ${snapshot.docs.length} total plans loaded.');
 
-      return snapshot.docs
-          .map((doc) => SalaryPlan.fromJson(doc.data()))
-          .toList();
+      return snapshot.docs.map((doc) => SalaryPlan.fromJson(doc.data())).toList();
     } catch (e) {
       print('DEBUG_SYSTEM [PlanRepository]: Error fetching plans -> $e');
       rethrow;
     }
   }
 
-  /// 📥 SAVING COMPONENT
+  /// 📥 SALVAR / ATUALIZAR PLANO INDIVIDUAL
   Future<void> savePlan(SalaryPlan plan) async {
     try {
-      await _getPlanCollection()
-          .doc(plan.id)
-          .set(plan.toJson(), SetOptions(merge: true));
+      await _getPlanCollection().doc(plan.id).set(
+        plan.toJson(),
+        SetOptions(merge: true),
+      );
     } catch (e) {
       print('DEBUG_SYSTEM [PlanRepository]: Error saving plan -> $e');
       rethrow;
     }
   }
 
-  /// 📦 PONTO 1.2.4: Atualiza o estado lógico de arquivamento (pode ativar ou desativar)
+  /// 🎛️ ALTERNADOR MESTRE DE ATIVAÇÃO EM LOTE (BATCH OTIMIZADO)
+  /// Garante que ao ativar o plano alvo, TODOS os outros documentos mudem para 'is_active = false' aerobicamente
+  Future<void> setActivePlanInBatch(String targetPlanId) async {
+    try {
+      print('🔥 [BATCH_PROTOCOL] -> Activating plan $targetPlanId and resetting other profiles...');
+      final batch = _firestore.batch();
+      final collection = _getPlanCollection();
+
+      // Captura todos os planos do usuário para varrer os status de ativação
+      final querySnapshot = await collection.get();
+
+      for (final doc in querySnapshot.docs) {
+        final planId = doc.id;
+
+        if (planId == targetPlanId) {
+          batch.update(collection.doc(planId), {
+            'is_active': true,
+            'is_archived': false, // Por regra de cockpit, o plano mestre ativo nunca pode estar arquivado
+          });
+        } else {
+          batch.update(collection.doc(planId), {
+            'is_active': false,
+          });
+        }
+      }
+
+      await batch.commit();
+      print('✅ [BATCH_SUCCESS] -> Activation unique cascade completed successfully.');
+    } catch (e) {
+      print('DEBUG_SYSTEM [PlanRepository]: Batch activation failed -> $e');
+      rethrow;
+    }
+  }
+
+  /// 📦 ATUALIZAÇÃO LOGICA DE ARQUIVAMENTO
   Future<void> updateArchiveStatus(String id, bool isArchived) async {
     try {
-      print(
-        '📦 [ARCHIVE_STATUS] -> Setting is_archived to $isArchived for plan: $id',
-      );
+      print('📦 [ARCHIVE_STATUS] -> Setting is_archived to $isArchived for plan: $id');
       final updates = <String, dynamic>{'is_archived': isArchived};
 
-      // Se for arquivado, por regra de segurança ele perde o estado de ativo na mesma hora
       if (isArchived) {
         updates['is_active'] = false;
       }
 
       await _getPlanCollection().doc(id).update(updates);
     } catch (e) {
-      print(
-        'DEBUG_SYSTEM [PlanRepository]: Archive status update failed -> $e',
-      );
+      print('DEBUG_SYSTEM [PlanRepository]: Archive status update failed -> $e');
       rethrow;
     }
   }

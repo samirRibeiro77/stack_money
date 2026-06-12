@@ -31,7 +31,7 @@ class NetSalaryStickyHud extends SliverPersistentHeaderDelegate {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: StackMoneyTheme.surface,
-          borderRadius: BorderRadius.circular(percent > 0.8 ? 0 : 12),
+          borderRadius: BorderRadius.circular(percent > 0.8 ? 8 : 12),
           border: Border.all(color: techColor.withOpacity(0.15), width: 0.5),
         ),
         child: Column(
@@ -43,7 +43,7 @@ class NetSalaryStickyHud extends SliverPersistentHeaderDelegate {
                 Row(
                   children: [
                     Text(
-                      percent > 0.6 ? 'NET_BUFFER: ' : 'NET_SALARY_BUFFER',
+                      percent > 0.6 ? 'NET_BUFFER: ' : 'NET_SALARY_BUFFER: ',
                       style: TextStyle(
                           fontFamily: 'Orbitron',
                           fontSize: percent > 0.6 ? 11 : 12,

@@ -37,17 +37,28 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: StackMoneyTheme.platinumSilver, size: 20),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: ValueListenableBuilder<SalaryPlan>(
-          valueListenable: _manager.planNotifier,
-          builder: (context, currentPlan, _) {
-            return Text(
-              'EDIT: ${currentPlan.name.toUpperCase()}',
-              style: const TextStyle(fontFamily: 'Orbitron', fontSize: 14, fontWeight: FontWeight.bold, color: StackMoneyTheme.platinumSilver),
-            );
-          },
+
+        // 🔥 MELHORIA 1.1: Título Transformado em campo de texto editável direto na barra
+        title: TextFormField(
+          initialValue: _manager.currentPlan.name,
+          style: const TextStyle(fontFamily: 'Orbitron', fontSize: 15, fontWeight: FontWeight.bold, color: StackMoneyTheme.platinumSilver),
+          decoration: InputDecoration(
+            border: InputBorder.none,       // Remove a borda padrão de erro/desabilitado
+            enabledBorder: InputBorder.none,// Sem borda quando o campo está ocioso
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: StackMoneyTheme.cyanNeon, // Cor da linha ao clicar
+                width: 1.0,                            // Espessura da linha
+              ),
+            ),
+            filled: false,                  // Garante que não haverá cor de fundo
+            isDense: true,                  // Compacta o espaço interno do campo
+            contentPadding: const EdgeInsets.symmetric(vertical: 8.0), // Ajusta o respiro acima da linha
+          ),
+          onChanged: _manager.updatePlanName,
         ),
+        centerTitle: false,
         actions: [
-          // Botão Rápido para Forçar Ativação Direto do Editor
           ValueListenableBuilder<SalaryPlan>(
             valueListenable: _manager.planNotifier,
             builder: (context, currentPlan, _) {
@@ -57,9 +68,14 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                   child: Center(child: Text('[ ACTIVE ]', style: TextStyle(fontFamily: 'Orbitron', color: StackMoneyTheme.cyanNeon, fontSize: 10, fontWeight: FontWeight.bold))),
                 );
               }
+
+              // 🔥 MELHORIA 1.2: Botão inerte/inativo rebaixado para cor fosca Platinum sem o ciano neon chamativo
               return TextButton(
-                onPressed: _manager.triggerPlanActivation,
-                child: const Text('[ SET_ACTIVE ]', style: TextStyle(fontFamily: 'Orbitron', color: StackMoneyTheme.cyanNeon, fontSize: 11, fontWeight: FontWeight.bold)),
+                onPressed: () async {
+                  await _manager.triggerPlanActivation();
+                  if (context.mounted) Navigator.of(context).pop();
+                },
+                child: const Text('[ SET_ACTIVE ]', style: TextStyle(fontFamily: 'Orbitron', color: StackMoneyTheme.platinumSilver, fontSize: 11)),
               );
             },
           ),
@@ -72,35 +88,31 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: CustomScrollView(
               slivers: [
-                // 🟢 SEÇÃO 1: Fluxo de Entradas
                 SliverToBoxAdapter(
                   child: InflowSection(
                     plan: currentPlan,
+                    onBaseUpdate: _manager.updateBaseSalary,
                     onUpdate: _manager.updateInflow,
                     onRemove: _manager.removeInflow,
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x8)),
 
-                // 🔴 SEÇÃO 2: Fluxo de Descontos
                 SliverToBoxAdapter(
                   child: OutflowSection(
                     plan: currentPlan,
-                    onAdd: _manager.addOutflow,
                     onUpdate: _manager.updateOutflow,
                     onRemove: _manager.removeOutflow,
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x8)),
 
-                // 📊 STICKY HUD: Divisor Inteligente com Barra de Progresso Preservada no Topo
                 SliverPersistentHeader(
                   pinned: true,
                   delegate: NetSalaryStickyHud(plan: currentPlan),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x8)),
 
-                // ⚡ SEÇÃO 3: Matriz de Distribuição
                 SliverToBoxAdapter(
                   child: DistributionSection(
                     plan: currentPlan,
@@ -109,7 +121,6 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                     onRemove: _manager.removeDistribution,
                   ),
                 ),
-
                 const SliverToBoxAdapter(child: SizedBox(height: 120)),
               ],
             ),
