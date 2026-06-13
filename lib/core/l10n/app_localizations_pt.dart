@@ -138,4 +138,21 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get notAvailable => 'N/A';
+
+  @override
+  String get mandatoryDeductions => 'Deduções em folha';
+
+  @override
+  String get deductionName => 'Nome da dedução';
+
+  @override
+  String get target => 'Alvo';
+
+  @override
+  String get rule => 'Regra';
+
+  @override
+  String deducted(Object value) {
+    return 'Deduzido: $value';
+  }
 }

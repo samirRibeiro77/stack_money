@@ -1,0 +1,87 @@
+import 'package:flutter/material.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/data/enum/deduction_type.dart';
+import 'package:stack_money/data/models/outflow_row.dart';
+import 'package:stack_money/data/models/salary_plan.dart';
+import 'package:stack_money/features/plan_edit/widgets/flow_title.dart';
+import 'package:stack_money/features/plan_edit/widgets/outflow/outflow_section_card.dart';
+
+class OutflowSection extends StatelessWidget {
+  final SalaryPlan plan;
+  final Function(
+    int index, {
+    String? name,
+    DeductionType? type,
+    double? value,
+    int? targetDay,
+  })
+  onUpdate;
+  final Function(int index) onRemove;
+
+  OutflowSection({
+    required this.plan,
+    required this.onUpdate,
+    required this.onRemove,
+    super.key,
+  });
+
+  final _expandState = ValueNotifier(false);
+
+  void _toggleExpandState() => _expandState.value = !_expandState.value;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    final availableDays = plan.inflows
+        .where((e) => e.value > 0)
+        .map((e) => e.day)
+        .toSet()
+        .toList();
+
+    return StackMoneyCard(
+      shadowColor: StackMoneyTheme.magentaNeon,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FlowTitle(
+            title: l10n.mandatoryDeductions,
+            balance: plan.totalOutflows,
+            toggleExpand: _toggleExpandState,
+            color: StackMoneyTheme.magentaNeon,
+          ),
+          ValueListenableBuilder(
+            valueListenable: _expandState,
+            builder: (_, isExpand, _) {
+              if (!isExpand) return SizedBox.shrink();
+
+              return Column(
+                children: [
+                  const Divider(),
+
+                  ...List.generate(plan.outflows.length, (index) {
+                    final row = plan.outflows[index];
+                    final isLast = index == plan.outflows.length - 1;
+                    final double absVal = plan.calculateOutflowAbsolute(row);
+
+                    return OutflowSectionCard(
+                      row: row,
+                      index: index,
+                      availableDays: availableDays,
+                      isLast: isLast,
+                      absVal: absVal,
+                      onUpdate: onUpdate,
+                      onRemove: onRemove,
+                    );
+                  }),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}

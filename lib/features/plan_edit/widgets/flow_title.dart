@@ -8,11 +8,13 @@ class FlowTitle extends StatelessWidget {
     required this.title,
     required this.balance,
     required this.toggleExpand,
+    this.color = StackMoneyTheme.cyanNeon,
     super.key,
   });
 
   final String title;
   final double balance;
+  final Color color;
   final VoidCallback toggleExpand;
 
   @override
@@ -29,7 +31,7 @@ class FlowTitle extends StatelessWidget {
           Text(
             StackMoneyString.formatMoney(doubleValue: balance),
             style: textTheme.titleMedium?.copyWith(
-              color: StackMoneyTheme.cyanNeon,
+              color: color,
               fontWeight: FontWeight.bold,
             ),
           ),

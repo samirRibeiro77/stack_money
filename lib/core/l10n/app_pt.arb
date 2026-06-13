@@ -42,5 +42,10 @@
   "brlCurrency": "R$",
   "day": "Dia",
   "converted": "Convertido: {value}",
-  "notAvailable": "N/A"
+  "notAvailable": "N/A",
+  "mandatoryDeductions": "Deduções em folha",
+  "deductionName": "Nome da dedução",
+  "target": "Alvo",
+  "rule": "Regra",
+  "deducted": "Deduzido: {value}"
 }

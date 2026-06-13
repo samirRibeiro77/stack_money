@@ -7,7 +7,7 @@ import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/manager/plan_edit_manager.dart';
 import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
 import 'package:stack_money/features/plan_edit/widgets/inflow/inflow_section.dart';
-import 'package:stack_money/features/plan_edit/widgets/outflow_section.dart';
+import 'package:stack_money/features/plan_edit/widgets/outflow/outflow_section.dart';
 import 'package:stack_money/features/plan_edit/widgets/net_salary_sticky_hud.dart';
 import 'package:stack_money/features/plan_edit/widgets/distribution_section.dart';
 

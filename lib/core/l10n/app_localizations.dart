@@ -349,6 +349,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'N/A'**
   String get notAvailable;
+
+  /// Mandatory deductions text
+  ///
+  /// In en, this message translates to:
+  /// **'Mandatory deductions'**
+  String get mandatoryDeductions;
+
+  /// No description provided for @deductionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Deduction name'**
+  String get deductionName;
+
+  /// No description provided for @target.
+  ///
+  /// In en, this message translates to:
+  /// **'Target'**
+  String get target;
+
+  /// Rule text
+  ///
+  /// In en, this message translates to:
+  /// **'Rule'**
+  String get rule;
+
+  /// Deducted value based on a number and the factor
+  ///
+  /// In en, this message translates to:
+  /// **'Deducted: {value}'**
+  String deducted(Object value);
 }
 
 class _AppLocalizationsDelegate

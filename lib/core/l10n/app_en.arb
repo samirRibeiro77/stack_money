@@ -167,5 +167,25 @@
   "notAvailable": "N/A",
   "@notAvailable": {
     "description": "Not available signal"
+  },
+  "mandatoryDeductions": "Mandatory deductions",
+  "@mandatoryDeductions": {
+    "description": "Mandatory deductions text"
+  },
+  "deductionName": "Deduction name",
+  "@name": {
+    "description": "Deduction name text"
+  },
+  "target": "Target",
+  "@taget": {
+    "description": "Target text"
+  },
+  "rule": "Rule",
+  "@rule": {
+    "description": "Rule text"
+  },
+  "deducted": "Deducted: {value}",
+  "@deducted": {
+    "description": "Deducted value based on a number and the factor"
   }
 }

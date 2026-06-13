@@ -138,4 +138,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notAvailable => 'N/A';
+
+  @override
+  String get mandatoryDeductions => 'Mandatory deductions';
+
+  @override
+  String get deductionName => 'Deduction name';
+
+  @override
+  String get target => 'Target';
+
+  @override
+  String get rule => 'Rule';
+
+  @override
+  String deducted(Object value) {
+    return 'Deducted: $value';
+  }
 }
