@@ -42,8 +42,6 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-
-        // 🔥 MELHORIA 1.1: Título Transformado em campo de texto editável direto na barra
         title: EditableTitle(
           _manager.currentPlan.name,
           onSave: (newName) => _manager.updatePlanName(newName),
@@ -71,14 +69,18 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
       ),
       body: ValueListenableBuilder<SalaryPlan>(
         valueListenable: _manager.planNotifier,
-        builder: (context, currentPlan, child) {
+        builder: (_, currentPlan, _) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSizes.x8),
             child: CustomScrollView(
+              clipBehavior: Clip.none,
               slivers: [
+                /// Inflow Section
                 SliverToBoxAdapter(
                   child: InflowSection(
                     plan: currentPlan,
+                    expandState: _manager.inflowExpandState,
+                    toggleExpandState: _manager.toggleInflowExpand,
                     onBaseUpdate: _manager.updateBaseSalary,
                     onUpdate: _manager.updateInflow,
                     onRemove: _manager.removeInflow,
@@ -86,21 +88,26 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),
 
+                /// Outflow Section
                 SliverToBoxAdapter(
                   child: OutflowSection(
                     plan: currentPlan,
+                    expandState: _manager.outflowExpandState,
+                    toggleExpandState: _manager.toggleOutflowExpand,
                     onUpdate: _manager.updateOutflow,
                     onRemove: _manager.removeOutflow,
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),
 
+                /// Net Salary Buffer Section
                 SliverPersistentHeader(
                   pinned: true,
                   delegate: NetSalaryStickyHud(plan: currentPlan),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),
 
+                /// Distribution Section
                 SliverToBoxAdapter(
                   child: DistributionSection(
                     plan: currentPlan,

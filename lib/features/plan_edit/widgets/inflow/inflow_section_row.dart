@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/money_input_formatter.dart';
 import 'package:stack_money/core/helpers/percentage_input_formatter.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
@@ -54,7 +55,7 @@ class InflowSectionRow extends StatelessWidget {
             children: [
               /// Type dropdown
               SizedBox(
-                width: 80,
+                width: AppSizes.dropdownWidth,
                 child: DropdownButtonFormField<InflowType>(
                   initialValue: row.type,
                   decoration: StackMoneyTheme.inputDecoration(l10n.type),
@@ -71,7 +72,7 @@ class InflowSectionRow extends StatelessWidget {
                   onChanged: (val) => onUpdate(index, type: val, value: 0.0),
                 ),
               ),
-              const SizedBox(width: 6),
+              const SizedBox(width: AppSizes.x3),
 
               /// Value (% or $)
               Expanded(
@@ -85,10 +86,7 @@ class InflowSectionRow extends StatelessWidget {
                             : row.value.toStringAsFixed(0))
                       : '',
                   keyboardType: TextInputType.number,
-                  style: const TextStyle(
-                    fontFamily: 'JetBrainsMono',
-                    fontSize: 12,
-                  ),
+                  style: textTheme.bodySmall,
                   decoration: StackMoneyTheme.inputDecoration(
                     row.type == InflowType.fixed
                         ? l10n.brlCurrency
@@ -100,11 +98,11 @@ class InflowSectionRow extends StatelessWidget {
                   onChanged: onChanged,
                 ),
               ),
-              const SizedBox(width: 6),
+              const SizedBox(width: AppSizes.x3),
 
               /// Day dropdown
               SizedBox(
-                width: 80,
+                width: AppSizes.dropdownWidth,
                 child: DropdownButtonFormField<int>(
                   initialValue: row.day.clamp(0, 31),
                   decoration: StackMoneyTheme.inputDecoration(l10n.day),
@@ -144,11 +142,7 @@ class InflowSectionRow extends StatelessWidget {
                 l10n.converted(
                   StackMoneyString.formatMoney(doubleValue: absVal),
                 ),
-                style: const TextStyle(
-                  fontSize: 9,
-                  color: StackMoneyTheme.mutedGrey,
-                  fontFamily: 'JetBrainsMono',
-                ),
+                style: textTheme.labelSmall,
               ),
             ),
         ],

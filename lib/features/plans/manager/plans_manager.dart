@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -21,9 +22,13 @@ class PlansManager {
   List<SalaryPlan> get plans => _planDeck.value;
 
   void navigateToPlanDetails(BuildContext context, SalaryPlan plan) {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => PlanEditScreen(plan: plan)),
-    ).then((_) => loadFirebasePlans());
+    final isSecureActive = SecurityProvider.isSecureOf(context);
+
+    if (!isSecureActive) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => PlanEditScreen(plan: plan)),
+      ).then((_) => loadFirebasePlans());
+    }
   }
 
   Future<void> loadFirebasePlans() async {

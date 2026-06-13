@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
@@ -13,22 +14,22 @@ import 'package:stack_money/features/plan_edit/widgets/inflow/inflow_section_row
 
 class InflowSection extends StatelessWidget {
   final SalaryPlan plan;
+  final ValueListenable<bool> expandState;
+  final VoidCallback toggleExpandState;
   final Function(double val) onBaseUpdate;
   final Function(int index, {InflowType? type, double? value, int? day})
   onUpdate;
   final Function(int index) onRemove;
 
-  InflowSection({
+  const InflowSection({
     required this.plan,
+    required this.expandState,
+    required this.toggleExpandState,
     required this.onBaseUpdate,
     required this.onUpdate,
     required this.onRemove,
     super.key,
   });
-
-  final _expandState = ValueNotifier(false);
-
-  void _toggleExpandState() => _expandState.value = !_expandState.value;
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +43,10 @@ class InflowSection extends StatelessWidget {
           FlowTitle(
             title: l10n.grossRevenue,
             balance: plan.totalGrossSalary,
-            toggleExpand: _toggleExpandState,
+            toggleExpand: toggleExpandState,
           ),
           ValueListenableBuilder(
-            valueListenable: _expandState,
+            valueListenable: expandState,
             builder: (_, isExpand, _) {
               if (!isExpand) return SizedBox.shrink();
 

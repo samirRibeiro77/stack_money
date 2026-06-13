@@ -80,7 +80,7 @@ class OutflowSectionCard extends StatelessWidget {
               ),
               const SizedBox(width: AppSizes.x3),
               SizedBox(
-                width: 80,
+                width: AppSizes.dropdownWidth,
                 child: DropdownButtonFormField<int>(
                   initialValue: availableDays.contains(row.targetDay)
                       ? row.targetDay
@@ -105,7 +105,7 @@ class OutflowSectionCard extends StatelessWidget {
                   icon: const Icon(
                     Icons.delete_outline_rounded,
                     color: StackMoneyTheme.magentaNeon,
-                    size: 18,
+                    size: 20,
                   ),
                   onPressed: () => onRemove(index),
                 ),
@@ -161,7 +161,7 @@ class OutflowSectionCard extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Text(
                 l10n.deducted(StackMoneyString.formatMoney(doubleValue: absVal)),
-                style: textTheme.bodySmall?.copyWith(color: StackMoneyTheme.magentaNeon),
+                style: textTheme.labelSmall,
               ),
             ),
         ],

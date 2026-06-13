@@ -1,15 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
-import 'package:stack_money/data/models/outflow_row.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/widgets/flow_title.dart';
 import 'package:stack_money/features/plan_edit/widgets/outflow/outflow_section_card.dart';
 
 class OutflowSection extends StatelessWidget {
   final SalaryPlan plan;
+  final ValueListenable<bool> expandState;
+  final VoidCallback toggleExpandState;
   final Function(
     int index, {
     String? name,
@@ -20,16 +22,14 @@ class OutflowSection extends StatelessWidget {
   onUpdate;
   final Function(int index) onRemove;
 
-  OutflowSection({
+  const OutflowSection({
     required this.plan,
+    required this.expandState,
+    required this.toggleExpandState,
     required this.onUpdate,
     required this.onRemove,
     super.key,
   });
-
-  final _expandState = ValueNotifier(false);
-
-  void _toggleExpandState() => _expandState.value = !_expandState.value;
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +49,11 @@ class OutflowSection extends StatelessWidget {
           FlowTitle(
             title: l10n.mandatoryDeductions,
             balance: plan.totalOutflows,
-            toggleExpand: _toggleExpandState,
+            toggleExpand: toggleExpandState,
             color: StackMoneyTheme.magentaNeon,
           ),
           ValueListenableBuilder(
-            valueListenable: _expandState,
+            valueListenable: expandState,
             builder: (_, isExpand, _) {
               if (!isExpand) return SizedBox.shrink();
 
