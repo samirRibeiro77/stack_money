@@ -118,4 +118,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get remainingRest => 'Remaining Rest';
+
+  @override
+  String get baseSalary => 'Base salary';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get brlCurrency => 'R\$';
+
+  @override
+  String get day => 'Day';
+
+  @override
+  String converted(Object value) {
+    return 'Converted: $value';
+  }
+
+  @override
+  String get notAvailable => 'N/A';
 }

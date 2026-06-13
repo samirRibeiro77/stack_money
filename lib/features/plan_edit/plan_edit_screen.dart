@@ -6,7 +6,7 @@ import 'package:stack_money/core/widgets/plan_status.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/manager/plan_edit_manager.dart';
 import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
-import 'package:stack_money/features/plan_edit/widgets/inflow_section.dart';
+import 'package:stack_money/features/plan_edit/widgets/inflow/inflow_section.dart';
 import 'package:stack_money/features/plan_edit/widgets/outflow_section.dart';
 import 'package:stack_money/features/plan_edit/widgets/net_salary_sticky_hud.dart';
 import 'package:stack_money/features/plan_edit/widgets/distribution_section.dart';
@@ -53,14 +53,17 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
           ValueListenableBuilder<SalaryPlan>(
             valueListenable: _manager.planNotifier,
             builder: (context, currentPlan, _) {
-              return PlanStatus(
-                currentPlan.isActive ? l10n.activePlan : l10n.setActive,
-                color: currentPlan.isActive
-                    ? StackMoneyTheme.cyanNeon
-                    : StackMoneyTheme.mutedGrey,
-                onTap: currentPlan.isActive
-                    ? null
-                    : () async => await _manager.triggerPlanActivation(),
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppSizes.x8),
+                child: PlanStatus(
+                  currentPlan.isActive ? l10n.activePlan : l10n.setActive,
+                  color: currentPlan.isActive
+                      ? StackMoneyTheme.cyanNeon
+                      : StackMoneyTheme.mutedGrey,
+                  onTap: currentPlan.isActive
+                      ? null
+                      : () async => await _manager.triggerPlanActivation(),
+                ),
               );
             },
           ),
@@ -70,9 +73,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
         valueListenable: _manager.planNotifier,
         builder: (context, currentPlan, child) {
           return Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppSizes.x8,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.x8),
             child: CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(

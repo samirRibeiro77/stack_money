@@ -313,6 +313,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remaining Rest'**
   String get remainingRest;
+
+  /// Base Gross Salary (currency)
+  ///
+  /// In en, this message translates to:
+  /// **'Base salary'**
+  String get baseSalary;
+
+  /// Type text
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get type;
+
+  /// Brazilian currency signal
+  ///
+  /// In en, this message translates to:
+  /// **'R\$'**
+  String get brlCurrency;
+
+  /// Day text
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get day;
+
+  /// Converted value based on a number and the factor
+  ///
+  /// In en, this message translates to:
+  /// **'Converted: {value}'**
+  String converted(Object value);
+
+  /// Not available signal
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get notAvailable;
 }
 
 class _AppLocalizationsDelegate

@@ -143,5 +143,29 @@
   "remainingRest": "Remaining Rest",
   "@remainingRest": {
     "description": "Remaining Rest text"
+  },
+  "baseSalary": "Base salary",
+  "@baseSalary": {
+    "description": "Base Gross Salary (currency)"
+  },
+  "type": "Type",
+  "@type": {
+    "description": "Type text"
+  },
+  "brlCurrency": "R$",
+  "@brlCurrency": {
+    "description": "Brazilian currency signal"
+  },
+  "day": "Day",
+  "@day": {
+    "description": "Day text"
+  },
+  "converted": "Converted: {value}",
+  "@converted": {
+    "description": "Converted value based on a number and the factor"
+  },
+  "notAvailable": "N/A",
+  "@notAvailable": {
+    "description": "Not available signal"
   }
 }

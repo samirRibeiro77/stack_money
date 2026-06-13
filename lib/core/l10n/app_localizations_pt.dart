@@ -114,8 +114,28 @@ class AppLocalizationsPt extends AppLocalizations {
   String get setActive => 'Tornar ativo';
 
   @override
-  String get grossRevenue => 'Salário Bruto';
+  String get grossRevenue => 'Salário bruto';
 
   @override
   String get remainingRest => 'Restante livre';
+
+  @override
+  String get baseSalary => 'Salário base';
+
+  @override
+  String get type => 'Tipo';
+
+  @override
+  String get brlCurrency => 'R\$';
+
+  @override
+  String get day => 'Dia';
+
+  @override
+  String converted(Object value) {
+    return 'Convertido: $value';
+  }
+
+  @override
+  String get notAvailable => 'N/A';
 }

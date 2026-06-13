@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/data/enum/action_button.dart';
 
 class StackMoneyTheme {
@@ -32,6 +33,25 @@ class StackMoneyTheme {
     ),
     textStyle: darkTheme.textTheme.labelMedium,
   );
+
+  static InputDecoration inputDecoration(String label) {
+    return InputDecoration(
+      labelText: StackMoneyString.formatTitle(label),
+      alignLabelWithHint: true,
+      labelStyle: darkTheme.textTheme.bodySmall,
+      isDense: true,
+      contentPadding: const EdgeInsets.symmetric(horizontal: AppSizes.x4, vertical: AppSizes.x5),
+      constraints: const BoxConstraints(minHeight: AppSizes.x16, maxHeight: AppSizes.x16),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppSizes.x3),
+        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.06)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppSizes.x3),
+        borderSide: const BorderSide(color: StackMoneyTheme.cyanNeon, width: 1),
+      ),
+    );
+  }
 
   /// Custom ButtonStyle for the Google Login Button
   /// Features a Platinum Silver background, Cyan text, and stadium-rounded corners

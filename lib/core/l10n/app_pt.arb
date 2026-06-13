@@ -34,6 +34,13 @@
   "newPlan": "Adicionar novo plano",
   "activePlan": "Plano ativo",
   "setActive": "Tornar ativo",
-  "grossRevenue": "Salário Bruto",
-  "remainingRest": "Restante livre"
+  "grossRevenue": "Salário bruto",
+  "remainingRest": "Restante livre",
+  "baseSalary": "Salário base",
+  "type": "Tipo",
+  "percent": "%",
+  "brlCurrency": "R$",
+  "day": "Dia",
+  "converted": "Convertido: {value}",
+  "notAvailable": "N/A"
 }
