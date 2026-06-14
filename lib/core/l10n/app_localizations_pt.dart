@@ -155,4 +155,33 @@ class AppLocalizationsPt extends AppLocalizations {
   String deducted(Object value) {
     return 'Deduzido: $value';
   }
+
+  @override
+  String get totalNet => 'Liquido total';
+
+  @override
+  String get totalRest => 'Total restante:';
+
+  @override
+  String netDay(Object value) {
+    return 'Dia $value';
+  }
+
+  @override
+  String netValue(Object value) {
+    return 'Liquido: $value';
+  }
+
+  @override
+  String rest(Object value) {
+    return 'Resto: $value';
+  }
+
+  @override
+  String get systemOverflow => '[ LIMITE_EXCEDIDO ]';
+
+  @override
+  String overflowBy(Object value) {
+    return 'Acima (- $value)';
+  }
 }

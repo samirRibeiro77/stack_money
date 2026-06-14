@@ -187,5 +187,33 @@
   "deducted": "Deducted: {value}",
   "@deducted": {
     "description": "Deducted value based on a number and the factor"
+  },
+  "totalNet": "Total net",
+  "@totalNet": {
+    "description": "Total net buffer text"
+  },
+  "totalRest": "Total rest:",
+  "@totalRest": {
+    "description": "Total rest of net buffer"
+  },
+  "netDay": "Day {value}",
+  "@netDay": {
+    "description": "Net day for calculation"
+  },
+  "netValue": "Net: {value}",
+  "@netValue": {
+    "description": "Net value currency"
+  },
+  "rest": "Rest: {value}",
+  "@rest": {
+    "description": "Day net rest"
+  },
+  "systemOverflow": "[ SYSTEM_OVERFLOW ]",
+  "@systemOverflow": {
+    "description": "System overflowed the values"
+  },
+  "overflowBy": "Over (- {value})",
+  "@overflowBy": {
+    "description": "System overflowed by X"
   }
 }

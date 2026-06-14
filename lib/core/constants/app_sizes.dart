@@ -37,4 +37,10 @@ class AppSizes {
 
   // --- Dropdown ---
   static const double dropdownWidth = 80;
+
+  // --- Sticky Hud ---
+  static const double stickyHudMinExtent = 30;
+  static const double stickyHudMinExtentMultiplier = 18;
+  static const double stickyHudMaxExtent = 75;
+  static const double stickyHudMaxExtentMultiplier = 32;
 }

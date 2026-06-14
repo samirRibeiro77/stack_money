@@ -8,7 +8,7 @@ import 'package:stack_money/features/plan_edit/manager/plan_edit_manager.dart';
 import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
 import 'package:stack_money/features/plan_edit/widgets/inflow/inflow_section.dart';
 import 'package:stack_money/features/plan_edit/widgets/outflow/outflow_section.dart';
-import 'package:stack_money/features/plan_edit/widgets/net_salary_sticky_hud.dart';
+import 'package:stack_money/features/plan_edit/widgets/net_salary/net_salary_sticky_hud.dart';
 import 'package:stack_money/features/plan_edit/widgets/distribution_section.dart';
 
 class PlanEditScreen extends StatefulWidget {
@@ -47,6 +47,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
           onSave: (newName) => _manager.updatePlanName(newName),
         ),
         centerTitle: false,
+        backgroundColor: StackMoneyTheme.background,
         actions: [
           ValueListenableBuilder<SalaryPlan>(
             valueListenable: _manager.planNotifier,
@@ -75,6 +76,8 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
             child: CustomScrollView(
               clipBehavior: Clip.none,
               slivers: [
+                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x8)),
+
                 /// Inflow Section
                 SliverToBoxAdapter(
                   child: InflowSection(
@@ -116,7 +119,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                     onRemove: _manager.removeDistribution,
                   ),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x30)),
+                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.navBarPaddingBottom)),
               ],
             ),
           );

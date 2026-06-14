@@ -379,6 +379,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deducted: {value}'**
   String deducted(Object value);
+
+  /// Total net buffer text
+  ///
+  /// In en, this message translates to:
+  /// **'Total net'**
+  String get totalNet;
+
+  /// Total rest of net buffer
+  ///
+  /// In en, this message translates to:
+  /// **'Total rest:'**
+  String get totalRest;
+
+  /// Net day for calculation
+  ///
+  /// In en, this message translates to:
+  /// **'Day {value}'**
+  String netDay(Object value);
+
+  /// Net value currency
+  ///
+  /// In en, this message translates to:
+  /// **'Net: {value}'**
+  String netValue(Object value);
+
+  /// Day net rest
+  ///
+  /// In en, this message translates to:
+  /// **'Rest: {value}'**
+  String rest(Object value);
+
+  /// System overflowed the values
+  ///
+  /// In en, this message translates to:
+  /// **'[ SYSTEM_OVERFLOW ]'**
+  String get systemOverflow;
+
+  /// System overflowed by X
+  ///
+  /// In en, this message translates to:
+  /// **'Over (- {value})'**
+  String overflowBy(Object value);
 }
 
 class _AppLocalizationsDelegate

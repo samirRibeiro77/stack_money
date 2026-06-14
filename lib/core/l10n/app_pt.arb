@@ -47,5 +47,12 @@
   "deductionName": "Nome da dedução",
   "target": "Alvo",
   "rule": "Regra",
-  "deducted": "Deduzido: {value}"
+  "deducted": "Deduzido: {value}",
+  "totalNet": "Liquido total",
+  "totalRest": "Total restante:",
+  "netDay": "Dia {value}",
+  "netValue": "Liquido: {value}",
+  "rest": "Resto: {value}",
+  "systemOverflow": "[ LIMITE_EXCEDIDO ]",
+  "overflowBy": "Acima (- {value})"
 }

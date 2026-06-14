@@ -99,6 +99,50 @@ class SalaryPlan {
 
   bool get isOverflowed => remainingRest < 0.0;
 
+  // --- 🛰️ MOTOR DE FATIAMENTO TEMPORAL (TIME-SLICE ENGINE) ---
+
+  /// Captura todos os dias únicos de recebimento cadastrados que possuem valor
+  List<int> get activePaymentDays {
+    final days = inflows.where((e) => e.value > 0).map((e) => e.day).toSet().toList();
+    // Se houver alguma dedução ou distribuição unlinked (Dia 0), inclui o pool Geral
+    if (outflows.any((e) => e.targetDay == 0) || distributions.any((e) => e.targetDay == 0)) {
+      if (!days.contains(0)) days.add(0);
+    }
+    days.sort();
+    return days;
+  }
+
+  /// Calcula o Salário Líquido específico de um dia (Receitas do dia - Deduções do dia)
+  double netSalaryForDay(int day) {
+    if (day == 0) {
+      // Pool Geral: Soma inflows unlinked (se houver) e subtrai outflows unlinked
+      final gross0 = inflows.where((e) => e.day == 0).fold(0.0, (sum, item) => sum + calculateInflowAbsolute(item));
+      final out0 = outflows.where((e) => e.targetDay == 0).fold(0.0, (sum, item) => sum + calculateOutflowAbsolute(item));
+      return gross0 - out0;
+    }
+
+    final gross = inflows.where((e) => e.day == day).fold(0.0, (sum, item) => sum + calculateInflowAbsolute(item));
+    final out = outflows.where((e) => e.targetDay == day).fold(0.0, (sum, item) => sum + calculateOutflowAbsolute(item));
+    return gross - out;
+  }
+
+  /// Calcula o total alocado em regras de distribuição vinculadas a este dia específico
+  double totalAllocatedForDay(int day) {
+    return distributions
+        .where((e) => e.targetDay == day)
+        .fold(0.0, (sum, row) => sum + calculateRowAbsoluteValue(row));
+  }
+
+  /// Calcula o Restante (Margem de segurança) de um dia específico
+  double remainingRestForDay(int day) {
+    return netSalaryForDay(day) - totalAllocatedForDay(day);
+  }
+
+  /// Sinaliza se as despesas atadas a este dia específico estouraram o caixa do período
+  bool isOverflowedForDay(int day) {
+    return remainingRestForDay(day) < 0.0;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

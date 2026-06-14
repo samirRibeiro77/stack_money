@@ -23,6 +23,7 @@ class FlowTitle extends StatelessWidget {
 
     return GestureDetector(
       onTap: toggleExpand,
+      behavior: HitTestBehavior.opaque,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
