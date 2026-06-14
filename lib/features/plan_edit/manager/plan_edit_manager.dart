@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
@@ -15,6 +16,9 @@ class PlanEditManager {
 
   final _inflowExpandState = ValueNotifier(false);
   final _outflowExpandState = ValueNotifier(false);
+  final _scrollController = ScrollController();
+
+  ScrollController get scrollController => _scrollController;
 
   ValueListenable<bool> get inflowExpandState => _inflowExpandState;
 
@@ -33,6 +37,12 @@ class PlanEditManager {
   }
 
   SalaryPlan get currentPlan => planNotifier.value;
+
+  void dispose() {
+    _inflowExpandState.dispose();
+    _outflowExpandState.dispose();
+    _scrollController.dispose();
+  }
 
   void updatePlanName(String newName) {
     planNotifier.value = currentPlan.copyWith(name: newName);
@@ -147,21 +157,11 @@ class PlanEditManager {
         ? currentPlan.inflows.first.day
         : 0;
 
-    // BUG FIX 2: Nasce com strings vazias e ID único para travar o ciclo de reaproveitamento de estado
-    list.insert(
-      0,
-      DistributionRow(
-        id: const Uuid().v4(),
-        category: '',
-        subCategory: '',
-        type: AllocationType.fixed,
-        value: 0.0,
-        targetDay: defaultDay,
-      ),
-    );
+    list.add(DistributionRow.empty(defaultDay: defaultDay));
 
     planNotifier.value = currentPlan.copyWith(distributions: list);
     _autoSave();
+    _scrollToBottom();
   }
 
   void updateDistribution(
@@ -211,6 +211,18 @@ class PlanEditManager {
 
     _service.saveSalaryPlan(cleanPlan).catchError((err) {
       debugPrint('❌ [AUTOSAVE_FAIL] -> Sync error: $err');
+    });
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
     });
   }
 }

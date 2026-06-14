@@ -9,7 +9,7 @@ import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
 import 'package:stack_money/features/plan_edit/widgets/inflow/inflow_section.dart';
 import 'package:stack_money/features/plan_edit/widgets/outflow/outflow_section.dart';
 import 'package:stack_money/features/plan_edit/widgets/net_salary/net_salary_sticky_hud.dart';
-import 'package:stack_money/features/plan_edit/widgets/distribution_section.dart';
+import 'package:stack_money/features/plan_edit/widgets/distribution/distribution_section.dart';
 
 class PlanEditScreen extends StatefulWidget {
   final SalaryPlan plan;
@@ -27,6 +27,12 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
   void initState() {
     super.initState();
     _manager = PlanEditManager(widget.plan);
+  }
+
+  @override
+  void dispose() {
+    _manager.dispose();
+    super.dispose();
   }
 
   @override
@@ -48,6 +54,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
         ),
         centerTitle: false,
         backgroundColor: StackMoneyTheme.background,
+        surfaceTintColor: StackMoneyTheme.carbonGrey,
         actions: [
           ValueListenableBuilder<SalaryPlan>(
             valueListenable: _manager.planNotifier,
@@ -74,6 +81,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSizes.x8),
             child: CustomScrollView(
+              controller: _manager.scrollController,
               clipBehavior: Clip.none,
               slivers: [
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x8)),
@@ -119,7 +127,9 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                     onRemove: _manager.removeDistribution,
                   ),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.navBarPaddingBottom)),
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: AppSizes.navBarPaddingBottom),
+                ),
               ],
             ),
           );

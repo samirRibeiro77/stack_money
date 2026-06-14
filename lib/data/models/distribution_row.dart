@@ -1,4 +1,5 @@
 import 'package:stack_money/data/enum/allocation_type.dart';
+import 'package:uuid/uuid.dart';
 
 class DistributionRow {
   final String id;
@@ -16,6 +17,17 @@ class DistributionRow {
     required this.value,
     required this.targetDay,
   });
+
+  factory DistributionRow.empty({int defaultDay = 0}) {
+    return DistributionRow(
+      id: const Uuid().v4(),
+      category: '',
+      subCategory: '',
+      type: AllocationType.fixed,
+      value: 0.0,
+      targetDay: defaultDay,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {

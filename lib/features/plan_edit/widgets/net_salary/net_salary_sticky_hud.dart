@@ -42,81 +42,77 @@ class NetSalaryStickyHud extends SliverPersistentHeaderDelegate {
         ? StackMoneyTheme.magentaNeon
         : StackMoneyTheme.cyanNeon;
 
-    return Container(
-      color: Colors.transparent,
-      padding: const EdgeInsets.symmetric(vertical: AppSizes.x2),
-      child: ClipRect(
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: isMaxCollapsed ? AppSizes.x6 : AppSizes.x8,
-            vertical: isMaxCollapsed ? AppSizes.min : AppSizes.x2,
+    return ClipRect(
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: isMaxCollapsed ? AppSizes.x6 : AppSizes.x8,
+          vertical: isMaxCollapsed ? AppSizes.min : AppSizes.x2,
+        ),
+        decoration: BoxDecoration(
+          color: StackMoneyTheme.surface,
+          borderRadius: BorderRadius.circular(
+            isMaxCollapsed ? AppSizes.x2 : AppSizes.x6,
           ),
-          decoration: BoxDecoration(
-            color: StackMoneyTheme.surface,
-            borderRadius: BorderRadius.circular(
-              isMaxCollapsed ? AppSizes.x2 : AppSizes.x6,
-            ),
-            border: Border.all(
-              color: masterColor.withValues(alpha: 0.12),
-              width: 0.5,
-            ),
+          border: Border.all(
+            color: masterColor.withValues(alpha: 0.12),
+            width: 0.5,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              /// Header
-              if (!hideHeader) ...[
-                TitleText(l10n.totalNet),
-                const SizedBox(height: AppSizes.min),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      StackMoneyString.formatMoney(doubleValue: plan.netSalary),
-                      style: textTheme.bodyMedium,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            /// Header
+            if (!hideHeader) ...[
+              TitleText(l10n.totalNet),
+              const SizedBox(height: AppSizes.min),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    StackMoneyString.formatMoney(doubleValue: plan.netSalary),
+                    style: textTheme.bodyMedium,
+                  ),
+                  Text(
+                    plan.isOverflowed
+                        ? l10n.systemOverflow
+                        : '${StackMoneyString.formatTitle(l10n.totalRest)} ${StackMoneyString.formatMoney(doubleValue: plan.remainingRest)}',
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: plan.isOverflowed
+                          ? StackMoneyTheme.magentaNeon
+                          : StackMoneyTheme.cyanNeon,
                     ),
-                    Text(
-                      plan.isOverflowed
-                          ? l10n.systemOverflow
-                          : '${StackMoneyString.formatTitle(l10n.totalRest)} ${StackMoneyString.formatMoney(doubleValue: plan.remainingRest)}',
-                      style: textTheme.bodyMedium?.copyWith(
-                        color: plan.isOverflowed
-                            ? StackMoneyTheme.magentaNeon
-                            : StackMoneyTheme.cyanNeon,
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(),
-              ],
-
-              /// Day list progress bar ans values
-              ...List.generate(days.length, (index) {
-                final day = days[index];
-
-                final double netForDay = plan.netSalaryForDay(day);
-                final double allocatedForDay = plan.totalAllocatedForDay(day);
-                final double restForDay = plan.remainingRestForDay(day);
-                final bool isOver = plan.isOverflowedForDay(day);
-
-                double progressFactor = netForDay > 0
-                    ? (allocatedForDay / netForDay)
-                    : 0.0;
-                if (progressFactor > 1.0) progressFactor = 1.0;
-
-                return NetSalaryProgress(
-                  isMaxCollapsed: isMaxCollapsed,
-                  day: day,
-                  hideHeader: hideHeader,
-                  netForDay: netForDay,
-                  isOver: isOver,
-                  restForDay: restForDay,
-                  progressFactor: progressFactor,
-                );
-              }),
+                  ),
+                ],
+              ),
+              const Divider(),
             ],
-          ),
+
+            /// Day list progress bar ans values
+            ...List.generate(days.length, (index) {
+              final day = days[index];
+
+              final double netForDay = plan.netSalaryForDay(day);
+              final double allocatedForDay = plan.totalAllocatedForDay(day);
+              final double restForDay = plan.remainingRestForDay(day);
+              final bool isOver = plan.isOverflowedForDay(day);
+
+              double progressFactor = netForDay > 0
+                  ? (allocatedForDay / netForDay)
+                  : 0.0;
+              if (progressFactor > 1.0) progressFactor = 1.0;
+
+              return NetSalaryProgress(
+                isMaxCollapsed: isMaxCollapsed,
+                day: day,
+                hideHeader: hideHeader,
+                netForDay: netForDay,
+                isOver: isOver,
+                restForDay: restForDay,
+                progressFactor: progressFactor,
+              );
+            }),
+          ],
         ),
       ),
     );
