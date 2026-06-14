@@ -57,7 +57,7 @@ class NetSalaryStickyHud extends SliverPersistentHeaderDelegate {
               isMaxCollapsed ? AppSizes.x2 : AppSizes.x6,
             ),
             border: Border.all(
-              color: masterColor.withOpacity(0.12),
+              color: masterColor.withValues(alpha: 0.12),
               width: 0.5,
             ),
           ),

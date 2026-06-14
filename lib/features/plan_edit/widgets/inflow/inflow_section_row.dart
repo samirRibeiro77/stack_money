@@ -47,7 +47,7 @@ class InflowSectionRow extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: AppSizes.x2),
       child: Column(
         children: [
           Row(

@@ -90,7 +90,7 @@ class NetSalaryProgress extends StatelessWidget {
             child: LinearProgressIndicator(
               value: progressFactor,
               minHeight: isMaxCollapsed ? AppSizes.min : AppSizes.x2,
-              backgroundColor: Colors.white.withOpacity(0.03),
+              backgroundColor: Colors.white.withValues(alpha: 0.03),
               color: dayColor,
             ),
           ),

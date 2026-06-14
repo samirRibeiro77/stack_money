@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
@@ -59,6 +60,7 @@ class OutflowSection extends StatelessWidget {
 
               return Column(
                 children: [
+                  const SizedBox(height: AppSizes.x7),
                   const Divider(),
 
                   ...List.generate(plan.outflows.length, (index) {

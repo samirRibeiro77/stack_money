@@ -52,6 +52,7 @@ class InflowSection extends StatelessWidget {
 
               return Column(
                 children: [
+                  const SizedBox(height: AppSizes.x7),
                   const Divider(),
                   const SizedBox(height: AppSizes.x6),
                   TextFormField(

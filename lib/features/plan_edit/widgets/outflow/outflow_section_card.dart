@@ -61,7 +61,7 @@ class OutflowSectionCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(AppSizes.x3),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
+        border: Border.all(color: StackMoneyTheme.carbonGrey),
       ),
       child: Column(
         children: [
@@ -105,7 +105,7 @@ class OutflowSectionCard extends StatelessWidget {
                   icon: const Icon(
                     Icons.delete_outline_rounded,
                     color: StackMoneyTheme.magentaNeon,
-                    size: 20,
+                    size: AppSizes.x10,
                   ),
                   onPressed: () => onRemove(index),
                 ),
@@ -146,7 +146,9 @@ class OutflowSectionCard extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   style: textTheme.bodySmall,
                   decoration: StackMoneyTheme.inputDecoration(
-                    row.type == DeductionType.fixed ? l10n.brlCurrency : l10n.percentSignal,
+                    row.type == DeductionType.fixed
+                        ? l10n.brlCurrency
+                        : l10n.percentSignal,
                   ),
                   inputFormatters: row.type == DeductionType.fixed
                       ? [MoneyInputFormatter()]
@@ -157,11 +159,16 @@ class OutflowSectionCard extends StatelessWidget {
             ],
           ),
           if (row.type == DeductionType.percentageGross && row.value > 0)
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                l10n.deducted(StackMoneyString.formatMoney(doubleValue: absVal)),
-                style: textTheme.labelSmall,
+            Padding(
+              padding: EdgeInsets.only(top: AppSizes.x3),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  l10n.deducted(
+                    StackMoneyString.formatMoney(doubleValue: absVal),
+                  ),
+                  style: textTheme.labelSmall,
+                ),
               ),
             ),
         ],

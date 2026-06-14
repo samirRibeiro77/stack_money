@@ -123,8 +123,9 @@ class PlanEditManager {
       );
       planNotifier.value = currentPlan.copyWith(outflows: list);
       if (index == list.length - 1 &&
-          ((value ?? 0) > 0 || (name ?? '').isNotEmpty))
+          ((value ?? 0) > 0 || (name ?? '').isNotEmpty)) {
         _ensureEmptyOutflowRow();
+      }
       _autoSave();
     }
   }
