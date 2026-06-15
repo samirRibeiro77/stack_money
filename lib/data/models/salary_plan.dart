@@ -31,7 +31,7 @@ class SalaryPlan {
 
   factory SalaryPlan.empty({bool? isActive}) {
     return SalaryPlan(
-      id: Uuid().v4(),
+      id: const Uuid().v4(),
       name: 'New plan',
       baseSalary: 0.0,
       isActive: isActive ?? false,
@@ -43,7 +43,7 @@ class SalaryPlan {
     );
   }
 
-  // --- 📐 MOTOR MATEMÁTICO RECALIBRADO ---
+  // --- 📐 MOTOR MATEMÁTICO DE ENTRADAS ---
 
   double calculateInflowAbsolute(InflowRow row) {
     return row.type == InflowType.percentageBase
@@ -58,10 +58,22 @@ class SalaryPlan {
     );
   }
 
+  /// 🛰️ AUXILIAR TEMPORAL: Isola o faturamento bruto gerado especificamente em um dia
+  double grossSalaryForDay(int day) {
+    return inflows
+        .where((e) => e.day == day)
+        .fold(0.0, (sum, item) => sum + calculateInflowAbsolute(item));
+  }
+
+  // --- 📐 MOTOR MATEMÁTICO DE DEDUÇÕES (CORRIGIDO) ---
+
+  /// 🔥 BUG FIX: Calcula a dedução percentual com base estritamente no faturamento do dia alvo dela
   double calculateOutflowAbsolute(OutflowRow row) {
-    return row.type == DeductionType.percentageGross
-        ? totalGrossSalary * (row.value / 100.0)
-        : row.value;
+    if (row.type == DeductionType.percentageGross) {
+      final double grossForDay = grossSalaryForDay(row.targetDay);
+      return grossForDay * (row.value / 100.0);
+    }
+    return row.value;
   }
 
   double get totalOutflows {
@@ -72,6 +84,8 @@ class SalaryPlan {
   }
 
   double get netSalary => totalGrossSalary - totalOutflows;
+
+  // --- 📐 MOTOR MATEMÁTICO DE DISTRIBUIÇÃO ---
 
   double calculateRowAbsoluteValue(DistributionRow row) {
     switch (row.type) {
@@ -101,28 +115,23 @@ class SalaryPlan {
 
   // --- 🛰️ MOTOR DE FATIAMENTO TEMPORAL (TIME-SLICE ENGINE) ---
 
-  /// Captura todos os dias únicos de recebimento cadastrados que possuem valor
+  /// Captura todos os dias únicos de recebimento cadastrados reais (Sem Dia 0)
   List<int> get activePaymentDays {
-    final days = inflows.where((e) => e.value > 0).map((e) => e.day).toSet().toList();
-    // Se houver alguma dedução ou distribuição unlinked (Dia 0), inclui o pool Geral
-    if (outflows.any((e) => e.targetDay == 0) || distributions.any((e) => e.targetDay == 0)) {
-      if (!days.contains(0)) days.add(0);
-    }
+    final days = inflows
+        .where((e) => e.value > 0)
+        .map((e) => e.day)
+        .toSet()
+        .toList();
     days.sort();
     return days;
   }
 
-  /// Calcula o Salário Líquido específico de um dia (Receitas do dia - Deduções do dia)
+  /// Calcula o Salário Líquido específico de um dia real (Receitas do dia - Deduções do dia)
   double netSalaryForDay(int day) {
-    if (day == 0) {
-      // Pool Geral: Soma inflows unlinked (se houver) e subtrai outflows unlinked
-      final gross0 = inflows.where((e) => e.day == 0).fold(0.0, (sum, item) => sum + calculateInflowAbsolute(item));
-      final out0 = outflows.where((e) => e.targetDay == 0).fold(0.0, (sum, item) => sum + calculateOutflowAbsolute(item));
-      return gross0 - out0;
-    }
-
-    final gross = inflows.where((e) => e.day == day).fold(0.0, (sum, item) => sum + calculateInflowAbsolute(item));
-    final out = outflows.where((e) => e.targetDay == day).fold(0.0, (sum, item) => sum + calculateOutflowAbsolute(item));
+    final gross = grossSalaryForDay(day);
+    final out = outflows
+        .where((e) => e.targetDay == day)
+        .fold(0.0, (sum, item) => sum + calculateOutflowAbsolute(item));
     return gross - out;
   }
 
@@ -142,6 +151,8 @@ class SalaryPlan {
   bool isOverflowedForDay(int day) {
     return remainingRestForDay(day) < 0.0;
   }
+
+  // --- 📦 SERIALIZAÇÃO ---
 
   Map<String, dynamic> toJson() {
     return {

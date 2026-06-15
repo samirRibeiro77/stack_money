@@ -2,6 +2,18 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class MoneyInputFormatter extends TextInputFormatter {
+  static double format(String value) {
+    String cleanValue = value.replaceAll('.', '').replaceAll(RegExp(r'[^0-9.]'), '');
+    if (cleanValue.isEmpty || cleanValue == '.') {
+      cleanValue = '0.0';
+    }
+
+    double parsed = double.tryParse(cleanValue) ?? 0.0;
+    parsed /= 100.0;
+
+    return parsed;
+  }
+
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.isEmpty) return newValue;

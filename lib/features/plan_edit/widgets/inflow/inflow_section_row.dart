@@ -28,17 +28,10 @@ class InflowSectionRow extends StatelessWidget {
   final Function(int index) onRemove;
 
   void onChanged(String value) {
-    String cleanValue = value.replaceAll(RegExp(r'[^0-9.]'), '');
-    if (cleanValue.isEmpty || cleanValue == '.') {
-      cleanValue = '0.0';
-    }
-
-    double parsed = double.tryParse(cleanValue) ?? 0.0;
-    if (row.type == InflowType.fixed) {
-      parsed /= 100.0;
-    }
-
-    onUpdate(index, value: parsed);
+    final fomartedValue = row.type == InflowType.fixed
+        ? MoneyInputFormatter.format(value)
+        : PercentageInputFormatter.format(value);
+    onUpdate(index, value: fomartedValue);
   }
 
   @override

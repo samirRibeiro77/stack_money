@@ -141,7 +141,7 @@ class OutflowSectionCard extends StatelessWidget {
                             ? StackMoneyString.formatMoney(
                                 doubleValue: row.value,
                               )
-                            : row.value.toStringAsFixed(0))
+                            : row.value.toString())
                       : '',
                   keyboardType: TextInputType.number,
                   style: textTheme.bodySmall,

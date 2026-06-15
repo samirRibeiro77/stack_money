@@ -1,6 +1,17 @@
 import 'package:flutter/services.dart';
 
 class PercentageInputFormatter extends TextInputFormatter {
+  static double format(String value) {
+    String cleanValue = value.replaceAll('.', '').replaceAll(RegExp(r'[^0-9.]'), '');
+    if (cleanValue.isEmpty || cleanValue == '.') {
+      cleanValue = '0.0';
+    }
+
+    double parsed = double.tryParse(cleanValue) ?? 0.0;
+
+    return parsed;
+  }
+
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.isEmpty) return newValue;
@@ -9,7 +20,7 @@ class PercentageInputFormatter extends TextInputFormatter {
 
     if ('.'.allMatches(text).length > 1) return oldValue;
 
-    final regExp = RegExp(r'^\d*\.?\d{0,2}$');
+    final regExp = RegExp(r'^\d*\.?\d{0,12}$');
 
     if (!regExp.hasMatch(text)) {
       return oldValue;
