@@ -2,7 +2,7 @@ import 'package:currency_formatter/currency_formatter.dart';
 import 'package:intl/intl.dart';
 
 class StackMoneyString {
-  static final _brlSymbol = 'R\$ ';
+  static final _brlSymbol = 'R\$';
   static final CurrencyFormat _realSettings = CurrencyFormat(
     code: 'brl',
     symbol: '',
