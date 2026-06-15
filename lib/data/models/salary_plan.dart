@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 class SalaryPlan {
   final String id;
   final String name;
-  final double baseSalary; // 🔥 Salário Base de Cálculo (ex: 13000)
+  final double baseSalary;
   final bool isActive;
   final bool isArchived;
   final DateTime createdAt;
@@ -58,16 +58,14 @@ class SalaryPlan {
     );
   }
 
-  /// 🛰️ AUXILIAR TEMPORAL: Isola o faturamento bruto gerado especificamente em um dia
   double grossSalaryForDay(int day) {
     return inflows
         .where((e) => e.day == day)
         .fold(0.0, (sum, item) => sum + calculateInflowAbsolute(item));
   }
 
-  // --- 📐 MOTOR MATEMÁTICO DE DEDUÇÕES (CORRIGIDO) ---
+  // --- 📐 MOTOR MATEMÁTICO DE DEDUÇÕES ---
 
-  /// 🔥 BUG FIX: Calcula a dedução percentual com base estritamente no faturamento do dia alvo dela
   double calculateOutflowAbsolute(OutflowRow row) {
     if (row.type == DeductionType.percentageGross) {
       final double grossForDay = grossSalaryForDay(row.targetDay);
@@ -85,19 +83,26 @@ class SalaryPlan {
 
   double get netSalary => totalGrossSalary - totalOutflows;
 
-  // --- 📐 MOTOR MATEMÁTICO DE DISTRIBUIÇÃO ---
+  // --- 📐 MOTOR MATEMÁTICO DE DISTRIBUIÇÃO (UPGRADE DE FLUXO TEMPORAL) ---
 
+  /// 🔥 ATUALIZADO: Intercepta e calcula os pesos baseando-se estritamente na regra informada
   double calculateRowAbsoluteValue(DistributionRow row) {
     switch (row.type) {
       case AllocationType.fixed:
+        // ⚡ Valor fixo: Retorna a quantia direta atada ao dia
         return row.value;
+
       case AllocationType.percentageGross:
+        // ⚡ % do Gross: O cálculo é feito em cima do salário total (todos os inflows do mês)
         double raw = totalGrossSalary * (row.value / 100.0);
-        // ⚡ Arredonda para CIMA na centena mais próxima (1255.58 -> 1300)
+        // Arredonda para CIMA na centena mais próxima (1255.58 -> 1300)
         return (raw / 100.0).ceil() * 100.0;
+
       case AllocationType.percentageNet:
-        double raw = netSalary * (row.value / 100.0);
-        // ⚡ Arredonda para BAIXO na centena mais próxima (1255.58 -> 1200)
+        // ⚡ % do Net: Faz o cálculo cirúrgico em cima do NET específico daquele dia alvo
+        double dayNet = netSalaryForDay(row.targetDay);
+        double raw = dayNet * (row.value / 100.0);
+        // Arredonda para BAIXO na centena mais próxima (1255.58 -> 1200)
         return (raw / 100.0).floor() * 100.0;
     }
   }
@@ -115,7 +120,6 @@ class SalaryPlan {
 
   // --- 🛰️ MOTOR DE FATIAMENTO TEMPORAL (TIME-SLICE ENGINE) ---
 
-  /// Captura todos os dias únicos de recebimento cadastrados reais (Sem Dia 0)
   List<int> get activePaymentDays {
     final days = inflows
         .where((e) => e.value > 0)
@@ -126,7 +130,6 @@ class SalaryPlan {
     return days;
   }
 
-  /// Calcula o Salário Líquido específico de um dia real (Receitas do dia - Deduções do dia)
   double netSalaryForDay(int day) {
     final gross = grossSalaryForDay(day);
     final out = outflows
@@ -135,19 +138,16 @@ class SalaryPlan {
     return gross - out;
   }
 
-  /// Calcula o total alocado em regras de distribuição vinculadas a este dia específico
   double totalAllocatedForDay(int day) {
     return distributions
         .where((e) => e.targetDay == day)
         .fold(0.0, (sum, row) => sum + calculateRowAbsoluteValue(row));
   }
 
-  /// Calcula o Restante (Margem de segurança) de um dia específico
   double remainingRestForDay(int day) {
     return netSalaryForDay(day) - totalAllocatedForDay(day);
   }
 
-  /// Sinaliza se as despesas atadas a este dia específico estouraram o caixa do período
   bool isOverflowedForDay(int day) {
     return remainingRestForDay(day) < 0.0;
   }
