@@ -212,7 +212,7 @@
   "@systemOverflow": {
     "description": "System overflowed the values"
   },
-  "overflowBy": "Over (- {value})",
+  "overflowBy": "Over ({value})",
   "@overflowBy": {
     "description": "System overflowed by X"
   }

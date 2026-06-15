@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/money_input_formatter.dart';
 import 'package:stack_money/core/helpers/percentage_input_formatter.dart';
+import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -28,10 +29,15 @@ class InflowSectionRow extends StatelessWidget {
   final Function(int index) onRemove;
 
   void onChanged(String value) {
-    final fomartedValue = row.type == InflowType.fixed
-        ? MoneyInputFormatter.format(value)
-        : PercentageInputFormatter.format(value);
-    onUpdate(index, value: fomartedValue);
+    double valueToSave;
+
+    if (row.type == InflowType.fixed) {
+      valueToSave = StackMoneyNumber.parseMoneyStringToDouble(value);
+    } else {
+      valueToSave = StackMoneyNumber.parsePercentageStringToDouble(value);
+    }
+
+    onUpdate(index, value: valueToSave);
   }
 
   @override
@@ -73,10 +79,8 @@ class InflowSectionRow extends StatelessWidget {
                   key: ValueKey('${row.id}_${row.type.name}'),
                   initialValue: row.value > 0
                       ? (row.type == InflowType.fixed
-                            ? StackMoneyString.formatMoney(
-                                doubleValue: row.value,
-                              )
-                            : row.value.toStringAsFixed(0))
+                            ? StackMoneyString.formatMoney(row.value)
+                            : StackMoneyString.formatPercentage(row.value))
                       : '',
                   keyboardType: TextInputType.number,
                   style: textTheme.bodySmall,
@@ -133,7 +137,7 @@ class InflowSectionRow extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Text(
                 l10n.converted(
-                  StackMoneyString.formatMoney(doubleValue: absVal),
+                  StackMoneyString.formatMoney(absVal, symbol: true),
                 ),
                 style: textTheme.labelSmall,
               ),

@@ -419,7 +419,7 @@ abstract class AppLocalizations {
   /// System overflowed by X
   ///
   /// In en, this message translates to:
-  /// **'Over (- {value})'**
+  /// **'Over ({value})'**
   String overflowBy(Object value);
 }
 

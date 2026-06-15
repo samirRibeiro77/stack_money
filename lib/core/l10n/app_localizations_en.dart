@@ -182,6 +182,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String overflowBy(Object value) {
-    return 'Over (- $value)';
+    return 'Over ($value)';
   }
 }

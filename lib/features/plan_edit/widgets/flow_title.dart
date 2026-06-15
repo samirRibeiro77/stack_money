@@ -30,7 +30,7 @@ class FlowTitle extends StatelessWidget {
         children: [
           TitleText(StackMoneyString.formatTitle(title)),
           Text(
-            StackMoneyString.formatMoney(doubleValue: balance),
+            StackMoneyString.formatMoney(balance, symbol: true),
             style: textTheme.titleMedium?.copyWith(
               color: color,
               fontWeight: FontWeight.bold,

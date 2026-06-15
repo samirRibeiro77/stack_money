@@ -83,10 +83,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                         children: [
                           Text(l10n.allocation, style: textTheme.labelSmall),
                           SecurityText(
-                            StackMoneyString.formatPercentage(
-                              doubleValue:
-                                  (currentBalance / latestHistory.total) * 100,
-                            ),
+                            StackMoneyString.formatPercentage((currentBalance / latestHistory.total) * 100, decimal: 2),
                             style: textTheme.labelSmall,
                             activeColor: StackMoneyTheme.mutedGrey,
                           ),
@@ -103,9 +100,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       SecurityText(
-                        StackMoneyString.formatMoney(
-                          doubleValue: currentBalance,
-                        ),
+                        StackMoneyString.formatMoney(currentBalance, symbol: true),
                         type: SecurityType.mask,
                         style: textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.bold,
@@ -117,9 +112,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                         children: [
                           Text(l10n.min, style: textTheme.labelSmall),
                           SecurityText(
-                            StackMoneyString.formatMoney(
-                              doubleValue: widget.parameter.minValue,
-                            ),
+                            StackMoneyString.formatMoney(widget.parameter.minValue, symbol: true),
                             style: textTheme.labelSmall,
                             activeColor: StackMoneyTheme.mutedGrey,
                           ),
@@ -214,7 +207,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                 return touchedSpots.map((spot) {
                   final deltaValue = spot.y - widget.parameter.minValue;
                   return LineTooltipItem(
-                    StackMoneyString.formatMoney(doubleValue: spot.y),
+                    StackMoneyString.formatMoney(spot.y),
                     TextStyle(
                       color: deltaValue >= 0
                           ? StackMoneyTheme.cyanNeon

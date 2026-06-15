@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/money_input_formatter.dart';
 import 'package:stack_money/core/helpers/percentage_input_formatter.dart';
+import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -37,17 +38,15 @@ class OutflowSectionCard extends StatelessWidget {
   final Function(int index) onRemove;
 
   void onChanged(String value) {
-    String cleanValue = value.replaceAll(RegExp(r'[^0-9.]'), '');
-    if (cleanValue.isEmpty || cleanValue == '.') {
-      cleanValue = '0.0';
-    }
+    double valueToSave;
 
-    double parsed = double.tryParse(cleanValue) ?? 0.0;
     if (row.type == DeductionType.fixed) {
-      parsed /= 100.0;
+      valueToSave = StackMoneyNumber.parseMoneyStringToDouble(value);
+    } else {
+      valueToSave = StackMoneyNumber.parsePercentageStringToDouble(value);
     }
 
-    onUpdate(index, value: parsed);
+    onUpdate(index, value: valueToSave);
   }
 
   @override
@@ -138,9 +137,7 @@ class OutflowSectionCard extends StatelessWidget {
                   key: ValueKey('${row.id}_${row.type.name}'),
                   initialValue: row.value > 0
                       ? (row.type == DeductionType.fixed
-                            ? StackMoneyString.formatMoney(
-                                doubleValue: row.value,
-                              )
+                            ? StackMoneyString.formatMoney(row.value)
                             : row.value.toString())
                       : '',
                   keyboardType: TextInputType.number,
@@ -165,7 +162,7 @@ class OutflowSectionCard extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: Text(
                   l10n.deducted(
-                    StackMoneyString.formatMoney(doubleValue: absVal),
+                    StackMoneyString.formatMoney(absVal, symbol: true),
                   ),
                   style: textTheme.labelSmall,
                 ),

@@ -182,6 +182,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String overflowBy(Object value) {
-    return 'Acima (- $value)';
+    return 'Acima ($value)';
   }
 }

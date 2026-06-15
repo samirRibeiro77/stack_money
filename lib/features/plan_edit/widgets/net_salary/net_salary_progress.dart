@@ -30,7 +30,7 @@ class NetSalaryProgress extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    final dayRest = StackMoneyString.formatMoney(doubleValue: restForDay);
+    final dayRest = StackMoneyString.formatMoney(restForDay, symbol: true);
 
     final Color dayColor = isOver
         ? StackMoneyTheme.magentaNeon
@@ -60,7 +60,7 @@ class NetSalaryProgress extends StatelessWidget {
                     const SizedBox(width: AppSizes.x2),
                     Text(
                       l10n.netValue(
-                        StackMoneyString.formatMoney(doubleValue: netForDay),
+                        StackMoneyString.formatMoney(netForDay, symbol: true),
                       ),
                       style: textTheme.bodySmall?.copyWith(
                         color: StackMoneyTheme.mutedGrey,

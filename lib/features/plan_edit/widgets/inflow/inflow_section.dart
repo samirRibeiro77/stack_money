@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/money_input_formatter.dart';
+import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -57,9 +58,7 @@ class InflowSection extends StatelessWidget {
                   const SizedBox(height: AppSizes.x6),
                   TextFormField(
                     initialValue: plan.baseSalary > 0
-                        ? StackMoneyString.formatMoney(
-                            doubleValue: plan.baseSalary,
-                          )
+                        ? StackMoneyString.formatMoney(plan.baseSalary)
                         : '',
                     keyboardType: TextInputType.number,
                     style: textTheme.bodySmall?.copyWith(
@@ -69,15 +68,7 @@ class InflowSection extends StatelessWidget {
                       l10n.baseSalary,
                     ),
                     inputFormatters: [MoneyInputFormatter()],
-                    onChanged: (val) {
-                      final double parsed =
-                          (double.tryParse(
-                                val.replaceAll(RegExp(r'[^0-9]'), ''),
-                              ) ??
-                              0.0) /
-                          100.0;
-                      onBaseUpdate(parsed);
-                    },
+                    onChanged: (value) => onBaseUpdate(StackMoneyNumber.parseMoneyStringToDouble(value)),
                   ),
                   const SizedBox(height: AppSizes.x6),
 

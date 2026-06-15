@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/helpers/money_input_formatter.dart';
+import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
@@ -54,7 +56,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
     _whereController = TextEditingController(text: widget.bucket.where);
     _categoryController = TextEditingController(text: widget.bucket.category);
     _minValueController = TextEditingController(
-      text: StackMoneyString.formatMoney(doubleValue: widget.bucket.minValue),
+      text: StackMoneyString.formatMoney(widget.bucket.minValue),
     );
 
     _whereFocus.addListener(_handleWhereFocusChange);
@@ -96,18 +98,18 @@ class _BucketEditCardState extends State<BucketEditCard> {
 
     if (_isNegative) doubleValue = -doubleValue;
 
-    _minValueController.text = StackMoneyString.formatMoney(
-      doubleValue: doubleValue,
-    );
+    _minValueController.text = doubleValue.toString();
     _triggerAutoSave();
   }
 
   Future<void> _triggerAutoSave() async {
-    final rawNumber = _minValueController.text.replaceAll(
-      RegExp(r'[^0-9]'),
-      '',
+    double doubleValue = StackMoneyNumber.parseMoneyStringToDouble(
+      _minValueController.text,
     );
-    double doubleValue = (double.tryParse(rawNumber) ?? 0.0) / 100.0;
+
+    print(
+      '[SAVE] Raw: ${_minValueController.text} // Converted: ${StackMoneyNumber.parseMoneyStringToDouble(_minValueController.text)} // Real: $doubleValue',
+    );
 
     if (_isNegative) doubleValue = -doubleValue;
 
@@ -236,9 +238,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                       ],
                     ),
                     SecurityText(
-                      StackMoneyString.formatMoney(
-                        doubleValue: _parseCurrentValue(),
-                      ),
+                      StackMoneyString.formatMoney(widget.bucket.minValue, symbol: true),
                       type: SecurityType.mask,
                       style: const TextStyle(
                         fontFamily: 'JetBrainsMono',
@@ -316,14 +316,24 @@ class _BucketEditCardState extends State<BucketEditCard> {
                         const SizedBox(width: 10),
                         Expanded(
                           flex: 3,
-                          child: _buildOutlineField(
-                            label: l10n.minValue,
+                          child: TextFormField(
                             controller: _minValueController,
-                            focusNode: _minValueFocus,
                             keyboardType: TextInputType.number,
-                            inputFormatters: [PureDigitCurrencyFormatter()],
-                            activeColor: techColor,
+                            focusNode: _minValueFocus,
+                            style: Theme.of(context).textTheme.bodySmall,
+                            decoration: StackMoneyTheme.inputDecoration(
+                              l10n.minValue,
+                            ),
+                            inputFormatters: [MoneyInputFormatter()],
                           ),
+                          // child: _buildOutlineField(
+                          //   label: l10n.minValue,
+                          //   controller: _minValueController,
+                          //   focusNode: _minValueFocus,
+                          //   keyboardType: TextInputType.number,
+                          //   inputFormatters: [MoneyInputFormatter()],
+                          //   activeColor: techColor,
+                          // ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
@@ -435,12 +445,12 @@ class _BucketEditCardState extends State<BucketEditCard> {
     );
   }
 
-  double _parseCurrentValue() {
-    final rawNumber = _minValueController.text.replaceAll(
-      RegExp(r'[^0-9]'),
-      '',
-    );
-    double doubleValue = (double.tryParse(rawNumber) ?? 0.0) / 100.0;
-    return _isNegative ? -doubleValue : doubleValue;
-  }
+  // double _parseCurrentValue() {
+  //   final rawNumber = _minValueController.text.replaceAll(
+  //     RegExp(r'[^0-9]'),
+  //     '',
+  //   );
+  //   double doubleValue = (double.tryParse(rawNumber) ?? 0.0) / 100.0;
+  //   return _isNegative ? -doubleValue : doubleValue;
+  // }
 }

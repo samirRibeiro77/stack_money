@@ -54,5 +54,5 @@
   "netValue": "Liquido: {value}",
   "rest": "Resto: {value}",
   "systemOverflow": "[ LIMITE_EXCEDIDO ]",
-  "overflowBy": "Acima (- {value})"
+  "overflowBy": "Acima ({value})"
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/money_input_formatter.dart';
+import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/card_initialize_slot.dart';
@@ -148,10 +149,8 @@ class DistributionSection extends StatelessWidget {
                             key: ValueKey('${row.id}_nested_${row.type.name}'),
                             initialValue: row.value > 0
                                 ? (row.type == AllocationType.fixed
-                                      ? StackMoneyString.formatMoney(
-                                          doubleValue: row.value,
-                                        )
-                                      : row.value.toStringAsFixed(0))
+                                      ? StackMoneyString.formatMoney(row.value)
+                                      : row.value.toString())
                                 : '',
                             keyboardType: TextInputType.number,
                             style: const TextStyle(
@@ -167,14 +166,15 @@ class DistributionSection extends StatelessWidget {
                                 ? [MoneyInputFormatter()]
                                 : [],
                             onChanged: (val) {
-                              double parsed =
-                                  double.tryParse(
-                                    val.replaceAll(RegExp(r'[^0-9]'), ''),
-                                  ) ??
-                                  0.0;
-                              if (row.type == AllocationType.fixed)
-                                parsed /= 100.0;
-                              onUpdate(index, value: parsed);
+                              double valueToSave;
+
+                              if (row.type == AllocationType.fixed) {
+                                valueToSave = StackMoneyNumber.parseMoneyStringToDouble(val);
+                              } else {
+                                valueToSave = StackMoneyNumber.parsePercentageStringToDouble(val);
+                              }
+
+                              onUpdate(index, value: valueToSave);
                             },
                           ),
                         ),
@@ -228,7 +228,7 @@ class DistributionSection extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            'CONVERTED: ${StackMoneyString.formatMoney(doubleValue: computedValue)}',
+                            'CONVERTED: ${StackMoneyString.formatMoney(computedValue)}',
                             style: const TextStyle(
                               fontFamily: 'JetBrainsMono',
                               color: StackMoneyTheme.mutedGrey,

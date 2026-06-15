@@ -64,9 +64,7 @@ class PlanListCard extends StatelessWidget {
                       ),
                       const SizedBox(height: AppSizes.min),
                       SecurityText(
-                        StackMoneyString.formatMoney(
-                          doubleValue: plan.totalGrossSalary,
-                        ),
+                        StackMoneyString.formatMoney(plan.totalGrossSalary, symbol: true),
                         type: SecurityType.mask,
                         style: textTheme.bodyMedium,
                         activeColor: StackMoneyTheme.platinumSilver,
@@ -85,9 +83,7 @@ class PlanListCard extends StatelessWidget {
                       ),
                       const SizedBox(height: AppSizes.min),
                       SecurityText(
-                        StackMoneyString.formatMoney(
-                          doubleValue: plan.remainingRest,
-                        ),
+                        StackMoneyString.formatMoney(plan.remainingRest, symbol: true),
                         type: SecurityType.mask,
                         style: textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.bold,

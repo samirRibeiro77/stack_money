@@ -70,13 +70,13 @@ class NetSalaryStickyHud extends SliverPersistentHeaderDelegate {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    StackMoneyString.formatMoney(doubleValue: plan.netSalary),
+                    StackMoneyString.formatMoney(plan.netSalary, symbol: true),
                     style: textTheme.bodyMedium,
                   ),
                   Text(
                     plan.isOverflowed
                         ? l10n.systemOverflow
-                        : '${StackMoneyString.formatTitle(l10n.totalRest)} ${StackMoneyString.formatMoney(doubleValue: plan.remainingRest)}',
+                        : '${StackMoneyString.formatTitle(l10n.totalRest)} ${StackMoneyString.formatMoney(plan.remainingRest, symbol: true)}',
                     style: textTheme.bodyMedium?.copyWith(
                       color: plan.isOverflowed
                           ? StackMoneyTheme.magentaNeon
