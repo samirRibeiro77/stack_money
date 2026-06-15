@@ -54,5 +54,9 @@
   "netValue": "Liquido: {value}",
   "rest": "Resto: {value}",
   "systemOverflow": "[ LIMITE_EXCEDIDO ]",
-  "overflowBy": "Acima ({value})"
+  "overflowBy": "Acima ({value})",
+  "newDistributionRule": "Adicionar nova distribuição",
+  "subcategory": "Subcategoria",
+  "percentNet": "% liq",
+  "percentGross": "% bru"
 }

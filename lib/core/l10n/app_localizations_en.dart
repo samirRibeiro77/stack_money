@@ -184,4 +184,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String overflowBy(Object value) {
     return 'Over ($value)';
   }
+
+  @override
+  String get newDistributionRule => 'Add new distribution';
+
+  @override
+  String get subcategory => 'Subcategory';
+
+  @override
+  String get percentNet => '% net';
+
+  @override
+  String get percentGross => '% gross';
 }

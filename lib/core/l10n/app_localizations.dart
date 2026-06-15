@@ -421,6 +421,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Over ({value})'**
   String overflowBy(Object value);
+
+  /// Add distribution rule slot text
+  ///
+  /// In en, this message translates to:
+  /// **'Add new distribution'**
+  String get newDistributionRule;
+
+  /// Subcategory
+  ///
+  /// In en, this message translates to:
+  /// **'Subcategory'**
+  String get subcategory;
+
+  /// % of the net income
+  ///
+  /// In en, this message translates to:
+  /// **'% net'**
+  String get percentNet;
+
+  /// % of the gross income
+  ///
+  /// In en, this message translates to:
+  /// **'% gross'**
+  String get percentGross;
 }
 
 class _AppLocalizationsDelegate

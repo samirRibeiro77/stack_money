@@ -215,5 +215,21 @@
   "overflowBy": "Over ({value})",
   "@overflowBy": {
     "description": "System overflowed by X"
+  },
+  "newDistributionRule": "Add new distribution",
+  "@newDistributionRule": {
+    "description": "Add distribution rule slot text"
+  },
+  "subcategory": "Subcategory",
+  "@subcategory": {
+    "description": "Subcategory"
+  },
+  "percentNet": "% net",
+  "@percentNet": {
+    "description": "% of the net income"
+  },
+  "percentGross": "% gross",
+  "@percentGross": {
+    "description": "% of the gross income"
   }
 }
