@@ -58,5 +58,9 @@
   "newDistributionRule": "Adicionar nova distribuição",
   "subcategory": "Subcategoria",
   "percentNet": "% liq",
-  "percentGross": "% bru"
+  "percentGross": "% bru",
+  "archive": "Arquivar",
+  "delete": "Deletar",
+  "copy": "Copiar",
+  "dayX": "D{d}"
 }

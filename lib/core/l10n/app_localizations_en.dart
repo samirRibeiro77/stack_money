@@ -196,4 +196,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get percentGross => '% gross';
+
+  @override
+  String get archive => 'Archive';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get copy => 'Copy';
+
+  @override
+  String dayX(Object d) {
+    return 'D$d';
+  }
 }

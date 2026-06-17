@@ -26,7 +26,6 @@ class OutflowSectionCard extends StatelessWidget {
   final List<int> availableDays;
   final bool isLast;
   final double absVal;
-
   final Function(
     int index, {
     String? name,
@@ -35,17 +34,15 @@ class OutflowSectionCard extends StatelessWidget {
     int? targetDay,
   })
   onUpdate;
-  final Function(int index) onRemove;
+  final Function(int index, BuildContext ctx) onRemove;
 
   void onChanged(String value) {
     double valueToSave;
-
     if (row.type == DeductionType.fixed) {
       valueToSave = StackMoneyNumber.parseMoneyStringToDouble(value);
     } else {
       valueToSave = StackMoneyNumber.parsePercentageStringToDouble(value);
     }
-
     onUpdate(index, value: valueToSave);
   }
 
@@ -53,6 +50,7 @@ class OutflowSectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
+    final daysList = availableDays.isEmpty ? [0] : availableDays;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: AppSizes.x2),
@@ -70,6 +68,7 @@ class OutflowSectionCard extends StatelessWidget {
                 flex: 3,
                 child: TextFormField(
                   initialValue: row.name,
+                  textCapitalization: TextCapitalization.sentences,
                   style: textTheme.bodySmall,
                   decoration: StackMoneyTheme.inputDecoration(
                     l10n.deductionName,
@@ -81,19 +80,16 @@ class OutflowSectionCard extends StatelessWidget {
               SizedBox(
                 width: AppSizes.dropdownWidth,
                 child: DropdownButtonFormField<int>(
-                  initialValue: availableDays.contains(row.targetDay)
+                  initialValue: daysList.contains(row.targetDay)
                       ? row.targetDay
-                      : availableDays.first,
+                      : daysList.first,
                   isDense: true,
                   decoration: StackMoneyTheme.inputDecoration(l10n.target),
                   dropdownColor: StackMoneyTheme.surface,
-                  items: availableDays.map((d) {
+                  items: daysList.map((d) {
                     return DropdownMenuItem(
                       value: d,
-                      child: Text(
-                        d == 0 ? l10n.notAvailable : d.toString(),
-                        style: textTheme.bodySmall,
-                      ),
+                      child: Text(d.toString(), style: textTheme.bodySmall),
                     );
                   }).toList(),
                   onChanged: (val) => onUpdate(index, targetDay: val),
@@ -106,7 +102,7 @@ class OutflowSectionCard extends StatelessWidget {
                     color: StackMoneyTheme.magentaNeon,
                     size: AppSizes.x10,
                   ),
-                  onPressed: () => onRemove(index),
+                  onPressed: () => onRemove(index, context),
                 ),
             ],
           ),

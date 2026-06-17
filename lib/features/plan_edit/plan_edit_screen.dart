@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/plan_status.dart';
+import 'package:stack_money/data/enum/plan_edit_actions.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/manager/plan_edit_manager.dart';
 import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
@@ -38,6 +40,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -72,6 +75,44 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                 ),
               );
             },
+          ),
+
+          PopupMenuButton<PlanEditActions>(
+            icon: const Icon(
+              Icons.more_vert_rounded,
+              color: StackMoneyTheme.mutedGrey,
+            ),
+            color: StackMoneyTheme.carbonGrey,
+            onSelected: (value) {
+              switch (value) {
+                case PlanEditActions.archive:
+                  _manager.archivePlan(context);
+                  break;
+                case PlanEditActions.delete:
+                  _manager.deletePlan(context);
+                  break;
+                case PlanEditActions.copy:
+                  _manager.copyPlan(context);
+                  break;
+              }
+            },
+            itemBuilder: (context) => PlanEditActions.values.map((action) {
+              return PopupMenuItem(
+                value: action,
+                child: Row(
+                  children: [
+                    Icon(action.icon, color: action.color),
+                    Text(
+                      action.text(l10n),
+                      style: textTheme.bodySmall?.copyWith(
+                        color: action.color,
+                        fontWeight: AppTypography.weightBold,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
           ),
         ],
       ),

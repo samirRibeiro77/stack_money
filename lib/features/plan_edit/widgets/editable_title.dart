@@ -16,6 +16,7 @@ class EditableTitle extends StatelessWidget {
       initialValue: title,
       onChanged: onSave,
       onFieldSubmitted: onSave,
+      textCapitalization: TextCapitalization.sentences,
       style: textTheme.titleMedium,
       decoration: InputDecoration(
         border: InputBorder.none,

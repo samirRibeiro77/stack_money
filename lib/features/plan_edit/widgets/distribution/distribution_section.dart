@@ -19,7 +19,7 @@ class DistributionSection extends StatelessWidget {
     int? targetDay,
   })
   onUpdate;
-  final Function(String id) onRemove;
+  final Function(String id, BuildContext ctx) onRemove;
 
   const DistributionSection({
     required this.plan,
@@ -38,7 +38,6 @@ class DistributionSection extends StatelessWidget {
         .map((e) => e.day)
         .toSet()
         .toList();
-
     final Color techColor = plan.isOverflowed
         ? StackMoneyTheme.magentaNeon
         : StackMoneyTheme.cyanNeon;
@@ -59,7 +58,6 @@ class DistributionSection extends StatelessWidget {
             onRemove: onRemove,
           );
         }),
-
         const SizedBox(height: AppSizes.x4),
         CardInitializeSlot(l10n.newDistributionRule, onTap: onAddSlot),
       ],

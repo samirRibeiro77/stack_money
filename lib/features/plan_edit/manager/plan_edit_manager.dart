@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
@@ -8,6 +9,7 @@ import 'package:stack_money/data/models/inflow_row.dart';
 import 'package:stack_money/data/models/outflow_row.dart';
 import 'package:stack_money/data/models/distribution_row.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
+import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 import 'package:uuid/uuid.dart';
 
 class PlanEditManager {
@@ -54,7 +56,97 @@ class PlanEditManager {
     _autoSave();
   }
 
-  // 🟢 INFLOW ENGINE
+  // 👑 PROTOCOLO DE DUPLICAÇÃO ATÔMICA & REDIRECIONAMENTO DE PILHA
+  Future<void> copyPlan(BuildContext context) async {
+    try {
+      final String newId = const Uuid().v4();
+      final copiedPlan = currentPlan.copyWith(
+        id: newId,
+        name: 'Copy of ${currentPlan.name}',
+        isActive: false,
+        isArchived: false,
+        createdAt: DateTime.now(),
+      );
+
+      await _service.saveSalaryPlan(copiedPlan);
+
+      if (context.mounted) {
+        // 🚀 Substitui o editor atual pelo novo, limpando o histórico para o "voltar" cair na listagem principal
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => PlanEditScreen(plan: copiedPlan)),
+        );
+      }
+    } catch (e) {
+      debugPrint('❌ [COPY_PLAN_FAIL] -> $e');
+    }
+  }
+
+  // 📦 PROTOCOLO ARQUIVAR VIA MENU
+  Future<void> archivePlan(BuildContext context) async {
+    try {
+      await _service.toggleArchiveSalaryPlan(currentPlan.id, true);
+      if (context.mounted) Navigator.of(context).pop();
+    } catch (e) {
+      debugPrint('❌ [ARCHIVE_FAIL] -> $e');
+    }
+  }
+
+  // 🗑️ PROTOCOLO PURGE PERMANENTE VIA MENU
+  Future<void> deletePlan(BuildContext context) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: StackMoneyTheme.surface,
+        title: const Text(
+          '[SYSTEM_WARNING]',
+          style: TextStyle(
+            fontFamily: 'Orbitron',
+            color: StackMoneyTheme.magentaNeon,
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: const Text(
+          'EXECUTE PURGE PROTOCOL ON THIS PLAN?\nALL FORECAST ALIGNMENTS WILL BE EXPURGED.',
+          style: TextStyle(
+            fontFamily: 'JetBrainsMono',
+            color: StackMoneyTheme.platinumSilver,
+            fontSize: 11,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text(
+              '[CANCEL]',
+              style: TextStyle(color: StackMoneyTheme.mutedGrey),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text(
+              '[PURGE_DATA]',
+              style: TextStyle(
+                color: StackMoneyTheme.magentaNeon,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      try {
+        await _service.purgeSalaryPlan(currentPlan.id);
+        if (context.mounted) Navigator.of(context).pop();
+      } catch (e) {
+        debugPrint('❌ [PURGE_FAIL] -> $e');
+      }
+    }
+  }
+
+  // 🟢 INFLOW ENGINE (Com suporte a Undo)
   void _ensureEmptyInflowRow() {
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (list.isEmpty || list.last.value > 0) {
@@ -63,7 +155,7 @@ class PlanEditManager {
           id: const Uuid().v4(),
           type: InflowType.percentageBase,
           value: 0.0,
-          day: 0,
+          day: 5,
         ),
       );
       planNotifier.value = currentPlan.copyWith(inflows: list);
@@ -85,23 +177,27 @@ class PlanEditManager {
     }
   }
 
-  void removeInflow(int index) {
+  void removeInflow(int index, BuildContext context) {
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (list.length > 1) {
+      final backupState = currentPlan; // 🛡️ Snapshot imutável de segurança
+
       list.removeAt(index);
       planNotifier.value = currentPlan.copyWith(inflows: list);
       _ensureEmptyInflowRow();
       _autoSave();
+
+      _triggerUndoSnackBar(context, 'INFLOW_STREAM_REMOVED', backupState);
     }
   }
 
-  // 🔴 OUTFLOW ENGINE (Infinite row UX)
+  // 🔴 OUTFLOW ENGINE (Com suporte a Undo)
   void _ensureEmptyOutflowRow() {
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (list.isEmpty || list.last.value > 0 || list.last.name.isNotEmpty) {
       final int defaultDay = currentPlan.inflows.isNotEmpty
           ? currentPlan.inflows.first.day
-          : 0;
+          : 5;
       list.add(
         OutflowRow(
           id: const Uuid().v4(),
@@ -140,22 +236,26 @@ class PlanEditManager {
     }
   }
 
-  void removeOutflow(int index) {
+  void removeOutflow(int index, BuildContext context) {
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (list.length > 1) {
+      final backupState = currentPlan; // 🛡️ Snapshot imutável de segurança
+
       list.removeAt(index);
       planNotifier.value = currentPlan.copyWith(outflows: list);
       _ensureEmptyOutflowRow();
       _autoSave();
+
+      _triggerUndoSnackBar(context, 'MANDATORY_DEDUCTION_REMOVED', backupState);
     }
   }
 
-  // ⚡ DISTRIBUTION ENGINE
+  // ⚡ DISTRIBUTION ENGINE (Com suporte a Undo)
   void initializeNewDistributionSlot() {
     final list = List<DistributionRow>.from(currentPlan.distributions);
     final int defaultDay = currentPlan.inflows.isNotEmpty
         ? currentPlan.inflows.first.day
-        : 0;
+        : 5;
 
     list.add(DistributionRow.empty(defaultDay: defaultDay));
 
@@ -187,16 +287,55 @@ class PlanEditManager {
     }
   }
 
-  void removeDistribution(String id) {
+  void removeDistribution(String id, BuildContext context) {
+    final backupState = currentPlan; // 🛡️ Snapshot imutável de segurança
+
     final list = List<DistributionRow>.from(currentPlan.distributions);
     list.removeWhere((e) => e.id == id);
     planNotifier.value = currentPlan.copyWith(distributions: list);
     _autoSave();
+
+    _triggerUndoSnackBar(context, 'DISTRIBUTION_RULE_REMOVED', backupState);
   }
 
   Future<void> triggerPlanActivation() async {
     planNotifier.value = currentPlan.copyWith(isActive: true);
     await _service.setActivePlanInBatch(currentPlan.id);
+  }
+
+  // 🛠️ MÓDULO SNACKBAR RECOVERY INTERCEPTOR
+  void _triggerUndoSnackBar(
+    BuildContext context,
+    String message,
+    SalaryPlan backup,
+  ) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: StackMoneyTheme.surface,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        content: Text(
+          message,
+          style: const TextStyle(
+            fontFamily: 'JetBrainsMono',
+            color: StackMoneyTheme.platinumSilver,
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        action: SnackBarAction(
+          label: '[UNDO]',
+          textColor: StackMoneyTheme.cyanNeon,
+          onPressed: () {
+            planNotifier.value = backup;
+            _autoSave();
+          },
+        ),
+        duration: const Duration(seconds: 4),
+      ),
+    );
   }
 
   void _autoSave() {

@@ -21,7 +21,7 @@ class OutflowSection extends StatelessWidget {
     int? targetDay,
   })
   onUpdate;
-  final Function(int index) onRemove;
+  final Function(int index, BuildContext ctx) onRemove;
 
   const OutflowSection({
     required this.plan,
@@ -56,7 +56,7 @@ class OutflowSection extends StatelessWidget {
           ValueListenableBuilder(
             valueListenable: expandState,
             builder: (_, isExpand, _) {
-              if (!isExpand) return SizedBox.shrink();
+              if (!isExpand) return const SizedBox.shrink();
 
               return Column(
                 children: [

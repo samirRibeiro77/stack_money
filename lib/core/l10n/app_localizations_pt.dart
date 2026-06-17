@@ -196,4 +196,18 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get percentGross => '% bru';
+
+  @override
+  String get archive => 'Arquivar';
+
+  @override
+  String get delete => 'Deletar';
+
+  @override
+  String get copy => 'Copiar';
+
+  @override
+  String dayX(Object d) {
+    return 'D$d';
+  }
 }

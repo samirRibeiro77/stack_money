@@ -26,17 +26,15 @@ class InflowSectionRow extends StatelessWidget {
   final double absVal;
   final Function(int index, {InflowType? type, double? value, int? day})
   onUpdate;
-  final Function(int index) onRemove;
+  final Function(int index, BuildContext ctx) onRemove;
 
   void onChanged(String value) {
     double valueToSave;
-
     if (row.type == InflowType.fixed) {
       valueToSave = StackMoneyNumber.parseMoneyStringToDouble(value);
     } else {
       valueToSave = StackMoneyNumber.parsePercentageStringToDouble(value);
     }
-
     onUpdate(index, value: valueToSave);
   }
 
@@ -101,16 +99,14 @@ class InflowSectionRow extends StatelessWidget {
               SizedBox(
                 width: AppSizes.dropdownWidth,
                 child: DropdownButtonFormField<int>(
-                  initialValue: row.day.clamp(0, 31),
+                  initialValue: row.day.clamp(1, 31),
+                  // Alterado de 0 a 31 para forçar o range real sem dia 0
                   decoration: StackMoneyTheme.inputDecoration(l10n.day),
                   dropdownColor: StackMoneyTheme.surface,
-                  items: List.generate(32, (i) => i).map((d) {
+                  items: List.generate(31, (i) => i + 1).map((d) {
                     return DropdownMenuItem(
                       value: d,
-                      child: Text(
-                        d == 0 ? l10n.notAvailable : '$d',
-                        style: textTheme.bodySmall,
-                      ),
+                      child: Text('$d', style: textTheme.bodySmall),
                     );
                   }).toList(),
                   onChanged: (val) => onUpdate(index, day: val),
@@ -125,13 +121,12 @@ class InflowSectionRow extends StatelessWidget {
                     color: StackMoneyTheme.magentaNeon,
                     size: 20,
                   ),
-                  onPressed: () => onRemove(index),
+                  onPressed: () =>
+                      onRemove(index, context),
                 ),
               ],
             ],
           ),
-
-          /// Converted calculation
           if (row.type == InflowType.percentageBase && row.value > 0)
             Align(
               alignment: Alignment.centerRight,

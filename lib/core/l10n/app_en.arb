@@ -231,5 +231,21 @@
   "percentGross": "% gross",
   "@percentGross": {
     "description": "% of the gross income"
+  },
+  "archive": "Archive",
+  "@archive": {
+    "description": "Archive something"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete something"
+  },
+  "copy": "Copy",
+  "@copy": {
+    "description": "Copy something"
+  },
+  "dayX": "D{d}",
+  "@dayX": {
+    "description": "Quantity of days (eg.: D5)"
   }
 }

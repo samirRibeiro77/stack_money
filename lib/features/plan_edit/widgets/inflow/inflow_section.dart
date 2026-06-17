@@ -20,7 +20,7 @@ class InflowSection extends StatelessWidget {
   final Function(double val) onBaseUpdate;
   final Function(int index, {InflowType? type, double? value, int? day})
   onUpdate;
-  final Function(int index) onRemove;
+  final Function(int index, BuildContext ctx) onRemove;
 
   const InflowSection({
     required this.plan,
@@ -49,7 +49,7 @@ class InflowSection extends StatelessWidget {
           ValueListenableBuilder(
             valueListenable: expandState,
             builder: (_, isExpand, _) {
-              if (!isExpand) return SizedBox.shrink();
+              if (!isExpand) return const SizedBox.shrink();
 
               return Column(
                 children: [
@@ -68,7 +68,9 @@ class InflowSection extends StatelessWidget {
                       l10n.baseSalary,
                     ),
                     inputFormatters: [MoneyInputFormatter()],
-                    onChanged: (value) => onBaseUpdate(StackMoneyNumber.parseMoneyStringToDouble(value)),
+                    onChanged: (value) => onBaseUpdate(
+                      StackMoneyNumber.parseMoneyStringToDouble(value),
+                    ),
                   ),
                   const SizedBox(height: AppSizes.x6),
 

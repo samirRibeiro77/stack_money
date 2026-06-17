@@ -28,7 +28,6 @@ class DistributionCard extends StatelessWidget {
   final int index;
   final List<int> availableDays;
   final double computedValue;
-
   final Function(
     int index, {
     String? cat,
@@ -38,17 +37,15 @@ class DistributionCard extends StatelessWidget {
     int? targetDay,
   })
   onUpdate;
-  final Function(String id) onRemove;
+  final Function(String id, BuildContext ctx) onRemove;
 
   void onChanged(String value) {
     double valueToSave;
-
     if (row.type == AllocationType.fixed) {
       valueToSave = StackMoneyNumber.parseMoneyStringToDouble(value);
     } else {
       valueToSave = StackMoneyNumber.parsePercentageStringToDouble(value);
     }
-
     onUpdate(index, value: valueToSave);
   }
 
@@ -56,11 +53,12 @@ class DistributionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
+    final daysList = availableDays.isEmpty ? [0] : availableDays;
 
     return Dismissible(
       key: Key('rule_${row.id}'),
       direction: DismissDirection.endToStart,
-      onDismissed: (_) => onRemove(row.id),
+      onDismissed: (_) => onRemove(row.id, context),
       background: Container(
         margin: const EdgeInsets.symmetric(vertical: AppSizes.x2),
         padding: const EdgeInsets.only(right: AppSizes.x10),
@@ -77,8 +75,6 @@ class DistributionCard extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: AppSizes.x2),
-
-        // BUG FIX 2: O container do card e seus inputs usam a ValueKey baseada na identidade real da rule
         child: StackMoneyCard(
           key: ValueKey(row.id),
           shadowColor: techColor,
@@ -89,6 +85,7 @@ class DistributionCard extends StatelessWidget {
                   Expanded(
                     child: TextFormField(
                       initialValue: row.category,
+                      textCapitalization: TextCapitalization.sentences,
                       style: textTheme.bodySmall,
                       decoration: StackMoneyTheme.inputDecoration(
                         l10n.category,
@@ -96,10 +93,11 @@ class DistributionCard extends StatelessWidget {
                       onChanged: (val) => onUpdate(index, cat: val),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSizes.x4),
                   Expanded(
                     child: TextFormField(
                       initialValue: row.subCategory,
+                      textCapitalization: TextCapitalization.sentences,
                       style: textTheme.bodySmall,
                       decoration: StackMoneyTheme.inputDecoration(
                         l10n.subcategory,
@@ -169,14 +167,14 @@ class DistributionCard extends StatelessWidget {
                       ),
                     ),
                     child: Row(
-                      children: availableDays.map((d) {
+                      children: daysList.map((d) {
                         final bool isSelected = row.targetDay == d;
                         return GestureDetector(
                           onTap: () => onUpdate(index, targetDay: d),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 6,
+                              horizontal: AppSizes.x3,
+                              vertical: AppSizes.x3,
                             ),
                             decoration: BoxDecoration(
                               color: isSelected
@@ -185,7 +183,7 @@ class DistributionCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(AppSizes.x2),
                             ),
                             child: Text(
-                              'D$d',
+                              l10n.dayX(d),
                               style: textTheme.bodySmall?.copyWith(
                                 fontSize: AppTypography.fontSmallest,
                                 fontWeight: AppTypography.weightBold,
