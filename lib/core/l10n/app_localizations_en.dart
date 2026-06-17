@@ -100,4 +100,114 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get percentSignal => '%';
+
+  @override
+  String get plansConfig => 'Plans Config';
+
+  @override
+  String get newPlan => 'Add new plan';
+
+  @override
+  String get activePlan => 'Active plan';
+
+  @override
+  String get setActive => 'Set active';
+
+  @override
+  String get grossRevenue => 'Gross Revenue';
+
+  @override
+  String get remainingRest => 'Remaining Rest';
+
+  @override
+  String get baseSalary => 'Base salary';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get brlCurrency => 'R\$';
+
+  @override
+  String get day => 'Day';
+
+  @override
+  String converted(Object value) {
+    return 'Converted: $value';
+  }
+
+  @override
+  String get notAvailable => 'N/A';
+
+  @override
+  String get mandatoryDeductions => 'Mandatory deductions';
+
+  @override
+  String get deductionName => 'Deduction name';
+
+  @override
+  String get target => 'Target';
+
+  @override
+  String get rule => 'Rule';
+
+  @override
+  String deducted(Object value) {
+    return 'Deducted: $value';
+  }
+
+  @override
+  String get totalNet => 'Total net';
+
+  @override
+  String get totalRest => 'Total rest:';
+
+  @override
+  String netDay(Object value) {
+    return 'Day $value';
+  }
+
+  @override
+  String netValue(Object value) {
+    return 'Net: $value';
+  }
+
+  @override
+  String rest(Object value) {
+    return 'Rest: $value';
+  }
+
+  @override
+  String get systemOverflow => '[ SYSTEM_OVERFLOW ]';
+
+  @override
+  String overflowBy(Object value) {
+    return 'Over ($value)';
+  }
+
+  @override
+  String get newDistributionRule => 'Add new distribution';
+
+  @override
+  String get subcategory => 'Subcategory';
+
+  @override
+  String get percentNet => '% net';
+
+  @override
+  String get percentGross => '% gross';
+
+  @override
+  String get archive => 'Archive';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get copy => 'Copy';
+
+  @override
+  String dayX(Object d) {
+    return 'D$d';
+  }
 }

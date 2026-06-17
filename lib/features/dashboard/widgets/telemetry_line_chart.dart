@@ -114,7 +114,7 @@ class TelemetryLineChart extends StatelessWidget {
                   final historyItem = data[spot.x.toInt()];
 
                   return LineTooltipItem(
-                    '${StackMoneyString.formatDate(historyItem.date, showYear: true)}\n${StackMoneyString.formatMoney(doubleValue: spot.y)}',
+                    '${StackMoneyString.formatDate(historyItem.date, showYear: true)}\n${StackMoneyString.formatMoney(spot.y)}',
                     textTheme.labelMedium!.copyWith(
                       color: StackMoneyTheme.platinumSilver,
                     ),
@@ -189,10 +189,7 @@ class TelemetryLineChart extends StatelessWidget {
                     return const SizedBox();
                   }
                   return Text(
-                    StackMoneyString.formatMoney(
-                      doubleValue: value,
-                      compact: true,
-                    ),
+                    StackMoneyString.formatMoney(value, compact: true, symbol: true),
                     style: textTheme.labelSmall?.copyWith(fontSize: AppTypography.fontSmallest),
                   );
                 },

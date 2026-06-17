@@ -119,5 +119,133 @@
   "percentSignal": "%",
   "@percentSignal": {
     "description": "Percent signal"
+  },
+  "plansConfig": "Plans Config",
+  "@plansConfig": {
+    "description": "Plans Config title"
+  },
+  "newPlan": "Add new plan",
+  "@newPlan": {
+    "description": "Add new plan slot text"
+  },
+  "activePlan": "Active plan",
+  "@activePlan": {
+    "description": "Active plan tag"
+  },
+  "setActive": "Set active",
+  "@setActive": {
+    "description": "Set active tag"
+  },
+  "grossRevenue": "Gross Revenue",
+  "@grossRevenue": {
+    "description": "Gross Revenue text"
+  },
+  "remainingRest": "Remaining Rest",
+  "@remainingRest": {
+    "description": "Remaining Rest text"
+  },
+  "baseSalary": "Base salary",
+  "@baseSalary": {
+    "description": "Base Gross Salary (currency)"
+  },
+  "type": "Type",
+  "@type": {
+    "description": "Type text"
+  },
+  "brlCurrency": "R$",
+  "@brlCurrency": {
+    "description": "Brazilian currency signal"
+  },
+  "day": "Day",
+  "@day": {
+    "description": "Day text"
+  },
+  "converted": "Converted: {value}",
+  "@converted": {
+    "description": "Converted value based on a number and the factor"
+  },
+  "notAvailable": "N/A",
+  "@notAvailable": {
+    "description": "Not available signal"
+  },
+  "mandatoryDeductions": "Mandatory deductions",
+  "@mandatoryDeductions": {
+    "description": "Mandatory deductions text"
+  },
+  "deductionName": "Deduction name",
+  "@name": {
+    "description": "Deduction name text"
+  },
+  "target": "Target",
+  "@taget": {
+    "description": "Target text"
+  },
+  "rule": "Rule",
+  "@rule": {
+    "description": "Rule text"
+  },
+  "deducted": "Deducted: {value}",
+  "@deducted": {
+    "description": "Deducted value based on a number and the factor"
+  },
+  "totalNet": "Total net",
+  "@totalNet": {
+    "description": "Total net buffer text"
+  },
+  "totalRest": "Total rest:",
+  "@totalRest": {
+    "description": "Total rest of net buffer"
+  },
+  "netDay": "Day {value}",
+  "@netDay": {
+    "description": "Net day for calculation"
+  },
+  "netValue": "Net: {value}",
+  "@netValue": {
+    "description": "Net value currency"
+  },
+  "rest": "Rest: {value}",
+  "@rest": {
+    "description": "Day net rest"
+  },
+  "systemOverflow": "[ SYSTEM_OVERFLOW ]",
+  "@systemOverflow": {
+    "description": "System overflowed the values"
+  },
+  "overflowBy": "Over ({value})",
+  "@overflowBy": {
+    "description": "System overflowed by X"
+  },
+  "newDistributionRule": "Add new distribution",
+  "@newDistributionRule": {
+    "description": "Add distribution rule slot text"
+  },
+  "subcategory": "Subcategory",
+  "@subcategory": {
+    "description": "Subcategory"
+  },
+  "percentNet": "% net",
+  "@percentNet": {
+    "description": "% of the net income"
+  },
+  "percentGross": "% gross",
+  "@percentGross": {
+    "description": "% of the gross income"
+  },
+  "archive": "Archive",
+  "@archive": {
+    "description": "Archive something"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete something"
+  },
+  "copy": "Copy",
+  "@copy": {
+    "description": "Copy something"
+  },
+  "dayX": "D{d}",
+  "@dayX": {
+    "description": "Quantity of days (eg.: D5)"
   }
 }

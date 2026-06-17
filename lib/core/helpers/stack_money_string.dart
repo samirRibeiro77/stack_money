@@ -1,12 +1,11 @@
 import 'package:currency_formatter/currency_formatter.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class StackMoneyString {
   static final _brlSymbol = 'R\$';
   static final CurrencyFormat _realSettings = CurrencyFormat(
     code: 'brl',
-    symbol: _brlSymbol,
+    symbol: '',
     symbolSide: SymbolSide.left,
     thousandSeparator: '.',
     decimalSeparator: ',',
@@ -21,32 +20,27 @@ class StackMoneyString {
     return s.replaceAll(' ', '_').toUpperCase();
   }
 
-  static String formatMoney({
-    String? stringValue,
-    double? doubleValue,
+  static String formatMoney(
+    double value, {
     bool compact = false,
+    bool symbol = false,
   }) {
-    final number = doubleValue ?? double.tryParse(stringValue ?? '0.0');
-
     if (compact) {
-      return '$_brlSymbol ${_compactCurrencFormat.format(number)}';
+      return '${symbol ? _brlSymbol : ""}${_compactCurrencFormat.format(value)}';
     }
 
-    return CurrencyFormatter.format(number, _realSettings);
+    return '${symbol ? _brlSymbol : ""}${CurrencyFormatter.format(value, _realSettings, decimal: 2, enforceDecimals: true)}';
   }
 
-  static String formatPercentage({
-    String? stringValue,
-    double? doubleValue,
-    int? intValue,
-  }) {
-    if (stringValue != null) {
-      return double.parse(stringValue).toStringAsFixed(2);
+  static String formatPercentage(double value, {int decimal = 12}) {
+    String formatted = value.toStringAsFixed(decimal);
+
+    if (formatted.contains('.')) {
+      formatted = formatted.replaceAll(RegExp(r'0+$'), '');
+      formatted = formatted.replaceAll(RegExp(r'\.$'), '');
     }
 
-    return doubleValue?.toStringAsFixed(2) ??
-        intValue?.toStringAsFixed(2) ??
-        '0.00';
+    return formatted.replaceAll('.', ',');
   }
 
   static String formatDate(
@@ -64,29 +58,5 @@ class StackMoneyString {
       }
     }
     return DateFormat(format).format(date);
-  }
-}
-
-class PureDigitCurrencyFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    if (newValue.text.isEmpty) return newValue;
-
-    // Limpa a digitação mantendo apenas os dígitos numéricos crus
-    String digits = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
-    if (digits.isEmpty) digits = "0";
-
-    double numValue = (double.tryParse(digits) ?? 0.0) / 100.0;
-
-    // Consome nativamente a sua função ajustada logo acima
-    String finalOutput = StackMoneyString.formatMoney(doubleValue: numValue);
-
-    return newValue.copyWith(
-      text: finalOutput,
-      selection: TextSelection.collapsed(offset: finalOutput.length),
-    );
   }
 }

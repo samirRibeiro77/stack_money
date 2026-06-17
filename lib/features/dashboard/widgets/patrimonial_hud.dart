@@ -73,7 +73,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
               animation: _animation,
               builder: (context, child) {
                 return Text(
-                  StackMoneyString.formatMoney(doubleValue: _animation.value),
+                  StackMoneyString.formatMoney(_animation.value, symbol: true),
                   style: textTheme.bodyLarge?.copyWith(
                     fontSize: AppTypography.fontDisplaySmall,
                     color: StackMoneyTheme.platinumSilver,
@@ -113,9 +113,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
                 ],
               ),
               SecurityText(
-                StackMoneyString.formatMoney(
-                  doubleValue: widget.liquidityAmount,
-                ),
+                StackMoneyString.formatMoney(widget.liquidityAmount, symbol: true),
                 type: SecurityType.mask,
                 style: textTheme.labelLarge?.copyWith(
                   fontWeight: FontWeight.bold,

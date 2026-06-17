@@ -66,8 +66,10 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
       children: [
         ExpandableHeader(
           title: l10n.bucketsConfig,
-          expandState: _manager.expandState,
-          toggleExpand: _manager.toggleAllBuckets,
+          validation: _manager.expandState,
+          toggle: _manager.toggleAllBuckets,
+          activeIcon: Icons.unfold_more,
+          inactiveIcon: Icons.unfold_less,
         ),
         const SizedBox(height: AppSizes.x6),
 

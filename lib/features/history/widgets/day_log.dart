@@ -67,7 +67,7 @@ class DayLog extends StatelessWidget {
 
   Widget _buildValues(TextTheme textTheme) {
     return SecurityText(
-      StackMoneyString.formatMoney(doubleValue: transaction.actualValue),
+      StackMoneyString.formatMoney(transaction.actualValue, symbol: true),
       type: SecurityType.mask,
       style: textTheme.titleMedium,
     );

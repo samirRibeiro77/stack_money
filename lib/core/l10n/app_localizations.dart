@@ -277,6 +277,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'%'**
   String get percentSignal;
+
+  /// Plans Config title
+  ///
+  /// In en, this message translates to:
+  /// **'Plans Config'**
+  String get plansConfig;
+
+  /// Add new plan slot text
+  ///
+  /// In en, this message translates to:
+  /// **'Add new plan'**
+  String get newPlan;
+
+  /// Active plan tag
+  ///
+  /// In en, this message translates to:
+  /// **'Active plan'**
+  String get activePlan;
+
+  /// Set active tag
+  ///
+  /// In en, this message translates to:
+  /// **'Set active'**
+  String get setActive;
+
+  /// Gross Revenue text
+  ///
+  /// In en, this message translates to:
+  /// **'Gross Revenue'**
+  String get grossRevenue;
+
+  /// Remaining Rest text
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining Rest'**
+  String get remainingRest;
+
+  /// Base Gross Salary (currency)
+  ///
+  /// In en, this message translates to:
+  /// **'Base salary'**
+  String get baseSalary;
+
+  /// Type text
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get type;
+
+  /// Brazilian currency signal
+  ///
+  /// In en, this message translates to:
+  /// **'R\$'**
+  String get brlCurrency;
+
+  /// Day text
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get day;
+
+  /// Converted value based on a number and the factor
+  ///
+  /// In en, this message translates to:
+  /// **'Converted: {value}'**
+  String converted(Object value);
+
+  /// Not available signal
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get notAvailable;
+
+  /// Mandatory deductions text
+  ///
+  /// In en, this message translates to:
+  /// **'Mandatory deductions'**
+  String get mandatoryDeductions;
+
+  /// No description provided for @deductionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Deduction name'**
+  String get deductionName;
+
+  /// No description provided for @target.
+  ///
+  /// In en, this message translates to:
+  /// **'Target'**
+  String get target;
+
+  /// Rule text
+  ///
+  /// In en, this message translates to:
+  /// **'Rule'**
+  String get rule;
+
+  /// Deducted value based on a number and the factor
+  ///
+  /// In en, this message translates to:
+  /// **'Deducted: {value}'**
+  String deducted(Object value);
+
+  /// Total net buffer text
+  ///
+  /// In en, this message translates to:
+  /// **'Total net'**
+  String get totalNet;
+
+  /// Total rest of net buffer
+  ///
+  /// In en, this message translates to:
+  /// **'Total rest:'**
+  String get totalRest;
+
+  /// Net day for calculation
+  ///
+  /// In en, this message translates to:
+  /// **'Day {value}'**
+  String netDay(Object value);
+
+  /// Net value currency
+  ///
+  /// In en, this message translates to:
+  /// **'Net: {value}'**
+  String netValue(Object value);
+
+  /// Day net rest
+  ///
+  /// In en, this message translates to:
+  /// **'Rest: {value}'**
+  String rest(Object value);
+
+  /// System overflowed the values
+  ///
+  /// In en, this message translates to:
+  /// **'[ SYSTEM_OVERFLOW ]'**
+  String get systemOverflow;
+
+  /// System overflowed by X
+  ///
+  /// In en, this message translates to:
+  /// **'Over ({value})'**
+  String overflowBy(Object value);
+
+  /// Add distribution rule slot text
+  ///
+  /// In en, this message translates to:
+  /// **'Add new distribution'**
+  String get newDistributionRule;
+
+  /// Subcategory
+  ///
+  /// In en, this message translates to:
+  /// **'Subcategory'**
+  String get subcategory;
+
+  /// % of the net income
+  ///
+  /// In en, this message translates to:
+  /// **'% net'**
+  String get percentNet;
+
+  /// % of the gross income
+  ///
+  /// In en, this message translates to:
+  /// **'% gross'**
+  String get percentGross;
+
+  /// Archive something
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get archive;
+
+  /// Delete something
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Copy something
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
+
+  /// Quantity of days (eg.: D5)
+  ///
+  /// In en, this message translates to:
+  /// **'D{d}'**
+  String dayX(Object d);
 }
 
 class _AppLocalizationsDelegate

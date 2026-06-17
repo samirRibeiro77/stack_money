@@ -81,7 +81,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get cancel => 'Cancelar';
 
   @override
-  String get bucketsConfig => 'Configuração Das Caixinhas';
+  String get bucketsConfig => 'Configuração das Caixinhas';
 
   @override
   String get newBucket => 'Adicionar nova caixinha';
@@ -100,4 +100,114 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get percentSignal => '%';
+
+  @override
+  String get plansConfig => 'Configurações dos planos';
+
+  @override
+  String get newPlan => 'Adicionar novo plano';
+
+  @override
+  String get activePlan => 'Plano ativo';
+
+  @override
+  String get setActive => 'Tornar ativo';
+
+  @override
+  String get grossRevenue => 'Salário bruto';
+
+  @override
+  String get remainingRest => 'Restante livre';
+
+  @override
+  String get baseSalary => 'Salário base';
+
+  @override
+  String get type => 'Tipo';
+
+  @override
+  String get brlCurrency => 'R\$';
+
+  @override
+  String get day => 'Dia';
+
+  @override
+  String converted(Object value) {
+    return 'Convertido: $value';
+  }
+
+  @override
+  String get notAvailable => 'N/A';
+
+  @override
+  String get mandatoryDeductions => 'Deduções em folha';
+
+  @override
+  String get deductionName => 'Nome da dedução';
+
+  @override
+  String get target => 'Alvo';
+
+  @override
+  String get rule => 'Regra';
+
+  @override
+  String deducted(Object value) {
+    return 'Deduzido: $value';
+  }
+
+  @override
+  String get totalNet => 'Liquido total';
+
+  @override
+  String get totalRest => 'Total restante:';
+
+  @override
+  String netDay(Object value) {
+    return 'Dia $value';
+  }
+
+  @override
+  String netValue(Object value) {
+    return 'Liquido: $value';
+  }
+
+  @override
+  String rest(Object value) {
+    return 'Resto: $value';
+  }
+
+  @override
+  String get systemOverflow => '[ LIMITE_EXCEDIDO ]';
+
+  @override
+  String overflowBy(Object value) {
+    return 'Acima ($value)';
+  }
+
+  @override
+  String get newDistributionRule => 'Adicionar nova distribuição';
+
+  @override
+  String get subcategory => 'Subcategoria';
+
+  @override
+  String get percentNet => '% liq';
+
+  @override
+  String get percentGross => '% bru';
+
+  @override
+  String get archive => 'Arquivar';
+
+  @override
+  String get delete => 'Deletar';
+
+  @override
+  String get copy => 'Copiar';
+
+  @override
+  String dayX(Object d) {
+    return 'D$d';
+  }
 }

@@ -14,8 +14,9 @@ class TabContent extends StatelessWidget {
         horizontal: AppSizes.x8,
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
           child,
           const SizedBox(height: AppSizes.navBarContentPadding),

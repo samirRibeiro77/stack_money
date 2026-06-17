@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Text(
               l10n.appNameTwoLines.toUpperCase(),
-              style: Theme.of(context).textTheme.displayMedium,
+              style: Theme.of(context).textTheme.displayLarge,
             ),
             const SizedBox(height: AppSizes.x20),
 

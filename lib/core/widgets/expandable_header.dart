@@ -8,14 +8,22 @@ import 'package:stack_money/core/widgets/title_text.dart';
 class ExpandableHeader extends StatelessWidget {
   const ExpandableHeader({
     required this.title,
-    required this.toggleExpand,
-    required this.expandState,
+    required this.toggle,
+    required this.validation,
+    required this.activeIcon,
+    required this.inactiveIcon,
+    this.activeColor = StackMoneyTheme.cyanNeon,
+    this.inactiveColor = StackMoneyTheme.magentaNeon,
     super.key,
   });
 
   final String title;
-  final VoidCallback toggleExpand;
-  final ValueListenable<bool> expandState;
+  final VoidCallback toggle;
+  final ValueListenable<bool> validation;
+  final IconData activeIcon;
+  final IconData inactiveIcon;
+  final Color activeColor;
+  final Color inactiveColor;
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +40,15 @@ class ExpandableHeader extends StatelessWidget {
             IconButton(
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
-              onPressed: toggleExpand,
+              onPressed: toggle,
               icon: ValueListenableBuilder<bool>(
-                valueListenable: expandState,
+                valueListenable: validation,
                 builder: (_, isExpanded, _) {
                   return Icon(
-                    isExpanded ? Icons.unfold_more : Icons.unfold_less,
+                    isExpanded ? activeIcon : inactiveIcon,
                     color: isExpanded
-                        ? StackMoneyTheme.cyanNeon
-                        : StackMoneyTheme.magentaNeon,
+                        ? activeColor
+                        : inactiveColor,
                     size: AppSizes.x10,
                   );
                 },
