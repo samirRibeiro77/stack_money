@@ -210,4 +210,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String dayX(Object d) {
     return 'D$d';
   }
+
+  @override
+  String get lastKnownValue => 'Last known:';
+
+  @override
+  String get actualValue => 'Actual value';
+
+  @override
+  String get moneySprint => 'Money Sprint';
+
+  @override
+  String get nextBucket => 'Next bucket';
+
+  @override
+  String get finishWizard => 'Finish Sprint';
+
+  @override
+  String get liquid => 'Liquid';
+
+  @override
+  String get invest => 'Invest';
 }

@@ -469,6 +469,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'D{d}'**
   String dayX(Object d);
+
+  /// Bucket last known value
+  ///
+  /// In en, this message translates to:
+  /// **'Last known:'**
+  String get lastKnownValue;
+
+  /// Bucket actual value
+  ///
+  /// In en, this message translates to:
+  /// **'Actual value'**
+  String get actualValue;
+
+  /// Money Sprint app bar title
+  ///
+  /// In en, this message translates to:
+  /// **'Money Sprint'**
+  String get moneySprint;
+
+  /// Next bucket on wizard flow
+  ///
+  /// In en, this message translates to:
+  /// **'Next bucket'**
+  String get nextBucket;
+
+  /// Finish sprint on wizard flow
+  ///
+  /// In en, this message translates to:
+  /// **'Finish Sprint'**
+  String get finishWizard;
+
+  /// When the amount of money is liquidity
+  ///
+  /// In en, this message translates to:
+  /// **'Liquid'**
+  String get liquid;
+
+  /// When the amount of money is investment
+  ///
+  /// In en, this message translates to:
+  /// **'Invest'**
+  String get invest;
 }
 
 class _AppLocalizationsDelegate

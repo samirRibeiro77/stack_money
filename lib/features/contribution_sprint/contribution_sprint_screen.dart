@@ -14,7 +14,8 @@ class ContributionSprintScreen extends StatefulWidget {
   const ContributionSprintScreen({super.key});
 
   @override
-  State<ContributionSprintScreen> createState() => _ContributionSprintScreenState();
+  State<ContributionSprintScreen> createState() =>
+      _ContributionSprintScreenState();
 }
 
 class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
@@ -42,7 +43,9 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
         if (isLoading) {
           return const Scaffold(
             backgroundColor: StackMoneyTheme.background,
-            body: Center(child: CircularProgressIndicator(color: StackMoneyTheme.cyanNeon)),
+            body: Center(
+              child: CircularProgressIndicator(color: StackMoneyTheme.cyanNeon),
+            ),
           );
         }
 
@@ -51,7 +54,9 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
           builder: (context, currentIndex, _) {
             final currentBucket = _manager.buckets[currentIndex];
             final bool isLast = currentIndex == _manager.buckets.length - 1;
-            final double lastValue = _manager.getLastKnownValueForBucket(currentBucket);
+            final double lastValue = _manager.getLastKnownValueForBucket(
+              currentBucket,
+            );
 
             return Scaffold(
               backgroundColor: StackMoneyTheme.background,
@@ -59,7 +64,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                 backgroundColor: StackMoneyTheme.background,
                 elevation: 0,
                 leading: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded, size: AppSizes.x10),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
                   onPressed: () {
                     if (currentIndex == 0) {
                       Navigator.of(context).pop();
@@ -69,14 +74,15 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                   },
                 ),
                 title: Text(
-                  'Money_Sprint'.toUpperCase(),
+                  StackMoneyString.formatTitle(l10n.moneySprint),
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 centerTitle: true,
                 actions: [
-                  // TODO: tem que sumir no ultimo sprint
                   IconButton(
-                    icon: const Icon(Icons.arrow_forward_ios_rounded, size: AppSizes.x10, color: StackMoneyTheme.platinumSilver),
+                    icon: Icon(
+                      isLast ? Icons.check : Icons.arrow_forward_ios_rounded,
+                    ),
                     onPressed: () => _manager.skipStep(context),
                   ),
                 ],
@@ -89,37 +95,39 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                 ),
               ),
               body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.x8, vertical: AppSizes.x6),
-                child: Column(
-                  children: [
-                    BucketFormCard(
-                      bucket: currentBucket,
-                      nameController: _manager.nameController,
-                      whereController: _manager.whereController,
-                      minValueController: _manager.minValueController,
-                      actualValueController: _manager.actualValueController,
-
-                      // Montagem limpa de strings internacionais injetadas na view
-                      labelLastValueKnown: 'LAST_KNOWN_VALUE: ${StackMoneyString.formatMoney(lastValue, symbol: true)}',
-                      labelActualValue: 'ACTUAL_VALUE (R\$)',
-                      labelCategory: l10n.category,
-                      labelWhere: l10n.where,
-                      labelMinValue: '${l10n.minValue} (R\$)',
-                      statusLiquid: '[ LIQUID ]',
-                      statusLocked: '[ LOCKED ]',
-                    ),
-                    const SizedBox(height: AppSizes.x6),
-                    ListenableBuilder(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSizes.x8,
+                  vertical: AppSizes.x6,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      BucketFormCard(
+                        bucket: currentBucket,
+                        lastKnowValue: lastValue,
+                        nameController: _manager.nameController,
+                        whereController: _manager.whereController,
+                        minValueController: _manager.minValueController,
+                        actualValueController: _manager.actualValueController,
+                        changeLiquidity: () {},
+                      ),
+                      const SizedBox(height: AppSizes.x6),
+                      ListenableBuilder(
                         listenable: _manager.actualValueController,
                         builder: (context, _) {
-                          final String rawText = _manager.actualValueController.text;
+                          final String rawText =
+                              _manager.actualValueController.text;
                           final double currentInput = rawText.isNotEmpty
-                              ? StackMoneyNumber.parseMoneyStringToDouble(rawText)
+                              ? StackMoneyNumber.parseMoneyStringToDouble(
+                                  rawText,
+                                )
                               : 0.0;
 
                           // Condição de performance: Se o valor digitado for estritamente superior ao histórico, brilha Ciano. Caso contrário, Magenta.
                           final bool isGrowing = currentInput > lastValue;
-                          final Color activeColor = isGrowing ? StackMoneyTheme.cyanNeon : StackMoneyTheme.magentaNeon;
+                          final Color activeColor = isGrowing
+                              ? StackMoneyTheme.cyanNeon
+                              : StackMoneyTheme.magentaNeon;
 
                           return StackMoneyCard(
                             shadowColor: activeColor,
@@ -128,18 +136,22 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                               behavior: HitTestBehavior.opaque,
                               child: Center(
                                 child: Text(
-                                  isLast ? '[ FINISH_SPRINT ]' : '[ NEXT_BUCKET ]',
-                                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: activeColor,
-                                    fontWeight: AppTypography.weightBold,
-                                  ),
+                                  isLast
+                                      ? l10n.finishWizard
+                                      : l10n.nextBucket,
+                                  style: Theme.of(context).textTheme.labelMedium
+                                      ?.copyWith(
+                                        color: activeColor,
+                                        fontWeight: AppTypography.weightBold,
+                                      ),
                                 ),
                               ),
                             ),
                           );
-                        }
-                    ),
-                  ],
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

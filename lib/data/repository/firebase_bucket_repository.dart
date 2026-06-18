@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -50,13 +49,18 @@ class FirebaseBucketRepository {
           .get();
 
       if (snapshot.docs.isNotEmpty) {
-        final history = History.fromJson(snapshot.docs.first.id, snapshot.docs.first.data());
+        final history = History.fromJson(
+          snapshot.docs.first.id,
+          snapshot.docs.first.data(),
+        );
 
         return history.transactions.values.toList();
       }
       return [];
     } catch (e) {
-      print('DEBUG_SYSTEM [ParameterRepository]: Error fetching last history snapshot -> $e');
+      print(
+        'DEBUG_SYSTEM [ParameterRepository]: Error fetching last history snapshot -> $e',
+      );
       rethrow;
     }
   }
@@ -79,14 +83,20 @@ class FirebaseBucketRepository {
       }
 
       // 2. Cria o novo documento consolidador dentro da coleção history
-      final historyDocRef = userDoc.collection('history').doc();
-      batch.set(historyDocRef, {
-        'id': historyDocRef.id,
-        'created_at': DateTime.now().toIso8601String(),
-        'transactions': transactions.map((t) => t.toJson()).toList(),
-        'total_snapshot': totalNetWorth,
-        'liquidity_snapshot': totalLiquidity,
-      });
+      var transactionsMap = {for (var t in transactions) t.id: t};
+      final history = History(
+        date: DateTime.now(),
+        transactions: transactionsMap,
+        total: totalNetWorth,
+        immediateLiquidityTotal: totalLiquidity,
+      );
+
+      // TODO: Change to UUID later
+      final historyId =
+          '${history.date.year}_${history.date.month.toString().padLeft(2, '0')}_${history.date.day.toString().padLeft(2, '0')}';
+
+      final historyDocRef = userDoc.collection('history').doc(historyId);
+      batch.set(historyDocRef, history.toJson());
 
       // 3. Alinha os nós de simplificação de busca do Net Worth na raiz do documento do usuário
       batch.set(userDoc, {
@@ -94,12 +104,14 @@ class FirebaseBucketRepository {
           'total': totalNetWorth,
           'liquidity': totalLiquidity,
           'updated_at': DateTime.now().toIso8601String(),
-        }
+        },
       }, SetOptions(merge: true));
 
       await batch.commit();
     } catch (e) {
-      print('DEBUG_SYSTEM [ParameterRepository]: Failed to execute atomic sprint batch -> $e');
+      print(
+        'DEBUG_SYSTEM [ParameterRepository]: Failed to execute atomic sprint batch -> $e',
+      );
       rethrow;
     }
   }

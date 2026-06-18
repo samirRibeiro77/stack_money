@@ -13,7 +13,7 @@ class ContributionSprintManager {
   final ValueNotifier<int> _currentIndexNotifier = ValueNotifier(0);
   final ValueNotifier<bool> _isLoadingNotifier = ValueNotifier(true);
 
-  Map<String, double> _lastKnownValues = {};
+  final _lastKnownValues = <String, double>{};
 
   final nameController = TextEditingController();
   final whereController = TextEditingController();
@@ -21,10 +21,13 @@ class ContributionSprintManager {
   final actualValueController = TextEditingController();
 
   ValueListenable<List<Bucket>> get bucketsNotifier => _bucketsNotifier;
+
   ValueListenable<int> get currentIndexNotifier => _currentIndexNotifier;
+
   ValueListenable<bool> get isLoadingNotifier => _isLoadingNotifier;
 
   List<Bucket> get buckets => _bucketsNotifier.value;
+
   int get currentIndex => _currentIndexNotifier.value;
 
   Future<void> initializeSprint() async {
@@ -115,11 +118,11 @@ class ContributionSprintManager {
       isImmediateLiquidity: bucket.isImmediateLiquidity,
     );
 
-    final String txId = '${buckets[currentIndex].category.replaceAll(' ', '')}_${buckets[currentIndex].where.replaceAll(' ', '')}';
-    _lastKnownValues[txId] = verifiedActualValue;
+    _lastKnownValues[bucket.id] = verifiedActualValue;
   }
 
   Future<void> _processSprintCompletion(BuildContext context) async {
+    final navigatorContext = Navigator.of(context);
     try {
       _isLoadingNotifier.value = true;
 
@@ -128,8 +131,7 @@ class ContributionSprintManager {
       double netWorthLiquidity = 0.0;
 
       for (final bucket in buckets) {
-        final String txId = '${bucket.category.replaceAll(' ', '')}_${bucket.where.replaceAll(' ', '')}';
-        final double finalValue = _lastKnownValues[txId] ?? 0.0;
+        final double finalValue = _lastKnownValues[bucket.id] ?? 0.0;
 
         compiledTransactions.add(
           Transaction(
@@ -151,14 +153,16 @@ class ContributionSprintManager {
         totalNetWorth: netWorthTotal,
         totalLiquidity: netWorthLiquidity,
       );
-
-      if (context.mounted) {
-        _isLoadingNotifier.value = false;
-        Navigator.of(context).pop();
-      }
     } catch (e) {
       debugPrint('❌ [SPRINT_COMMIT_FAIL] -> $e');
       _isLoadingNotifier.value = false;
+    } finally {
+      if (navigatorContext.mounted) {
+        _isLoadingNotifier.value = false;
+        navigatorContext.pop();
+      } else {
+        print('Context is not mounted, unable to pop()');
+      }
     }
   }
 

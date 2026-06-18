@@ -62,5 +62,12 @@
   "archive": "Arquivar",
   "delete": "Deletar",
   "copy": "Copiar",
-  "dayX": "D{d}"
+  "dayX": "D{d}",
+  "lastKnownValue": "Último valor conhecido:",
+  "actualValue": "Valor atual",
+  "moneySprint": "Money Sprint",
+  "nextBucket": "Próxima caixinha",
+  "finishWizard": "Finalizar Sprint",
+  "liquid": "Liquidez",
+  "invest": "Investimento"
 }

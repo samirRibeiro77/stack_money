@@ -210,4 +210,25 @@ class AppLocalizationsPt extends AppLocalizations {
   String dayX(Object d) {
     return 'D$d';
   }
+
+  @override
+  String get lastKnownValue => 'Último valor conhecido:';
+
+  @override
+  String get actualValue => 'Valor atual';
+
+  @override
+  String get moneySprint => 'Money Sprint';
+
+  @override
+  String get nextBucket => 'Próxima caixinha';
+
+  @override
+  String get finishWizard => 'Finalizar Sprint';
+
+  @override
+  String get liquid => 'Liquidez';
+
+  @override
+  String get invest => 'Investimento';
 }

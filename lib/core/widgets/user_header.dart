@@ -5,6 +5,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
+
 // 🔥 NOVO IMPORT: Aponta diretamente para a nossa esteira de aportes sequenciais
 import 'package:stack_money/features/contribution_sprint/contribution_sprint_screen.dart';
 
@@ -42,7 +43,7 @@ class UserHeader extends StatelessWidget {
 
       // --- 3. BOTOÕES DE COMANDO ---
       actions: [
-        _buildContributionAction(context), // 🔥 Injeção do gatilho do Sprint de Aportes
+        _buildContributionAction(context),
         _buildVisibilityAction(context),
       ],
     );
@@ -76,10 +77,10 @@ class UserHeader extends StatelessWidget {
               backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
               child: photoUrl == null
                   ? const Icon(
-                Icons.person,
-                color: StackMoneyTheme.platinumSilver,
-                size: AppSizes.x9,
-              )
+                      Icons.person,
+                      color: StackMoneyTheme.platinumSilver,
+                      size: AppSizes.x9,
+                    )
                   : null,
             ),
           ),
@@ -102,24 +103,16 @@ class UserHeader extends StatelessWidget {
     );
   }
 
-  // 🔥 INTERCEPTOR REATIVO: Renderiza o botão de aporte condicionado ao SecurityMode
   Widget _buildContributionAction(BuildContext context) {
     final isSecure = SecurityProvider.isSecureOf(context);
 
-    // Se o olho estiver fechado, ejeta o botão da árvore visual em silêncio
     if (isSecure) return const SizedBox.shrink();
 
     return IconButton(
-      icon: const Icon(
-        Icons.add_rounded,
-        color: StackMoneyTheme.cyanNeon,
-        size: AppSizes.x10, // Alinhado com o padrão de botões superiores do projeto
-      ),
+      icon: const Icon(Icons.add_rounded, color: StackMoneyTheme.cyanNeon),
       onPressed: () {
         Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => const ContributionSprintScreen(),
-          ),
+          MaterialPageRoute(builder: (_) => const ContributionSprintScreen()),
         );
       },
     );
