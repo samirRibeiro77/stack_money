@@ -100,6 +100,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                   vertical: AppSizes.x6,
                 ),
                 child: SingleChildScrollView(
+                  clipBehavior: Clip.none,
                   child: Column(
                     children: [
                       BucketFormCard(
@@ -109,6 +110,8 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                         whereController: _manager.whereController,
                         minValueController: _manager.minValueController,
                         actualValueController: _manager.actualValueController,
+                        setMinSign: _manager.minIsPositive,
+                        switchActualSign: _manager.changeActualSign,
                         changeLiquidity: () {},
                       ),
                       const SizedBox(height: AppSizes.x6),
@@ -136,9 +139,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                               behavior: HitTestBehavior.opaque,
                               child: Center(
                                 child: Text(
-                                  isLast
-                                      ? l10n.finishWizard
-                                      : l10n.nextBucket,
+                                  isLast ? l10n.finishWizard : l10n.nextBucket,
                                   style: Theme.of(context).textTheme.labelMedium
                                       ?.copyWith(
                                         color: activeColor,

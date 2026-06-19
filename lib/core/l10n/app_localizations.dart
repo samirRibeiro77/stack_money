@@ -476,12 +476,6 @@ abstract class AppLocalizations {
   /// **'Last known:'**
   String get lastKnownValue;
 
-  /// Bucket actual value
-  ///
-  /// In en, this message translates to:
-  /// **'Actual value'**
-  String get actualValue;
-
   /// Money Sprint app bar title
   ///
   /// In en, this message translates to:
@@ -511,6 +505,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invest'**
   String get invest;
+
+  /// Add X to min value
+  ///
+  /// In en, this message translates to:
+  /// **'Add to min:'**
+  String get addToMin;
+
+  /// Subtract X from the min value
+  ///
+  /// In en, this message translates to:
+  /// **'Sub from min:'**
+  String get subToMin;
+
+  /// Bucket positive actual value
+  ///
+  /// In en, this message translates to:
+  /// **'Positive actual value'**
+  String get positiveActualValue;
+
+  /// Bucket negative actual value
+  ///
+  /// In en, this message translates to:
+  /// **'Negative actual value'**
+  String get negativeActualValue;
 }
 
 class _AppLocalizationsDelegate

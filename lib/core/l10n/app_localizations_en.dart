@@ -215,9 +215,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lastKnownValue => 'Last known:';
 
   @override
-  String get actualValue => 'Actual value';
-
-  @override
   String get moneySprint => 'Money Sprint';
 
   @override
@@ -231,4 +228,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invest => 'Invest';
+
+  @override
+  String get addToMin => 'Add to min:';
+
+  @override
+  String get subToMin => 'Sub from min:';
+
+  @override
+  String get positiveActualValue => 'Positive actual value';
+
+  @override
+  String get negativeActualValue => 'Negative actual value';
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
@@ -7,6 +8,8 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/plan_status.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/value_sign_button.dart';
+import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
 
 class BucketFormCard extends StatelessWidget {
@@ -17,8 +20,10 @@ class BucketFormCard extends StatelessWidget {
   final TextEditingController minValueController;
   final TextEditingController actualValueController;
   final VoidCallback changeLiquidity;
+  final Function(bool) setMinSign;
+  final VoidCallback switchActualSign;
 
-  const BucketFormCard({
+  BucketFormCard({
     required this.bucket,
     required this.lastKnowValue,
     required this.nameController,
@@ -26,8 +31,27 @@ class BucketFormCard extends StatelessWidget {
     required this.minValueController,
     required this.actualValueController,
     required this.changeLiquidity,
+    required this.setMinSign,
+    required this.switchActualSign,
     super.key,
   });
+
+  final _minIsPositive = ValueNotifier(true);
+
+  ValueListenable get _minListenable => _minIsPositive;
+  final _actualIsPositive = ValueNotifier(true);
+
+  ValueListenable get _actualListenable => _actualIsPositive;
+
+  void changeMinSign(bool value) {
+    _minIsPositive.value = value;
+    setMinSign(value);
+  }
+
+  void changeActualSign() {
+    _actualIsPositive.value = !_actualIsPositive.value;
+    switchActualSign();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,73 +71,151 @@ class BucketFormCard extends StatelessWidget {
               fontWeight: AppTypography.weightBold,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '${StackMoneyString.formatTitle(l10n.lastKnownValue)} ${StackMoneyString.formatMoney(lastKnowValue, symbol: true)}',
-                style: textTheme.labelSmall?.copyWith(
-                  color: StackMoneyTheme.mutedGrey,
-                ),
-              ),
-              PlanStatus(
-                bucket.isImmediateLiquidity ? l10n.liquid : l10n.invest,
-                color: bucket.isImmediateLiquidity
-                    ? StackMoneyTheme.cyanNeon
-                    : StackMoneyTheme.magentaNeon,
-                onTap: changeLiquidity,
-              ),
-            ],
-          ),
-
+          _buildHeader(l10n, textTheme),
           const SizedBox(height: AppSizes.x6),
           const Divider(),
           const SizedBox(height: AppSizes.x6),
+          _buildName(l10n, textTheme),
+          const SizedBox(height: AppSizes.x5),
+          _buildMinValue(l10n, textTheme),
+          const SizedBox(height: AppSizes.x8),
+          _buildActualValue(l10n, textTheme),
+        ],
+      ),
+    );
+  }
 
-          TextFormField(
+  Widget _buildHeader(AppLocalizations l10n, TextTheme textTheme) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          '${StackMoneyString.formatTitle(l10n.lastKnownValue)} ${StackMoneyString.formatMoney(lastKnowValue, symbol: true)}',
+          style: textTheme.labelSmall?.copyWith(
+            color: StackMoneyTheme.mutedGrey,
+          ),
+        ),
+        PlanStatus(
+          bucket.isImmediateLiquidity ? l10n.liquid : l10n.invest,
+          color: bucket.isImmediateLiquidity
+              ? StackMoneyTheme.cyanNeon
+              : StackMoneyTheme.magentaNeon,
+          onTap: changeLiquidity,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildName(AppLocalizations l10n, TextTheme textTheme) {
+    return Row(
+      children: [
+        Expanded(
+          child: TextFormField(
             controller: nameController,
             style: textTheme.bodySmall,
             decoration: StackMoneyTheme.inputDecoration(l10n.category),
           ),
-          const SizedBox(height: AppSizes.x5),
-
-          TextFormField(
+        ),
+        const SizedBox(width: AppSizes.x5),
+        Expanded(
+          child: TextFormField(
             controller: whereController,
             style: textTheme.bodySmall,
             decoration: StackMoneyTheme.inputDecoration(l10n.where),
           ),
-          const SizedBox(height: AppSizes.x5),
+        ),
+      ],
+    );
+  }
 
-          TextFormField(
-            controller: minValueController,
-            keyboardType: TextInputType.number,
-            style: textTheme.bodySmall,
-            decoration: StackMoneyTheme.inputDecoration(l10n.minValue),
-            inputFormatters: [MoneyInputFormatter()],
-          ),
-          const SizedBox(height: AppSizes.x8),
+  Widget _buildMinValue(AppLocalizations l10n, TextTheme textTheme) {
+    final minMoney = StackMoneyString.formatMoney(
+      bucket.minValue,
+      symbol: true,
+    );
 
-          TextFormField(
-            controller: actualValueController,
-            keyboardType: TextInputType.number,
-            autofocus: true,
-            style: textTheme.bodySmall?.copyWith(
-              fontWeight: AppTypography.weightBold,
-              color: StackMoneyTheme.cyanNeon,
-            ),
-            decoration: StackMoneyTheme.inputDecoration(l10n.actualValue)
-                .copyWith(
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: StackMoneyTheme.cyanNeon,
-                      width: 1.5,
-                    ),
-                  ),
+    return Row(
+      children: [
+        ValueSignButton(
+          () => changeMinSign(false),
+          initialValue: ValueSign.negative,
+        ),
+        const SizedBox(width: AppSizes.x5),
+        ValueListenableBuilder(
+          valueListenable: _minListenable,
+          builder: (_, isPositive, _) {
+            final techColor = isPositive
+                ? StackMoneyTheme.cyanNeon
+                : StackMoneyTheme.magentaNeon;
+
+            final minInput =
+                '${StackMoneyString.formatTitle(isPositive ? l10n.addToMin : l10n.subToMin)} $minMoney';
+
+            return Expanded(
+              child: TextFormField(
+                controller: minValueController,
+                keyboardType: TextInputType.number,
+                style: textTheme.bodySmall,
+                decoration: StackMoneyTheme.inputDecoration(
+                  minInput,
+                  useUnderline: false,
+                  color: techColor,
                 ),
-            inputFormatters: [MoneyInputFormatter()],
-          ),
-        ],
-      ),
+                inputFormatters: [MoneyInputFormatter()],
+              ),
+            );
+          },
+        ),
+        const SizedBox(width: AppSizes.x5),
+        ValueSignButton(
+          () => changeMinSign(true),
+          initialValue: ValueSign.positive,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActualValue(AppLocalizations l10n, TextTheme textTheme) {
+    return ValueListenableBuilder(
+      valueListenable: _actualListenable,
+      builder: (_, isPositive, _) {
+        final techColor = isPositive
+            ? StackMoneyTheme.cyanNeon
+            : StackMoneyTheme.magentaNeon;
+        final initialValue = isPositive
+            ? ValueSign.positive
+            : ValueSign.negative;
+
+        return Row(
+          children: [
+            ValueSignButton(changeActualSign, initialValue: initialValue),
+            const SizedBox(width: AppSizes.x5),
+            Expanded(
+              child: TextFormField(
+                controller: actualValueController,
+                keyboardType: TextInputType.number,
+                autofocus: true,
+                style: textTheme.bodySmall?.copyWith(
+                  fontWeight: AppTypography.weightBold,
+                  color: techColor,
+                ),
+                decoration:
+                    StackMoneyTheme.inputDecoration(
+                      isPositive
+                          ? l10n.positiveActualValue
+                          : l10n.negativeActualValue,
+                      color: techColor,
+                    ).copyWith(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: techColor, width: 1.5),
+                      ),
+                    ),
+                inputFormatters: [MoneyInputFormatter()],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

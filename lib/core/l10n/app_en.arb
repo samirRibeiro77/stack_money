@@ -252,10 +252,6 @@
   "@lastKnownValue": {
     "description": "Bucket last known value"
   },
-  "actualValue": "Actual value",
-  "@actualValue": {
-    "description": "Bucket actual value"
-  },
   "moneySprint": "Money Sprint",
   "@moneySprint": {
     "description": "Money Sprint app bar title"
@@ -275,5 +271,21 @@
   "invest": "Invest",
   "@invest": {
     "description": "When the amount of money is investment"
+  },
+  "addToMin": "Add to min:",
+  "@addToMin": {
+    "description": "Add X to min value"
+  },
+  "subToMin": "Sub from min:",
+  "@subToMin": {
+    "description": "Subtract X from the min value"
+  },
+  "positiveActualValue": "Positive actual value",
+  "@positiveActualValue": {
+    "description": "Bucket positive actual value"
+  },
+  "negativeActualValue": "Negative actual value",
+  "@negativeActualValue": {
+    "description": "Bucket negative actual value"
   }
 }

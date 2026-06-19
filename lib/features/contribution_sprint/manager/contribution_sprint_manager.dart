@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stack_money/core/helpers/stack_money_number.dart';
-import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/transaction.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
@@ -12,6 +11,8 @@ class ContributionSprintManager {
   final ValueNotifier<List<Bucket>> _bucketsNotifier = ValueNotifier([]);
   final ValueNotifier<int> _currentIndexNotifier = ValueNotifier(0);
   final ValueNotifier<bool> _isLoadingNotifier = ValueNotifier(true);
+  final _minIsPositive = ValueNotifier(true);
+  final _actualIsPositive = ValueNotifier(true);
 
   final _lastKnownValues = <String, double>{};
 
@@ -59,11 +60,22 @@ class ContributionSprintManager {
   void _populateFieldsForIndex(int index) {
     if (index >= 0 && index < buckets.length) {
       final bucket = buckets[index];
+
       nameController.text = bucket.category;
       whereController.text = bucket.where;
-      minValueController.text = StackMoneyString.formatMoney(bucket.minValue);
+      minValueController.text = '';
       actualValueController.text = '';
+      _minIsPositive.value = bucket.minValue >= 0;
+      _actualIsPositive.value = true;
     }
+  }
+
+  void minIsPositive(bool value) {
+    _minIsPositive.value = value;
+  }
+
+  void changeActualSign() {
+    _actualIsPositive.value = !_actualIsPositive.value;
   }
 
   /// ➡️ PRÓXIMO PASSO COM SALVAMENTO (Botão do Body)
@@ -102,19 +114,27 @@ class ContributionSprintManager {
     final bucket = buckets[currentIndex];
     final double lastValue = getLastKnownValueForBucket(bucket);
 
-    final double verifiedActualValue = actualValueController.text.isNotEmpty
+    double verifiedActualValue = actualValueController.text.isNotEmpty
         ? StackMoneyNumber.parseMoneyStringToDouble(actualValueController.text)
         : lastValue;
 
-    final double verifiedMinValue = minValueController.text.isNotEmpty
+    if (!_actualIsPositive.value) {
+      verifiedActualValue = -verifiedActualValue;
+    }
+
+    double verifiedMinValue = minValueController.text.isNotEmpty
         ? StackMoneyNumber.parseMoneyStringToDouble(minValueController.text)
-        : bucket.minValue;
+        : 0.0;
+
+    if (!_minIsPositive.value) {
+      verifiedMinValue = -verifiedMinValue;
+    }
 
     buckets[currentIndex] = Bucket(
       id: bucket.id,
       category: nameController.text.trim(),
       where: whereController.text.trim(),
-      minValue: verifiedMinValue,
+      minValue: bucket.minValue + verifiedMinValue,
       isImmediateLiquidity: bucket.isImmediateLiquidity,
     );
 

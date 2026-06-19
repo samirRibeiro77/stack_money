@@ -64,10 +64,13 @@
   "copy": "Copiar",
   "dayX": "D{d}",
   "lastKnownValue": "Último valor conhecido:",
-  "actualValue": "Valor atual",
   "moneySprint": "Money Sprint",
   "nextBucket": "Próxima caixinha",
   "finishWizard": "Finalizar Sprint",
   "liquid": "Liquidez",
-  "invest": "Investimento"
+  "invest": "Investimento",
+  "addToMin": "Somar ao min:",
+  "subToMin": "Subtrair do min:",
+  "positiveActualValue": "Valor atual positivo",
+  "negativeActualValue": "Valor atual negativo"
 }
