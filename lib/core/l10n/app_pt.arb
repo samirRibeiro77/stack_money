@@ -62,5 +62,17 @@
   "archive": "Arquivar",
   "delete": "Deletar",
   "copy": "Copiar",
-  "dayX": "D{d}"
+  "dayX": "D{d}",
+  "lastKnownValue": "Último valor conhecido:",
+  "moneySprint": "Money Sprint",
+  "liquid": "Liquidez",
+  "invest": "Investimento",
+  "addToMin": "Somar ao min:",
+  "subToMin": "Subtrair do min:",
+  "positiveActualValue": "Valor atual positivo",
+  "negativeActualValue": "Valor atual negativo",
+  "exit": "Sair",
+  "previous": "Anterior",
+  "next": "Próximo",
+  "finish": "Terminar"
 }

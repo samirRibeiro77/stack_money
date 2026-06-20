@@ -16,8 +16,12 @@ class StackMoneyString {
     locale: 'en_US',
   );
 
-  static String formatTitle(String s) {
-    return s.replaceAll(' ', '_').toUpperCase();
+  static String formatTitle(String s, {bool useUnderline = true}) {
+    final upperString = s.toUpperCase();
+    if (useUnderline) {
+      return upperString.replaceAll(' ', '_');
+    }
+    return upperString;
   }
 
   static String formatMoney(

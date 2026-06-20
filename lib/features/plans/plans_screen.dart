@@ -66,47 +66,52 @@ class _PlansScreenState extends State<PlansScreen> {
           return b.createdAt.compareTo(a.createdAt);
         });
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ExpandableHeader(
-              title: l10n.plansConfig,
-              validation: _manager.showArchivedNotifier,
-              toggle: _manager.toggleShowArchived,
-              activeIcon: Icons.archive_outlined,
-              inactiveIcon: Icons.unarchive_outlined,
-              activeColor: StackMoneyTheme.magentaNeon,
-              inactiveColor: StackMoneyTheme.cyanNeon,
-            ),
-            const SizedBox(height: AppSizes.x6),
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ExpandableHeader(
+                title: l10n.plansConfig,
+                validation: _manager.showArchivedNotifier,
+                toggle: _manager.toggleShowArchived,
+                activeIcon: Icons.archive_outlined,
+                inactiveIcon: Icons.unarchive_outlined,
+                activeColor: StackMoneyTheme.magentaNeon,
+                inactiveColor: StackMoneyTheme.cyanNeon,
+              ),
+              const SizedBox(height: AppSizes.x6),
 
-            CardInitializeSlot(
-              l10n.newPlan,
-              onTap: () => _manager.initializeNewPlanSlot(context),
-            ),
-            const SizedBox(height: AppSizes.x3),
+              CardInitializeSlot(
+                l10n.newPlan,
+                onTap: () => _manager.initializeNewPlanSlot(context),
+              ),
+              const SizedBox(height: AppSizes.x3),
 
-            ...List.generate(filteredList.length, (index) {
-              final plan = filteredList[index];
-              return DismissiblePlanCard(
-                plan,
-                onTap: () => _manager.navigateToPlanDetails(context, plan),
-                confirmDismiss: (direction) async {
-                  if (direction == DismissDirection.endToStart) {
-                    return await _manager.showTerminalConfirmDialog(plan.name, context);
-                  } else {
-                    _manager.archivePlan(plan.id, plan.isArchived);
-                    return false;
-                  }
-                },
-                onDismissed: (direction) {
-                  if (direction == DismissDirection.endToStart) {
-                    _manager.purgePlan(plan.id);
-                  }
-                },
-              );
-            }),
-          ],
+              ...List.generate(filteredList.length, (index) {
+                final plan = filteredList[index];
+                return DismissiblePlanCard(
+                  plan,
+                  onTap: () => _manager.navigateToPlanDetails(context, plan),
+                  confirmDismiss: (direction) async {
+                    if (direction == DismissDirection.endToStart) {
+                      return await _manager.showTerminalConfirmDialog(
+                        plan.name,
+                        context,
+                      );
+                    } else {
+                      _manager.archivePlan(plan.id, plan.isArchived);
+                      return false;
+                    }
+                  },
+                  onDismissed: (direction) {
+                    if (direction == DismissDirection.endToStart) {
+                      _manager.purgePlan(plan.id);
+                    }
+                  },
+                );
+              }),
+            ],
+          ),
         );
       },
     );

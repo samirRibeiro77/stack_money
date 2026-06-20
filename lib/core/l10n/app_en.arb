@@ -247,5 +247,53 @@
   "dayX": "D{d}",
   "@dayX": {
     "description": "Quantity of days (eg.: D5)"
+  },
+  "lastKnownValue": "Last known:",
+  "@lastKnownValue": {
+    "description": "Bucket last known value"
+  },
+  "moneySprint": "Money Sprint",
+  "@moneySprint": {
+    "description": "Money Sprint app bar title"
+  },
+  "liquid": "Liquid",
+  "@liquid": {
+    "description": "When the amount of money is liquidity"
+  },
+  "invest": "Invest",
+  "@invest": {
+    "description": "When the amount of money is investment"
+  },
+  "addToMin": "Add to min:",
+  "@addToMin": {
+    "description": "Add X to min value"
+  },
+  "subToMin": "Sub from min:",
+  "@subToMin": {
+    "description": "Subtract X from the min value"
+  },
+  "positiveActualValue": "Positive actual value",
+  "@positiveActualValue": {
+    "description": "Bucket positive actual value"
+  },
+  "negativeActualValue": "Negative actual value",
+  "@negativeActualValue": {
+    "description": "Bucket negative actual value"
+  },
+  "exit": "Exit",
+  "@exit": {
+    "description": "Exit text"
+  },
+  "previous": "Previous",
+  "@previous": {
+    "description": "Previous text"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next text"
+  },
+  "finish": "Finish",
+  "@finish": {
+    "description": "Finish text"
   }
 }

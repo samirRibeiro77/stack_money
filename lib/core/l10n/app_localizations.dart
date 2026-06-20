@@ -469,6 +469,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'D{d}'**
   String dayX(Object d);
+
+  /// Bucket last known value
+  ///
+  /// In en, this message translates to:
+  /// **'Last known:'**
+  String get lastKnownValue;
+
+  /// Money Sprint app bar title
+  ///
+  /// In en, this message translates to:
+  /// **'Money Sprint'**
+  String get moneySprint;
+
+  /// When the amount of money is liquidity
+  ///
+  /// In en, this message translates to:
+  /// **'Liquid'**
+  String get liquid;
+
+  /// When the amount of money is investment
+  ///
+  /// In en, this message translates to:
+  /// **'Invest'**
+  String get invest;
+
+  /// Add X to min value
+  ///
+  /// In en, this message translates to:
+  /// **'Add to min:'**
+  String get addToMin;
+
+  /// Subtract X from the min value
+  ///
+  /// In en, this message translates to:
+  /// **'Sub from min:'**
+  String get subToMin;
+
+  /// Bucket positive actual value
+  ///
+  /// In en, this message translates to:
+  /// **'Positive actual value'**
+  String get positiveActualValue;
+
+  /// Bucket negative actual value
+  ///
+  /// In en, this message translates to:
+  /// **'Negative actual value'**
+  String get negativeActualValue;
+
+  /// Exit text
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get exit;
+
+  /// Previous text
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previous;
+
+  /// Next text
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// Finish text
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get finish;
 }
 
 class _AppLocalizationsDelegate

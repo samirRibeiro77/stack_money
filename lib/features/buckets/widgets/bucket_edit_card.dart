@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/money_input_formatter.dart';
 import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
@@ -9,7 +9,9 @@ import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
 import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/value_sign_button.dart';
 import 'package:stack_money/data/enum/security_type.dart';
+import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
 
 class BucketEditCard extends StatefulWidget {
@@ -152,6 +154,8 @@ class _BucketEditCardState extends State<BucketEditCard> {
   Widget build(BuildContext context) {
     final isSecureActive = SecurityProvider.isSecureOf(context);
     final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
+
     final Color techColor = _isNegative
         ? StackMoneyTheme.magentaNeon
         : StackMoneyTheme.cyanNeon;
@@ -238,7 +242,10 @@ class _BucketEditCardState extends State<BucketEditCard> {
                       ],
                     ),
                     SecurityText(
-                      StackMoneyString.formatMoney(widget.bucket.minValue, symbol: true),
+                      StackMoneyString.formatMoney(
+                        widget.bucket.minValue,
+                        symbol: true,
+                      ),
                       type: SecurityType.mask,
                       style: const TextStyle(
                         fontFamily: 'JetBrainsMono',
@@ -265,93 +272,68 @@ class _BucketEditCardState extends State<BucketEditCard> {
                     Row(
                       children: [
                         Expanded(
-                          child: _buildOutlineField(
-                            label: l10n.category,
+                          child: TextFormField(
                             controller: _categoryController,
                             focusNode: _categoryFocus,
-                            activeColor: techColor,
+                            style: textTheme.bodySmall,
+                            decoration: StackMoneyTheme.inputDecoration(
+                              l10n.category,
+                              color: techColor,
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppSizes.x6),
                         Expanded(
-                          child: _buildOutlineField(
-                            label: l10n.where,
+                          child: TextFormField(
                             controller: _whereController,
                             focusNode: _whereFocus,
-                            activeColor: techColor,
+                            style: textTheme.bodySmall,
+                            decoration: StackMoneyTheme.inputDecoration(
+                              l10n.where,
+                              color: techColor,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSizes.x5),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        GestureDetector(
-                          onTap: _toggleValueSign,
-                          child: Container(
-                            height: 44,
-                            width: 44,
-                            decoration: BoxDecoration(
-                              color: StackMoneyTheme.surface,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: techColor.withValues(alpha: 0.3),
-                                width: 1,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                _isNegative ? ' - ' : ' + ',
-                                style: TextStyle(
-                                  fontFamily: 'Orbitron',
-                                  color: techColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ),
+                        ValueSignButton(
+                          _toggleValueSign,
+                          initialValue: _isNegative
+                              ? ValueSign.negative
+                              : ValueSign.positive,
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: AppSizes.x6),
                         Expanded(
                           flex: 3,
                           child: TextFormField(
                             controller: _minValueController,
                             keyboardType: TextInputType.number,
                             focusNode: _minValueFocus,
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: textTheme.bodySmall,
                             decoration: StackMoneyTheme.inputDecoration(
                               l10n.minValue,
+                              color: techColor,
                             ),
                             inputFormatters: [MoneyInputFormatter()],
                           ),
-                          // child: _buildOutlineField(
-                          //   label: l10n.minValue,
-                          //   controller: _minValueController,
-                          //   focusNode: _minValueFocus,
-                          //   keyboardType: TextInputType.number,
-                          //   inputFormatters: [MoneyInputFormatter()],
-                          //   activeColor: techColor,
-                          // ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppSizes.x6),
                         Expanded(
-                          flex: 2,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 StackMoneyString.formatTitle(l10n.liquidity),
-                                style: const TextStyle(
-                                  fontFamily: 'JetBrainsMono',
+                                style: textTheme.bodySmall?.copyWith(
+                                  fontSize: AppTypography.fontSmallest,
                                   color: StackMoneyTheme.mutedGrey,
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(height: 4),
                               _buildLiquiditySwitch(techColor: techColor),
                             ],
                           ),
@@ -368,64 +350,9 @@ class _BucketEditCardState extends State<BucketEditCard> {
     );
   }
 
-  Widget _buildOutlineField({
-    required String label,
-    required TextEditingController controller,
-    required FocusNode focusNode,
-    Color activeColor = StackMoneyTheme.cyanNeon,
-    TextInputType? keyboardType,
-    List<TextInputFormatter>? inputFormatters,
-  }) {
-    return Theme(
-      data: Theme.of(context).copyWith(primaryColor: activeColor),
-      child: TextField(
-        controller: controller,
-        focusNode: focusNode,
-        keyboardType: keyboardType,
-        textCapitalization: TextCapitalization.sentences,
-        inputFormatters: inputFormatters,
-        style: const TextStyle(
-          fontFamily: 'JetBrainsMono',
-          color: Colors.white,
-          fontSize: 13,
-        ),
-        decoration: InputDecoration(
-          labelText: StackMoneyString.formatTitle(label),
-          labelStyle: const TextStyle(
-            fontFamily: 'JetBrainsMono',
-            color: StackMoneyTheme.mutedGrey,
-            fontSize: 11,
-          ),
-          floatingLabelStyle: TextStyle(
-            fontFamily: 'JetBrainsMono',
-            color: activeColor,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-          isDense: true,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 14,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              color: Colors.white.withValues(alpha: 0.08),
-              width: 1,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: activeColor, width: 1.2),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildLiquiditySwitch({required Color techColor}) {
     return SizedBox(
-      height: 44,
+      height: AppSizes.x16,
       child: Center(
         child: FittedBox(
           fit: BoxFit.contain,
@@ -444,13 +371,4 @@ class _BucketEditCardState extends State<BucketEditCard> {
       ),
     );
   }
-
-  // double _parseCurrentValue() {
-  //   final rawNumber = _minValueController.text.replaceAll(
-  //     RegExp(r'[^0-9]'),
-  //     '',
-  //   );
-  //   double doubleValue = (double.tryParse(rawNumber) ?? 0.0) / 100.0;
-  //   return _isNegative ? -doubleValue : doubleValue;
-  // }
 }

@@ -17,6 +17,7 @@ class AppSizes {
   static const double x10 = min * 10;
   static const double x12 = min * 12;
   static const double x16 = min * 16;
+  static const double x17 = min * 17;
   static const double x20 = min * 20;
   static const double x24 = min * 24;
   static const double x26 = min * 26;

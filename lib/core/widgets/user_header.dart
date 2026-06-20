@@ -6,6 +6,9 @@ import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
 
+// 🔥 NOVO IMPORT: Aponta diretamente para a nossa esteira de aportes sequenciais
+import 'package:stack_money/features/contribution_sprint/contribution_sprint_screen.dart';
+
 class UserHeader extends StatelessWidget {
   const UserHeader({super.key});
 
@@ -38,8 +41,11 @@ class UserHeader extends StatelessWidget {
       // --- 2. DISPLAY NAME ---
       title: _buildName(displayName, textTheme),
 
-      // --- 3. BOTÃO DE ENGRENAGEM ---
-      actions: [_buildVisibilityAction(context)],
+      // --- 3. BOTOÕES DE COMANDO ---
+      actions: [
+        _buildContributionAction(context),
+        _buildVisibilityAction(context),
+      ],
     );
   }
 
@@ -94,6 +100,21 @@ class UserHeader extends StatelessWidget {
           fontSize: AppSizes.x10,
         ),
       ),
+    );
+  }
+
+  Widget _buildContributionAction(BuildContext context) {
+    final isSecure = SecurityProvider.isSecureOf(context);
+
+    if (isSecure) return const SizedBox.shrink();
+
+    return IconButton(
+      icon: const Icon(Icons.add_rounded, color: StackMoneyTheme.cyanNeon),
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const ContributionSprintScreen()),
+        );
+      },
     );
   }
 

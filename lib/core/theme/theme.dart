@@ -34,21 +34,35 @@ class StackMoneyTheme {
     textStyle: darkTheme.textTheme.labelMedium,
   );
 
-  static InputDecoration inputDecoration(String label) {
+  static InputDecoration inputDecoration(
+    String label, {
+    Color color = StackMoneyTheme.cyanNeon,
+    bool useUnderline = true,
+  }) {
     return InputDecoration(
-      labelText: StackMoneyString.formatTitle(label),
+      labelText: StackMoneyString.formatTitle(
+        label,
+        useUnderline: useUnderline,
+      ),
       alignLabelWithHint: true,
       labelStyle: darkTheme.textTheme.bodySmall,
+      floatingLabelStyle: darkTheme.textTheme.bodyLarge?.copyWith(color: color),
       isDense: true,
-      contentPadding: const EdgeInsets.symmetric(horizontal: AppSizes.x4, vertical: AppSizes.x5),
-      constraints: const BoxConstraints(minHeight: AppSizes.x16, maxHeight: AppSizes.x16),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSizes.x4,
+        vertical: AppSizes.x5,
+      ),
+      constraints: const BoxConstraints(
+        minHeight: AppSizes.x16,
+        maxHeight: AppSizes.x16,
+      ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppSizes.x3),
         borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.06)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppSizes.x3),
-        borderSide: const BorderSide(color: StackMoneyTheme.cyanNeon, width: 1),
+        borderSide: BorderSide(color: color, width: 1),
       ),
     );
   }
