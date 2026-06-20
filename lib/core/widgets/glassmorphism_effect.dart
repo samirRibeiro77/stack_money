@@ -11,6 +11,7 @@ class GlassmorphismEffect extends StatelessWidget {
     this.borderColor = StackMoneyTheme.mutedGrey,
     this.backgroundColor = StackMoneyTheme.carbonGrey,
     this.borderWidth = 0.6,
+    this.borderRadius = AppSizes.navBarRadius
   });
 
   final double? containerHeight;
@@ -18,6 +19,7 @@ class GlassmorphismEffect extends StatelessWidget {
   final Color? borderColor;
   final Color? backgroundColor;
   final double borderWidth;
+  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class GlassmorphismEffect extends StatelessWidget {
     final backgroundColorFixed = backgroundColor ?? StackMoneyTheme.carbonGrey;
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
+      borderRadius: BorderRadius.circular(borderRadius),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
         child: AnimatedContainer(
@@ -33,7 +35,7 @@ class GlassmorphismEffect extends StatelessWidget {
           height: containerHeight,
           decoration: BoxDecoration(
             color: backgroundColorFixed.withValues(alpha: 0.25),
-            borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
+            borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(
               color: borderColorFixed.withValues(alpha: 0.30),
               width: borderWidth,

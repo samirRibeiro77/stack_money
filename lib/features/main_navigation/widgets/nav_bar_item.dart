@@ -52,7 +52,7 @@ class NavBarItem extends StatelessWidget {
                     ]
                   : null,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppSizes.min),
             AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 200),
               style: textTheme.bodySmall!.copyWith(

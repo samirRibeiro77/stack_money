@@ -4,6 +4,7 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/title_text.dart';
+import 'package:stack_money/core/widgets/glassmorphism_effect.dart'; // 🔥 Import do efeito de vidro fosco
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/widgets/net_salary/net_salary_progress.dart';
 
@@ -43,76 +44,75 @@ class NetSalaryStickyHud extends SliverPersistentHeaderDelegate {
         : StackMoneyTheme.cyanNeon;
 
     return ClipRect(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: isMaxCollapsed ? AppSizes.x6 : AppSizes.x8,
-          vertical: isMaxCollapsed ? AppSizes.min : AppSizes.x2,
-        ),
-        decoration: BoxDecoration(
-          color: StackMoneyTheme.surface,
-          borderRadius: BorderRadius.circular(
-            isMaxCollapsed ? AppSizes.x2 : AppSizes.x6,
+      child: GlassmorphismEffect(
+        containerHeight: null,
+        backgroundColor: StackMoneyTheme.surface,
+        borderColor: masterColor,
+        borderRadius: isMaxCollapsed ? AppSizes.x2 : AppSizes.x6,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isMaxCollapsed ? AppSizes.x2 : AppSizes.x4,
+            vertical: isMaxCollapsed ? AppSizes.min : AppSizes.x2,
           ),
-          border: Border.all(
-            color: masterColor.withValues(alpha: 0.12),
-            width: 0.5,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            /// Header
-            if (!hideHeader) ...[
-              TitleText(l10n.totalNet),
-              const SizedBox(height: AppSizes.min),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    StackMoneyString.formatMoney(plan.netSalary, symbol: true),
-                    style: textTheme.bodyMedium,
-                  ),
-                  Text(
-                    plan.isOverflowed
-                        ? l10n.systemOverflow
-                        : '${StackMoneyString.formatTitle(l10n.totalRest)} ${StackMoneyString.formatMoney(plan.remainingRest, symbol: true)}',
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: plan.isOverflowed
-                          ? StackMoneyTheme.magentaNeon
-                          : StackMoneyTheme.cyanNeon,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              /// Header
+              if (!hideHeader) ...[
+                TitleText(l10n.totalNet),
+                const SizedBox(height: AppSizes.min),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      StackMoneyString.formatMoney(
+                        plan.netSalary,
+                        symbol: true,
+                      ),
+                      style: textTheme.bodyMedium,
                     ),
-                  ),
-                ],
-              ),
-              const Divider(),
+                    Text(
+                      plan.isOverflowed
+                          ? l10n.systemOverflow
+                          : '${StackMoneyString.formatTitle(l10n.totalRest)} ${StackMoneyString.formatMoney(plan.remainingRest, symbol: true)}',
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: plan.isOverflowed
+                            ? StackMoneyTheme.magentaNeon
+                            : StackMoneyTheme.cyanNeon,
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(),
+              ],
+
+              /// Day list progress bar ans values
+              ...List.generate(days.length, (index) {
+                final day = days[index];
+
+                final double netForDay = plan.netSalaryForDay(day);
+                final double allocatedForDay = plan.totalAllocatedForDay(day);
+                final double restForDay = plan.remainingRestForDay(day);
+                final bool isOver = plan.isOverflowedForDay(day);
+
+                double progressFactor = netForDay > 0
+                    ? (allocatedForDay / netForDay)
+                    : 0.0;
+                if (progressFactor > 1.0) progressFactor = 1.0;
+
+                return NetSalaryProgress(
+                  isMaxCollapsed: isMaxCollapsed,
+                  day: day,
+                  hideHeader: hideHeader,
+                  netForDay: netForDay,
+                  isOver: isOver,
+                  restForDay: restForDay,
+                  progressFactor: progressFactor,
+                );
+              }),
             ],
-
-            /// Day list progress bar ans values
-            ...List.generate(days.length, (index) {
-              final day = days[index];
-
-              final double netForDay = plan.netSalaryForDay(day);
-              final double allocatedForDay = plan.totalAllocatedForDay(day);
-              final double restForDay = plan.remainingRestForDay(day);
-              final bool isOver = plan.isOverflowedForDay(day);
-
-              double progressFactor = netForDay > 0
-                  ? (allocatedForDay / netForDay)
-                  : 0.0;
-              if (progressFactor > 1.0) progressFactor = 1.0;
-
-              return NetSalaryProgress(
-                isMaxCollapsed: isMaxCollapsed,
-                day: day,
-                hideHeader: hideHeader,
-                netForDay: netForDay,
-                isOver: isOver,
-                restForDay: restForDay,
-                progressFactor: progressFactor,
-              );
-            }),
-          ],
+          ),
         ),
       ),
     );
