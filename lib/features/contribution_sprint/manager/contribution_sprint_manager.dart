@@ -13,6 +13,7 @@ class ContributionSprintManager {
   final ValueNotifier<bool> _isLoadingNotifier = ValueNotifier(true);
   final _minIsPositive = ValueNotifier(true);
   final _actualIsPositive = ValueNotifier(true);
+  final _isLiquid = ValueNotifier(true);
 
   final _lastKnownValues = <String, double>{};
 
@@ -67,6 +68,7 @@ class ContributionSprintManager {
       actualValueController.text = '';
       _minIsPositive.value = bucket.minValue >= 0;
       _actualIsPositive.value = true;
+      _isLiquid.value = bucket.isImmediateLiquidity;
     }
   }
 
@@ -76,6 +78,10 @@ class ContributionSprintManager {
 
   void changeActualSign() {
     _actualIsPositive.value = !_actualIsPositive.value;
+  }
+
+  void changeLiquidity() {
+    _isLiquid.value = !_isLiquid.value;
   }
 
   /// ➡️ PRÓXIMO PASSO COM SALVAMENTO (Botão do Body)
@@ -132,7 +138,7 @@ class ContributionSprintManager {
       category: nameController.text.trim(),
       where: whereController.text.trim(),
       minValue: bucket.minValue + verifiedMinValue,
-      isImmediateLiquidity: bucket.isImmediateLiquidity,
+      isImmediateLiquidity: _isLiquid.value,
     );
 
     _lastKnownValues[bucket.id] = verifiedActualValue;
@@ -191,5 +197,8 @@ class ContributionSprintManager {
     _bucketsNotifier.dispose();
     _currentIndexNotifier.dispose();
     _isLoadingNotifier.dispose();
+    _minIsPositive.dispose();
+    _actualIsPositive.dispose();
+    _isLiquid.dispose();
   }
 }

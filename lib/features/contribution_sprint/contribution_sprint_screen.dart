@@ -64,8 +64,13 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
               appBar: AppBar(
                 backgroundColor: StackMoneyTheme.background,
                 elevation: 0,
+                scrolledUnderElevation: 0,
                 leading: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                  icon: Icon(
+                    isFirst
+                        ? WizardButtonAction.exit.icon
+                        : WizardButtonAction.previous.icon,
+                  ),
                   onPressed: () => _manager.previousStep(context),
                 ),
                 title: Text(
@@ -76,7 +81,9 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                 actions: [
                   IconButton(
                     icon: Icon(
-                      isLast ? Icons.check : Icons.arrow_forward_ios_rounded,
+                      isLast
+                          ? WizardButtonAction.finish.icon
+                          : WizardButtonAction.next.icon,
                     ),
                     onPressed: () => _manager.nextStep(context),
                   ),
@@ -101,25 +108,34 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                       BucketFormCard(
                         bucket: currentBucket,
                         lastKnowValue: lastValue,
-                        nameController: _manager.nameController,
+                        categoryController: _manager.nameController,
                         whereController: _manager.whereController,
                         minValueController: _manager.minValueController,
                         actualValueController: _manager.actualValueController,
                         setMinSign: _manager.minIsPositive,
                         switchActualSign: _manager.changeActualSign,
-                        changeLiquidity: () {},
+                        switchLiquidity: _manager.changeLiquidity,
                       ),
-                      const SizedBox(height: AppSizes.x6),
+                      const SizedBox(height: AppSizes.x8),
+
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SprintWizardButton(
-                            onPressed: () => _manager.previousStep(context),
-                            action: isFirst ? WizardButtonAction.exit : WizardButtonAction.previous,
+                          Expanded(
+                            child: SprintWizardButton(
+                              onPressed: () => _manager.previousStep(context),
+                              action: isFirst
+                                  ? WizardButtonAction.exit
+                                  : WizardButtonAction.previous,
+                            ),
                           ),
-                          SprintWizardButton(
-                            onPressed: () => _manager.nextStep(context),
-                            action: isLast ? WizardButtonAction.finish : WizardButtonAction.next,
+                          const SizedBox(width: AppSizes.x6),
+                          Expanded(
+                            child: SprintWizardButton(
+                              onPressed: () => _manager.nextStep(context),
+                              action: isLast
+                                  ? WizardButtonAction.finish
+                                  : WizardButtonAction.next,
+                            ),
                           ),
                         ],
                       ),

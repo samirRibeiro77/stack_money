@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
-import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/data/enum/wizard_button_action.dart';
 
 class SprintWizardButton extends StatelessWidget {
@@ -24,18 +25,35 @@ class SprintWizardButton extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(backgroundColor: StackMoneyTheme.carbonGrey),
-      child: Row(
-        children: [
-          if (isBackButton) Icon(action.icon, color: action.color),
-          Text(
-            '[ ${StackMoneyString.formatTitle(action.text(l10n))} ]',
-            style: textTheme.bodySmall?.copyWith(color: action.color, fontWeight: AppTypography.weightBold),
-          ),
-          if (!isBackButton) Icon(action.icon, color: action.color),
-        ],
+    return GlassmorphismEffect(
+      containerHeight: AppSizes.x16,
+      borderColor: action.color,
+      borderWidth: 1.0,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
+        highlightColor: action.color.withValues(alpha: 0.1),
+        splashColor: action.color.withValues(alpha: 0.15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (isBackButton) ...[
+              Icon(action.icon, color: action.color, size: AppSizes.x7),
+              const SizedBox(width: AppSizes.x2),
+            ],
+            Text(
+              StackMoneyString.formatTitle(action.text(l10n)),
+              style: textTheme.bodySmall?.copyWith(
+                color: action.color,
+                fontWeight: AppTypography.weightBold,
+              ),
+            ),
+            if (!isBackButton) ...[
+              const SizedBox(width: AppSizes.x2),
+              Icon(action.icon, color: action.color, size: AppSizes.x7),
+            ],
+          ],
+        ),
       ),
     );
   }

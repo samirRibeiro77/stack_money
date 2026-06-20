@@ -15,33 +15,38 @@ import 'package:stack_money/data/models/bucket.dart';
 class BucketFormCard extends StatelessWidget {
   final Bucket bucket;
   final double lastKnowValue;
-  final TextEditingController nameController;
+  final TextEditingController categoryController;
   final TextEditingController whereController;
   final TextEditingController minValueController;
   final TextEditingController actualValueController;
-  final VoidCallback changeLiquidity;
+  final VoidCallback switchLiquidity;
   final Function(bool) setMinSign;
   final VoidCallback switchActualSign;
 
   BucketFormCard({
     required this.bucket,
     required this.lastKnowValue,
-    required this.nameController,
+    required this.categoryController,
     required this.whereController,
     required this.minValueController,
     required this.actualValueController,
-    required this.changeLiquidity,
+    required this.switchLiquidity,
     required this.setMinSign,
     required this.switchActualSign,
     super.key,
-  });
+  }) : _isLiquidity = ValueNotifier(bucket.isImmediateLiquidity);
 
   final _minIsPositive = ValueNotifier(true);
 
   ValueListenable get _minListenable => _minIsPositive;
+
   final _actualIsPositive = ValueNotifier(true);
 
   ValueListenable get _actualListenable => _actualIsPositive;
+
+  final ValueNotifier<bool> _isLiquidity;
+
+  ValueListenable get _liquidityListenable => _isLiquidity;
 
   void changeMinSign(bool value) {
     _minIsPositive.value = value;
@@ -51,6 +56,11 @@ class BucketFormCard extends StatelessWidget {
   void changeActualSign() {
     _actualIsPositive.value = !_actualIsPositive.value;
     switchActualSign();
+  }
+
+  void changeLiquidity() {
+    _isLiquidity.value = !_isLiquidity.value;
+    switchLiquidity();
   }
 
   @override
@@ -65,12 +75,7 @@ class BucketFormCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            StackMoneyString.formatTitle(bucket.name),
-            style: textTheme.titleMedium?.copyWith(
-              fontWeight: AppTypography.weightBold,
-            ),
-          ),
+          _buildTitle(textTheme),
           _buildHeader(l10n, textTheme),
           const SizedBox(height: AppSizes.x6),
           const Divider(),
@@ -85,6 +90,26 @@ class BucketFormCard extends StatelessWidget {
     );
   }
 
+  Widget _buildTitle(TextTheme textTheme) {
+    return ValueListenableBuilder(
+      valueListenable: categoryController,
+      builder: (_, category, _) {
+        return ValueListenableBuilder(
+          valueListenable: whereController,
+          builder: (_, where, _) {
+            final name = '${category.text} ${where.text}';
+            return Text(
+              StackMoneyString.formatTitle(name),
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: AppTypography.weightBold,
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   Widget _buildHeader(AppLocalizations l10n, TextTheme textTheme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,12 +120,17 @@ class BucketFormCard extends StatelessWidget {
             color: StackMoneyTheme.mutedGrey,
           ),
         ),
-        PlanStatus(
-          bucket.isImmediateLiquidity ? l10n.liquid : l10n.invest,
-          color: bucket.isImmediateLiquidity
-              ? StackMoneyTheme.cyanNeon
-              : StackMoneyTheme.magentaNeon,
-          onTap: changeLiquidity,
+        ValueListenableBuilder(
+          valueListenable: _liquidityListenable,
+          builder: (_, isLiquidity, _) {
+            return PlanStatus(
+              isLiquidity ? l10n.liquid : l10n.invest,
+              color: isLiquidity
+                  ? StackMoneyTheme.cyanNeon
+                  : StackMoneyTheme.magentaNeon,
+              onTap: changeLiquidity,
+            );
+          },
         ),
       ],
     );
@@ -111,7 +141,7 @@ class BucketFormCard extends StatelessWidget {
       children: [
         Expanded(
           child: TextFormField(
-            controller: nameController,
+            controller: categoryController,
             style: textTheme.bodySmall,
             decoration: StackMoneyTheme.inputDecoration(l10n.category),
           ),

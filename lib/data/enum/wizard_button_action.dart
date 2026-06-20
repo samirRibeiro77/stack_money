@@ -24,13 +24,13 @@ enum WizardButtonAction {
   IconData get icon {
     switch (this) {
       case exit:
-        return Icons.close;
+        return Icons.close_rounded;
       case previous:
         return Icons.arrow_back_ios_new_rounded;
       case next:
         return Icons.arrow_forward_ios_rounded;
       case finish:
-        return Icons.check;
+        return Icons.check_rounded;
     }
   }
 
@@ -40,7 +40,6 @@ enum WizardButtonAction {
       case previous:
         return StackMoneyTheme.magentaNeon;
       case next:
-        return StackMoneyTheme.platinumSilver;
       case finish:
         return StackMoneyTheme.cyanNeon;
     }
