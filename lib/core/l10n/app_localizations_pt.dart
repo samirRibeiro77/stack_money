@@ -218,12 +218,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get moneySprint => 'Money Sprint';
 
   @override
-  String get nextBucket => 'Próxima caixinha';
-
-  @override
-  String get finishWizard => 'Finalizar Sprint';
-
-  @override
   String get liquid => 'Liquidez';
 
   @override
@@ -240,4 +234,16 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get negativeActualValue => 'Valor atual negativo';
+
+  @override
+  String get exit => 'Sair';
+
+  @override
+  String get previous => 'Anterior';
+
+  @override
+  String get next => 'Próximo';
+
+  @override
+  String get finish => 'Terminar';
 }

@@ -65,12 +65,14 @@
   "dayX": "D{d}",
   "lastKnownValue": "Último valor conhecido:",
   "moneySprint": "Money Sprint",
-  "nextBucket": "Próxima caixinha",
-  "finishWizard": "Finalizar Sprint",
   "liquid": "Liquidez",
   "invest": "Investimento",
   "addToMin": "Somar ao min:",
   "subToMin": "Subtrair do min:",
   "positiveActualValue": "Valor atual positivo",
-  "negativeActualValue": "Valor atual negativo"
+  "negativeActualValue": "Valor atual negativo",
+  "exit": "Sair",
+  "previous": "Anterior",
+  "next": "Próximo",
+  "finish": "Terminar"
 }

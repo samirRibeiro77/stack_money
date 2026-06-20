@@ -256,14 +256,6 @@
   "@moneySprint": {
     "description": "Money Sprint app bar title"
   },
-  "nextBucket": "Next bucket",
-  "@nextBucket": {
-    "description": "Next bucket on wizard flow"
-  },
-  "finishWizard": "Finish Sprint",
-  "@finishWizard": {
-    "description": "Finish sprint on wizard flow"
-  },
   "liquid": "Liquid",
   "@liquid": {
     "description": "When the amount of money is liquidity"
@@ -287,5 +279,21 @@
   "negativeActualValue": "Negative actual value",
   "@negativeActualValue": {
     "description": "Bucket negative actual value"
+  },
+  "exit": "Exit",
+  "@exit": {
+    "description": "Exit text"
+  },
+  "previous": "Previous",
+  "@previous": {
+    "description": "Previous text"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next text"
+  },
+  "finish": "Finish",
+  "@finish": {
+    "description": "Finish text"
   }
 }

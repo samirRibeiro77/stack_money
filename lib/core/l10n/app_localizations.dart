@@ -482,18 +482,6 @@ abstract class AppLocalizations {
   /// **'Money Sprint'**
   String get moneySprint;
 
-  /// Next bucket on wizard flow
-  ///
-  /// In en, this message translates to:
-  /// **'Next bucket'**
-  String get nextBucket;
-
-  /// Finish sprint on wizard flow
-  ///
-  /// In en, this message translates to:
-  /// **'Finish Sprint'**
-  String get finishWizard;
-
   /// When the amount of money is liquidity
   ///
   /// In en, this message translates to:
@@ -529,6 +517,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Negative actual value'**
   String get negativeActualValue;
+
+  /// Exit text
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get exit;
+
+  /// Previous text
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previous;
+
+  /// Next text
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// Finish text
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get finish;
 }
 
 class _AppLocalizationsDelegate

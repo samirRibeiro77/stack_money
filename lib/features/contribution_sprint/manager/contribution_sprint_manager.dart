@@ -84,11 +84,6 @@ class ContributionSprintManager {
     _moveForward(context);
   }
 
-  /// ⏭️ 🔥 NOVO: PULAR PASSO SEM SALVAR NADA (Botão da AppBar)
-  void skipStep(BuildContext context) {
-    _moveForward(context);
-  }
-
   /// Auxiliar interno de navegação para a frente
   void _moveForward(BuildContext context) {
     if (currentIndex < buckets.length - 1) {
@@ -100,11 +95,13 @@ class ContributionSprintManager {
   }
 
   /// ⬅️ RETROCEDER PASSO
-  void previousStep() {
+  void previousStep(BuildContext context) {
     if (currentIndex > 0) {
       _cacheCurrentStepData();
       _currentIndexNotifier.value = currentIndex - 1;
       _populateFieldsForIndex(currentIndex);
+    } else {
+      Navigator.of(context).pop();
     }
   }
 

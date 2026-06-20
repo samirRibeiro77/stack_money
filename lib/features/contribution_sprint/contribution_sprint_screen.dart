@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
-import 'package:stack_money/core/constants/app_typography.dart';
-import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/data/enum/wizard_button_action.dart';
 import 'package:stack_money/features/contribution_sprint/manager/contribution_sprint_manager.dart';
 import 'package:stack_money/features/contribution_sprint/widgets/bucket_form_card.dart';
 import 'package:stack_money/features/contribution_sprint/widgets/sprint_progress_bar.dart';
+import 'package:stack_money/features/contribution_sprint/widgets/sprint_wizard_button.dart';
 
 class ContributionSprintScreen extends StatefulWidget {
   const ContributionSprintScreen({super.key});
@@ -53,10 +52,12 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
           valueListenable: _manager.currentIndexNotifier,
           builder: (context, currentIndex, _) {
             final currentBucket = _manager.buckets[currentIndex];
-            final bool isLast = currentIndex == _manager.buckets.length - 1;
-            final double lastValue = _manager.getLastKnownValueForBucket(
+            final lastValue = _manager.getLastKnownValueForBucket(
               currentBucket,
             );
+
+            final isFirst = currentIndex == 0;
+            final isLast = currentIndex == _manager.buckets.length - 1;
 
             return Scaffold(
               backgroundColor: StackMoneyTheme.background,
@@ -65,13 +66,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                 elevation: 0,
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                  onPressed: () {
-                    if (currentIndex == 0) {
-                      Navigator.of(context).pop();
-                    } else {
-                      _manager.previousStep();
-                    }
-                  },
+                  onPressed: () => _manager.previousStep(context),
                 ),
                 title: Text(
                   StackMoneyString.formatTitle(l10n.moneySprint),
@@ -83,7 +78,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                     icon: Icon(
                       isLast ? Icons.check : Icons.arrow_forward_ios_rounded,
                     ),
-                    onPressed: () => _manager.skipStep(context),
+                    onPressed: () => _manager.nextStep(context),
                   ),
                 ],
                 bottom: PreferredSize(
@@ -115,41 +110,18 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                         changeLiquidity: () {},
                       ),
                       const SizedBox(height: AppSizes.x6),
-                      ListenableBuilder(
-                        listenable: _manager.actualValueController,
-                        builder: (context, _) {
-                          final String rawText =
-                              _manager.actualValueController.text;
-                          final double currentInput = rawText.isNotEmpty
-                              ? StackMoneyNumber.parseMoneyStringToDouble(
-                                  rawText,
-                                )
-                              : 0.0;
-
-                          // Condição de performance: Se o valor digitado for estritamente superior ao histórico, brilha Ciano. Caso contrário, Magenta.
-                          final bool isGrowing = currentInput > lastValue;
-                          final Color activeColor = isGrowing
-                              ? StackMoneyTheme.cyanNeon
-                              : StackMoneyTheme.magentaNeon;
-
-                          return StackMoneyCard(
-                            shadowColor: activeColor,
-                            child: GestureDetector(
-                              onTap: () => _manager.nextStep(context),
-                              behavior: HitTestBehavior.opaque,
-                              child: Center(
-                                child: Text(
-                                  isLast ? l10n.finishWizard : l10n.nextBucket,
-                                  style: Theme.of(context).textTheme.labelMedium
-                                      ?.copyWith(
-                                        color: activeColor,
-                                        fontWeight: AppTypography.weightBold,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SprintWizardButton(
+                            onPressed: () => _manager.previousStep(context),
+                            action: isFirst ? WizardButtonAction.exit : WizardButtonAction.previous,
+                          ),
+                          SprintWizardButton(
+                            onPressed: () => _manager.nextStep(context),
+                            action: isLast ? WizardButtonAction.finish : WizardButtonAction.next,
+                          ),
+                        ],
                       ),
                     ],
                   ),
