@@ -7,7 +7,7 @@ import 'package:stack_money/domain/service/auth_service.dart';
 class LoginManager {
   final AuthService _authService = AuthService();
 
-  // Encapsulated state notifier to tracking async operations
+  /// Encapsulated state notifier to tracking async operations
   final ValueNotifier<bool> _isLoadingNotifier = ValueNotifier<bool>(false);
 
   /// Public read-only view of the loading state for UI consumption.
