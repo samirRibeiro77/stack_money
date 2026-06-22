@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
+import 'package:stack_money/core/widgets/stack_money_dialog.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
-import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
 class PlansManager {
@@ -100,67 +101,19 @@ class PlansManager {
   }
 
   /// 🚨 DIALOG TERMINAL CONFIRM
-  Future<bool?> showTerminalConfirmDialog(
-    String planName,
-    BuildContext context,
-  ) {
+  Future<bool?> showTerminalConfirmDialog(String planName, BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: StackMoneyTheme.surface,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            side: const BorderSide(
-              color: StackMoneyTheme.magentaNeon,
-              width: 0.5,
-            ),
-          ),
-          title: const Text(
-            '[SYSTEM_WARNING]',
-            style: TextStyle(
-              fontFamily: 'Orbitron',
-              color: StackMoneyTheme.magentaNeon,
-              fontSize: 14,
-            ),
-          ),
-          content: Text(
-            'EXECUTE PURGE PROTOCOL ON SALARY PLAN:\n"${planName.toUpperCase()}"?\n\nALL FORECAST ALIGNMENTS WILL BE EXPURGED.',
-            style: const TextStyle(
-              fontFamily: 'JetBrainsMono',
-              color: StackMoneyTheme.platinumSilver,
-              fontSize: 11,
-              height: 1.5,
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text(
-                '[CANCEL]',
-                style: TextStyle(
-                  fontFamily: 'JetBrainsMono',
-                  color: StackMoneyTheme.mutedGrey,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text(
-                '[PURGE_DATA]',
-                style: TextStyle(
-                  fontFamily: 'JetBrainsMono',
-                  color: StackMoneyTheme.magentaNeon,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+      builder: (context) => StackMoneyDialog(
+        message: l10n.deletePlanMessage,
+        content: planName,
+        note: l10n.deletePlanNote,
+        onCancel: () => Navigator.of(context).pop(false),
+        onConfirm: () => Navigator.of(context).pop(true),
+      ),
     );
   }
 }

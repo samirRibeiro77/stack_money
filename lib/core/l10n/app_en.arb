@@ -90,7 +90,7 @@
   },
   "cancel": "Cancel",
   "@cancel": {
-    "description": "Cancel message"
+    "description": "Cancel action"
   },
   "bucketsConfig": "Buckets Config",
   "@bucketsConfig": {
@@ -295,5 +295,33 @@
   "finish": "Finish",
   "@finish": {
     "description": "Finish text"
+  },
+  "systemWarning": "System Warning",
+  "@systemWarning": {
+    "description": "System Warning for dialogs"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm action"
+  },
+  "deny": "Deny",
+  "@deny": {
+    "description": "Deny action"
+  },
+  "deletePlanMessage": "Execute purge protocol on Salary Plan?",
+  "@deletePlanMessage": {
+    "description": "Title to show on alert when deleting a salary plan"
+  },
+  "deletePlanNote": "All forecast alignments will be expurged.",
+  "@deletePlanNote": {
+    "description": "Message to show on alert when deleting a salary plan"
+  },
+  "deleteBucketMessage": "Execute purge protocol on bucket?",
+  "@deleteBucketMessage": {
+    "description": "Title to show on alert when deleting a bucket"
+  },
+  "deleteBucketNote": "All allocation parameters will be expurged.",
+  "@deleteBucketNote": {
+    "description": "Message to show on alert when deleting a bucket"
   }
 }

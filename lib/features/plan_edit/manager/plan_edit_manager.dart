@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/stack_money_dialog.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
@@ -93,46 +95,17 @@ class PlanEditManager {
 
   // 🗑️ PROTOCOLO PURGE PERMANENTE VIA MENU
   Future<void> deletePlan(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+
     final confirm = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: StackMoneyTheme.surface,
-        title: const Text(
-          '[SYSTEM_WARNING]',
-          style: TextStyle(
-            fontFamily: 'Orbitron',
-            color: StackMoneyTheme.magentaNeon,
-            fontSize: 13,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: const Text(
-          'EXECUTE PURGE PROTOCOL ON THIS PLAN?\nALL FORECAST ALIGNMENTS WILL BE EXPURGED.',
-          style: TextStyle(
-            fontFamily: 'JetBrainsMono',
-            color: StackMoneyTheme.platinumSilver,
-            fontSize: 11,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text(
-              '[CANCEL]',
-              style: TextStyle(color: StackMoneyTheme.mutedGrey),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(
-              '[PURGE_DATA]',
-              style: TextStyle(
-                color: StackMoneyTheme.magentaNeon,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
+      barrierDismissible: false,
+      builder: (context) => StackMoneyDialog(
+        message: l10n.deletePlanMessage,
+        content: currentPlan.name,
+        note: l10n.deletePlanNote,
+        onCancel: () => Navigator.of(context).pop(false),
+        onConfirm: () => Navigator.of(context).pop(true),
       ),
     );
 
@@ -141,7 +114,7 @@ class PlanEditManager {
         await _service.purgeSalaryPlan(currentPlan.id);
         if (context.mounted) Navigator.of(context).pop();
       } catch (e) {
-        debugPrint('❌ [PURGE_FAIL] -> $e');
+        debugPrint('❌ [MENU_PURGE_FAIL] -> $e');
       }
     }
   }

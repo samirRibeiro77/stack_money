@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
-import 'package:stack_money/data/enum/action_button.dart';
 
 class StackMoneyTheme {
   // Pure Stealth & Cyberpunk Color Palette
@@ -15,24 +14,6 @@ class StackMoneyTheme {
   static const Color platinumSilver = Color(0xFFE4E4E7);
   static const Color mutedGrey = Color(0xFF71717A);
   static const Color textPrimary = platinumSilver;
-
-  /// Custom ButtonStyle for the Quick Action Buttons (+ and -)
-  /// Features a Platinum Silver background with high-contrast text/icons
-  static ButtonStyle actionButton(ActionButton actionButton) {
-    return _platinumActionButtonStyle.copyWith(
-      foregroundColor: actionButton.color as WidgetStateProperty<Color>,
-    );
-  }
-
-  static ButtonStyle get _platinumActionButtonStyle => ElevatedButton.styleFrom(
-    backgroundColor: platinumSilver,
-    elevation: 0,
-    padding: const EdgeInsets.all(AppSizes.x4),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(AppSizes.x8),
-    ),
-    textStyle: darkTheme.textTheme.labelMedium,
-  );
 
   static InputDecoration inputDecoration(
     String label, {

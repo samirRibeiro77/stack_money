@@ -74,5 +74,12 @@
   "exit": "Sair",
   "previous": "Anterior",
   "next": "Próximo",
-  "finish": "Terminar"
+  "finish": "Terminar",
+  "systemWarning": "Aviso do sistema",
+  "confirm": "Confirmar",
+  "deny": "Negar",
+  "deletePlanMessage": "Execute purge protocol on Salary Plan?",
+  "deletePlanNote": "All forecast alignments will be expurged.",
+  "deleteBucketMessage": "Execute purge protocol on bucket?",
+  "deleteBucketNote": "All allocation parameters will be expurged."
 }

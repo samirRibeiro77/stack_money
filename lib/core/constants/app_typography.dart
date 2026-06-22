@@ -18,9 +18,9 @@ class AppTypography {
   static const double fontBodyMedium = 14.0;
   static const double fontBodySmall = 12.0;
 
-  static const double fontLabelLarge = 16.0;
-  static const double fontLabelMedium = 14.0;
-  static const double fontLabelSmall = 12.0;
+  static const double fontLabelLarge = 15.0;
+  static const double fontLabelMedium = 13.0;
+  static const double fontLabelSmall = 11.0;
 
   static const double fontSmallest = 10.0;
 

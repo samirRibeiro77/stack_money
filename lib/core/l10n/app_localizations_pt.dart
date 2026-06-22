@@ -246,4 +246,25 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get finish => 'Terminar';
+
+  @override
+  String get systemWarning => 'Aviso do sistema';
+
+  @override
+  String get confirm => 'Confirmar';
+
+  @override
+  String get deny => 'Negar';
+
+  @override
+  String get deletePlanMessage => 'Execute purge protocol on Salary Plan?';
+
+  @override
+  String get deletePlanNote => 'All forecast alignments will be expurged.';
+
+  @override
+  String get deleteBucketMessage => 'Execute purge protocol on bucket?';
+
+  @override
+  String get deleteBucketNote => 'All allocation parameters will be expurged.';
 }
