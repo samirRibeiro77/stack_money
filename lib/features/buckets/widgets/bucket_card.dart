@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -49,9 +50,9 @@ class BucketCard extends StatelessWidget {
         ),
         alignment: Alignment.centerRight,
         child: const Icon(
-          Icons.delete_forever_rounded,
+          Icons.delete_sweep_rounded,
           color: StackMoneyTheme.magentaNeon,
-          size: 24,
+          size: AppSizes.x12,
         ),
       ),
       child: BucketEditCard(
