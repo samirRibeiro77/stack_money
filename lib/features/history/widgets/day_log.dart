@@ -18,17 +18,14 @@ class DayLog extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: AppSizes.x4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              _buildIcon(),
-              const SizedBox(width: AppSizes.x6),
-              _buildInfo(textTheme, l10n),
-            ],
-          ),
+          _buildIcon(),
+          const SizedBox(width: AppSizes.x6),
+          _buildInfo(textTheme, l10n),
+          const Expanded(child: SizedBox()),
           _buildValues(textTheme),
         ],
       ),
@@ -37,13 +34,13 @@ class DayLog extends StatelessWidget {
 
   Widget _buildIcon() {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(AppSizes.x4),
       decoration: BoxDecoration(
         color: StackMoneyTheme.surface,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         border: Border.all(color: StackMoneyTheme.carbonGrey, width: 0.5),
       ),
-      child: Icon(Icons.show_chart, size: 16, color: StackMoneyTheme.cyanNeon),
+      child: Icon(Icons.show_chart, size: AppSizes.x8, color: StackMoneyTheme.cyanNeon),
     );
   }
 
@@ -69,7 +66,7 @@ class DayLog extends StatelessWidget {
     return SecurityText(
       StackMoneyString.formatMoney(transaction.actualValue, symbol: true),
       type: SecurityType.mask,
-      style: textTheme.titleMedium,
+      style: textTheme.bodyLarge,
     );
   }
 }
