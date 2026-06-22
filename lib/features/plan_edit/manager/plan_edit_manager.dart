@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/stack_money_dialog.dart';
@@ -156,12 +157,14 @@ class PlanEditManager {
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (list.length > 1) {
       final backupState = currentPlan;
+      final inflow = list[index];
 
       final confirm = await showDialog<bool>(
         context: context,
         barrierDismissible: false,
         builder: (context) => StackMoneyDialog(
           message: l10n.deleteInflowMessage,
+          content: StackMoneyString.formatMoney(inflow.value, symbol: true),
           note: l10n.deleteInflowNote,
           onCancel: () => Navigator.of(context).pop(false),
           onConfirm: () => Navigator.of(context).pop(true),
