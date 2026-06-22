@@ -20,12 +20,14 @@ class DistributionSection extends StatelessWidget {
   })
   onUpdate;
   final Function(String id, BuildContext ctx) onRemove;
+  final Function(String name, BuildContext ctx) confirmDismiss;
 
   const DistributionSection({
     required this.plan,
     required this.onAddSlot,
     required this.onUpdate,
     required this.onRemove,
+    required this.confirmDismiss,
     super.key,
   });
 
@@ -55,6 +57,7 @@ class DistributionSection extends StatelessWidget {
             availableDays: availableDays,
             computedValue: computedValue,
             onUpdate: onUpdate,
+            confirmDismiss: confirmDismiss,
             onRemove: onRemove,
           );
         }),

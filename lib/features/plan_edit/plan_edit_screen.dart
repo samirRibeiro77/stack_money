@@ -166,6 +166,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                     plan: currentPlan,
                     onAddSlot: _manager.initializeNewDistributionSlot,
                     onUpdate: _manager.updateDistribution,
+                    confirmDismiss: _manager.removeDistributionConfirmation,
                     onRemove: _manager.removeDistribution,
                   ),
                 ),

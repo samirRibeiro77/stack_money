@@ -299,6 +299,25 @@ class PlanEditManager {
     }
   }
 
+  Future<bool?> removeDistributionConfirmation(
+      String distributionName,
+      BuildContext context,
+      ) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => StackMoneyDialog(
+        message: l10n.deleteDistributionMessage,
+        content: distributionName,
+        note: l10n.deleteDistributionNote,
+        onCancel: () => Navigator.of(context).pop(false),
+        onConfirm: () => Navigator.of(context).pop(true),
+      ),
+    );
+  }
+
   void removeDistribution(String id, BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
 
