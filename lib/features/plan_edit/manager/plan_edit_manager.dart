@@ -329,6 +329,11 @@ class PlanEditManager {
     }
   }
 
+  Future<void> triggerPlanActivation() async {
+    planNotifier.value = currentPlan.copyWith(isActive: true);
+    await _service.setActivePlanInBatch(currentPlan.id);
+  }
+
   // 🛠️ MÓDULO SNACKBAR RECOVERY INTERCEPTOR
   void _triggerUndoSnackBar(
     BuildContext context,
@@ -343,7 +348,7 @@ class PlanEditManager {
         margin: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         content: Text(
-          message,
+          StackMoneyString.formatTitle(message),
           style: const TextStyle(
             fontFamily: 'JetBrainsMono',
             color: StackMoneyTheme.platinumSilver,
