@@ -90,7 +90,7 @@
   },
   "cancel": "Cancel",
   "@cancel": {
-    "description": "Cancel message"
+    "description": "Cancel action"
   },
   "bucketsConfig": "Buckets Config",
   "@bucketsConfig": {
@@ -295,5 +295,73 @@
   "finish": "Finish",
   "@finish": {
     "description": "Finish text"
+  },
+  "systemWarning": "System Warning",
+  "@systemWarning": {
+    "description": "System Warning for dialogs"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm action"
+  },
+  "deny": "Deny",
+  "@deny": {
+    "description": "Deny action"
+  },
+  "deletePlanMessage": "Execute purge protocol on Salary Plan?",
+  "@deletePlanMessage": {
+    "description": "Title to show on alert when deleting a salary plan"
+  },
+  "deletePlanNote": "All forecast alignments will be expurged.",
+  "@deletePlanNote": {
+    "description": "Message to show on alert when deleting a salary plan"
+  },
+  "deleteBucketMessage": "Execute purge protocol on bucket?",
+  "@deleteBucketMessage": {
+    "description": "Title to show on alert when deleting a bucket"
+  },
+  "deleteBucketNote": "All allocation parameters will be expurged.",
+  "@deleteBucketNote": {
+    "description": "Message to show on alert when deleting a bucket"
+  },
+  "deleteInflowMessage": "Execute purge protocol on inflow?",
+  "@deleteInflowMessage": {
+    "description": "Title to show on alert when deleting a inflow"
+  },
+  "deleteInflowNote": "All inflow details will be expurged.",
+  "@deleteInflowNote": {
+    "description": "Message to show on alert when deleting a inflow"
+  },
+  "deletedInflow": "Gross revenue removed",
+  "@deletedInflow": {
+    "description": "Deleted inflow confirmation message"
+  },
+  "deleteOutflowMessage": "Execute purge protocol on outflow?",
+  "@deleteOutflowMessage": {
+    "description": "Title to show on alert when deleting a outflow"
+  },
+  "deleteOutflowNote": "All outflow details will be expurged.",
+  "@deleteOutflowNote": {
+    "description": "Message to show on alert when deleting a outflow"
+  },
+  "deletedOutflow": "Mandatory deduction removed",
+  "@deletedOutflow": {
+    "description": "Deleted outflow confirmation message"
+  },
+  "deleteDistributionMessage": "Execute purge protocol on distribution?",
+  "@deleteDistributionMessage": {
+    "description": "Title to show on alert when deleting a distribution"
+  },
+  "deleteDistributionNote": "All distribution details will be expurged.",
+  "@deleteDistributionNote": {
+    "description": "Message to show on alert when deleting a distribution"
+  },
+  "deletedDistribution": "Distribution rule removed",
+  "@deletedDistribution": {
+    "description": "Deleted distribution confirmation message"
+  },
+  "undo": "Undo",
+  "@undo": {
+    "description": "Rollback changes made"
   }
 }

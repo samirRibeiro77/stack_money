@@ -67,9 +67,9 @@ class DismissiblePlanCard extends StatelessWidget {
         ),
         alignment: Alignment.centerRight,
         child: const Icon(
-          Icons.delete_forever_rounded,
+          Icons.delete_sweep_rounded,
           color: StackMoneyTheme.magentaNeon,
-          size: 24,
+          size: AppSizes.x12,
         ),
       ),
       child: PlanListCard(plan, onTap: onTap),

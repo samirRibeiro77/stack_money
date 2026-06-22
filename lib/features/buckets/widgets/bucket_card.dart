@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/features/buckets/widgets/bucket_edit_card.dart';
@@ -23,9 +25,13 @@ class BucketCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isSecureActive = SecurityProvider.isSecureOf(context);
+
     return Dismissible(
       key: Key(bucket.id),
-      direction: DismissDirection.endToStart,
+      direction: isSecureActive
+          ? DismissDirection.none
+          : DismissDirection.endToStart,
       confirmDismiss: (direction) => confirmDismiss(
         bucket.name,
         context,
@@ -44,9 +50,9 @@ class BucketCard extends StatelessWidget {
         ),
         alignment: Alignment.centerRight,
         child: const Icon(
-          Icons.delete_forever_rounded,
+          Icons.delete_sweep_rounded,
           color: StackMoneyTheme.magentaNeon,
-          size: 24,
+          size: AppSizes.x12,
         ),
       ),
       child: BucketEditCard(

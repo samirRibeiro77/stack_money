@@ -102,6 +102,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                 child: Row(
                   children: [
                     Icon(action.icon, color: action.color),
+                    SizedBox(width: AppSizes.x2),
                     Text(
                       action.text(l10n),
                       style: textTheme.bodySmall?.copyWith(
@@ -165,6 +166,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                     plan: currentPlan,
                     onAddSlot: _manager.initializeNewDistributionSlot,
                     onUpdate: _manager.updateDistribution,
+                    confirmDismiss: _manager.removeDistributionConfirmation,
                     onRemove: _manager.removeDistribution,
                   ),
                 ),

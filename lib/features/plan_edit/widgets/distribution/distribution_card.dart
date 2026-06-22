@@ -20,6 +20,7 @@ class DistributionCard extends StatelessWidget {
     required this.computedValue,
     required this.onUpdate,
     required this.onRemove,
+    required this.confirmDismiss,
     super.key,
   });
 
@@ -38,6 +39,7 @@ class DistributionCard extends StatelessWidget {
   })
   onUpdate;
   final Function(String id, BuildContext ctx) onRemove;
+  final Function(String name, BuildContext ctx) confirmDismiss;
 
   void onChanged(String value) {
     double valueToSave;
@@ -58,6 +60,7 @@ class DistributionCard extends StatelessWidget {
     return Dismissible(
       key: Key('rule_${row.id}'),
       direction: DismissDirection.endToStart,
+      confirmDismiss: (_) => confirmDismiss(row.name, context),
       onDismissed: (_) => onRemove(row.id, context),
       background: Container(
         margin: const EdgeInsets.symmetric(vertical: AppSizes.x2),

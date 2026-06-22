@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/security_text.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/features/history/widgets/day_log.dart';
 
@@ -28,14 +29,24 @@ class HistoryLog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: AppSizes.x6),
-        Text(
-          StackMoneyString.formatDate(
-            history.date,
-            showYear: true,
-            hideSameYear: false,
-            fullYear: true,
-          ),
-          style: textTheme.labelMedium,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              StackMoneyString.formatDate(
+                history.date,
+                showYear: true,
+                hideSameYear: false,
+                fullYear: true,
+              ),
+              style: textTheme.labelLarge,
+            ),
+            SecurityText(
+              StackMoneyString.formatMoney(history.total, symbol: true),
+              activeColor: StackMoneyTheme.mutedGrey,
+              style: textTheme.labelMedium,
+            ),
+          ],
         ),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: AppSizes.x2),

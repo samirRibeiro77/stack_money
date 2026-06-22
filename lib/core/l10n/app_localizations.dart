@@ -230,7 +230,7 @@ abstract class AppLocalizations {
   /// **'Authenticate to view your sensitive data and balances.'**
   String get securityBiometricReason;
 
-  /// Cancel message
+  /// Cancel action
   ///
   /// In en, this message translates to:
   /// **'Cancel'**
@@ -541,6 +541,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Finish'**
   String get finish;
+
+  /// System Warning for dialogs
+  ///
+  /// In en, this message translates to:
+  /// **'System Warning'**
+  String get systemWarning;
+
+  /// Confirm action
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// Deny action
+  ///
+  /// In en, this message translates to:
+  /// **'Deny'**
+  String get deny;
+
+  /// Title to show on alert when deleting a salary plan
+  ///
+  /// In en, this message translates to:
+  /// **'Execute purge protocol on Salary Plan?'**
+  String get deletePlanMessage;
+
+  /// Message to show on alert when deleting a salary plan
+  ///
+  /// In en, this message translates to:
+  /// **'All forecast alignments will be expurged.'**
+  String get deletePlanNote;
+
+  /// Title to show on alert when deleting a bucket
+  ///
+  /// In en, this message translates to:
+  /// **'Execute purge protocol on bucket?'**
+  String get deleteBucketMessage;
+
+  /// Message to show on alert when deleting a bucket
+  ///
+  /// In en, this message translates to:
+  /// **'All allocation parameters will be expurged.'**
+  String get deleteBucketNote;
+
+  /// Title to show on alert when deleting a inflow
+  ///
+  /// In en, this message translates to:
+  /// **'Execute purge protocol on inflow?'**
+  String get deleteInflowMessage;
+
+  /// Message to show on alert when deleting a inflow
+  ///
+  /// In en, this message translates to:
+  /// **'All inflow details will be expurged.'**
+  String get deleteInflowNote;
+
+  /// Deleted inflow confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Gross revenue removed'**
+  String get deletedInflow;
+
+  /// Title to show on alert when deleting a outflow
+  ///
+  /// In en, this message translates to:
+  /// **'Execute purge protocol on outflow?'**
+  String get deleteOutflowMessage;
+
+  /// Message to show on alert when deleting a outflow
+  ///
+  /// In en, this message translates to:
+  /// **'All outflow details will be expurged.'**
+  String get deleteOutflowNote;
+
+  /// Deleted outflow confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Mandatory deduction removed'**
+  String get deletedOutflow;
+
+  /// Title to show on alert when deleting a distribution
+  ///
+  /// In en, this message translates to:
+  /// **'Execute purge protocol on distribution?'**
+  String get deleteDistributionMessage;
+
+  /// Message to show on alert when deleting a distribution
+  ///
+  /// In en, this message translates to:
+  /// **'All distribution details will be expurged.'**
+  String get deleteDistributionNote;
+
+  /// Deleted distribution confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Distribution rule removed'**
+  String get deletedDistribution;
+
+  /// Rollback changes made
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
 }
 
 class _AppLocalizationsDelegate

@@ -246,4 +246,57 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get finish => 'Finish';
+
+  @override
+  String get systemWarning => 'System Warning';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get deny => 'Deny';
+
+  @override
+  String get deletePlanMessage => 'Execute purge protocol on Salary Plan?';
+
+  @override
+  String get deletePlanNote => 'All forecast alignments will be expurged.';
+
+  @override
+  String get deleteBucketMessage => 'Execute purge protocol on bucket?';
+
+  @override
+  String get deleteBucketNote => 'All allocation parameters will be expurged.';
+
+  @override
+  String get deleteInflowMessage => 'Execute purge protocol on inflow?';
+
+  @override
+  String get deleteInflowNote => 'All inflow details will be expurged.';
+
+  @override
+  String get deletedInflow => 'Gross revenue removed';
+
+  @override
+  String get deleteOutflowMessage => 'Execute purge protocol on outflow?';
+
+  @override
+  String get deleteOutflowNote => 'All outflow details will be expurged.';
+
+  @override
+  String get deletedOutflow => 'Mandatory deduction removed';
+
+  @override
+  String get deleteDistributionMessage =>
+      'Execute purge protocol on distribution?';
+
+  @override
+  String get deleteDistributionNote =>
+      'All distribution details will be expurged.';
+
+  @override
+  String get deletedDistribution => 'Distribution rule removed';
+
+  @override
+  String get undo => 'Undo';
 }

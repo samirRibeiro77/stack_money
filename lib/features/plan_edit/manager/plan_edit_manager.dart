@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/stack_money_dialog.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
@@ -93,46 +97,17 @@ class PlanEditManager {
 
   // 🗑️ PROTOCOLO PURGE PERMANENTE VIA MENU
   Future<void> deletePlan(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+
     final confirm = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: StackMoneyTheme.surface,
-        title: const Text(
-          '[SYSTEM_WARNING]',
-          style: TextStyle(
-            fontFamily: 'Orbitron',
-            color: StackMoneyTheme.magentaNeon,
-            fontSize: 13,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: const Text(
-          'EXECUTE PURGE PROTOCOL ON THIS PLAN?\nALL FORECAST ALIGNMENTS WILL BE EXPURGED.',
-          style: TextStyle(
-            fontFamily: 'JetBrainsMono',
-            color: StackMoneyTheme.platinumSilver,
-            fontSize: 11,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text(
-              '[CANCEL]',
-              style: TextStyle(color: StackMoneyTheme.mutedGrey),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(
-              '[PURGE_DATA]',
-              style: TextStyle(
-                color: StackMoneyTheme.magentaNeon,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
+      barrierDismissible: false,
+      builder: (context) => StackMoneyDialog(
+        message: l10n.deletePlanMessage,
+        content: currentPlan.name,
+        note: l10n.deletePlanNote,
+        onCancel: () => Navigator.of(context).pop(false),
+        onConfirm: () => Navigator.of(context).pop(true),
       ),
     );
 
@@ -141,7 +116,7 @@ class PlanEditManager {
         await _service.purgeSalaryPlan(currentPlan.id);
         if (context.mounted) Navigator.of(context).pop();
       } catch (e) {
-        debugPrint('❌ [PURGE_FAIL] -> $e');
+        debugPrint('❌ [MENU_PURGE_FAIL] -> $e');
       }
     }
   }
@@ -177,17 +152,37 @@ class PlanEditManager {
     }
   }
 
-  void removeInflow(int index, BuildContext context) {
+  void removeInflow(int index, BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (list.length > 1) {
-      final backupState = currentPlan; // 🛡️ Snapshot imutável de segurança
+      final backupState = currentPlan;
+      final inflow = list[index];
+      final content = inflow.type == InflowType.percentageBase
+          ? '${StackMoneyString.formatPercentage(inflow.value, decimal: 2)}${l10n.percentSignal}'
+          : StackMoneyString.formatMoney(inflow.value, symbol: true);
 
-      list.removeAt(index);
-      planNotifier.value = currentPlan.copyWith(inflows: list);
-      _ensureEmptyInflowRow();
-      _autoSave();
+      final confirm = await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => StackMoneyDialog(
+          message: l10n.deleteInflowMessage,
+          content: content,
+          note: l10n.deleteInflowNote,
+          onCancel: () => Navigator.of(context).pop(false),
+          onConfirm: () => Navigator.of(context).pop(true),
+        ),
+      );
 
-      _triggerUndoSnackBar(context, 'INFLOW_STREAM_REMOVED', backupState);
+      if (confirm == true) {
+        list.removeAt(index);
+        planNotifier.value = currentPlan.copyWith(inflows: list);
+        _ensureEmptyInflowRow();
+        _autoSave();
+
+        _triggerUndoSnackBar(context, l10n.deletedInflow, backupState);
+      }
     }
   }
 
@@ -236,17 +231,34 @@ class PlanEditManager {
     }
   }
 
-  void removeOutflow(int index, BuildContext context) {
+  void removeOutflow(int index, BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (list.length > 1) {
-      final backupState = currentPlan; // 🛡️ Snapshot imutável de segurança
+      final backupState = currentPlan;
+      final outflow = list[index];
 
-      list.removeAt(index);
-      planNotifier.value = currentPlan.copyWith(outflows: list);
-      _ensureEmptyOutflowRow();
-      _autoSave();
+      final confirm = await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => StackMoneyDialog(
+          message: l10n.deleteOutflowMessage,
+          content: outflow.name,
+          note: l10n.deleteOutflowNote,
+          onCancel: () => Navigator.of(context).pop(false),
+          onConfirm: () => Navigator.of(context).pop(true),
+        ),
+      );
 
-      _triggerUndoSnackBar(context, 'MANDATORY_DEDUCTION_REMOVED', backupState);
+      if (confirm == true) {
+        list.removeAt(index);
+        planNotifier.value = currentPlan.copyWith(outflows: list);
+        _ensureEmptyOutflowRow();
+        _autoSave();
+
+        _triggerUndoSnackBar(context, l10n.deletedOutflow, backupState);
+      }
     }
   }
 
@@ -287,15 +299,53 @@ class PlanEditManager {
     }
   }
 
-  void removeDistribution(String id, BuildContext context) {
-    final backupState = currentPlan; // 🛡️ Snapshot imutável de segurança
+  Future<bool?> removeDistributionConfirmation(
+      String distributionName,
+      BuildContext context,
+      ) {
+    final l10n = AppLocalizations.of(context)!;
 
-    final list = List<DistributionRow>.from(currentPlan.distributions);
-    list.removeWhere((e) => e.id == id);
-    planNotifier.value = currentPlan.copyWith(distributions: list);
-    _autoSave();
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => StackMoneyDialog(
+        message: l10n.deleteDistributionMessage,
+        content: distributionName,
+        note: l10n.deleteDistributionNote,
+        onCancel: () => Navigator.of(context).pop(false),
+        onConfirm: () => Navigator.of(context).pop(true),
+      ),
+    );
+  }
 
-    _triggerUndoSnackBar(context, 'DISTRIBUTION_RULE_REMOVED', backupState);
+  void removeDistribution(String id, BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+
+    final backupState = currentPlan;
+    final distribution = currentPlan.distributions
+        .where((d) => d.id == id)
+        .firstOrNull;
+
+    final confirm = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => StackMoneyDialog(
+        message: l10n.deleteDistributionMessage,
+        content: distribution?.name,
+        note: l10n.deleteDistributionNote,
+        onCancel: () => Navigator.of(context).pop(false),
+        onConfirm: () => Navigator.of(context).pop(true),
+      ),
+    );
+
+    if (confirm == true) {
+      final list = List<DistributionRow>.from(currentPlan.distributions);
+      list.removeWhere((e) => e.id == id);
+      planNotifier.value = currentPlan.copyWith(distributions: list);
+      _autoSave();
+
+      _triggerUndoSnackBar(context, l10n.deletedDistribution, backupState);
+    }
   }
 
   Future<void> triggerPlanActivation() async {
@@ -309,24 +359,24 @@ class PlanEditManager {
     String message,
     SalaryPlan backup,
   ) {
+    final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
+
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: StackMoneyTheme.surface,
+        backgroundColor: StackMoneyTheme.carbonGrey,
         behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        margin: const EdgeInsets.all(AppSizes.x6),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.x4),
+        ),
         content: Text(
-          message,
-          style: const TextStyle(
-            fontFamily: 'JetBrainsMono',
-            color: StackMoneyTheme.platinumSilver,
-            fontSize: 11,
-            fontWeight: FontWeight.bold,
-          ),
+          StackMoneyString.formatTitle(message),
+          style: textTheme.bodySmall,
         ),
         action: SnackBarAction(
-          label: '[UNDO]',
+          label: '[${StackMoneyString.formatTitle(l10n.undo)}]',
           textColor: StackMoneyTheme.cyanNeon,
           onPressed: () {
             planNotifier.value = backup;

@@ -246,4 +246,57 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get finish => 'Terminar';
+
+  @override
+  String get systemWarning => 'Aviso do sistema';
+
+  @override
+  String get confirm => 'Confirmar';
+
+  @override
+  String get deny => 'Negar';
+
+  @override
+  String get deletePlanMessage => 'Deseja deletar o plano salarial?';
+
+  @override
+  String get deletePlanNote => 'Todos os planejamentos serão deletados.';
+
+  @override
+  String get deleteBucketMessage => 'Deseja deletar a caixinha?';
+
+  @override
+  String get deleteBucketNote => 'Todas as alocações serão deletadas.';
+
+  @override
+  String get deleteInflowMessage => 'Deseja deletar a entrada de salário?';
+
+  @override
+  String get deleteInflowNote => 'A entrada salarial será deletada.';
+
+  @override
+  String get deletedInflow => 'Entrada salarial deletada';
+
+  @override
+  String get deleteOutflowMessage => 'Deseja deletar a dedução?';
+
+  @override
+  String get deleteOutflowNote => 'A dedução salarual será deletada.';
+
+  @override
+  String get deletedOutflow => 'Dedução em folha deletada';
+
+  @override
+  String get deleteDistributionMessage =>
+      'Deseja deletar a distribuição salarial?';
+
+  @override
+  String get deleteDistributionNote =>
+      'Todos os valores dessa distribuição serão distribuidos.';
+
+  @override
+  String get deletedDistribution => 'Regra de distribuição deletada';
+
+  @override
+  String get undo => 'Desfazer';
 }
