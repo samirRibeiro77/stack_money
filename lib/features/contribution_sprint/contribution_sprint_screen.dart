@@ -12,6 +12,8 @@ import 'package:stack_money/features/contribution_sprint/widgets/sprint_wizard_b
 class ContributionSprintScreen extends StatefulWidget {
   const ContributionSprintScreen({super.key});
 
+  static const route = '/contribution_wizard';
+
   @override
   State<ContributionSprintScreen> createState() =>
       _ContributionSprintScreenState();
