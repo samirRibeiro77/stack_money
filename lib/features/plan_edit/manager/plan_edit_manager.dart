@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -158,13 +159,16 @@ class PlanEditManager {
     if (list.length > 1) {
       final backupState = currentPlan;
       final inflow = list[index];
+      final content = inflow.type == InflowType.percentageBase
+          ? '${StackMoneyString.formatPercentage(inflow.value, decimal: 2)}${l10n.percentSignal}'
+          : StackMoneyString.formatMoney(inflow.value, symbol: true);
 
       final confirm = await showDialog<bool>(
         context: context,
         barrierDismissible: false,
         builder: (context) => StackMoneyDialog(
           message: l10n.deleteInflowMessage,
-          content: StackMoneyString.formatMoney(inflow.value, symbol: true),
+          content: content,
           note: l10n.deleteInflowNote,
           onCancel: () => Navigator.of(context).pop(false),
           onConfirm: () => Navigator.of(context).pop(true),
@@ -177,7 +181,7 @@ class PlanEditManager {
         _ensureEmptyInflowRow();
         _autoSave();
 
-        _triggerUndoSnackBar(context, 'INFLOW_STREAM_REMOVED', backupState);
+        _triggerUndoSnackBar(context, l10n.deletedInflow, backupState);
       }
     }
   }
@@ -253,11 +257,7 @@ class PlanEditManager {
         _ensureEmptyOutflowRow();
         _autoSave();
 
-        _triggerUndoSnackBar(
-          context,
-          'MANDATORY_DEDUCTION_REMOVED',
-          backupState,
-        );
+        _triggerUndoSnackBar(context, l10n.deletedOutflow, backupState);
       }
     }
   }
@@ -325,7 +325,7 @@ class PlanEditManager {
       planNotifier.value = currentPlan.copyWith(distributions: list);
       _autoSave();
 
-      _triggerUndoSnackBar(context, 'DISTRIBUTION_RULE_REMOVED', backupState);
+      _triggerUndoSnackBar(context, l10n.deletedDistribution, backupState);
     }
   }
 
@@ -340,24 +340,24 @@ class PlanEditManager {
     String message,
     SalaryPlan backup,
   ) {
+    final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
+
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: StackMoneyTheme.surface,
+        backgroundColor: StackMoneyTheme.carbonGrey,
         behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        margin: const EdgeInsets.all(AppSizes.x6),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.x4),
+        ),
         content: Text(
           StackMoneyString.formatTitle(message),
-          style: const TextStyle(
-            fontFamily: 'JetBrainsMono',
-            color: StackMoneyTheme.platinumSilver,
-            fontSize: 11,
-            fontWeight: FontWeight.bold,
-          ),
+          style: textTheme.bodySmall,
         ),
         action: SnackBarAction(
-          label: '[UNDO]',
+          label: '[${StackMoneyString.formatTitle(l10n.undo)}]',
           textColor: StackMoneyTheme.cyanNeon,
           onPressed: () {
             planNotifier.value = backup;

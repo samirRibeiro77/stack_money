@@ -332,6 +332,10 @@
   "@deleteInflowNote": {
     "description": "Message to show on alert when deleting a inflow"
   },
+  "deletedInflow": "Gross revenue removed",
+  "@deletedInflow": {
+    "description": "Deleted inflow confirmation message"
+  },
   "deleteOutflowMessage": "Execute purge protocol on outflow?",
   "@deleteOutflowMessage": {
     "description": "Title to show on alert when deleting a outflow"
@@ -340,6 +344,10 @@
   "@deleteOutflowNote": {
     "description": "Message to show on alert when deleting a outflow"
   },
+  "deletedOutflow": "Mandatory deduction removed",
+  "@deletedOutflow": {
+    "description": "Deleted outflow confirmation message"
+  },
   "deleteDistributionMessage": "Execute purge protocol on distribution?",
   "@deleteDistributionMessage": {
     "description": "Title to show on alert when deleting a distribution"
@@ -347,5 +355,13 @@
   "deleteDistributionNote": "All distribution details will be expurged.",
   "@deleteDistributionNote": {
     "description": "Message to show on alert when deleting a distribution"
+  },
+  "deletedDistribution": "Distribution rule removed",
+  "@deletedDistribution": {
+    "description": "Deleted distribution confirmation message"
+  },
+  "undo": "Undo",
+  "@undo": {
+    "description": "Rollback changes made"
   }
 }

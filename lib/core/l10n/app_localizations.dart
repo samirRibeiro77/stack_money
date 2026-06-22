@@ -596,6 +596,12 @@ abstract class AppLocalizations {
   /// **'All inflow details will be expurged.'**
   String get deleteInflowNote;
 
+  /// Deleted inflow confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Gross revenue removed'**
+  String get deletedInflow;
+
   /// Title to show on alert when deleting a outflow
   ///
   /// In en, this message translates to:
@@ -608,6 +614,12 @@ abstract class AppLocalizations {
   /// **'All outflow details will be expurged.'**
   String get deleteOutflowNote;
 
+  /// Deleted outflow confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Mandatory deduction removed'**
+  String get deletedOutflow;
+
   /// Title to show on alert when deleting a distribution
   ///
   /// In en, this message translates to:
@@ -619,6 +631,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All distribution details will be expurged.'**
   String get deleteDistributionNote;
+
+  /// Deleted distribution confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Distribution rule removed'**
+  String get deletedDistribution;
+
+  /// Rollback changes made
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
 }
 
 class _AppLocalizationsDelegate

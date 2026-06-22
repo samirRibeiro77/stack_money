@@ -275,10 +275,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get deleteInflowNote => 'A entrada salarial será deletada.';
 
   @override
+  String get deletedInflow => 'Entrada salarial deletada';
+
+  @override
   String get deleteOutflowMessage => 'Deseja deletar a dedução?';
 
   @override
   String get deleteOutflowNote => 'A dedução salarual será deletada.';
+
+  @override
+  String get deletedOutflow => 'Dedução em folha deletada';
 
   @override
   String get deleteDistributionMessage =>
@@ -287,4 +293,10 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get deleteDistributionNote =>
       'Todos os valores dessa distribuição serão distribuidos.';
+
+  @override
+  String get deletedDistribution => 'Regra de distribuição deletada';
+
+  @override
+  String get undo => 'Desfazer';
 }

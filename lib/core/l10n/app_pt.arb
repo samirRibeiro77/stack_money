@@ -84,8 +84,12 @@
   "deleteBucketNote": "Todas as alocações serão deletadas.",
   "deleteInflowMessage": "Deseja deletar a entrada de salário?",
   "deleteInflowNote": "A entrada salarial será deletada.",
+  "deletedInflow": "Entrada salarial deletada",
   "deleteOutflowMessage": "Deseja deletar a dedução?",
   "deleteOutflowNote": "A dedução salarual será deletada.",
+  "deletedOutflow": "Dedução em folha deletada",
   "deleteDistributionMessage": "Deseja deletar a distribuição salarial?",
-  "deleteDistributionNote": "Todos os valores dessa distribuição serão distribuidos."
+  "deleteDistributionNote": "Todos os valores dessa distribuição serão distribuidos.",
+  "deletedDistribution": "Regra de distribuição deletada",
+  "undo": "Desfazer"
 }

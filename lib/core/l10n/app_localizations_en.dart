@@ -275,10 +275,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteInflowNote => 'All inflow details will be expurged.';
 
   @override
+  String get deletedInflow => 'Gross revenue removed';
+
+  @override
   String get deleteOutflowMessage => 'Execute purge protocol on outflow?';
 
   @override
   String get deleteOutflowNote => 'All outflow details will be expurged.';
+
+  @override
+  String get deletedOutflow => 'Mandatory deduction removed';
 
   @override
   String get deleteDistributionMessage =>
@@ -287,4 +293,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deleteDistributionNote =>
       'All distribution details will be expurged.';
+
+  @override
+  String get deletedDistribution => 'Distribution rule removed';
+
+  @override
+  String get undo => 'Undo';
 }
