@@ -267,4 +267,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteBucketNote => 'All allocation parameters will be expurged.';
+
+  @override
+  String get deleteInflowMessage => 'Execute purge protocol on inflow?';
+
+  @override
+  String get deleteInflowNote => 'All inflow details will be expurged.';
+
+  @override
+  String get deleteOutflowMessage => 'Execute purge protocol on outflow?';
+
+  @override
+  String get deleteOutflowNote => 'All outflow details will be expurged.';
+
+  @override
+  String get deleteDistributionMessage =>
+      'Execute purge protocol on distribution?';
+
+  @override
+  String get deleteDistributionNote =>
+      'All distribution details will be expurged.';
 }

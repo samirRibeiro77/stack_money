@@ -257,14 +257,34 @@ class AppLocalizationsPt extends AppLocalizations {
   String get deny => 'Negar';
 
   @override
-  String get deletePlanMessage => 'Execute purge protocol on Salary Plan?';
+  String get deletePlanMessage => 'Deseja deletar o plano salarial?';
 
   @override
-  String get deletePlanNote => 'All forecast alignments will be expurged.';
+  String get deletePlanNote => 'Todos os planejamentos serão deletados.';
 
   @override
-  String get deleteBucketMessage => 'Execute purge protocol on bucket?';
+  String get deleteBucketMessage => 'Deseja deletar a caixinha?';
 
   @override
-  String get deleteBucketNote => 'All allocation parameters will be expurged.';
+  String get deleteBucketNote => 'Todas as alocações serão deletadas.';
+
+  @override
+  String get deleteInflowMessage => 'Deseja deletar a entrada de salário?';
+
+  @override
+  String get deleteInflowNote => 'A entrada salarial será deletada.';
+
+  @override
+  String get deleteOutflowMessage => 'Deseja deletar a dedução?';
+
+  @override
+  String get deleteOutflowNote => 'A dedução salarual será deletada.';
+
+  @override
+  String get deleteDistributionMessage =>
+      'Deseja deletar a distribuição salarial?';
+
+  @override
+  String get deleteDistributionNote =>
+      'Todos os valores dessa distribuição serão distribuidos.';
 }

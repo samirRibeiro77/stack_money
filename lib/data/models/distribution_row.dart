@@ -40,6 +40,8 @@ class DistributionRow {
     };
   }
 
+  String get name => '$category $subCategory';
+
   factory DistributionRow.fromJson(Map<String, dynamic> json) {
     return DistributionRow(
       id: json['id'] as String,

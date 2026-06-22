@@ -583,6 +583,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All allocation parameters will be expurged.'**
   String get deleteBucketNote;
+
+  /// Title to show on alert when deleting a inflow
+  ///
+  /// In en, this message translates to:
+  /// **'Execute purge protocol on inflow?'**
+  String get deleteInflowMessage;
+
+  /// Message to show on alert when deleting a inflow
+  ///
+  /// In en, this message translates to:
+  /// **'All inflow details will be expurged.'**
+  String get deleteInflowNote;
+
+  /// Title to show on alert when deleting a outflow
+  ///
+  /// In en, this message translates to:
+  /// **'Execute purge protocol on outflow?'**
+  String get deleteOutflowMessage;
+
+  /// Message to show on alert when deleting a outflow
+  ///
+  /// In en, this message translates to:
+  /// **'All outflow details will be expurged.'**
+  String get deleteOutflowNote;
+
+  /// Title to show on alert when deleting a distribution
+  ///
+  /// In en, this message translates to:
+  /// **'Execute purge protocol on distribution?'**
+  String get deleteDistributionMessage;
+
+  /// Message to show on alert when deleting a distribution
+  ///
+  /// In en, this message translates to:
+  /// **'All distribution details will be expurged.'**
+  String get deleteDistributionNote;
 }
 
 class _AppLocalizationsDelegate

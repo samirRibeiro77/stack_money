@@ -323,5 +323,29 @@
   "deleteBucketNote": "All allocation parameters will be expurged.",
   "@deleteBucketNote": {
     "description": "Message to show on alert when deleting a bucket"
+  },
+  "deleteInflowMessage": "Execute purge protocol on inflow?",
+  "@deleteInflowMessage": {
+    "description": "Title to show on alert when deleting a inflow"
+  },
+  "deleteInflowNote": "All inflow details will be expurged.",
+  "@deleteInflowNote": {
+    "description": "Message to show on alert when deleting a inflow"
+  },
+  "deleteOutflowMessage": "Execute purge protocol on outflow?",
+  "@deleteOutflowMessage": {
+    "description": "Title to show on alert when deleting a outflow"
+  },
+  "deleteOutflowNote": "All outflow details will be expurged.",
+  "@deleteOutflowNote": {
+    "description": "Message to show on alert when deleting a outflow"
+  },
+  "deleteDistributionMessage": "Execute purge protocol on distribution?",
+  "@deleteDistributionMessage": {
+    "description": "Title to show on alert when deleting a distribution"
+  },
+  "deleteDistributionNote": "All distribution details will be expurged.",
+  "@deleteDistributionNote": {
+    "description": "Message to show on alert when deleting a distribution"
   }
 }

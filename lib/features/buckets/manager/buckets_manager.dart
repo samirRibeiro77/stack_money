@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
-import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/stack_money_dialog.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
@@ -65,7 +64,8 @@ class BucketsManager {
   void initializeNewBucketSlot() {
     final newBucket = Bucket.empty();
 
-    final currentSet = Set<String>.from(_expandedBucketIds.value)..add(newBucket.id);
+    final currentSet = Set<String>.from(_expandedBucketIds.value)
+      ..add(newBucket.id);
     final updatedList = List<Bucket>.from(_bucketDeck.value)
       ..insert(0, newBucket);
 
@@ -104,7 +104,10 @@ class BucketsManager {
     _masterExpandState.value = !_masterExpandState.value;
   }
 
-  Future<bool?> showTerminalConfirmDialog(String bucketName, BuildContext context) {
+  Future<bool?> showTerminalConfirmDialog(
+    String bucketName,
+    BuildContext context,
+  ) {
     final l10n = AppLocalizations.of(context)!;
 
     return showDialog<bool>(

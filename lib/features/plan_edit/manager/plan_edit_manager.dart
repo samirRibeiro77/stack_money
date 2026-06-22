@@ -150,17 +150,32 @@ class PlanEditManager {
     }
   }
 
-  void removeInflow(int index, BuildContext context) {
+  void removeInflow(int index, BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (list.length > 1) {
-      final backupState = currentPlan; // 🛡️ Snapshot imutável de segurança
+      final backupState = currentPlan;
 
-      list.removeAt(index);
-      planNotifier.value = currentPlan.copyWith(inflows: list);
-      _ensureEmptyInflowRow();
-      _autoSave();
+      final confirm = await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => StackMoneyDialog(
+          message: l10n.deleteInflowMessage,
+          note: l10n.deleteInflowNote,
+          onCancel: () => Navigator.of(context).pop(false),
+          onConfirm: () => Navigator.of(context).pop(true),
+        ),
+      );
 
-      _triggerUndoSnackBar(context, 'INFLOW_STREAM_REMOVED', backupState);
+      if (confirm == true) {
+        list.removeAt(index);
+        planNotifier.value = currentPlan.copyWith(inflows: list);
+        _ensureEmptyInflowRow();
+        _autoSave();
+
+        _triggerUndoSnackBar(context, 'INFLOW_STREAM_REMOVED', backupState);
+      }
     }
   }
 
@@ -209,17 +224,38 @@ class PlanEditManager {
     }
   }
 
-  void removeOutflow(int index, BuildContext context) {
+  void removeOutflow(int index, BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (list.length > 1) {
-      final backupState = currentPlan; // 🛡️ Snapshot imutável de segurança
+      final backupState = currentPlan;
+      final outflow = list[index];
 
-      list.removeAt(index);
-      planNotifier.value = currentPlan.copyWith(outflows: list);
-      _ensureEmptyOutflowRow();
-      _autoSave();
+      final confirm = await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => StackMoneyDialog(
+          message: l10n.deleteOutflowMessage,
+          content: outflow.name,
+          note: l10n.deleteOutflowNote,
+          onCancel: () => Navigator.of(context).pop(false),
+          onConfirm: () => Navigator.of(context).pop(true),
+        ),
+      );
 
-      _triggerUndoSnackBar(context, 'MANDATORY_DEDUCTION_REMOVED', backupState);
+      if (confirm == true) {
+        list.removeAt(index);
+        planNotifier.value = currentPlan.copyWith(outflows: list);
+        _ensureEmptyOutflowRow();
+        _autoSave();
+
+        _triggerUndoSnackBar(
+          context,
+          'MANDATORY_DEDUCTION_REMOVED',
+          backupState,
+        );
+      }
     }
   }
 
@@ -260,20 +296,34 @@ class PlanEditManager {
     }
   }
 
-  void removeDistribution(String id, BuildContext context) {
-    final backupState = currentPlan; // 🛡️ Snapshot imutável de segurança
+  void removeDistribution(String id, BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
 
-    final list = List<DistributionRow>.from(currentPlan.distributions);
-    list.removeWhere((e) => e.id == id);
-    planNotifier.value = currentPlan.copyWith(distributions: list);
-    _autoSave();
+    final backupState = currentPlan;
+    final distribution = currentPlan.distributions
+        .where((d) => d.id == id)
+        .firstOrNull;
 
-    _triggerUndoSnackBar(context, 'DISTRIBUTION_RULE_REMOVED', backupState);
-  }
+    final confirm = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => StackMoneyDialog(
+        message: l10n.deleteDistributionMessage,
+        content: distribution?.name,
+        note: l10n.deleteDistributionNote,
+        onCancel: () => Navigator.of(context).pop(false),
+        onConfirm: () => Navigator.of(context).pop(true),
+      ),
+    );
 
-  Future<void> triggerPlanActivation() async {
-    planNotifier.value = currentPlan.copyWith(isActive: true);
-    await _service.setActivePlanInBatch(currentPlan.id);
+    if (confirm == true) {
+      final list = List<DistributionRow>.from(currentPlan.distributions);
+      list.removeWhere((e) => e.id == id);
+      planNotifier.value = currentPlan.copyWith(distributions: list);
+      _autoSave();
+
+      _triggerUndoSnackBar(context, 'DISTRIBUTION_RULE_REMOVED', backupState);
+    }
   }
 
   // 🛠️ MÓDULO SNACKBAR RECOVERY INTERCEPTOR
