@@ -25,7 +25,7 @@ class SprintProgressBar extends StatelessWidget {
       child: Align(
         alignment: Alignment.centerLeft,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 500),
           width: MediaQuery.of(context).size.width * factor,
           height: AppSizes.x2,
           decoration: const BoxDecoration(

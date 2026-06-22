@@ -97,10 +97,10 @@ class BucketFormCard extends StatelessWidget {
         return ValueListenableBuilder(
           valueListenable: whereController,
           builder: (_, where, _) {
-            final name = '${category.text} ${where.text}';
+            final name = '${where.text} ${category.text}';
             return Text(
               StackMoneyString.formatTitle(name),
-              style: textTheme.titleMedium?.copyWith(
+              style: textTheme.titleSmall?.copyWith(
                 fontWeight: AppTypography.weightBold,
               ),
             );
@@ -141,17 +141,17 @@ class BucketFormCard extends StatelessWidget {
       children: [
         Expanded(
           child: TextFormField(
-            controller: categoryController,
-            style: textTheme.bodySmall,
-            decoration: StackMoneyTheme.inputDecoration(l10n.category),
-          ),
-        ),
-        const SizedBox(width: AppSizes.x5),
-        Expanded(
-          child: TextFormField(
             controller: whereController,
             style: textTheme.bodySmall,
             decoration: StackMoneyTheme.inputDecoration(l10n.where),
+          ),
+        ),
+        const SizedBox(width: AppSizes.x6),
+        Expanded(
+          child: TextFormField(
+            controller: categoryController,
+            style: textTheme.bodySmall,
+            decoration: StackMoneyTheme.inputDecoration(l10n.category),
           ),
         ),
       ],
@@ -170,7 +170,7 @@ class BucketFormCard extends StatelessWidget {
           () => changeMinSign(false),
           initialValue: ValueSign.negative,
         ),
-        const SizedBox(width: AppSizes.x5),
+        const SizedBox(width: AppSizes.x6),
         ValueListenableBuilder(
           valueListenable: _minListenable,
           builder: (_, isPositive, _) {
@@ -196,7 +196,7 @@ class BucketFormCard extends StatelessWidget {
             );
           },
         ),
-        const SizedBox(width: AppSizes.x5),
+        const SizedBox(width: AppSizes.x6),
         ValueSignButton(
           () => changeMinSign(true),
           initialValue: ValueSign.positive,
@@ -219,7 +219,7 @@ class BucketFormCard extends StatelessWidget {
         return Row(
           children: [
             ValueSignButton(changeActualSign, initialValue: initialValue),
-            const SizedBox(width: AppSizes.x5),
+            const SizedBox(width: AppSizes.x6),
             Expanded(
               child: TextFormField(
                 controller: actualValueController,

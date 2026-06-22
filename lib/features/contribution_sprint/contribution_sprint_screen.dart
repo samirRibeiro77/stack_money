@@ -35,6 +35,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
 
     return ValueListenableBuilder<bool>(
       valueListenable: _manager.isLoadingNotifier,
@@ -70,12 +71,13 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                     isFirst
                         ? WizardButtonAction.exit.icon
                         : WizardButtonAction.previous.icon,
+                    size: AppSizes.x12,
                   ),
                   onPressed: () => _manager.previousStep(context),
                 ),
                 title: Text(
                   StackMoneyString.formatTitle(l10n.moneySprint),
-                  style: Theme.of(context).textTheme.titleSmall,
+                  style: textTheme.titleMedium,
                 ),
                 centerTitle: true,
                 actions: [
@@ -84,6 +86,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                       isLast
                           ? WizardButtonAction.finish.icon
                           : WizardButtonAction.next.icon,
+                      size: AppSizes.x12,
                     ),
                     onPressed: () => _manager.nextStep(context),
                   ),
