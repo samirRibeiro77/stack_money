@@ -109,10 +109,6 @@ class _BucketEditCardState extends State<BucketEditCard> {
       _minValueController.text,
     );
 
-    print(
-      '[SAVE] Raw: ${_minValueController.text} // Converted: ${StackMoneyNumber.parseMoneyStringToDouble(_minValueController.text)} // Real: $doubleValue',
-    );
-
     if (_isNegative) doubleValue = -doubleValue;
 
     final updated = Bucket(
@@ -163,10 +159,10 @@ class _BucketEditCardState extends State<BucketEditCard> {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.fastOutSlowIn,
-      margin: const EdgeInsets.symmetric(vertical: 6.0),
+      margin: const EdgeInsets.symmetric(vertical: AppSizes.x3),
       decoration: BoxDecoration(
         color: StackMoneyTheme.surface,
-        borderRadius: BorderRadius.circular(14.0),
+        borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
         border: Border.all(
           color: _isSaving ? techColor : Colors.white.withValues(alpha: 0.04),
           width: _isSaving ? 1.0 : 0.5,
@@ -175,7 +171,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
             ? [
                 BoxShadow(
                   color: techColor.withValues(alpha: 0.3),
-                  blurRadius: 12,
+                  blurRadius: AppSizes.radiusMedium,
                   spreadRadius: 1,
                 ),
               ]
@@ -193,64 +189,58 @@ class _BucketEditCardState extends State<BucketEditCard> {
               },
               behavior: HitTestBehavior.opaque,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSizes.x8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 4,
-                          height: 24,
-                          decoration: BoxDecoration(
-                            color: _isImmediateLiquidity
-                                ? techColor
-                                : StackMoneyTheme.mutedGrey.withValues(
-                                    alpha: 0.3,
-                                  ),
-                            borderRadius: BorderRadius.circular(2),
-                          ),
+                    Container(
+                      width: AppSizes.x2,
+                      height: AppSizes.x12,
+                      decoration: BoxDecoration(
+                        color: _isImmediateLiquidity
+                            ? techColor
+                            : StackMoneyTheme.mutedGrey.withValues(
+                          alpha: 0.3,
                         ),
-                        const SizedBox(width: AppSizes.x4),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SecurityText(
-                              StackMoneyString.formatTitle(
-                                _categoryController.text,
-                              ),
-                              style: const TextStyle(
-                                fontFamily: 'JetBrainsMono',
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              type: SecurityType.systemLocked,
-                            ),
-                            SecurityText(
-                              StackMoneyString.formatTitle(
-                                _whereController.text,
-                              ),
-                              style: const TextStyle(
-                                fontFamily: 'JetBrainsMono',
-                                fontSize: 9,
-                              ),
-                              activeColor: StackMoneyTheme.mutedGrey,
-                              type: SecurityType.systemLocked,
-                            ),
-                          ],
+                        borderRadius: BorderRadius.circular(
+                          AppSizes.radiusLarge,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AppSizes.x4),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SecurityText(
+                          StackMoneyString.formatTitle(
+                            _categoryController.text,
+                          ),
+                          style: textTheme.bodySmall?.copyWith(
+                            fontWeight: AppTypography.weightBold,
+                          ),
+                          type: SecurityType.systemLocked,
+                        ),
+                        SecurityText(
+                          StackMoneyString.formatTitle(
+                            _whereController.text,
+                          ),
+                          style: textTheme.bodySmall?.copyWith(
+                            fontSize: AppTypography.fontSmallest,
+                          ),
+                          activeColor: StackMoneyTheme.mutedGrey,
+                          type: SecurityType.systemLocked,
                         ),
                       ],
                     ),
+                    const Expanded(child: SizedBox()),
                     SecurityText(
                       StackMoneyString.formatMoney(
                         widget.bucket.minValue,
                         symbol: true,
                       ),
                       type: SecurityType.mask,
-                      style: const TextStyle(
-                        fontFamily: 'JetBrainsMono',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
+                      style: textTheme.bodySmall?.copyWith(
+                        fontWeight: AppTypography.weightBold,
                       ),
                       activeColor: techColor,
                     ),
@@ -260,29 +250,13 @@ class _BucketEditCardState extends State<BucketEditCard> {
             ),
 
             if (widget.isExpanded && !isSecureActive) ...[
-              const Divider(
-                color: StackMoneyTheme.background,
-                height: 1,
-                thickness: 1,
-              ),
+              const Divider(color: StackMoneyTheme.background, height: 1),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSizes.x8),
                 child: Column(
                   children: [
                     Row(
                       children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _categoryController,
-                            focusNode: _categoryFocus,
-                            style: textTheme.bodySmall,
-                            decoration: StackMoneyTheme.inputDecoration(
-                              l10n.category,
-                              color: techColor,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: AppSizes.x6),
                         Expanded(
                           child: TextFormField(
                             controller: _whereController,
@@ -290,6 +264,18 @@ class _BucketEditCardState extends State<BucketEditCard> {
                             style: textTheme.bodySmall,
                             decoration: StackMoneyTheme.inputDecoration(
                               l10n.where,
+                              color: techColor,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: AppSizes.x6),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _categoryController,
+                            focusNode: _categoryFocus,
+                            style: textTheme.bodySmall,
+                            decoration: StackMoneyTheme.inputDecoration(
+                              l10n.category,
                               color: techColor,
                             ),
                           ),

@@ -11,7 +11,7 @@ import 'package:stack_money/data/models/bucket.dart';
 class BucketControlScreen extends StatefulWidget {
   const BucketControlScreen({super.key = const ValueKey(route)});
 
-  static const route = '/buckets_control';
+  static const route = '/buckets';
 
   @override
   State<BucketControlScreen> createState() => _BucketControlScreenState();
@@ -44,10 +44,10 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
 
         return ValueListenableBuilder<List<Bucket>>(
           valueListenable: _manager.bucketDeckNotifier,
-          builder: (context, bucketList, child) {
+          builder: (_, bucketList, _) {
             return ValueListenableBuilder<Set<String>>(
               valueListenable: _manager.expandedIdsNotifier,
-              builder: (context, expandedIds, _) {
+              builder: (_, expandedIds, _) {
                 return _buildBucketsContent(l10n, bucketList, expandedIds);
               },
             );
