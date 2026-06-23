@@ -171,11 +171,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
               const SizedBox(height: AppSizes.x6),
-              const Divider(color: Colors.white10),
-              const SizedBox(height: AppSizes.x8),
+              const Divider(height: 1),
+              const SizedBox(height: AppSizes.x6),
               TelemetryFilterBar(
                 currentState: currentFilter,
                 isEnabled: isVisible,
+                firstDate: historyList.first.date,
                 onFilterChanged: _manager.updateChartFilter,
               ),
             ],
@@ -192,7 +193,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           activeIcon: Icons.unfold_more,
           inactiveIcon: Icons.unfold_less,
         ),
-        const SizedBox(height: AppSizes.x8),
+        const SizedBox(height: AppSizes.x6),
 
         // Listagem dos Potes Convertidos em Componentes Dedicados do Dashboard
         ...List.generate(paramList.length, (index) {

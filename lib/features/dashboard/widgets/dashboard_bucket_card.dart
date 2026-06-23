@@ -52,6 +52,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
     final isSecureActive = SecurityProvider.isSecureOf(context);
 
     final latestHistory = widget.historyList.last;
+    final firstDate = widget.historyList.first.date;
     final double currentBalance = _getBucketValueAt(latestHistory);
     final bool isUnderclock = currentBalance < widget.parameter.minValue;
 
@@ -74,7 +75,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SecurityText(
-                        StackMoneyString.formatTitle(widget.parameter.id),
+                        StackMoneyString.formatTitle(widget.parameter.name),
                         style: textTheme.titleSmall,
                         type: SecurityType.systemLocked,
                       ),
@@ -83,7 +84,10 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                         children: [
                           Text(l10n.allocation, style: textTheme.labelSmall),
                           SecurityText(
-                            StackMoneyString.formatPercentage((currentBalance / latestHistory.total) * 100, decimal: 2),
+                            StackMoneyString.formatPercentage(
+                              (currentBalance / latestHistory.total) * 100,
+                              decimal: 2,
+                            ),
                             style: textTheme.labelSmall,
                             activeColor: StackMoneyTheme.mutedGrey,
                           ),
@@ -100,7 +104,10 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       SecurityText(
-                        StackMoneyString.formatMoney(currentBalance, symbol: true),
+                        StackMoneyString.formatMoney(
+                          currentBalance,
+                          symbol: true,
+                        ),
                         type: SecurityType.mask,
                         style: textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.bold,
@@ -112,7 +119,10 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                         children: [
                           Text(l10n.min, style: textTheme.labelSmall),
                           SecurityText(
-                            StackMoneyString.formatMoney(widget.parameter.minValue, symbol: true),
+                            StackMoneyString.formatMoney(
+                              widget.parameter.minValue,
+                              symbol: true,
+                            ),
                             style: textTheme.labelSmall,
                             activeColor: StackMoneyTheme.mutedGrey,
                           ),
@@ -125,14 +135,15 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
 
               // Miolo expandido guiado de forma reativa por valor invertido (!isSecureActive)
               if (widget.isExpanded && !isSecureActive) ...[
-                const SizedBox(height: AppSizes.x8),
-                const Divider(color: Colors.white10),
-                const SizedBox(height: AppSizes.x8),
+                const SizedBox(height: AppSizes.x6),
+                const Divider(),
+                const SizedBox(height: AppSizes.x6),
                 _buildMiniChart(healthColor),
-                const SizedBox(height: AppSizes.x8),
+                const SizedBox(height: AppSizes.x6),
                 TelemetryFilterBar(
                   currentState: _chartFilter,
                   isEnabled: true,
+                  firstDate: firstDate,
                   chipColor: healthColor,
                   onFilterChanged: (newState) {
                     setState(() {
