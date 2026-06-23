@@ -16,6 +16,8 @@ import 'package:stack_money/features/plan_edit/widgets/distribution/distribution
 class PlanEditScreen extends StatefulWidget {
   final SalaryPlan plan;
 
+  static const route = '/plan_edit';
+
   const PlanEditScreen({required this.plan, super.key});
 
   @override
@@ -61,7 +63,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
         actions: [
           ValueListenableBuilder<SalaryPlan>(
             valueListenable: _manager.planNotifier,
-            builder: (context, currentPlan, _) {
+            builder: (_, currentPlan, _) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppSizes.x8),
                 child: PlanStatus(

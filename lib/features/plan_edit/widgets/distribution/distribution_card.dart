@@ -96,7 +96,7 @@ class DistributionCard extends StatelessWidget {
                       onChanged: (val) => onUpdate(index, cat: val),
                     ),
                   ),
-                  const SizedBox(width: AppSizes.x4),
+                  const SizedBox(width: AppSizes.x6),
                   Expanded(
                     child: TextFormField(
                       initialValue: row.subCategory,
@@ -110,7 +110,7 @@ class DistributionCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSizes.x5),
+              const SizedBox(height: AppSizes.x6),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -134,7 +134,7 @@ class DistributionCard extends StatelessWidget {
                           onUpdate(index, type: val, value: 0.0),
                     ),
                   ),
-                  const SizedBox(width: AppSizes.x5),
+                  const SizedBox(width: AppSizes.x6),
                   Expanded(
                     flex: 1,
                     child: TextFormField(
@@ -157,7 +157,7 @@ class DistributionCard extends StatelessWidget {
                       onChanged: onChanged,
                     ),
                   ),
-                  const SizedBox(width: AppSizes.x5),
+                  const SizedBox(width: AppSizes.x6),
                   Container(
                     height: AppSizes.x16,
                     padding: const EdgeInsets.symmetric(

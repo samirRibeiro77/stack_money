@@ -43,6 +43,7 @@ class OutflowSection extends StatelessWidget {
         .toList();
 
     return StackMoneyCard(
+      removePadding: true,
       shadowColor: StackMoneyTheme.magentaNeon,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,24 +61,30 @@ class OutflowSection extends StatelessWidget {
 
               return Column(
                 children: [
-                  const SizedBox(height: AppSizes.x7),
-                  const Divider(),
+                  const Divider(color: StackMoneyTheme.background, height: 1),
 
-                  ...List.generate(plan.outflows.length, (index) {
-                    final row = plan.outflows[index];
-                    final isLast = index == plan.outflows.length - 1;
-                    final double absVal = plan.calculateOutflowAbsolute(row);
+                  Padding(
+                    padding: EdgeInsets.all(AppSizes.x8),
+                    child: Column(
+                      children: List.generate(plan.outflows.length, (index) {
+                        final row = plan.outflows[index];
+                        final isLast = index == plan.outflows.length - 1;
+                        final double absVal = plan.calculateOutflowAbsolute(
+                          row,
+                        );
 
-                    return OutflowSectionCard(
-                      row: row,
-                      index: index,
-                      availableDays: availableDays,
-                      isLast: isLast,
-                      absVal: absVal,
-                      onUpdate: onUpdate,
-                      onRemove: onRemove,
-                    );
-                  }),
+                        return OutflowSectionCard(
+                          row: row,
+                          index: index,
+                          availableDays: availableDays,
+                          isLast: isLast,
+                          absVal: absVal,
+                          onUpdate: onUpdate,
+                          onRemove: onRemove,
+                        );
+                      }),
+                    ),
+                  ),
                 ],
               );
             },

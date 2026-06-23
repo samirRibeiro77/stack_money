@@ -38,6 +38,7 @@ class InflowSection extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return StackMoneyCard(
+      removePadding: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -49,45 +50,52 @@ class InflowSection extends StatelessWidget {
           ValueListenableBuilder(
             valueListenable: expandState,
             builder: (_, isExpand, _) {
-              if (!isExpand) return const SizedBox.shrink();
+              if (!isExpand) return SizedBox.shrink();
 
               return Column(
                 children: [
-                  const SizedBox(height: AppSizes.x7),
-                  const Divider(),
-                  const SizedBox(height: AppSizes.x6),
-                  TextFormField(
-                    initialValue: plan.baseSalary > 0
-                        ? StackMoneyString.formatMoney(plan.baseSalary)
-                        : '',
-                    keyboardType: TextInputType.number,
-                    style: textTheme.bodySmall?.copyWith(
-                      fontWeight: AppTypography.weightBold,
-                    ),
-                    decoration: StackMoneyTheme.inputDecoration(
-                      l10n.baseSalary,
-                    ),
-                    inputFormatters: [MoneyInputFormatter()],
-                    onChanged: (value) => onBaseUpdate(
-                      StackMoneyNumber.parseMoneyStringToDouble(value),
+                  const Divider(color: StackMoneyTheme.background, height: 1),
+                  Padding(
+                    padding: EdgeInsets.all(AppSizes.x8),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          initialValue: plan.baseSalary > 0
+                              ? StackMoneyString.formatMoney(plan.baseSalary)
+                              : '',
+                          keyboardType: TextInputType.number,
+                          style: textTheme.bodySmall?.copyWith(
+                            fontWeight: AppTypography.weightBold,
+                          ),
+                          decoration: StackMoneyTheme.inputDecoration(
+                            l10n.baseSalary,
+                          ),
+                          inputFormatters: [MoneyInputFormatter()],
+                          onChanged: (value) => onBaseUpdate(
+                            StackMoneyNumber.parseMoneyStringToDouble(value),
+                          ),
+                        ),
+                        const SizedBox(height: AppSizes.x6),
+
+                        ...List.generate(plan.inflows.length, (index) {
+                          final row = plan.inflows[index];
+                          final isLast = index == plan.inflows.length - 1;
+                          final double absVal = plan.calculateInflowAbsolute(
+                            row,
+                          );
+
+                          return InflowSectionRow(
+                            row,
+                            index: index,
+                            isLast: isLast,
+                            absVal: absVal,
+                            onUpdate: onUpdate,
+                            onRemove: onRemove,
+                          );
+                        }),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: AppSizes.x6),
-
-                  ...List.generate(plan.inflows.length, (index) {
-                    final row = plan.inflows[index];
-                    final isLast = index == plan.inflows.length - 1;
-                    final double absVal = plan.calculateInflowAbsolute(row);
-
-                    return InflowSectionRow(
-                      row,
-                      index: index,
-                      isLast: isLast,
-                      absVal: absVal,
-                      onUpdate: onUpdate,
-                      onRemove: onRemove,
-                    );
-                  }),
                 ],
               );
             },
