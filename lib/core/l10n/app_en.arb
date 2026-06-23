@@ -363,5 +363,17 @@
   "undo": "Undo",
   "@undo": {
     "description": "Rollback changes made"
+  },
+  "selectRange": "Select range",
+  "@selectRange": {
+    "description": "Select range text for datePicker"
+  },
+  "startDate": "Start date",
+  "@startDate": {
+    "description": "Select range text for datePicker"
+  },
+  "endDate": "End date",
+  "@endDate": {
+    "description": "Select range text for datePicker"
   }
 }

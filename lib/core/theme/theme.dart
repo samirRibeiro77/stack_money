@@ -48,35 +48,58 @@ class StackMoneyTheme {
     );
   }
 
-  /// Custom ButtonStyle for the Google Login Button
-  /// Features a Platinum Silver background, Cyan text, and stadium-rounded corners
   static ButtonStyle get googleLoginButtonStyle => ElevatedButton.styleFrom(
     backgroundColor: carbonGrey,
     foregroundColor: cyanNeon,
-    // Sets the text color to Cyan
     elevation: 0,
     padding: const EdgeInsets.symmetric(
       horizontal: AppSizes.x10,
       vertical: AppSizes.x6,
     ),
     shape: const StadiumBorder(),
-    // Makes the button perfectly rounded
     textStyle: darkTheme.textTheme.labelMedium,
   );
 
-  /// Main Dark Theme Configuration for StackMoney
   static final _baseTextTheme = GoogleFonts.orbitronTextTheme(
     ThemeData.dark().textTheme,
   ).apply(bodyColor: textPrimary, displayColor: textPrimary);
 
-  /// Main Dark Theme Configuration for StackMoney
+  // 🔥 INTERCEPTOR REATIVO: Cria um clone do tema mestre aplicando o isolamento em Ciano para os inputs do picker
+  static ThemeData datePickerThemeOverride(BuildContext context) {
+    return darkTheme.copyWith(
+      colorScheme: const ColorScheme.dark(
+        primary: platinumSilver,
+        onPrimary: background,
+        secondary: mutedGrey,
+        onSecondary: platinumSilver,
+        surface: surface,
+        onSurface: platinumSilver,
+        error: magentaNeon,
+      ),
+      inputDecorationTheme: darkTheme.inputDecorationTheme.copyWith(
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: cyanNeon.withValues(alpha: 0.3)),
+          borderRadius: BorderRadius.circular(AppSizes.x2),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: cyanNeon, width: 1.5),
+          borderRadius: BorderRadius.circular(AppSizes.x2),
+        ),
+        labelStyle: darkTheme.textTheme.bodySmall?.copyWith(
+          color: cyanNeon,
+          fontWeight: AppTypography.weightBold,
+        ),
+        hintStyle: darkTheme.textTheme.bodySmall?.copyWith(color: carbonGrey),
+      ),
+    );
+  }
+
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
       scaffoldBackgroundColor: background,
 
-      // Base Color Scheme mapping
       colorScheme: const ColorScheme.dark(
         primary: cyanNeon,
         secondary: magentaNeon,
@@ -85,7 +108,6 @@ class StackMoneyTheme {
         error: magentaNeon,
       ),
 
-      // Global Typography Configurations
       textTheme: _baseTextTheme.copyWith(
         // --- DISPLAY (Orbitron) ---
         displayLarge: GoogleFonts.orbitron(
@@ -177,7 +199,16 @@ class StackMoneyTheme {
         ),
       ),
 
-      // AppBar Customization with Orbitron Title
+      // 🔥 CONFIGURAÇÃO CENTRAL: Injeta o sub-tema estático do DatePicker encolhendo os cabeçalhos globais
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: surface,
+        elevation: 0,
+        headerHelpStyle: _baseTextTheme.labelSmall?.copyWith(color: mutedGrey),
+        headerHeadlineStyle: _baseTextTheme.titleMedium?.copyWith(
+          fontWeight: AppTypography.weightBold,
+        ),
+      ),
+
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -191,7 +222,6 @@ class StackMoneyTheme {
         ),
       ),
 
-      // Minimalist Navigation TabBar Configuration
       tabBarTheme: TabBarThemeData(
         indicatorColor: cyanNeon,
         labelColor: magentaNeon,
@@ -206,12 +236,10 @@ class StackMoneyTheme {
         ),
       ),
 
-      // Cyber-HUD Interactive TextFields Configuration
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: surface,
         labelStyle: const TextStyle(color: mutedGrey),
-        // Color of the label when it animates and floats to the border
         floatingLabelStyle: const TextStyle(
           color: cyanNeon,
           fontWeight: FontWeight.bold,
@@ -220,38 +248,30 @@ class StackMoneyTheme {
           horizontal: AppSizes.x8,
           vertical: AppSizes.x8,
         ),
-        // Active/Focused Border Style (Lights up in Cyan)
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: magentaNeon, width: 1.5),
           borderRadius: BorderRadius.circular(12),
         ),
-        // Idle/Enabled Border Style (Discreet Muted Grey)
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: mutedGrey, width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
-        // Error Border Style
         errorBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: cyanNeon, width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
       ),
 
-      // Default Card Theme for Core Feature Containers
       cardTheme: CardThemeData(
         color: surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSizes.radiusLarge),
-          side: const BorderSide(
-            color: carbonGrey,
-            width: AppSizes.min / 4,
-          ), // Subtle border
+          side: const BorderSide(color: carbonGrey, width: AppSizes.min / 4),
         ),
       ),
 
-      // Default Divider
-      dividerTheme: DividerThemeData(color: Colors.white10),
+      dividerTheme: const DividerThemeData(color: Colors.white10),
     );
   }
 }

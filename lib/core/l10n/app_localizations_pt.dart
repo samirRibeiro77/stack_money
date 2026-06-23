@@ -299,4 +299,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get undo => 'Desfazer';
+
+  @override
+  String get selectRange => 'Selecione o intervalo';
+
+  @override
+  String get startDate => 'Inicio';
+
+  @override
+  String get endDate => 'Fim';
 }

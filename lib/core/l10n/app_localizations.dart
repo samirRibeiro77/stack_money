@@ -643,6 +643,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Undo'**
   String get undo;
+
+  /// Select range text for datePicker
+  ///
+  /// In en, this message translates to:
+  /// **'Select range'**
+  String get selectRange;
+
+  /// Select range text for datePicker
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get startDate;
+
+  /// Select range text for datePicker
+  ///
+  /// In en, this message translates to:
+  /// **'End date'**
+  String get endDate;
 }
 
 class _AppLocalizationsDelegate
