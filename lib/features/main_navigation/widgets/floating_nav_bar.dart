@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/data/enum/nav_bar_tabs.dart';
 import 'package:stack_money/features/main_navigation/widgets/nav_bar_item.dart';
@@ -21,6 +22,7 @@ class FloatingNavBar extends StatelessWidget {
     return Center(
       child: SizedBox(
         width: customWidth,
+        height: AppSizes.navBarHeight,
         child: GlassmorphismEffect(
           child: ValueListenableBuilder(
             valueListenable: currentTab,
