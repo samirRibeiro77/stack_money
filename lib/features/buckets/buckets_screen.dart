@@ -71,13 +71,13 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
           activeIcon: Icons.unfold_more,
           inactiveIcon: Icons.unfold_less,
         ),
-        const SizedBox(height: AppSizes.x6),
+        const SizedBox(height: AppSizes.sizedBoxMedium),
 
         CardInitializeSlot(
           l10n.newBucket,
           onTap: _manager.initializeNewBucketSlot,
         ),
-        const SizedBox(height: AppSizes.x3),
+        const SizedBox(height: AppSizes.sizedBoxSmall),
 
         ...List.generate(bucketList.length, (index) {
           final bucket = bucketList[index];

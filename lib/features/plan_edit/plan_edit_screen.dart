@@ -128,7 +128,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
               controller: _manager.scrollController,
               clipBehavior: Clip.none,
               slivers: [
-                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x8)),
+                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.sizedBoxLarge)),
 
                 /// Inflow Section
                 SliverToBoxAdapter(

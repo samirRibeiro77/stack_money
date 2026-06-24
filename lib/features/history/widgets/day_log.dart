@@ -23,7 +23,7 @@ class DayLog extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildIcon(),
-          const SizedBox(width: AppSizes.x6),
+          const SizedBox(width: AppSizes.sizedBoxMedium),
           _buildInfo(textTheme, l10n),
           const Expanded(child: SizedBox()),
           _buildValues(textTheme),

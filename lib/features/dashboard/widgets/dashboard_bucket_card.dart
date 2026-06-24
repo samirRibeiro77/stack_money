@@ -79,7 +79,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                         style: textTheme.titleSmall,
                         type: SecurityType.systemLocked,
                       ),
-                      const SizedBox(height: AppSizes.x3),
+                      const SizedBox(height: AppSizes.sizedBoxSmall),
                       Row(
                         children: [
                           Text(l10n.allocation, style: textTheme.labelSmall),
@@ -114,7 +114,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                         ),
                         activeColor: healthColor,
                       ),
-                      const SizedBox(height: AppSizes.x3),
+                      const SizedBox(height: AppSizes.sizedBoxSmall),
                       Row(
                         children: [
                           Text(l10n.min, style: textTheme.labelSmall),
@@ -135,11 +135,11 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
 
               // Miolo expandido guiado de forma reativa por valor invertido (!isSecureActive)
               if (widget.isExpanded && !isSecureActive) ...[
-                const SizedBox(height: AppSizes.x6),
+                const SizedBox(height: AppSizes.sizedBoxMedium),
                 const Divider(),
-                const SizedBox(height: AppSizes.x6),
+                const SizedBox(height: AppSizes.sizedBoxMedium),
                 _buildMiniChart(healthColor),
-                const SizedBox(height: AppSizes.x6),
+                const SizedBox(height: AppSizes.sizedBoxMedium),
                 TelemetryFilterBar(
                   currentState: _chartFilter,
                   isEnabled: true,

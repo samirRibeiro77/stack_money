@@ -121,8 +121,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                         switchActualSign: _manager.changeActualSign,
                         switchLiquidity: _manager.changeLiquidity,
                       ),
-                      const SizedBox(height: AppSizes.x8),
-
+                      const SizedBox(height: AppSizes.sizedBoxLarge),
                       Row(
                         children: [
                           Expanded(
@@ -133,7 +132,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                                   : WizardButtonAction.previous,
                             ),
                           ),
-                          const SizedBox(width: AppSizes.x6),
+                          const SizedBox(width: AppSizes.sizedBoxLarge),
                           Expanded(
                             child: SprintWizardButton(
                               onPressed: () => _manager.nextStep(context),

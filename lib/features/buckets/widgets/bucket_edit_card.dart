@@ -207,7 +207,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: AppSizes.x4),
+                    const SizedBox(width: AppSizes.sizedBoxSmall),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -268,7 +268,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: AppSizes.x6),
+                        const SizedBox(width: AppSizes.sizedBoxMedium),
                         Expanded(
                           child: TextFormField(
                             controller: _categoryController,
@@ -282,7 +282,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: AppSizes.x5),
+                    const SizedBox(height: AppSizes.sizedBoxMedium),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -292,7 +292,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                               ? ValueSign.negative
                               : ValueSign.positive,
                         ),
-                        const SizedBox(width: AppSizes.x6),
+                        const SizedBox(width: AppSizes.sizedBoxMedium),
                         Expanded(
                           flex: 3,
                           child: TextFormField(
@@ -307,7 +307,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                             inputFormatters: [MoneyInputFormatter()],
                           ),
                         ),
-                        const SizedBox(width: AppSizes.x6),
+                        const SizedBox(width: AppSizes.sizedBoxMedium),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,

@@ -102,7 +102,7 @@ class OutflowSectionCard extends StatelessWidget {
               if (!isLast)
                 IconButton(
                   icon: const Icon(
-                    Icons.delete_forever_outlined,
+                    Icons.delete_forever,
                     color: StackMoneyTheme.mutedGrey,
                     size: AppSizes.x10,
                   ),
@@ -110,7 +110,7 @@ class OutflowSectionCard extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: AppSizes.x3),
+          const SizedBox(height: AppSizes.sizedBoxSmall),
           Row(
             children: [
               Expanded(

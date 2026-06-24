@@ -72,7 +72,7 @@ class InflowSectionRow extends StatelessWidget {
                   onChanged: (val) => onUpdate(index, type: val, value: 0.0),
                 ),
               ),
-              const SizedBox(width: AppSizes.x6),
+              const SizedBox(width: AppSizes.sizedBoxMedium),
 
               /// Value (% or $)
               Expanded(
@@ -96,7 +96,7 @@ class InflowSectionRow extends StatelessWidget {
                   onChanged: onChanged,
                 ),
               ),
-              const SizedBox(width: AppSizes.x6),
+              const SizedBox(width: AppSizes.sizedBoxMedium),
 
               /// Day dropdown
               SizedBox(
@@ -119,7 +119,7 @@ class InflowSectionRow extends StatelessWidget {
               if (!isLast) ...[
                 IconButton(
                   icon: const Icon(
-                    Icons.delete_forever_outlined,
+                    Icons.delete_forever,
                     color: StackMoneyTheme.mutedGrey,
                     size: AppSizes.x10,
                   ),

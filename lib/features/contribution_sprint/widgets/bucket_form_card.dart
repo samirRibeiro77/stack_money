@@ -77,13 +77,13 @@ class BucketFormCard extends StatelessWidget {
         children: [
           _buildTitle(textTheme),
           _buildHeader(l10n, textTheme),
-          const SizedBox(height: AppSizes.x6),
+          const SizedBox(height: AppSizes.sizedBoxMedium),
           const Divider(),
-          const SizedBox(height: AppSizes.x6),
+          const SizedBox(height: AppSizes.sizedBoxMedium),
           _buildName(l10n, textTheme),
-          const SizedBox(height: AppSizes.x5),
+          const SizedBox(height: AppSizes.sizedBoxMedium),
           _buildMinValue(l10n, textTheme),
-          const SizedBox(height: AppSizes.x8),
+          const SizedBox(height: AppSizes.sizedBoxLarge),
           _buildActualValue(l10n, textTheme),
         ],
       ),
@@ -146,7 +146,7 @@ class BucketFormCard extends StatelessWidget {
             decoration: StackMoneyTheme.inputDecoration(l10n.where),
           ),
         ),
-        const SizedBox(width: AppSizes.x6),
+        const SizedBox(width: AppSizes.sizedBoxMedium),
         Expanded(
           child: TextFormField(
             controller: categoryController,
@@ -170,7 +170,7 @@ class BucketFormCard extends StatelessWidget {
           () => changeMinSign(false),
           initialValue: ValueSign.negative,
         ),
-        const SizedBox(width: AppSizes.x6),
+        const SizedBox(width: AppSizes.sizedBoxMedium),
         ValueListenableBuilder(
           valueListenable: _minListenable,
           builder: (_, isPositive, _) {
@@ -196,7 +196,7 @@ class BucketFormCard extends StatelessWidget {
             );
           },
         ),
-        const SizedBox(width: AppSizes.x6),
+        const SizedBox(width: AppSizes.sizedBoxMedium),
         ValueSignButton(
           () => changeMinSign(true),
           initialValue: ValueSign.positive,
@@ -219,7 +219,7 @@ class BucketFormCard extends StatelessWidget {
         return Row(
           children: [
             ValueSignButton(changeActualSign, initialValue: initialValue),
-            const SizedBox(width: AppSizes.x6),
+            const SizedBox(width: AppSizes.sizedBoxMedium),
             Expanded(
               child: TextFormField(
                 controller: actualValueController,

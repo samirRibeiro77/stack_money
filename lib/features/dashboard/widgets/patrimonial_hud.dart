@@ -94,9 +94,9 @@ class _PatrimonialHudState extends State<PatrimonialHud>
               mutedColor: StackMoneyTheme.magentaNeon,
             ),
 
-          const SizedBox(height: AppSizes.x6),
+          const SizedBox(height: AppSizes.sizedBoxMedium),
           const Divider(height: 1),
-          const SizedBox(height: AppSizes.x6),
+          const SizedBox(height: AppSizes.sizedBoxMedium),
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

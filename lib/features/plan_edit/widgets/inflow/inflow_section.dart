@@ -75,7 +75,7 @@ class InflowSection extends StatelessWidget {
                             StackMoneyNumber.parseMoneyStringToDouble(value),
                           ),
                         ),
-                        const SizedBox(height: AppSizes.x6),
+                        const SizedBox(height: AppSizes.sizedBoxMedium),
 
                         ...List.generate(plan.inflows.length, (index) {
                           final row = plan.inflows[index];

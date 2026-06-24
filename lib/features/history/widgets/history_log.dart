@@ -28,7 +28,7 @@ class HistoryLog extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: AppSizes.x6),
+        const SizedBox(height: AppSizes.sizedBoxMedium),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -52,7 +52,7 @@ class HistoryLog extends StatelessWidget {
         ...history.transactions.values.map((tx) {
           return DayLog(transaction: tx);
         }),
-        const SizedBox(height: AppSizes.x6),
+        const SizedBox(height: AppSizes.sizedBoxLarge),
       ],
     );
   }

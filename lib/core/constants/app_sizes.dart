@@ -24,22 +24,27 @@ class AppSizes {
   static const double x30 = min * 30;
   static const double max = min * 32;
 
-  // --- Border Radius ---
+  /// SizedBox
+  static const double sizedBoxSmall = 8.0;
+  static const double sizedBoxMedium = 12.0;
+  static const double sizedBoxLarge = 16.0;
+
+  /// --- Border Radius ---
   static const double radiusSmall = 8.0;
   static const double radiusMedium = 12.0;
   static const double radiusLarge = 16.0;
 
-  // --- NavBar Sizes ---
+  /// --- NavBar Sizes ---
   static const double navBarHeight = 48.0;
   static const double navBarPaddingBottom = 30.0;
   static const double navBarRadius = 64.0;
   static const double navBarIconSize = 20.0;
   static const double navBarContentPadding = 100.0;
 
-  // --- Dropdown ---
+  /// --- Dropdown ---
   static const double dropdownWidth = 80;
 
-  // --- Sticky Hud ---
+  /// --- Sticky Hud ---
   static const double stickyHudMinExtent = 30;
   static const double stickyHudMinExtentMultiplier = 18;
   static const double stickyHudMaxExtent = 75;

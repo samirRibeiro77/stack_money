@@ -79,13 +79,13 @@ class _PlansScreenState extends State<PlansScreen> {
                 activeColor: StackMoneyTheme.magentaNeon,
                 inactiveColor: StackMoneyTheme.cyanNeon,
               ),
-              const SizedBox(height: AppSizes.x6),
+              const SizedBox(height: AppSizes.sizedBoxMedium),
 
               CardInitializeSlot(
                 l10n.newPlan,
                 onTap: () => _manager.initializeNewPlanSlot(context),
               ),
-              const SizedBox(height: AppSizes.x3),
+              const SizedBox(height: AppSizes.sizedBoxSmall),
 
               ...List.generate(filteredList.length, (index) {
                 final plan = filteredList[index];

@@ -66,14 +66,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         color: StackMoneyTheme.magentaNeon,
                         size: AppSizes.x24,
                       ),
-                      const SizedBox(height: AppSizes.x8),
+                      const SizedBox(height: AppSizes.sizedBoxLarge),
                       Text(
                         StackMoneyString.formatTitle(l10n.systemLinkFailed),
                         style: textTheme.headlineMedium?.copyWith(
                           color: StackMoneyTheme.magentaNeon,
                         ),
                       ),
-                      const SizedBox(height: AppSizes.x4),
+                      const SizedBox(height: AppSizes.sizedBoxSmall),
                       TextButton(
                         onPressed: _manager.loadFirebaseHistoryData,
                         child: Text(
@@ -102,7 +102,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         TitleText(l10n.auditLogs),
-        const SizedBox(height: AppSizes.x6),
+        const SizedBox(height: AppSizes.sizedBoxMedium),
         ..._manager.logs.map((historyDay) {
           return HistoryLog(
             history: historyDay,

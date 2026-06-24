@@ -65,6 +65,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             return ValueListenableBuilder<List<Bucket>>(
               valueListenable: _manager.parametersNotifier,
               builder: (context, paramList, child) {
+                paramList.sort((a, b) => a.name.compareTo(b.name));
+
                 return ValueListenableBuilder<List<History>>(
                   valueListenable: _manager.historyTimelineNotifier,
                   builder: (context, historyList, child) {
@@ -108,14 +110,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               color: StackMoneyTheme.magentaNeon,
               size: AppSizes.x24,
             ),
-            const SizedBox(height: AppSizes.x8),
+            const SizedBox(height: AppSizes.sizedBoxLarge),
             Text(
               StackMoneyString.formatTitle(l10n.systemLinkFailed),
               style: textTheme.headlineMedium?.copyWith(
                 color: StackMoneyTheme.magentaNeon,
               ),
             ),
-            const SizedBox(height: AppSizes.x4),
+            const SizedBox(height: AppSizes.sizedBoxSmall),
             TextButton(
               onPressed: _manager.loadFirebaseDashboardData,
               child: Text(
@@ -170,9 +172,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   isSystemVisible: isVisible,
                 ),
               ),
-              const SizedBox(height: AppSizes.x6),
+              const SizedBox(height: AppSizes.sizedBoxMedium),
               const Divider(height: 1),
-              const SizedBox(height: AppSizes.x6),
+              const SizedBox(height: AppSizes.sizedBoxMedium),
               TelemetryFilterBar(
                 currentState: currentFilter,
                 isEnabled: isVisible,
@@ -193,7 +195,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           activeIcon: Icons.unfold_more,
           inactiveIcon: Icons.unfold_less,
         ),
-        const SizedBox(height: AppSizes.x6),
+        const SizedBox(height: AppSizes.sizedBoxMedium),
 
         // Listagem dos Potes Convertidos em Componentes Dedicados do Dashboard
         ...List.generate(paramList.length, (index) {
