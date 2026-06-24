@@ -48,11 +48,11 @@ class NetSalaryProgress extends StatelessWidget {
                 children: [
                   Text(
                     l10n.netDay(day.toString().padLeft(2, '0')).toUpperCase(),
-                    style: textTheme.titleSmall?.copyWith(
+                    style: textTheme.bodySmall?.copyWith(
                       fontWeight: AppTypography.weightBold,
                       fontSize: isMaxCollapsed
                           ? AppTypography.fontSmallest
-                          : AppTypography.fontTitleSmall,
+                          : AppTypography.fontBodyMedium,
                       color: dayColor,
                     ),
                   ),

@@ -60,8 +60,7 @@ class StackMoneyDialog extends StatelessWidget {
                 StackMoneyString.formatTitle(_getTitle(l10n)),
                 style: textTheme.titleLarge?.copyWith(
                   color: color,
-                  fontWeight: AppTypography.weightBold,
-                  letterSpacing: 1.0,
+                  fontWeight: AppTypography.weightBold
                 ),
               ),
 

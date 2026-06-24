@@ -46,7 +46,7 @@ class AppSizes {
 
   /// --- Sticky Hud ---
   static const double stickyHudMinExtent = 30;
-  static const double stickyHudMinExtentMultiplier = 18;
-  static const double stickyHudMaxExtent = 75;
-  static const double stickyHudMaxExtentMultiplier = 32;
+  static const double stickyHudMinExtentMultiplier = 20;
+  static const double stickyHudMaxExtent = 80;
+  static const double stickyHudMaxExtentMultiplier = 30;
 }

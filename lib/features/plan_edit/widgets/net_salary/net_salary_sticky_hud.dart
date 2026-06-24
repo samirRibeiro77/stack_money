@@ -36,7 +36,7 @@ class NetSalaryStickyHud extends SliverPersistentHeaderDelegate {
 
     final double percent = (shrinkOffset / maxExtent).clamp(0.0, 1.0);
 
-    final bool hideHeader = shrinkOffset > AppSizes.x10;
+    final bool hideHeader = shrinkOffset > AppSizes.x7;
     final bool isMaxCollapsed = percent > 0.4;
 
     final Color masterColor = plan.isOverflowed

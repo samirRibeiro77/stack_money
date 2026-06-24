@@ -149,16 +149,19 @@ class StackMoneyTheme {
           fontSize: AppTypography.fontTitleLarge,
           fontWeight: AppTypography.weightMedium,
           color: textPrimary,
+          letterSpacing: AppTypography.spacingLarge,
         ),
         titleMedium: GoogleFonts.orbitron(
           fontSize: AppTypography.fontTitleMedium,
           fontWeight: AppTypography.weightMedium,
           color: textPrimary,
+          letterSpacing: AppTypography.spacingLarge,
         ),
         titleSmall: GoogleFonts.orbitron(
           fontSize: AppTypography.fontTitleSmall,
           fontWeight: AppTypography.weightMedium,
           color: textPrimary,
+          letterSpacing: AppTypography.spacingLarge,
         ),
 
         // --- BODY (JetBrainsMono) ---

@@ -29,4 +29,10 @@ class AppTypography {
   static const FontWeight weightBold = FontWeight.w700;
   static const FontWeight weightMedium = FontWeight.w500;
   static const FontWeight weightNormal = FontWeight.w400;
+
+  // --- Font Weights ---
+  static const double spacingHuge = 2.0;
+  static const double spacingLarge = 1.5;
+  static const double spacingMedium = 1.0;
+  static const double spacingSmall = 0.5;
 }
