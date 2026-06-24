@@ -132,16 +132,19 @@ class StackMoneyTheme {
           fontSize: AppTypography.fontHeadlineLarge,
           fontWeight: AppTypography.weightBold,
           color: textPrimary,
+          letterSpacing: AppTypography.spacingLarge,
         ),
         headlineMedium: GoogleFonts.orbitron(
           fontSize: AppTypography.fontHeadlineMedium,
           fontWeight: AppTypography.weightBold,
           color: textPrimary,
+          letterSpacing: AppTypography.spacingLarge,
         ),
         headlineSmall: GoogleFonts.orbitron(
           fontSize: AppTypography.fontHeadlineSmall,
           fontWeight: AppTypography.weightBold,
           color: textPrimary,
+          letterSpacing: AppTypography.spacingLarge,
         ),
 
         // --- TITLE (Orbitron) ---
