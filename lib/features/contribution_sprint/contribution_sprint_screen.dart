@@ -63,11 +63,10 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
             final isLast = currentIndex == _manager.buckets.length - 1;
 
             return Scaffold(
-              backgroundColor: StackMoneyTheme.background,
               appBar: AppBar(
                 backgroundColor: StackMoneyTheme.background,
-                elevation: 0,
-                scrolledUnderElevation: 0,
+                elevation: 2,
+                scrolledUnderElevation: 2,
                 leading: IconButton(
                   icon: Icon(
                     isFirst

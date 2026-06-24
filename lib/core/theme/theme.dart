@@ -51,7 +51,7 @@ class StackMoneyTheme {
   static ButtonStyle get googleLoginButtonStyle => ElevatedButton.styleFrom(
     backgroundColor: carbonGrey,
     foregroundColor: cyanNeon,
-    elevation: 0,
+    elevation: 1,
     padding: const EdgeInsets.symmetric(
       horizontal: AppSizes.x10,
       vertical: AppSizes.x6,
@@ -108,6 +108,7 @@ class StackMoneyTheme {
         error: magentaNeon,
       ),
 
+      /// Text
       textTheme: _baseTextTheme.copyWith(
         // --- DISPLAY (Orbitron) ---
         displayLarge: GoogleFonts.orbitron(
@@ -161,14 +162,16 @@ class StackMoneyTheme {
         ),
 
         // --- BODY (JetBrainsMono) ---
-        bodyLarge: GoogleFonts.jetBrainsMono(
+        bodyLarge: TextStyle(
+          fontFamily: 'JetBrainsMono',
           fontSize: AppTypography.fontBodyLarge,
-          fontWeight: AppTypography.weightBold,
+          fontWeight: AppTypography.weightMedium,
           color: textPrimary,
         ),
-        bodyMedium: GoogleFonts.jetBrainsMono(
+        bodyMedium: TextStyle(
+          fontFamily: 'JetBrainsMono',
           fontSize: AppTypography.fontBodyMedium,
-          fontWeight: AppTypography.weightMedium,
+          fontWeight: AppTypography.weightNormal,
           color: textPrimary,
         ),
         bodySmall: TextStyle(
@@ -199,19 +202,20 @@ class StackMoneyTheme {
         ),
       ),
 
-      // 🔥 CONFIGURAÇÃO CENTRAL: Injeta o sub-tema estático do DatePicker encolhendo os cabeçalhos globais
+      ///  Date picker
       datePickerTheme: DatePickerThemeData(
         backgroundColor: surface,
-        elevation: 0,
+        elevation: 2,
         headerHelpStyle: _baseTextTheme.labelSmall?.copyWith(color: mutedGrey),
         headerHeadlineStyle: _baseTextTheme.titleMedium?.copyWith(
           fontWeight: AppTypography.weightBold,
         ),
       ),
 
+      /// App bar
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
-        elevation: 0,
+        elevation: 2,
         centerTitle: true,
         iconTheme: const IconThemeData(color: textPrimary),
         titleTextStyle: GoogleFonts.orbitron(
@@ -222,6 +226,7 @@ class StackMoneyTheme {
         ),
       ),
 
+      /// Tab bar
       tabBarTheme: TabBarThemeData(
         indicatorColor: cyanNeon,
         labelColor: magentaNeon,
@@ -236,6 +241,7 @@ class StackMoneyTheme {
         ),
       ),
 
+      /// Input decoration
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: surface,
@@ -262,16 +268,18 @@ class StackMoneyTheme {
         ),
       ),
 
+      /// Card theme
       cardTheme: CardThemeData(
         color: surface,
-        elevation: 0,
+        elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSizes.radiusLarge),
           side: const BorderSide(color: carbonGrey, width: AppSizes.min / 4),
         ),
       ),
 
-      dividerTheme: const DividerThemeData(color: Colors.white10),
+      /// Divider
+      dividerTheme: const DividerThemeData(color: carbonGrey),
     );
   }
 }

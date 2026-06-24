@@ -41,7 +41,7 @@ class StackMoneyDialog extends StatelessWidget {
     return Dialog(
       backgroundColor: Colors.transparent,
       shadowColor: color.withAlpha(15),
-      elevation: AppSizes.min,
+      elevation: 2,
       insetPadding: const EdgeInsets.all(AppSizes.x20),
       child: GlassmorphismEffect(
         containerHeight: null,
