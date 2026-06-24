@@ -54,10 +54,10 @@ class StackMoneyTheme {
     elevation: 1,
     padding: const EdgeInsets.symmetric(
       horizontal: AppSizes.x10,
-      vertical: AppSizes.x6,
+      vertical: AppSizes.x4,
     ),
     shape: const StadiumBorder(),
-    textStyle: darkTheme.textTheme.labelMedium,
+    textStyle: darkTheme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.weightBold),
   );
 
   static final _baseTextTheme = GoogleFonts.orbitronTextTheme(
@@ -115,16 +115,19 @@ class StackMoneyTheme {
           fontSize: AppTypography.fontDisplayLarge,
           fontWeight: AppTypography.weightBold,
           color: textPrimary,
+          letterSpacing: AppTypography.spacingHuge,
         ),
         displayMedium: GoogleFonts.orbitron(
           fontSize: AppTypography.fontDisplayMedium,
           fontWeight: AppTypography.weightBold,
           color: textPrimary,
+          letterSpacing: AppTypography.spacingHuge,
         ),
         displaySmall: GoogleFonts.orbitron(
           fontSize: AppTypography.fontDisplaySmall,
           fontWeight: AppTypography.weightBold,
           color: textPrimary,
+          letterSpacing: AppTypography.spacingHuge,
         ),
 
         // --- HEADLINE (Orbitron) ---

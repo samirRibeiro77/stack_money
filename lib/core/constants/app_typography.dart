@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppTypography {
   // --- Font Sizes ---
-  static const double fontDisplayLarge = 57.0;
+  static const double fontDisplayLarge = 60.0;
   static const double fontDisplayMedium = 45.0;
-  static const double fontDisplaySmall = 32.0;
+  static const double fontDisplaySmall = 30.0;
 
   static const double fontHeadlineLarge = 32.0;
   static const double fontHeadlineMedium = 28.0;
