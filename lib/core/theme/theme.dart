@@ -147,7 +147,7 @@ class StackMoneyTheme {
         // --- TITLE (Orbitron) ---
         titleLarge: GoogleFonts.orbitron(
           fontSize: AppTypography.fontTitleLarge,
-          fontWeight: AppTypography.weightBold,
+          fontWeight: AppTypography.weightMedium,
           color: textPrimary,
         ),
         titleMedium: GoogleFonts.orbitron(
@@ -162,43 +162,37 @@ class StackMoneyTheme {
         ),
 
         // --- BODY (JetBrainsMono) ---
-        bodyLarge: TextStyle(
-          fontFamily: 'JetBrainsMono',
+        bodyLarge: GoogleFonts.jetBrainsMono(
           fontSize: AppTypography.fontBodyLarge,
-          fontWeight: AppTypography.weightMedium,
+          fontWeight: AppTypography.weightNormal,
           color: textPrimary,
         ),
-        bodyMedium: TextStyle(
-          fontFamily: 'JetBrainsMono',
+        bodyMedium: GoogleFonts.jetBrainsMono(
           fontSize: AppTypography.fontBodyMedium,
           fontWeight: AppTypography.weightNormal,
           color: textPrimary,
         ),
-        bodySmall: TextStyle(
-          fontFamily: 'JetBrainsMono',
+        bodySmall: GoogleFonts.jetBrainsMono(
           fontSize: AppTypography.fontBodySmall,
           fontWeight: AppTypography.weightNormal,
           color: textPrimary,
         ),
 
-        // --- LABEL (Orbitron) ---
-        labelLarge: TextStyle(
-          color: mutedGrey,
+        // --- LABEL (JetBrainsMono) ---
+        labelLarge: GoogleFonts.jetBrainsMono(
           fontSize: AppTypography.fontLabelLarge,
           fontWeight: AppTypography.weightMedium,
-          fontFamily: 'Orbitron',
-        ),
-        labelMedium: TextStyle(
           color: mutedGrey,
+        ),
+        labelMedium: GoogleFonts.jetBrainsMono(
           fontSize: AppTypography.fontLabelMedium,
           fontWeight: AppTypography.weightMedium,
-          fontFamily: 'Orbitron',
-        ),
-        labelSmall: TextStyle(
           color: mutedGrey,
+        ),
+        labelSmall: GoogleFonts.jetBrainsMono(
           fontSize: AppTypography.fontLabelSmall,
           fontWeight: AppTypography.weightMedium,
-          fontFamily: 'Orbitron',
+          color: mutedGrey,
         ),
       ),
 
@@ -206,7 +200,7 @@ class StackMoneyTheme {
       datePickerTheme: DatePickerThemeData(
         backgroundColor: surface,
         elevation: 2,
-        headerHelpStyle: _baseTextTheme.labelSmall?.copyWith(color: mutedGrey),
+        headerHelpStyle: _baseTextTheme.labelSmall,
         headerHeadlineStyle: _baseTextTheme.titleMedium?.copyWith(
           fontWeight: AppTypography.weightBold,
         ),

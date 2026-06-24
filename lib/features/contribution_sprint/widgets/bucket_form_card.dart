@@ -116,9 +116,7 @@ class BucketFormCard extends StatelessWidget {
       children: [
         Text(
           '${StackMoneyString.formatTitle(l10n.lastKnownValue)} ${StackMoneyString.formatMoney(lastKnowValue, symbol: true)}',
-          style: textTheme.labelSmall?.copyWith(
-            color: StackMoneyTheme.mutedGrey,
-          ),
+          style: textTheme.labelSmall,
         ),
         ValueListenableBuilder(
           valueListenable: _liquidityListenable,
