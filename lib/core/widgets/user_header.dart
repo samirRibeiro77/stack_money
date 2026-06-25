@@ -28,8 +28,8 @@ class UserHeader extends StatelessWidget {
 
     return SliverAppBar(
       backgroundColor: StackMoneyTheme.background,
-      elevation: 3,
-      scrolledUnderElevation: 3,
+      elevation: 0,
+      scrolledUnderElevation: 0,
       centerTitle: false,
       pinned: false,
       floating: true,

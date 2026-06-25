@@ -55,7 +55,7 @@ class NavBarItem extends StatelessWidget {
             const SizedBox(height: AppSizes.min),
             AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 200),
-              style: textTheme.bodySmall!.copyWith(
+              style: textTheme.titleSmall!.copyWith(
                 fontSize: (AppTypography.navBar + increaseSize),
                 fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                 color: itemColor,

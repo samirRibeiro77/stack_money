@@ -23,7 +23,7 @@ class AppTypography {
   static const double fontLabelSmall = 11.0;
 
   static const double fontSmallest = 10.0;
-  static const double navBar = 8.0;
+  static const double navBar = 7.0;
 
   // --- Font Weights ---
   static const FontWeight weightBold = FontWeight.w700;
@@ -35,4 +35,5 @@ class AppTypography {
   static const double spacingLarge = 1.5;
   static const double spacingMedium = 1.0;
   static const double spacingSmall = 0.5;
+  static const double spacingTiny = 0.2;
 }

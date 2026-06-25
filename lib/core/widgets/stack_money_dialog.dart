@@ -56,27 +56,26 @@ class StackMoneyDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// Title
-              Text(
-                StackMoneyString.formatTitle(_getTitle(l10n)),
-                style: textTheme.titleLarge?.copyWith(
-                  color: color,
-                  fontWeight: AppTypography.weightBold
+              Center(
+                child: Text(
+                  StackMoneyString.formatTitle(
+                    _getTitle(l10n),
+                    useUnderline: false,
+                  ),
+                  style: textTheme.headlineSmall?.copyWith(color: color),
                 ),
               ),
 
               /// Body
               const SizedBox(height: AppSizes.x10),
-              Text(
-                StackMoneyString.formatTitle(message, useUnderline: false),
-                style: textTheme.bodySmall,
-              ),
+              Text(message, style: textTheme.bodySmall),
 
               /// Content
               if (content != null) ...[
                 const SizedBox(height: AppSizes.x2),
                 Text(
-                  StackMoneyString.formatTitle(content!, useUnderline: false),
-                  style: textTheme.bodyMedium?.copyWith(
+                  StackMoneyString.formatTitle(content!),
+                  style: textTheme.titleMedium?.copyWith(
                     color: color,
                     fontWeight: AppTypography.weightBold,
                   ),

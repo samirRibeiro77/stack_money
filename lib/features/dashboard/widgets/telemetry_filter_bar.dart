@@ -23,16 +23,19 @@ class TelemetryFilterBar extends StatelessWidget {
   });
 
   Future<void> _openCustomDatePicker(
-      BuildContext context,
-      AppLocalizations l10n,
-      ) async {
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
     if (!isEnabled) return;
 
     final DateTimeRange? picked = await showDateRangePicker(
       context: context,
       firstDate: firstDate,
       lastDate: DateTime.now(),
-      helpText: StackMoneyString.formatTitle(l10n.selectRange),
+      helpText: StackMoneyString.formatTitle(
+        l10n.selectRange,
+        useUnderline: false,
+      ),
       fieldStartLabelText: StackMoneyString.formatTitle(l10n.startDate),
       fieldEndLabelText: StackMoneyString.formatTitle(l10n.endDate),
       builder: (context, child) {

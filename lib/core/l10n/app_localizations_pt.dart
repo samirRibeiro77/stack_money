@@ -84,7 +84,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get bucketsConfig => 'Configuração das Caixinhas';
 
   @override
-  String get newBucket => 'Adicionar nova caixinha';
+  String get newBucket => 'Nova caixinha';
 
   @override
   String get category => 'Categoria';
@@ -105,7 +105,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get plansConfig => 'Configurações dos planos';
 
   @override
-  String get newPlan => 'Adicionar novo plano';
+  String get newPlan => 'Novo plano';
 
   @override
   String get activePlan => 'Plano ativo';
@@ -186,7 +186,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get newDistributionRule => 'Adicionar nova distribuição';
+  String get newDistributionRule => 'Nova distribuição';
 
   @override
   String get subcategory => 'Subcategoria';

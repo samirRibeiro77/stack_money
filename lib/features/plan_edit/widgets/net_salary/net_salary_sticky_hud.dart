@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -70,7 +71,9 @@ class NetSalaryStickyHud extends SliverPersistentHeaderDelegate {
                         plan.netSalary,
                         symbol: true,
                       ),
-                      style: textTheme.bodyMedium,
+                      style: textTheme.bodyMedium?.copyWith(
+                        fontWeight: AppTypography.weightBold,
+                      ),
                     ),
                     Text(
                       plan.isOverflowed

@@ -57,14 +57,15 @@ class StackMoneyTheme {
       vertical: AppSizes.x4,
     ),
     shape: const StadiumBorder(),
-    textStyle: darkTheme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.weightBold),
+    textStyle: darkTheme.textTheme.titleSmall?.copyWith(
+      fontWeight: AppTypography.weightBold,
+    ),
   );
 
   static final _baseTextTheme = GoogleFonts.orbitronTextTheme(
     ThemeData.dark().textTheme,
   ).apply(bodyColor: textPrimary, displayColor: textPrimary);
 
-  // 🔥 INTERCEPTOR REATIVO: Cria um clone do tema mestre aplicando o isolamento em Ciano para os inputs do picker
   static ThemeData datePickerThemeOverride(BuildContext context) {
     return darkTheme.copyWith(
       colorScheme: const ColorScheme.dark(
@@ -192,16 +193,19 @@ class StackMoneyTheme {
           fontSize: AppTypography.fontLabelLarge,
           fontWeight: AppTypography.weightMedium,
           color: mutedGrey,
+          letterSpacing: AppTypography.spacingTiny,
         ),
         labelMedium: GoogleFonts.jetBrainsMono(
           fontSize: AppTypography.fontLabelMedium,
           fontWeight: AppTypography.weightMedium,
           color: mutedGrey,
+          letterSpacing: AppTypography.spacingTiny,
         ),
         labelSmall: GoogleFonts.jetBrainsMono(
           fontSize: AppTypography.fontLabelSmall,
           fontWeight: AppTypography.weightMedium,
           color: mutedGrey,
+          letterSpacing: AppTypography.spacingTiny,
         ),
       ),
 
@@ -218,7 +222,8 @@ class StackMoneyTheme {
       /// App bar
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
-        elevation: 2,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         centerTitle: true,
         iconTheme: const IconThemeData(color: textPrimary),
         titleTextStyle: GoogleFonts.orbitron(

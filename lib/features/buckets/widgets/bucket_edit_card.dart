@@ -199,9 +199,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                       decoration: BoxDecoration(
                         color: _isImmediateLiquidity
                             ? techColor
-                            : StackMoneyTheme.mutedGrey.withValues(
-                          alpha: 0.3,
-                        ),
+                            : StackMoneyTheme.mutedGrey.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(
                           AppSizes.radiusLarge,
                         ),
@@ -215,20 +213,17 @@ class _BucketEditCardState extends State<BucketEditCard> {
                           StackMoneyString.formatTitle(
                             _categoryController.text,
                           ),
-                          style: textTheme.bodySmall?.copyWith(
+                          style: textTheme.titleSmall?.copyWith(
                             fontWeight: AppTypography.weightBold,
                           ),
                           type: SecurityType.systemLocked,
                         ),
                         SecurityText(
-                          StackMoneyString.formatTitle(
-                            _whereController.text,
-                          ),
-                          style: textTheme.bodySmall?.copyWith(
+                          StackMoneyString.formatTitle(_whereController.text),
+                          style: textTheme.titleSmall?.copyWith(
                             fontSize: AppTypography.fontSmallest,
                           ),
                           activeColor: StackMoneyTheme.mutedGrey,
-                          type: SecurityType.systemLocked,
                         ),
                       ],
                     ),
@@ -239,7 +234,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                         symbol: true,
                       ),
                       type: SecurityType.mask,
-                      style: textTheme.bodySmall?.copyWith(
+                      style: textTheme.bodyMedium?.copyWith(
                         fontWeight: AppTypography.weightBold,
                       ),
                       activeColor: techColor,

@@ -65,8 +65,6 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: StackMoneyTheme.background,
-                elevation: 2,
-                scrolledUnderElevation: 2,
                 leading: IconButton(
                   icon: Icon(
                     isFirst

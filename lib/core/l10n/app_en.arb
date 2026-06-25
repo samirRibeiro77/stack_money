@@ -96,7 +96,7 @@
   "@bucketsConfig": {
     "description": "Buckets Config title"
   },
-  "newBucket": "Add new bucket",
+  "newBucket": "New bucket",
   "@newBucket": {
     "description": "Add new bucket slot text"
   },
@@ -124,7 +124,7 @@
   "@plansConfig": {
     "description": "Plans Config title"
   },
-  "newPlan": "Add new plan",
+  "newPlan": "New plan",
   "@newPlan": {
     "description": "Add new plan slot text"
   },
@@ -216,7 +216,7 @@
   "@overflowBy": {
     "description": "System overflowed by X"
   },
-  "newDistributionRule": "Add new distribution",
+  "newDistributionRule": "New distribution",
   "@newDistributionRule": {
     "description": "Add distribution rule slot text"
   },
