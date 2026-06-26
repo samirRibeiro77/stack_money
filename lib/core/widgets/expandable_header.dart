@@ -10,8 +10,8 @@ class ExpandableHeader extends StatelessWidget {
     required this.title,
     required this.toggle,
     required this.validation,
-    required this.activeIcon,
-    required this.inactiveIcon,
+    this.activeIcon = Icons.unfold_more,
+    this.inactiveIcon = Icons.unfold_less,
     this.activeColor = StackMoneyTheme.cyanNeon,
     this.inactiveColor = StackMoneyTheme.magentaNeon,
     super.key,
@@ -46,9 +46,7 @@ class ExpandableHeader extends StatelessWidget {
                 builder: (_, isExpanded, _) {
                   return Icon(
                     isExpanded ? activeIcon : inactiveIcon,
-                    color: isExpanded
-                        ? activeColor
-                        : inactiveColor,
+                    color: isExpanded ? activeColor : inactiveColor,
                     size: AppSizes.x10,
                   );
                 },

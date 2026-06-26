@@ -192,8 +192,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           title: l10n.allocationBuckets,
           toggle: _manager.toggleAllBuckets,
           validation: _manager.masterExpandState,
-          activeIcon: Icons.unfold_more,
-          inactiveIcon: Icons.unfold_less,
         ),
         const SizedBox(height: AppSizes.sizedBoxMedium),
 
