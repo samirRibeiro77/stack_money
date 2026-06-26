@@ -39,17 +39,18 @@ class SprintWizardButton extends StatelessWidget {
           children: [
             if (isBackButton) ...[
               Icon(action.icon, color: action.color, size: AppSizes.x7),
-              const SizedBox(width: AppSizes.x2),
             ],
-            Text(
-              StackMoneyString.formatTitle(action.text(l10n)),
-              style: textTheme.bodySmall?.copyWith(
-                color: action.color,
-                fontWeight: AppTypography.weightBold,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppSizes.x3),
+              child: Text(
+                StackMoneyString.formatTitle(action.text(l10n)),
+                style: textTheme.bodySmall?.copyWith(
+                  color: action.color,
+                  fontWeight: AppTypography.weightBold,
+                ),
               ),
             ),
             if (!isBackButton) ...[
-              const SizedBox(width: AppSizes.x2),
               Icon(action.icon, color: action.color, size: AppSizes.x7),
             ],
           ],

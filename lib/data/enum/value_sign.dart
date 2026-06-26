@@ -1,8 +1,10 @@
-enum ValueSign {
-  positive('+'),
-  negative('-');
+import 'package:flutter/material.dart';
 
-  final String sign;
+enum ValueSign {
+  positive(Icons.add),
+  negative(Icons.remove);
+
+  final IconData sign;
 
   const ValueSign(this.sign);
 }

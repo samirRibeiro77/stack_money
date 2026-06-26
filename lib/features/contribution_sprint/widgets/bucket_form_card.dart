@@ -8,7 +8,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
-import 'package:stack_money/core/widgets/value_sign_button.dart';
+import 'package:stack_money/core/widgets/sign_toggle_button.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
 
@@ -164,7 +164,7 @@ class BucketFormCard extends StatelessWidget {
 
     return Row(
       children: [
-        ValueSignButton(
+        SignToggleButton(
           () => changeMinSign(false),
           initialValue: ValueSign.negative,
         ),
@@ -195,7 +195,7 @@ class BucketFormCard extends StatelessWidget {
           },
         ),
         const SizedBox(width: AppSizes.sizedBoxMedium),
-        ValueSignButton(
+        SignToggleButton(
           () => changeMinSign(true),
           initialValue: ValueSign.positive,
         ),
@@ -216,7 +216,7 @@ class BucketFormCard extends StatelessWidget {
 
         return Row(
           children: [
-            ValueSignButton(changeActualSign, initialValue: initialValue),
+            SignToggleButton(changeActualSign, initialValue: initialValue),
             const SizedBox(width: AppSizes.sizedBoxMedium),
             Expanded(
               child: TextFormField(

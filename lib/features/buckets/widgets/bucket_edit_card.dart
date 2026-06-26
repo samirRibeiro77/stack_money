@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
@@ -9,7 +10,7 @@ import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
-import 'package:stack_money/core/widgets/value_sign_button.dart';
+import 'package:stack_money/core/widgets/sign_toggle_button.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -45,20 +46,24 @@ class _BucketEditCardState extends State<BucketEditCard> {
   bool _categoryHadFocus = false;
   bool _minValueHadFocus = false;
 
-  late bool _isImmediateLiquidity;
-  late bool _isNegative;
+  final _isImmediateLiquidity = ValueNotifier(false);
+  final _isNegative = ValueNotifier(false);
   bool _isSaving = false;
+
+  ValueListenable<bool> get isImmediateLiquidity => _isImmediateLiquidity;
+
+  ValueListenable<bool> get isNegative => _isNegative;
 
   @override
   void initState() {
     super.initState();
-    _isImmediateLiquidity = widget.bucket.isImmediateLiquidity;
-    _isNegative = widget.bucket.minValue < 0;
+    _isImmediateLiquidity.value = widget.bucket.isImmediateLiquidity;
+    _isNegative.value = widget.bucket.minValue < 0;
 
     _whereController = TextEditingController(text: widget.bucket.where);
     _categoryController = TextEditingController(text: widget.bucket.category);
     _minValueController = TextEditingController(
-      text: StackMoneyString.formatMoney(widget.bucket.minValue),
+      text: StackMoneyString.formatMoney(widget.bucket.minValue.abs()),
     );
 
     _whereFocus.addListener(_handleWhereFocusChange);
@@ -88,20 +93,10 @@ class _BucketEditCardState extends State<BucketEditCard> {
   }
 
   void _toggleValueSign() {
-    final rawNumber = _minValueController.text.replaceAll(
-      RegExp(r'[^0-9]'),
-      '',
-    );
-    double doubleValue = (double.tryParse(rawNumber) ?? 0.0) / 100.0;
-
-    setState(() {
-      _isNegative = !_isNegative;
-    });
-
-    if (_isNegative) doubleValue = -doubleValue;
-
-    _minValueController.text = doubleValue.toString();
-    _triggerAutoSave();
+    if (widget.bucket.minValue != 0) {
+      _isNegative.value = !_isNegative.value;
+      _triggerAutoSave();
+    }
   }
 
   Future<void> _triggerAutoSave() async {
@@ -109,24 +104,28 @@ class _BucketEditCardState extends State<BucketEditCard> {
       _minValueController.text,
     );
 
-    if (_isNegative) doubleValue = -doubleValue;
+    if (_isNegative.value) doubleValue = -doubleValue;
 
     final updated = Bucket(
       id: widget.bucket.id,
       where: _whereController.text,
       category: _categoryController.text,
       minValue: doubleValue,
-      isImmediateLiquidity: _isImmediateLiquidity,
+      isImmediateLiquidity: _isImmediateLiquidity.value,
     );
 
     if (widget.bucket.equalsTo(updated)) return;
 
-    setState(() => _isSaving = true);
+    setState(() {
+      _isSaving = true;
+    });
     await widget.onAutoSave(updated);
 
     if (mounted) {
       Future.delayed(const Duration(milliseconds: 500), () {
-        if (mounted) setState(() => _isSaving = false);
+        setState(() {
+          _isSaving = false;
+        });
       });
     }
   }
@@ -152,7 +151,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    final Color techColor = _isNegative
+    final Color techColor = _isNegative.value
         ? StackMoneyTheme.magentaNeon
         : StackMoneyTheme.cyanNeon;
 
@@ -193,17 +192,24 @@ class _BucketEditCardState extends State<BucketEditCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      width: AppSizes.x2,
-                      height: AppSizes.x12,
-                      decoration: BoxDecoration(
-                        color: _isImmediateLiquidity
-                            ? techColor
-                            : StackMoneyTheme.mutedGrey.withValues(alpha: 0.3),
-                        borderRadius: BorderRadius.circular(
-                          AppSizes.radiusLarge,
-                        ),
-                      ),
+                    ValueListenableBuilder(
+                      valueListenable: isImmediateLiquidity,
+                      builder: (_, liquidity, _) {
+                        return Container(
+                          width: AppSizes.x2,
+                          height: AppSizes.x12,
+                          decoration: BoxDecoration(
+                            color: liquidity
+                                ? techColor
+                                : StackMoneyTheme.mutedGrey.withValues(
+                                    alpha: 0.3,
+                                  ),
+                            borderRadius: BorderRadius.circular(
+                              AppSizes.radiusLarge,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(width: AppSizes.sizedBoxSmall),
                     Column(
@@ -281,9 +287,9 @@ class _BucketEditCardState extends State<BucketEditCard> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        ValueSignButton(
+                        SignToggleButton(
                           _toggleValueSign,
-                          initialValue: _isNegative
+                          initialValue: _isNegative.value
                               ? ValueSign.negative
                               : ValueSign.positive,
                         ),
@@ -338,13 +344,13 @@ class _BucketEditCardState extends State<BucketEditCard> {
         child: FittedBox(
           fit: BoxFit.contain,
           child: Switch(
-            value: _isImmediateLiquidity,
+            value: _isImmediateLiquidity.value,
             activeThumbColor: techColor,
             activeTrackColor: techColor.withValues(alpha: 0.15),
             inactiveThumbColor: StackMoneyTheme.mutedGrey,
             inactiveTrackColor: StackMoneyTheme.surface,
             onChanged: (value) {
-              setState(() => _isImmediateLiquidity = value);
+              _isImmediateLiquidity.value = value;
               _triggerAutoSave();
             },
           ),

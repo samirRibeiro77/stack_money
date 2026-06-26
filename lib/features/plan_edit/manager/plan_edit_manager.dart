@@ -300,9 +300,9 @@ class PlanEditManager {
   }
 
   Future<bool?> removeDistributionConfirmation(
-      String distributionName,
-      BuildContext context,
-      ) {
+    String distributionName,
+    BuildContext context,
+  ) {
     final l10n = AppLocalizations.of(context)!;
 
     return showDialog<bool>(
@@ -322,30 +322,13 @@ class PlanEditManager {
     final l10n = AppLocalizations.of(context)!;
 
     final backupState = currentPlan;
-    final distribution = currentPlan.distributions
-        .where((d) => d.id == id)
-        .firstOrNull;
 
-    final confirm = await showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => SmDialog(
-        message: l10n.deleteDistributionMessage,
-        content: distribution?.name,
-        note: l10n.deleteDistributionNote,
-        onCancel: () => Navigator.of(context).pop(false),
-        onConfirm: () => Navigator.of(context).pop(true),
-      ),
-    );
+    final list = List<DistributionRow>.from(currentPlan.distributions);
+    list.removeWhere((e) => e.id == id);
+    planNotifier.value = currentPlan.copyWith(distributions: list);
+    _autoSave();
 
-    if (confirm == true) {
-      final list = List<DistributionRow>.from(currentPlan.distributions);
-      list.removeWhere((e) => e.id == id);
-      planNotifier.value = currentPlan.copyWith(distributions: list);
-      _autoSave();
-
-      _triggerUndoSnackBar(context, l10n.deletedDistribution, backupState);
-    }
+    _triggerUndoSnackBar(context, l10n.deletedDistribution, backupState);
   }
 
   Future<void> triggerPlanActivation() async {
