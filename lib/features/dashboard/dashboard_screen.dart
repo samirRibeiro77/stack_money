@@ -5,7 +5,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
@@ -159,7 +159,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const SizedBox(height: AppSizes.x10),
 
         // Painel Telemetria com Gráfico Principal
-        StackMoneyCard(
+        SmCard(
           title: l10n.telemetryStream,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

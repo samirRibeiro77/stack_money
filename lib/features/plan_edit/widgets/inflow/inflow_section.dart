@@ -7,7 +7,7 @@ import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/widgets/flow_title.dart';
@@ -37,7 +37,7 @@ class InflowSection extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    return StackMoneyCard(
+    return SmCard(
       removePadding: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

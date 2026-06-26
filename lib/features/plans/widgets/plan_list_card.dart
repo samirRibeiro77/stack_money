@@ -5,10 +5,10 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
-import 'package:stack_money/core/widgets/plan_status.dart';
+import 'package:stack_money/core/widgets/sm_chip_button.dart';
 
 class PlanListCard extends StatelessWidget {
   final SalaryPlan plan;
@@ -31,7 +31,7 @@ class PlanListCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: AppSizes.x3),
       child: GestureDetector(
         onTap: onTap,
-        child: StackMoneyCard(
+        child: SmCard(
           shadowColor: shadowColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +45,7 @@ class PlanListCard extends StatelessWidget {
                     type: SecurityType.systemLocked,
                   ),
                   if (plan.isActive)
-                    PlanStatus(l10n.activePlan),
+                    SmChipButton(l10n.activePlan),
                 ],
               ),
               const Divider(),

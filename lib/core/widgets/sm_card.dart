@@ -4,13 +4,13 @@ import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/title_text.dart';
 
-class StackMoneyCard extends StatelessWidget {
+class SmCard extends StatelessWidget {
   final String? title;
   final Widget child;
   final Color shadowColor;
   final bool removePadding;
 
-  const StackMoneyCard({
+  const SmCard({
     this.title,
     required this.child,
     this.removePadding = false,

@@ -8,7 +8,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/core/widgets/value_sign_button.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
@@ -177,7 +177,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
               ]
             : null,
       ),
-      child: StackMoneyCard(
+      child: SmCard(
         shadowColor: techColor,
         removePadding: true,
         child: Column(

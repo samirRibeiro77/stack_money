@@ -4,8 +4,8 @@ import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/theme/theme.dart';
 
-class PlanStatus extends StatelessWidget {
-  const PlanStatus(
+class SmChipButton extends StatelessWidget {
+  const SmChipButton(
     this.title, {
     this.color = StackMoneyTheme.cyanNeon,
     this.onTap,

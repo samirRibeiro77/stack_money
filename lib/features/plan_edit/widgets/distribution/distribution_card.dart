@@ -7,7 +7,7 @@ import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/models/distribution_row.dart';
 
@@ -78,7 +78,7 @@ class DistributionCard extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: AppSizes.x2),
-        child: StackMoneyCard(
+        child: SmCard(
           key: ValueKey(row.id),
           shadowColor: techColor,
           child: Column(

@@ -6,8 +6,8 @@ import 'package:stack_money/core/helpers/money_input_formatter.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/plan_status.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_chip_button.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/core/widgets/value_sign_button.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -68,7 +68,7 @@ class BucketFormCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    return StackMoneyCard(
+    return SmCard(
       shadowColor: bucket.isImmediateLiquidity
           ? StackMoneyTheme.cyanNeon
           : StackMoneyTheme.magentaNeon,
@@ -121,7 +121,7 @@ class BucketFormCard extends StatelessWidget {
         ValueListenableBuilder(
           valueListenable: _liquidityListenable,
           builder: (_, isLiquidity, _) {
-            return PlanStatus(
+            return SmChipButton(
               isLiquidity ? l10n.liquid : l10n.invest,
               color: isLiquidity
                   ? StackMoneyTheme.cyanNeon

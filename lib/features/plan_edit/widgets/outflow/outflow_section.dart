@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/widgets/flow_title.dart';
@@ -42,7 +42,7 @@ class OutflowSection extends StatelessWidget {
         .toSet()
         .toList();
 
-    return StackMoneyCard(
+    return SmCard(
       removePadding: true,
       shadowColor: StackMoneyTheme.magentaNeon,
       child: Column(

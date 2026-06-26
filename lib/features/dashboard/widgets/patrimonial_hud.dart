@@ -6,7 +6,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 
 class PatrimonialHud extends StatefulWidget {
@@ -63,7 +63,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
       _controller.reset();
     }
 
-    return StackMoneyCard(
+    return SmCard(
       title: l10n.netWorth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -5,9 +5,9 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
-import 'package:stack_money/core/widgets/plan_status.dart';
+import 'package:stack_money/core/widgets/sm_chip_button.dart';
 
-class StackMoneyDialog extends StatelessWidget {
+class SmDialog extends StatelessWidget {
   final String? title;
   final String message;
   final String? content;
@@ -17,7 +17,7 @@ class StackMoneyDialog extends StatelessWidget {
   final VoidCallback? onCancel;
   final VoidCallback? onDeny;
 
-  const StackMoneyDialog({
+  const SmDialog({
     required this.message,
     required this.onConfirm,
     this.onCancel,
@@ -95,7 +95,7 @@ class StackMoneyDialog extends StatelessWidget {
                 children: [
                   /// Deny
                   if (onDeny != null) ...[
-                    PlanStatus(
+                    SmChipButton(
                       l10n.deny,
                       onTap: onDeny,
                       color: StackMoneyTheme.magentaNeon,
@@ -105,7 +105,7 @@ class StackMoneyDialog extends StatelessWidget {
 
                   /// Cancel
                   if (onCancel != null) ...[
-                    PlanStatus(
+                    SmChipButton(
                       l10n.cancel,
                       onTap: onCancel,
                       color: StackMoneyTheme.mutedGrey,
@@ -114,7 +114,7 @@ class StackMoneyDialog extends StatelessWidget {
                   ],
 
                   /// Confirm
-                  PlanStatus(l10n.confirm, onTap: onConfirm, color: color),
+                  SmChipButton(l10n.confirm, onTap: onConfirm, color: color),
                 ],
               ),
             ],

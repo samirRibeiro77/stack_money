@@ -6,7 +6,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -64,7 +64,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
       padding: const EdgeInsets.only(bottom: AppSizes.x8),
       child: GestureDetector(
         onTap: !isSecureActive ? widget.onHeaderTap : null,
-        child: StackMoneyCard(
+        child: SmCard(
           shadowColor: healthColor,
           child: Column(
             children: [
