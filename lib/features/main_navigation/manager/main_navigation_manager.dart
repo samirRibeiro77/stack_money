@@ -38,7 +38,7 @@ class MainNavigationManager {
       case NavBarTabs.buckets:
         return BucketControlScreen();
       case NavBarTabs.log:
-        return HistoryScreen(securityMode: securityMode);
+        return HistoryScreen();
     }
   }
 }
