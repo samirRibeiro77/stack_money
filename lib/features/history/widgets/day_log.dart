@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
-import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
 import 'package:stack_money/data/enum/security_type.dart';
@@ -103,7 +102,7 @@ class DayLog extends StatelessWidget {
       children: [
         SecurityText(
           StackMoneyString.formatMoney(transaction.actualValue, symbol: true),
-          style: textTheme.bodyMedium,
+          style: textTheme.bodyLarge,
         ),
         SecurityText(
           StackMoneyString.formatPercentage(

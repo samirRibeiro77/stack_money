@@ -4,7 +4,6 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
 import 'package:stack_money/data/models/history.dart';
-import 'package:stack_money/data/models/transaction.dart';
 import 'package:stack_money/features/history/widgets/day_log.dart';
 
 class HistoryLog extends StatelessWidget {
