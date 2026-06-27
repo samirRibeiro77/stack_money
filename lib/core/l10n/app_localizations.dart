@@ -245,7 +245,7 @@ abstract class AppLocalizations {
   /// Add new bucket slot text
   ///
   /// In en, this message translates to:
-  /// **'Add new bucket'**
+  /// **'New bucket'**
   String get newBucket;
 
   /// Category
@@ -287,7 +287,7 @@ abstract class AppLocalizations {
   /// Add new plan slot text
   ///
   /// In en, this message translates to:
-  /// **'Add new plan'**
+  /// **'New plan'**
   String get newPlan;
 
   /// Active plan tag
@@ -425,7 +425,7 @@ abstract class AppLocalizations {
   /// Add distribution rule slot text
   ///
   /// In en, this message translates to:
-  /// **'Add new distribution'**
+  /// **'New distribution'**
   String get newDistributionRule;
 
   /// Subcategory
@@ -643,6 +643,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Undo'**
   String get undo;
+
+  /// Select range text for datePicker
+  ///
+  /// In en, this message translates to:
+  /// **'Select range'**
+  String get selectRange;
+
+  /// Select range text for datePicker
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get startDate;
+
+  /// Select range text for datePicker
+  ///
+  /// In en, this message translates to:
+  /// **'End date'**
+  String get endDate;
 }
 
 class _AppLocalizationsDelegate

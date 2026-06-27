@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
@@ -8,8 +9,8 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
-import 'package:stack_money/core/widgets/value_sign_button.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
+import 'package:stack_money/core/widgets/sign_toggle_button.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -45,20 +46,24 @@ class _BucketEditCardState extends State<BucketEditCard> {
   bool _categoryHadFocus = false;
   bool _minValueHadFocus = false;
 
-  late bool _isImmediateLiquidity;
-  late bool _isNegative;
+  final _isImmediateLiquidity = ValueNotifier(false);
+  final _isNegative = ValueNotifier(false);
   bool _isSaving = false;
+
+  ValueListenable<bool> get isImmediateLiquidity => _isImmediateLiquidity;
+
+  ValueListenable<bool> get isNegative => _isNegative;
 
   @override
   void initState() {
     super.initState();
-    _isImmediateLiquidity = widget.bucket.isImmediateLiquidity;
-    _isNegative = widget.bucket.minValue < 0;
+    _isImmediateLiquidity.value = widget.bucket.isImmediateLiquidity;
+    _isNegative.value = widget.bucket.minValue < 0;
 
     _whereController = TextEditingController(text: widget.bucket.where);
     _categoryController = TextEditingController(text: widget.bucket.category);
     _minValueController = TextEditingController(
-      text: StackMoneyString.formatMoney(widget.bucket.minValue),
+      text: StackMoneyString.formatMoney(widget.bucket.minValue.abs()),
     );
 
     _whereFocus.addListener(_handleWhereFocusChange);
@@ -88,20 +93,10 @@ class _BucketEditCardState extends State<BucketEditCard> {
   }
 
   void _toggleValueSign() {
-    final rawNumber = _minValueController.text.replaceAll(
-      RegExp(r'[^0-9]'),
-      '',
-    );
-    double doubleValue = (double.tryParse(rawNumber) ?? 0.0) / 100.0;
-
-    setState(() {
-      _isNegative = !_isNegative;
-    });
-
-    if (_isNegative) doubleValue = -doubleValue;
-
-    _minValueController.text = doubleValue.toString();
-    _triggerAutoSave();
+    if (widget.bucket.minValue != 0) {
+      _isNegative.value = !_isNegative.value;
+      _triggerAutoSave();
+    }
   }
 
   Future<void> _triggerAutoSave() async {
@@ -109,28 +104,28 @@ class _BucketEditCardState extends State<BucketEditCard> {
       _minValueController.text,
     );
 
-    print(
-      '[SAVE] Raw: ${_minValueController.text} // Converted: ${StackMoneyNumber.parseMoneyStringToDouble(_minValueController.text)} // Real: $doubleValue',
-    );
-
-    if (_isNegative) doubleValue = -doubleValue;
+    if (_isNegative.value) doubleValue = -doubleValue;
 
     final updated = Bucket(
       id: widget.bucket.id,
       where: _whereController.text,
       category: _categoryController.text,
       minValue: doubleValue,
-      isImmediateLiquidity: _isImmediateLiquidity,
+      isImmediateLiquidity: _isImmediateLiquidity.value,
     );
 
     if (widget.bucket.equalsTo(updated)) return;
 
-    setState(() => _isSaving = true);
+    setState(() {
+      _isSaving = true;
+    });
     await widget.onAutoSave(updated);
 
     if (mounted) {
       Future.delayed(const Duration(milliseconds: 500), () {
-        if (mounted) setState(() => _isSaving = false);
+        setState(() {
+          _isSaving = false;
+        });
       });
     }
   }
@@ -156,17 +151,17 @@ class _BucketEditCardState extends State<BucketEditCard> {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    final Color techColor = _isNegative
+    final Color techColor = _isNegative.value
         ? StackMoneyTheme.magentaNeon
         : StackMoneyTheme.cyanNeon;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.fastOutSlowIn,
-      margin: const EdgeInsets.symmetric(vertical: 6.0),
+      margin: const EdgeInsets.symmetric(vertical: AppSizes.x3),
       decoration: BoxDecoration(
         color: StackMoneyTheme.surface,
-        borderRadius: BorderRadius.circular(14.0),
+        borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
         border: Border.all(
           color: _isSaving ? techColor : Colors.white.withValues(alpha: 0.04),
           width: _isSaving ? 1.0 : 0.5,
@@ -175,13 +170,13 @@ class _BucketEditCardState extends State<BucketEditCard> {
             ? [
                 BoxShadow(
                   color: techColor.withValues(alpha: 0.3),
-                  blurRadius: 12,
+                  blurRadius: AppSizes.radiusMedium,
                   spreadRadius: 1,
                 ),
               ]
             : null,
       ),
-      child: StackMoneyCard(
+      child: SmCard(
         shadowColor: techColor,
         removePadding: true,
         child: Column(
@@ -193,64 +188,60 @@ class _BucketEditCardState extends State<BucketEditCard> {
               },
               behavior: HitTestBehavior.opaque,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSizes.x8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 4,
-                          height: 24,
+                    ValueListenableBuilder(
+                      valueListenable: isImmediateLiquidity,
+                      builder: (_, liquidity, _) {
+                        return Container(
+                          width: AppSizes.x2,
+                          height: AppSizes.x12,
                           decoration: BoxDecoration(
-                            color: _isImmediateLiquidity
+                            color: liquidity
                                 ? techColor
                                 : StackMoneyTheme.mutedGrey.withValues(
                                     alpha: 0.3,
                                   ),
-                            borderRadius: BorderRadius.circular(2),
+                            borderRadius: BorderRadius.circular(
+                              AppSizes.radiusLarge,
+                            ),
                           ),
+                        );
+                      },
+                    ),
+                    const SizedBox(width: AppSizes.sizedBoxSmall),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SecurityText(
+                          StackMoneyString.formatTitle(
+                            _categoryController.text,
+                          ),
+                          style: textTheme.titleSmall?.copyWith(
+                            fontWeight: AppTypography.weightBold,
+                          ),
+                          type: SecurityType.systemLocked,
                         ),
-                        const SizedBox(width: AppSizes.x4),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SecurityText(
-                              StackMoneyString.formatTitle(
-                                _categoryController.text,
-                              ),
-                              style: const TextStyle(
-                                fontFamily: 'JetBrainsMono',
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              type: SecurityType.systemLocked,
-                            ),
-                            SecurityText(
-                              StackMoneyString.formatTitle(
-                                _whereController.text,
-                              ),
-                              style: const TextStyle(
-                                fontFamily: 'JetBrainsMono',
-                                fontSize: 9,
-                              ),
-                              activeColor: StackMoneyTheme.mutedGrey,
-                              type: SecurityType.systemLocked,
-                            ),
-                          ],
+                        SecurityText(
+                          StackMoneyString.formatTitle(_whereController.text),
+                          style: textTheme.titleSmall?.copyWith(
+                            fontSize: AppTypography.fontSmallest,
+                          ),
+                          activeColor: StackMoneyTheme.mutedGrey,
                         ),
                       ],
                     ),
+                    const Expanded(child: SizedBox()),
                     SecurityText(
                       StackMoneyString.formatMoney(
                         widget.bucket.minValue,
                         symbol: true,
                       ),
                       type: SecurityType.mask,
-                      style: const TextStyle(
-                        fontFamily: 'JetBrainsMono',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
+                      style: textTheme.bodyMedium?.copyWith(
+                        fontWeight: AppTypography.weightBold,
                       ),
                       activeColor: techColor,
                     ),
@@ -260,29 +251,13 @@ class _BucketEditCardState extends State<BucketEditCard> {
             ),
 
             if (widget.isExpanded && !isSecureActive) ...[
-              const Divider(
-                color: StackMoneyTheme.background,
-                height: 1,
-                thickness: 1,
-              ),
+              const Divider(color: StackMoneyTheme.background, height: 1),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSizes.x8),
                 child: Column(
                   children: [
                     Row(
                       children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _categoryController,
-                            focusNode: _categoryFocus,
-                            style: textTheme.bodySmall,
-                            decoration: StackMoneyTheme.inputDecoration(
-                              l10n.category,
-                              color: techColor,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: AppSizes.x6),
                         Expanded(
                           child: TextFormField(
                             controller: _whereController,
@@ -294,19 +269,31 @@ class _BucketEditCardState extends State<BucketEditCard> {
                             ),
                           ),
                         ),
+                        const SizedBox(width: AppSizes.sizedBoxMedium),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _categoryController,
+                            focusNode: _categoryFocus,
+                            style: textTheme.bodySmall,
+                            decoration: StackMoneyTheme.inputDecoration(
+                              l10n.category,
+                              color: techColor,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                    const SizedBox(height: AppSizes.x5),
+                    const SizedBox(height: AppSizes.sizedBoxMedium),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        ValueSignButton(
+                        SignToggleButton(
                           _toggleValueSign,
-                          initialValue: _isNegative
+                          initialValue: _isNegative.value
                               ? ValueSign.negative
                               : ValueSign.positive,
                         ),
-                        const SizedBox(width: AppSizes.x6),
+                        const SizedBox(width: AppSizes.sizedBoxMedium),
                         Expanded(
                           flex: 3,
                           child: TextFormField(
@@ -321,7 +308,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                             inputFormatters: [MoneyInputFormatter()],
                           ),
                         ),
-                        const SizedBox(width: AppSizes.x6),
+                        const SizedBox(width: AppSizes.sizedBoxMedium),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -357,13 +344,13 @@ class _BucketEditCardState extends State<BucketEditCard> {
         child: FittedBox(
           fit: BoxFit.contain,
           child: Switch(
-            value: _isImmediateLiquidity,
+            value: _isImmediateLiquidity.value,
             activeThumbColor: techColor,
             activeTrackColor: techColor.withValues(alpha: 0.15),
             inactiveThumbColor: StackMoneyTheme.mutedGrey,
             inactiveTrackColor: StackMoneyTheme.surface,
             onChanged: (value) {
-              setState(() => _isImmediateLiquidity = value);
+              _isImmediateLiquidity.value = value;
               _triggerAutoSave();
             },
           ),

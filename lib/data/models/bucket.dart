@@ -35,7 +35,7 @@ class Bucket {
     );
   }
 
-  String get name => '$category $where';
+  String get name => '$where $category';
 
   Map<String, dynamic> toJson() {
     return {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/widgets/flow_title.dart';
@@ -42,7 +42,8 @@ class OutflowSection extends StatelessWidget {
         .toSet()
         .toList();
 
-    return StackMoneyCard(
+    return SmCard(
+      removePadding: true,
       shadowColor: StackMoneyTheme.magentaNeon,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,24 +61,30 @@ class OutflowSection extends StatelessWidget {
 
               return Column(
                 children: [
-                  const SizedBox(height: AppSizes.x7),
-                  const Divider(),
+                  const Divider(color: StackMoneyTheme.background, height: 1),
 
-                  ...List.generate(plan.outflows.length, (index) {
-                    final row = plan.outflows[index];
-                    final isLast = index == plan.outflows.length - 1;
-                    final double absVal = plan.calculateOutflowAbsolute(row);
+                  Padding(
+                    padding: EdgeInsets.all(AppSizes.x8),
+                    child: Column(
+                      children: List.generate(plan.outflows.length, (index) {
+                        final row = plan.outflows[index];
+                        final isLast = index == plan.outflows.length - 1;
+                        final double absVal = plan.calculateOutflowAbsolute(
+                          row,
+                        );
 
-                    return OutflowSectionCard(
-                      row: row,
-                      index: index,
-                      availableDays: availableDays,
-                      isLast: isLast,
-                      absVal: absVal,
-                      onUpdate: onUpdate,
-                      onRemove: onRemove,
-                    );
-                  }),
+                        return OutflowSectionCard(
+                          row: row,
+                          index: index,
+                          availableDays: availableDays,
+                          isLast: isLast,
+                          absVal: absVal,
+                          onUpdate: onUpdate,
+                          onRemove: onRemove,
+                        );
+                      }),
+                    ),
+                  ),
                 ],
               );
             },

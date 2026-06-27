@@ -5,9 +5,9 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
-import 'package:stack_money/core/widgets/plan_status.dart';
+import 'package:stack_money/core/widgets/sm_chip_button.dart';
 
-class StackMoneyDialog extends StatelessWidget {
+class SmDialog extends StatelessWidget {
   final String? title;
   final String message;
   final String? content;
@@ -17,7 +17,7 @@ class StackMoneyDialog extends StatelessWidget {
   final VoidCallback? onCancel;
   final VoidCallback? onDeny;
 
-  const StackMoneyDialog({
+  const SmDialog({
     required this.message,
     required this.onConfirm,
     this.onCancel,
@@ -41,7 +41,7 @@ class StackMoneyDialog extends StatelessWidget {
     return Dialog(
       backgroundColor: Colors.transparent,
       shadowColor: color.withAlpha(15),
-      elevation: AppSizes.min,
+      elevation: 2,
       insetPadding: const EdgeInsets.all(AppSizes.x20),
       child: GlassmorphismEffect(
         containerHeight: null,
@@ -56,28 +56,26 @@ class StackMoneyDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// Title
-              Text(
-                StackMoneyString.formatTitle(_getTitle(l10n)),
-                style: textTheme.titleLarge?.copyWith(
-                  color: color,
-                  fontWeight: AppTypography.weightBold,
-                  letterSpacing: 1.0,
+              Center(
+                child: Text(
+                  StackMoneyString.formatTitle(
+                    _getTitle(l10n),
+                    useUnderline: false,
+                  ),
+                  style: textTheme.headlineSmall?.copyWith(color: color),
                 ),
               ),
 
               /// Body
               const SizedBox(height: AppSizes.x10),
-              Text(
-                StackMoneyString.formatTitle(message, useUnderline: false),
-                style: textTheme.bodySmall,
-              ),
+              Text(message, style: textTheme.bodySmall),
 
               /// Content
               if (content != null) ...[
                 const SizedBox(height: AppSizes.x2),
                 Text(
-                  StackMoneyString.formatTitle(content!, useUnderline: false),
-                  style: textTheme.bodyMedium?.copyWith(
+                  StackMoneyString.formatTitle(content!),
+                  style: textTheme.titleMedium?.copyWith(
                     color: color,
                     fontWeight: AppTypography.weightBold,
                   ),
@@ -97,7 +95,7 @@ class StackMoneyDialog extends StatelessWidget {
                 children: [
                   /// Deny
                   if (onDeny != null) ...[
-                    PlanStatus(
+                    SmChipButton(
                       l10n.deny,
                       onTap: onDeny,
                       color: StackMoneyTheme.magentaNeon,
@@ -107,7 +105,7 @@ class StackMoneyDialog extends StatelessWidget {
 
                   /// Cancel
                   if (onCancel != null) ...[
-                    PlanStatus(
+                    SmChipButton(
                       l10n.cancel,
                       onTap: onCancel,
                       color: StackMoneyTheme.mutedGrey,
@@ -116,7 +114,7 @@ class StackMoneyDialog extends StatelessWidget {
                   ],
 
                   /// Confirm
-                  PlanStatus(l10n.confirm, onTap: onConfirm, color: color),
+                  SmChipButton(l10n.confirm, onTap: onConfirm, color: color),
                 ],
               ),
             ],

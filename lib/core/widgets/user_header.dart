@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -96,8 +97,8 @@ class UserHeader extends StatelessWidget {
         displayName,
         style: textTheme.titleLarge?.copyWith(
           color: StackMoneyTheme.platinumSilver,
-          letterSpacing: 0.5,
-          fontSize: AppSizes.x10,
+          letterSpacing: AppTypography.spacingSmall,
+          fontSize: AppTypography.fontTitleLarge,
         ),
       ),
     );

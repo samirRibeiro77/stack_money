@@ -14,8 +14,7 @@ class TitleText extends StatelessWidget {
     return Text(
       StackMoneyString.formatTitle(text),
       style: textTheme.titleSmall?.copyWith(
-        color: StackMoneyTheme.mutedGrey,
-        letterSpacing: 1.5,
+        color: StackMoneyTheme.mutedGrey
       ),
     );
   }

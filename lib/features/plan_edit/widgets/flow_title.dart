@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/title_text.dart';
@@ -24,19 +25,22 @@ class FlowTitle extends StatelessWidget {
     return GestureDetector(
       onTap: toggleExpand,
       behavior: HitTestBehavior.opaque,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TitleText(StackMoneyString.formatTitle(title)),
-          Text(
-            StackMoneyString.formatMoney(balance, symbol: true),
-            style: textTheme.titleMedium?.copyWith(
-              color: color,
-              fontWeight: FontWeight.bold,
+      child: Padding(
+        padding: EdgeInsets.all(AppSizes.x8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TitleText(StackMoneyString.formatTitle(title)),
+            Text(
+              StackMoneyString.formatMoney(balance, symbol: true),
+              style: textTheme.titleMedium?.copyWith(
+                color: color,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -72,11 +72,12 @@ class OutflowSectionCard extends StatelessWidget {
                   style: textTheme.bodySmall,
                   decoration: StackMoneyTheme.inputDecoration(
                     l10n.deductionName,
+                    color: StackMoneyTheme.magentaNeon,
                   ),
                   onChanged: (val) => onUpdate(index, name: val),
                 ),
               ),
-              const SizedBox(width: AppSizes.x3),
+              const SizedBox(width: AppSizes.x6),
               SizedBox(
                 width: AppSizes.dropdownWidth,
                 child: DropdownButtonFormField<int>(
@@ -84,7 +85,10 @@ class OutflowSectionCard extends StatelessWidget {
                       ? row.targetDay
                       : daysList.first,
                   isDense: true,
-                  decoration: StackMoneyTheme.inputDecoration(l10n.target),
+                  decoration: StackMoneyTheme.inputDecoration(
+                    l10n.target,
+                    color: StackMoneyTheme.magentaNeon,
+                  ),
                   dropdownColor: StackMoneyTheme.surface,
                   items: daysList.map((d) {
                     return DropdownMenuItem(
@@ -98,22 +102,25 @@ class OutflowSectionCard extends StatelessWidget {
               if (!isLast)
                 IconButton(
                   icon: const Icon(
-                    Icons.delete_outline_rounded,
-                    color: StackMoneyTheme.magentaNeon,
+                    Icons.delete_forever,
+                    color: StackMoneyTheme.mutedGrey,
                     size: AppSizes.x10,
                   ),
                   onPressed: () => onRemove(index, context),
                 ),
             ],
           ),
-          const SizedBox(height: AppSizes.x3),
+          const SizedBox(height: AppSizes.sizedBoxSmall),
           Row(
             children: [
               Expanded(
                 child: DropdownButtonFormField<DeductionType>(
                   initialValue: row.type,
                   isDense: true,
-                  decoration: StackMoneyTheme.inputDecoration(l10n.rule),
+                  decoration: StackMoneyTheme.inputDecoration(
+                    l10n.rule,
+                    color: StackMoneyTheme.magentaNeon,
+                  ),
                   dropdownColor: StackMoneyTheme.surface,
                   items: DeductionType.values.map((type) {
                     return DropdownMenuItem(
@@ -127,7 +134,7 @@ class OutflowSectionCard extends StatelessWidget {
                   onChanged: (val) => onUpdate(index, type: val, value: 0.0),
                 ),
               ),
-              const SizedBox(width: AppSizes.x3),
+              const SizedBox(width: AppSizes.x6),
               Expanded(
                 child: TextFormField(
                   key: ValueKey('${row.id}_${row.type.name}'),
@@ -142,6 +149,7 @@ class OutflowSectionCard extends StatelessWidget {
                     row.type == DeductionType.fixed
                         ? l10n.brlCurrency
                         : l10n.percentSignal,
+                    color: StackMoneyTheme.magentaNeon,
                   ),
                   inputFormatters: row.type == DeductionType.fixed
                       ? [MoneyInputFormatter()]

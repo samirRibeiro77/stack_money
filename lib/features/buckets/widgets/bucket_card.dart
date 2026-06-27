@@ -32,17 +32,14 @@ class BucketCard extends StatelessWidget {
       direction: isSecureActive
           ? DismissDirection.none
           : DismissDirection.endToStart,
-      confirmDismiss: (direction) => confirmDismiss(
-        bucket.name,
-        context,
-      ),
-      onDismissed: (direction) => onDismissed(bucket.id),
+      confirmDismiss: (_) => confirmDismiss(bucket.name, context),
+      onDismissed: (_) => onDismissed(bucket.id),
       background: Container(
-        margin: const EdgeInsets.symmetric(vertical: 6.0),
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        margin: const EdgeInsets.symmetric(vertical: AppSizes.x3),
+        padding: const EdgeInsets.symmetric(horizontal: AppSizes.x10),
         decoration: BoxDecoration(
           color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
           border: Border.all(
             color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.3),
             width: 0.5,

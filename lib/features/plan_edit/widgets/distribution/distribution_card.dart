@@ -7,7 +7,7 @@ import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/models/distribution_row.dart';
 
@@ -78,7 +78,7 @@ class DistributionCard extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: AppSizes.x2),
-        child: StackMoneyCard(
+        child: SmCard(
           key: ValueKey(row.id),
           shadowColor: techColor,
           child: Column(
@@ -96,7 +96,7 @@ class DistributionCard extends StatelessWidget {
                       onChanged: (val) => onUpdate(index, cat: val),
                     ),
                   ),
-                  const SizedBox(width: AppSizes.x4),
+                  const SizedBox(width: AppSizes.sizedBoxMedium),
                   Expanded(
                     child: TextFormField(
                       initialValue: row.subCategory,
@@ -110,7 +110,7 @@ class DistributionCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSizes.x5),
+              const SizedBox(height: AppSizes.sizedBoxMedium),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -134,7 +134,7 @@ class DistributionCard extends StatelessWidget {
                           onUpdate(index, type: val, value: 0.0),
                     ),
                   ),
-                  const SizedBox(width: AppSizes.x5),
+                  const SizedBox(width: AppSizes.sizedBoxMedium),
                   Expanded(
                     flex: 1,
                     child: TextFormField(
@@ -157,7 +157,7 @@ class DistributionCard extends StatelessWidget {
                       onChanged: onChanged,
                     ),
                   ),
-                  const SizedBox(width: AppSizes.x5),
+                  const SizedBox(width: AppSizes.sizedBoxMedium),
                   Container(
                     height: AppSizes.x16,
                     padding: const EdgeInsets.symmetric(

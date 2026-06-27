@@ -11,7 +11,7 @@ import 'package:stack_money/data/models/bucket.dart';
 class BucketControlScreen extends StatefulWidget {
   const BucketControlScreen({super.key = const ValueKey(route)});
 
-  static const route = '/buckets_control';
+  static const route = '/buckets';
 
   @override
   State<BucketControlScreen> createState() => _BucketControlScreenState();
@@ -44,10 +44,10 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
 
         return ValueListenableBuilder<List<Bucket>>(
           valueListenable: _manager.bucketDeckNotifier,
-          builder: (context, bucketList, child) {
+          builder: (_, bucketList, _) {
             return ValueListenableBuilder<Set<String>>(
               valueListenable: _manager.expandedIdsNotifier,
-              builder: (context, expandedIds, _) {
+              builder: (_, expandedIds, _) {
                 return _buildBucketsContent(l10n, bucketList, expandedIds);
               },
             );
@@ -68,16 +68,14 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
           title: l10n.bucketsConfig,
           validation: _manager.expandState,
           toggle: _manager.toggleAllBuckets,
-          activeIcon: Icons.unfold_more,
-          inactiveIcon: Icons.unfold_less,
         ),
-        const SizedBox(height: AppSizes.x6),
+        const SizedBox(height: AppSizes.sizedBoxMedium),
 
         CardInitializeSlot(
           l10n.newBucket,
           onTap: _manager.initializeNewBucketSlot,
         ),
-        const SizedBox(height: AppSizes.x3),
+        const SizedBox(height: AppSizes.sizedBoxSmall),
 
         ...List.generate(bucketList.length, (index) {
           final bucket = bucketList[index];

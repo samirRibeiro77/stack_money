@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                 }
 
-                /// Login with Googl button
+                /// Login with Google button
                 return ElevatedButton.icon(
                   style: StackMoneyTheme.googleLoginButtonStyle,
                   onPressed: () async {
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   icon: const Icon(
                     Icons.g_mobiledata_rounded,
                     color: StackMoneyTheme.magentaNeon,
-                    size: AppSizes.x16,
+                    size: AppSizes.x20,
                   ),
                   label: Text(l10n.loginWithGoogle),
                 );

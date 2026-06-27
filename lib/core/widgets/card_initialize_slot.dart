@@ -20,18 +20,27 @@ class CardInitializeSlot extends StatelessWidget {
     return GestureDetector(
       onTap: !isSecureActive ? onTap : null,
       child: Container(
-        width: double.infinity,
         height: AppSizes.x26,
         margin: const EdgeInsets.symmetric(vertical: AppSizes.x4),
         child: CustomPaint(
           painter: _MatrixDashedPainter(
-            color: StackMoneyTheme.mutedGrey.withValues(alpha: 0.35),
+            color: StackMoneyTheme.mutedGrey.withValues(alpha: 0.3),
           ),
-          child: Center(
-            child: Text(
-              '+ ${StackMoneyString.formatTitle(text)}',
-              style: textTheme.labelSmall,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.add_rounded,
+                color: StackMoneyTheme.mutedGrey.withValues(alpha: 0.4),
+              ),
+              const SizedBox(width: AppSizes.sizedBoxSmall),
+              Text(
+                StackMoneyString.formatTitle(text),
+                style: textTheme.titleSmall?.copyWith(
+                  color: StackMoneyTheme.mutedGrey.withValues(alpha: 0.4),
+                ),
+              ),
+            ],
           ),
         ),
       ),

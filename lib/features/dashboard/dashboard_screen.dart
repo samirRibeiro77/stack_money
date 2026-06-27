@@ -5,7 +5,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
-import 'package:stack_money/core/widgets/stack_money_card.dart';
+import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
@@ -65,6 +65,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             return ValueListenableBuilder<List<Bucket>>(
               valueListenable: _manager.parametersNotifier,
               builder: (context, paramList, child) {
+                paramList.sort((a, b) => a.name.compareTo(b.name));
+
                 return ValueListenableBuilder<List<History>>(
                   valueListenable: _manager.historyTimelineNotifier,
                   builder: (context, historyList, child) {
@@ -108,14 +110,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               color: StackMoneyTheme.magentaNeon,
               size: AppSizes.x24,
             ),
-            const SizedBox(height: AppSizes.x8),
+            const SizedBox(height: AppSizes.sizedBoxLarge),
             Text(
               StackMoneyString.formatTitle(l10n.systemLinkFailed),
               style: textTheme.headlineMedium?.copyWith(
                 color: StackMoneyTheme.magentaNeon,
               ),
             ),
-            const SizedBox(height: AppSizes.x4),
+            const SizedBox(height: AppSizes.sizedBoxSmall),
             TextButton(
               onPressed: _manager.loadFirebaseDashboardData,
               child: Text(
@@ -157,7 +159,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const SizedBox(height: AppSizes.x10),
 
         // Painel Telemetria com Gráfico Principal
-        StackMoneyCard(
+        SmCard(
           title: l10n.telemetryStream,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,12 +172,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   isSystemVisible: isVisible,
                 ),
               ),
-              const SizedBox(height: AppSizes.x6),
-              const Divider(color: Colors.white10),
-              const SizedBox(height: AppSizes.x8),
+              const SizedBox(height: AppSizes.sizedBoxMedium),
+              const Divider(height: 1),
+              const SizedBox(height: AppSizes.sizedBoxMedium),
               TelemetryFilterBar(
                 currentState: currentFilter,
                 isEnabled: isVisible,
+                firstDate: historyList.first.date,
                 onFilterChanged: _manager.updateChartFilter,
               ),
             ],
@@ -189,10 +192,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           title: l10n.allocationBuckets,
           toggle: _manager.toggleAllBuckets,
           validation: _manager.masterExpandState,
-          activeIcon: Icons.unfold_more,
-          inactiveIcon: Icons.unfold_less,
         ),
-        const SizedBox(height: AppSizes.x8),
+        const SizedBox(height: AppSizes.sizedBoxMedium),
 
         // Listagem dos Potes Convertidos em Componentes Dedicados do Dashboard
         ...List.generate(paramList.length, (index) {

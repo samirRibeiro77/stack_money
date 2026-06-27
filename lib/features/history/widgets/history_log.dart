@@ -28,7 +28,7 @@ class HistoryLog extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: AppSizes.x6),
+        const SizedBox(height: AppSizes.sizedBoxMedium),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -39,25 +39,20 @@ class HistoryLog extends StatelessWidget {
                 hideSameYear: false,
                 fullYear: true,
               ),
-              style: textTheme.labelLarge,
+              style: textTheme.bodyMedium?.copyWith(color: StackMoneyTheme.mutedGrey),
             ),
             SecurityText(
               StackMoneyString.formatMoney(history.total, symbol: true),
               activeColor: StackMoneyTheme.mutedGrey,
-              style: textTheme.labelMedium,
+              style: textTheme.bodyMedium,
             ),
           ],
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: AppSizes.x2),
-          child: Divider(color: StackMoneyTheme.carbonGrey, thickness: 0.5),
-        ),
-
+        const Divider(),
         ...history.transactions.values.map((tx) {
           return DayLog(transaction: tx);
         }),
-
-        const SizedBox(height: AppSizes.x6),
+        const SizedBox(height: AppSizes.sizedBoxLarge),
       ],
     );
   }

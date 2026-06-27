@@ -4,7 +4,7 @@ import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/stack_money_dialog.dart';
+import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
@@ -102,7 +102,7 @@ class PlanEditManager {
     final confirm = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (context) => StackMoneyDialog(
+      builder: (context) => SmDialog(
         message: l10n.deletePlanMessage,
         content: currentPlan.name,
         note: l10n.deletePlanNote,
@@ -166,7 +166,7 @@ class PlanEditManager {
       final confirm = await showDialog<bool>(
         context: context,
         barrierDismissible: false,
-        builder: (context) => StackMoneyDialog(
+        builder: (context) => SmDialog(
           message: l10n.deleteInflowMessage,
           content: content,
           note: l10n.deleteInflowNote,
@@ -242,7 +242,7 @@ class PlanEditManager {
       final confirm = await showDialog<bool>(
         context: context,
         barrierDismissible: false,
-        builder: (context) => StackMoneyDialog(
+        builder: (context) => SmDialog(
           message: l10n.deleteOutflowMessage,
           content: outflow.name,
           note: l10n.deleteOutflowNote,
@@ -300,15 +300,15 @@ class PlanEditManager {
   }
 
   Future<bool?> removeDistributionConfirmation(
-      String distributionName,
-      BuildContext context,
-      ) {
+    String distributionName,
+    BuildContext context,
+  ) {
     final l10n = AppLocalizations.of(context)!;
 
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (context) => StackMoneyDialog(
+      builder: (context) => SmDialog(
         message: l10n.deleteDistributionMessage,
         content: distributionName,
         note: l10n.deleteDistributionNote,
@@ -322,30 +322,13 @@ class PlanEditManager {
     final l10n = AppLocalizations.of(context)!;
 
     final backupState = currentPlan;
-    final distribution = currentPlan.distributions
-        .where((d) => d.id == id)
-        .firstOrNull;
 
-    final confirm = await showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => StackMoneyDialog(
-        message: l10n.deleteDistributionMessage,
-        content: distribution?.name,
-        note: l10n.deleteDistributionNote,
-        onCancel: () => Navigator.of(context).pop(false),
-        onConfirm: () => Navigator.of(context).pop(true),
-      ),
-    );
+    final list = List<DistributionRow>.from(currentPlan.distributions);
+    list.removeWhere((e) => e.id == id);
+    planNotifier.value = currentPlan.copyWith(distributions: list);
+    _autoSave();
 
-    if (confirm == true) {
-      final list = List<DistributionRow>.from(currentPlan.distributions);
-      list.removeWhere((e) => e.id == id);
-      planNotifier.value = currentPlan.copyWith(distributions: list);
-      _autoSave();
-
-      _triggerUndoSnackBar(context, l10n.deletedDistribution, backupState);
-    }
+    _triggerUndoSnackBar(context, l10n.deletedDistribution, backupState);
   }
 
   Future<void> triggerPlanActivation() async {

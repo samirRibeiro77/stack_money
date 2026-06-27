@@ -61,7 +61,7 @@ class DistributionSection extends StatelessWidget {
             onRemove: onRemove,
           );
         }),
-        const SizedBox(height: AppSizes.x4),
+        const SizedBox(height: AppSizes.sizedBoxSmall),
         CardInitializeSlot(l10n.newDistributionRule, onTap: onAddSlot),
       ],
     );

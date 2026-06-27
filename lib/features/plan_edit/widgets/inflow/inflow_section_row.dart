@@ -10,6 +10,9 @@ import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/models/inflow_row.dart';
 
 class InflowSectionRow extends StatelessWidget {
+  static const _startMonth = 1;
+  static const _endMonth = 31;
+
   const InflowSectionRow(
     this.row, {
     required this.index,
@@ -69,7 +72,7 @@ class InflowSectionRow extends StatelessWidget {
                   onChanged: (val) => onUpdate(index, type: val, value: 0.0),
                 ),
               ),
-              const SizedBox(width: AppSizes.x3),
+              const SizedBox(width: AppSizes.sizedBoxMedium),
 
               /// Value (% or $)
               Expanded(
@@ -93,17 +96,16 @@ class InflowSectionRow extends StatelessWidget {
                   onChanged: onChanged,
                 ),
               ),
-              const SizedBox(width: AppSizes.x3),
+              const SizedBox(width: AppSizes.sizedBoxMedium),
 
               /// Day dropdown
               SizedBox(
                 width: AppSizes.dropdownWidth,
                 child: DropdownButtonFormField<int>(
-                  initialValue: row.day.clamp(1, 31),
-                  // Alterado de 0 a 31 para forçar o range real sem dia 0
+                  initialValue: row.day.clamp(_startMonth, _endMonth),
                   decoration: StackMoneyTheme.inputDecoration(l10n.day),
                   dropdownColor: StackMoneyTheme.surface,
-                  items: List.generate(31, (i) => i + 1).map((d) {
+                  items: List.generate(_endMonth, (i) => i + 1).map((d) {
                     return DropdownMenuItem(
                       value: d,
                       child: Text('$d', style: textTheme.bodySmall),
@@ -117,12 +119,11 @@ class InflowSectionRow extends StatelessWidget {
               if (!isLast) ...[
                 IconButton(
                   icon: const Icon(
-                    Icons.delete_outline_rounded,
-                    color: StackMoneyTheme.magentaNeon,
-                    size: 20,
+                    Icons.delete_forever,
+                    color: StackMoneyTheme.mutedGrey,
+                    size: AppSizes.x10,
                   ),
-                  onPressed: () =>
-                      onRemove(index, context),
+                  onPressed: () => onRemove(index, context),
                 ),
               ],
             ],

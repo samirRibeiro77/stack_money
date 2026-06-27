@@ -12,6 +12,8 @@ import 'package:stack_money/features/contribution_sprint/widgets/sprint_wizard_b
 class ContributionSprintScreen extends StatefulWidget {
   const ContributionSprintScreen({super.key});
 
+  static const route = '/contribution_wizard';
+
   @override
   State<ContributionSprintScreen> createState() =>
       _ContributionSprintScreenState();
@@ -35,6 +37,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
 
     return ValueListenableBuilder<bool>(
       valueListenable: _manager.isLoadingNotifier,
@@ -60,22 +63,20 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
             final isLast = currentIndex == _manager.buckets.length - 1;
 
             return Scaffold(
-              backgroundColor: StackMoneyTheme.background,
               appBar: AppBar(
                 backgroundColor: StackMoneyTheme.background,
-                elevation: 0,
-                scrolledUnderElevation: 0,
                 leading: IconButton(
                   icon: Icon(
                     isFirst
                         ? WizardButtonAction.exit.icon
                         : WizardButtonAction.previous.icon,
+                    size: AppSizes.x12,
                   ),
                   onPressed: () => _manager.previousStep(context),
                 ),
                 title: Text(
                   StackMoneyString.formatTitle(l10n.moneySprint),
-                  style: Theme.of(context).textTheme.titleSmall,
+                  style: textTheme.titleMedium,
                 ),
                 centerTitle: true,
                 actions: [
@@ -84,6 +85,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                       isLast
                           ? WizardButtonAction.finish.icon
                           : WizardButtonAction.next.icon,
+                      size: AppSizes.x12,
                     ),
                     onPressed: () => _manager.nextStep(context),
                   ),
@@ -116,8 +118,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                         switchActualSign: _manager.changeActualSign,
                         switchLiquidity: _manager.changeLiquidity,
                       ),
-                      const SizedBox(height: AppSizes.x8),
-
+                      const SizedBox(height: AppSizes.sizedBoxLarge),
                       Row(
                         children: [
                           Expanded(
@@ -128,7 +129,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                                   : WizardButtonAction.previous,
                             ),
                           ),
-                          const SizedBox(width: AppSizes.x6),
+                          const SizedBox(width: AppSizes.sizedBoxLarge),
                           Expanded(
                             child: SprintWizardButton(
                               onPressed: () => _manager.nextStep(context),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppTypography {
   // --- Font Sizes ---
-  static const double fontDisplayLarge = 57.0;
+  static const double fontDisplayLarge = 60.0;
   static const double fontDisplayMedium = 45.0;
-  static const double fontDisplaySmall = 32.0;
+  static const double fontDisplaySmall = 30.0;
 
   static const double fontHeadlineLarge = 32.0;
   static const double fontHeadlineMedium = 28.0;
@@ -23,9 +23,17 @@ class AppTypography {
   static const double fontLabelSmall = 11.0;
 
   static const double fontSmallest = 10.0;
+  static const double navBar = 7.0;
 
   // --- Font Weights ---
   static const FontWeight weightBold = FontWeight.w700;
   static const FontWeight weightMedium = FontWeight.w500;
   static const FontWeight weightNormal = FontWeight.w400;
+
+  // --- Font Weights ---
+  static const double spacingHuge = 2.0;
+  static const double spacingLarge = 1.5;
+  static const double spacingMedium = 1.0;
+  static const double spacingSmall = 0.5;
+  static const double spacingTiny = 0.2;
 }

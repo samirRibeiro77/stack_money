@@ -3,7 +3,7 @@ import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/plan_status.dart';
+import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/data/enum/plan_edit_actions.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/manager/plan_edit_manager.dart';
@@ -15,6 +15,8 @@ import 'package:stack_money/features/plan_edit/widgets/distribution/distribution
 
 class PlanEditScreen extends StatefulWidget {
   final SalaryPlan plan;
+
+  static const route = '/plan_edit';
 
   const PlanEditScreen({required this.plan, super.key});
 
@@ -61,18 +63,15 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
         actions: [
           ValueListenableBuilder<SalaryPlan>(
             valueListenable: _manager.planNotifier,
-            builder: (context, currentPlan, _) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppSizes.x8),
-                child: PlanStatus(
-                  currentPlan.isActive ? l10n.activePlan : l10n.setActive,
-                  color: currentPlan.isActive
-                      ? StackMoneyTheme.cyanNeon
-                      : StackMoneyTheme.mutedGrey,
-                  onTap: currentPlan.isActive
-                      ? null
-                      : () async => await _manager.triggerPlanActivation(),
-                ),
+            builder: (_, currentPlan, _) {
+              return SmChipButton(
+                currentPlan.isActive ? l10n.activePlan : l10n.setActive,
+                color: currentPlan.isActive
+                    ? StackMoneyTheme.cyanNeon
+                    : StackMoneyTheme.mutedGrey,
+                onTap: currentPlan.isActive
+                    ? null
+                    : () async => await _manager.triggerPlanActivation(),
               );
             },
           ),
@@ -126,7 +125,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
               controller: _manager.scrollController,
               clipBehavior: Clip.none,
               slivers: [
-                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x8)),
+                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.sizedBoxLarge)),
 
                 /// Inflow Section
                 SliverToBoxAdapter(

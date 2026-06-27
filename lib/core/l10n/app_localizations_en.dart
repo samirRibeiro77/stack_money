@@ -84,7 +84,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bucketsConfig => 'Buckets Config';
 
   @override
-  String get newBucket => 'Add new bucket';
+  String get newBucket => 'New bucket';
 
   @override
   String get category => 'Category';
@@ -105,7 +105,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get plansConfig => 'Plans Config';
 
   @override
-  String get newPlan => 'Add new plan';
+  String get newPlan => 'New plan';
 
   @override
   String get activePlan => 'Active plan';
@@ -186,7 +186,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get newDistributionRule => 'Add new distribution';
+  String get newDistributionRule => 'New distribution';
 
   @override
   String get subcategory => 'Subcategory';
@@ -299,4 +299,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get undo => 'Undo';
+
+  @override
+  String get selectRange => 'Select range';
+
+  @override
+  String get startDate => 'Start date';
+
+  @override
+  String get endDate => 'End date';
 }

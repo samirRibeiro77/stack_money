@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
-import 'package:stack_money/core/widgets/stack_money_dialog.dart';
+import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
@@ -107,7 +107,7 @@ class PlansManager {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (context) => StackMoneyDialog(
+      builder: (context) => SmDialog(
         message: l10n.deletePlanMessage,
         content: planName,
         note: l10n.deletePlanNote,

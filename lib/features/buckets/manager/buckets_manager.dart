@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
-import 'package:stack_money/core/widgets/stack_money_dialog.dart';
+import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
 
@@ -113,7 +113,7 @@ class BucketsManager {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (context) => StackMoneyDialog(
+      builder: (context) => SmDialog(
         message: l10n.deleteBucketMessage,
         content: bucketName,
         note: l10n.deleteBucketNote,
