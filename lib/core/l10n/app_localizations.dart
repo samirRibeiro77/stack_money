@@ -661,6 +661,52 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'End date'**
   String get endDate;
+
+  /// Title to show on alert when finishing a contribution sprint wizard
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Sprint'**
+  String get confirmContributionSprintTitle;
+
+  /// Message to show on alert when finishing a contribution sprint wizard
+  ///
+  /// In en, this message translates to:
+  /// **'[ METRICS_SNAPSHOT ]\nNet Worth: {netWorth}\nLiquidity: {liquidity}'**
+  String confirmContributionSprintMessage(Object liquidity, Object netWorth);
+
+  /// Note to show on alert when finishing a contribution sprint wizard
+  ///
+  /// In en, this message translates to:
+  /// **'[ CHANGELOG ]\n{changes}'**
+  String confirmContributionSprintNote(Object changes);
+
+  /// Note line with details to show on alert when finishing a contribution sprint wizard
+  ///
+  /// In en, this message translates to:
+  /// **'{bucket}: {oldValue} -> {newValue}'**
+  String confirmContributionSprintNoteLine(
+    Object bucket,
+    Object newValue,
+    Object oldValue,
+  );
+
+  /// No changes detected on the app
+  ///
+  /// In en, this message translates to:
+  /// **'No changes detected'**
+  String get noChangesDetected;
+
+  /// Arrow up icon
+  ///
+  /// In en, this message translates to:
+  /// **'▲'**
+  String get arrowUp;
+
+  /// Arrow down icon
+  ///
+  /// In en, this message translates to:
+  /// **'▼'**
+  String get arrowDown;
 }
 
 class _AppLocalizationsDelegate

@@ -308,4 +308,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get endDate => 'End date';
+
+  @override
+  String get confirmContributionSprintTitle => 'Confirm Sprint';
+
+  @override
+  String confirmContributionSprintMessage(Object liquidity, Object netWorth) {
+    return '[ METRICS_SNAPSHOT ]\nNet Worth: $netWorth\nLiquidity: $liquidity';
+  }
+
+  @override
+  String confirmContributionSprintNote(Object changes) {
+    return '[ CHANGELOG ]\n$changes';
+  }
+
+  @override
+  String confirmContributionSprintNoteLine(
+    Object bucket,
+    Object newValue,
+    Object oldValue,
+  ) {
+    return '$bucket: $oldValue -> $newValue';
+  }
+
+  @override
+  String get noChangesDetected => 'No changes detected';
+
+  @override
+  String get arrowUp => '▲';
+
+  @override
+  String get arrowDown => '▼';
 }
