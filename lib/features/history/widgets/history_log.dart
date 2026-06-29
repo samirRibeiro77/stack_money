@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
@@ -8,14 +7,10 @@ import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/features/history/widgets/day_log.dart';
 
 class HistoryLog extends StatelessWidget {
-  const HistoryLog({
-    required this.securityMode,
-    required this.history,
-    super.key,
-  });
+  const HistoryLog({required this.history, this.previousHistory, super.key});
 
   final History history;
-  final ValueListenable<bool> securityMode;
+  final History? previousHistory;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +34,9 @@ class HistoryLog extends StatelessWidget {
                 hideSameYear: false,
                 fullYear: true,
               ),
-              style: textTheme.bodyMedium?.copyWith(color: StackMoneyTheme.mutedGrey),
+              style: textTheme.bodyMedium?.copyWith(
+                color: StackMoneyTheme.mutedGrey,
+              ),
             ),
             SecurityText(
               StackMoneyString.formatMoney(history.total, symbol: true),
@@ -50,7 +47,11 @@ class HistoryLog extends StatelessWidget {
         ),
         const Divider(),
         ...history.transactions.values.map((tx) {
-          return DayLog(transaction: tx);
+          final prevTx = previousHistory?.transactions.values
+              .where((pt) => pt.id == tx.id)
+              .firstOrNull;
+
+          return DayLog(transaction: tx, previousTransaction: prevTx);
         }),
         const SizedBox(height: AppSizes.sizedBoxLarge),
       ],

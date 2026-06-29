@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
@@ -9,13 +8,9 @@ import 'package:stack_money/features/history/manager/history_manager.dart';
 import 'package:stack_money/features/history/widgets/history_log.dart';
 
 class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({
-    required this.securityMode,
-    super.key = const ValueKey(route),
-  });
+  const HistoryScreen({super.key = const ValueKey(route)});
 
   static const route = '/history';
-  final ValueListenable<bool> securityMode;
 
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
@@ -103,10 +98,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
       children: [
         TitleText(l10n.auditLogs),
         const SizedBox(height: AppSizes.sizedBoxMedium),
-        ..._manager.logs.map((historyDay) {
+
+        ...List.generate(_manager.logs.length, (index) {
+          final historyDay = _manager.logs[index];
+          final nextIndex = index + 1;
+          final previousHistoryDay = nextIndex < _manager.logs.length
+              ? _manager.logs[nextIndex]
+              : null;
+
           return HistoryLog(
             history: historyDay,
-            securityMode: widget.securityMode,
+            previousHistory: previousHistoryDay,
           );
         }),
       ],
