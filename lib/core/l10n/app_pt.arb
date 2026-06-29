@@ -64,7 +64,7 @@
   "copy": "Copiar",
   "dayX": "D{d}",
   "lastKnownValue": "Último valor conhecido:",
-  "moneySprint": "Money Sprint",
+  "moneySprint": "Corrida financeira",
   "liquid": "Liquidez",
   "invest": "Investimento",
   "addToMin": "Somar ao min:",
@@ -94,5 +94,12 @@
   "undo": "Desfazer",
   "selectRange": "Selecione o intervalo",
   "startDate": "Inicio",
-  "endDate": "Fim"
+  "endDate": "Fim",
+  "confirmContributionSprintTitle": "Confirmar status",
+  "confirmContributionSprintMessage": "[ RESUMO DE METRICAS ]\nPatrimonio: {netWorth}\nLiquido: {liquidity}",
+  "confirmContributionSprintNote": "[ MUDANÇAS ]\n{changes}",
+  "confirmContributionSprintNoteLine": "{bucket}: {oldValue} -> {newValue}",
+  "noChangesDetected": "Nenhuma alteração identificada",
+  "arrowUp": "▲",
+  "arrowDown": "▼"
 }

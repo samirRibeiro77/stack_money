@@ -375,5 +375,33 @@
   "endDate": "End date",
   "@endDate": {
     "description": "Select range text for datePicker"
+  },
+  "confirmContributionSprintTitle": "Confirm Sprint",
+  "@confirmContributionSprintTitle": {
+    "description": "Title to show on alert when finishing a contribution sprint wizard"
+  },
+  "confirmContributionSprintMessage": "[ METRICS_SNAPSHOT ]\nNet Worth: {netWorth}\nLiquidity: {liquidity}",
+  "@confirmContributionSprintMessage": {
+    "description": "Message to show on alert when finishing a contribution sprint wizard"
+  },
+  "confirmContributionSprintNote": "[ CHANGELOG ]\n{changes}",
+  "@confirmContributionSprintNote": {
+    "description": "Note to show on alert when finishing a contribution sprint wizard"
+  },
+  "confirmContributionSprintNoteLine": "{bucket}: {oldValue} -> {newValue}",
+  "@confirmContributionSprintNoteLine": {
+    "description": "Note line with details to show on alert when finishing a contribution sprint wizard"
+  },
+  "noChangesDetected": "No changes detected",
+  "@noChangesDetected": {
+    "description": "No changes detected on the app"
+  },
+  "arrowUp": "▲",
+  "@arrowUp": {
+    "description": "Arrow up icon"
+  },
+  "arrowDown": "▼",
+  "@arrowDown": {
+    "description": "Arrow down icon"
   }
 }

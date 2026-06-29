@@ -215,7 +215,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get lastKnownValue => 'Último valor conhecido:';
 
   @override
-  String get moneySprint => 'Money Sprint';
+  String get moneySprint => 'Corrida financeira';
 
   @override
   String get liquid => 'Liquidez';
@@ -308,4 +308,35 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get endDate => 'Fim';
+
+  @override
+  String get confirmContributionSprintTitle => 'Confirmar status';
+
+  @override
+  String confirmContributionSprintMessage(Object liquidity, Object netWorth) {
+    return '[ RESUMO DE METRICAS ]\nPatrimonio: $netWorth\nLiquido: $liquidity';
+  }
+
+  @override
+  String confirmContributionSprintNote(Object changes) {
+    return '[ MUDANÇAS ]\n$changes';
+  }
+
+  @override
+  String confirmContributionSprintNoteLine(
+    Object bucket,
+    Object newValue,
+    Object oldValue,
+  ) {
+    return '$bucket: $oldValue -> $newValue';
+  }
+
+  @override
+  String get noChangesDetected => 'Nenhuma alteração identificada';
+
+  @override
+  String get arrowUp => '▲';
+
+  @override
+  String get arrowDown => '▼';
 }
