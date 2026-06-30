@@ -52,51 +52,56 @@ class InflowSection extends StatelessWidget {
             builder: (_, isExpand, _) {
               if (!isExpand) return SizedBox.shrink();
 
-              return Column(
-                children: [
-                  const Divider(color: StackMoneyTheme.background, height: 1),
-                  Padding(
-                    padding: EdgeInsets.all(AppSizes.x8),
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          initialValue: plan.baseSalary > 0
-                              ? StackMoneyString.formatMoney(plan.baseSalary)
-                              : '',
-                          keyboardType: TextInputType.number,
-                          style: textTheme.bodySmall?.copyWith(
-                            fontWeight: AppTypography.weightBold,
+              return IgnorePointer(
+                ignoring: plan.isActive,
+                child: Column(
+                  children: [
+                    const Divider(color: StackMoneyTheme.background, height: 1),
+                    Padding(
+                      padding: EdgeInsets.all(AppSizes.x8),
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            initialValue: plan.baseSalary > 0
+                                ? StackMoneyString.formatMoney(plan.baseSalary)
+                                : '',
+                            keyboardType: TextInputType.number,
+                            style: textTheme.bodySmall?.copyWith(
+                              fontWeight: AppTypography.weightBold,
+                            ),
+                            decoration: StackMoneyTheme.inputDecoration(
+                              l10n.baseSalary,
+                              readOnly: plan.isActive,
+                            ),
+                            inputFormatters: [MoneyInputFormatter()],
+                            onChanged: (value) => onBaseUpdate(
+                              StackMoneyNumber.parseMoneyStringToDouble(value),
+                            ),
                           ),
-                          decoration: StackMoneyTheme.inputDecoration(
-                            l10n.baseSalary,
-                          ),
-                          inputFormatters: [MoneyInputFormatter()],
-                          onChanged: (value) => onBaseUpdate(
-                            StackMoneyNumber.parseMoneyStringToDouble(value),
-                          ),
-                        ),
-                        const SizedBox(height: AppSizes.sizedBoxMedium),
+                          const SizedBox(height: AppSizes.sizedBoxMedium),
 
-                        ...List.generate(plan.inflows.length, (index) {
-                          final row = plan.inflows[index];
-                          final isLast = index == plan.inflows.length - 1;
-                          final double absVal = plan.calculateInflowAbsolute(
-                            row,
-                          );
+                          ...List.generate(plan.inflows.length, (index) {
+                            final row = plan.inflows[index];
+                            final isLast = index == plan.inflows.length - 1;
+                            final double absVal = plan.calculateInflowAbsolute(
+                              row,
+                            );
 
-                          return InflowSectionRow(
-                            row,
-                            index: index,
-                            isLast: isLast,
-                            absVal: absVal,
-                            onUpdate: onUpdate,
-                            onRemove: onRemove,
-                          );
-                        }),
-                      ],
+                            return InflowSectionRow(
+                              row,
+                              index: index,
+                              isReadOnly: plan.isActive,
+                              isLast: isLast,
+                              absVal: absVal,
+                              onUpdate: onUpdate,
+                              onRemove: onRemove,
+                            );
+                          }),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
           ),

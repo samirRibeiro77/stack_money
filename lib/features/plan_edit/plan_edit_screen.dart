@@ -126,16 +126,13 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
 
                 /// Inflow Section
                 SliverToBoxAdapter(
-                  child: IgnorePointer(
-                    ignoring: currentPlan.isActive,
-                    child: InflowSection(
-                      plan: currentPlan,
-                      expandState: _manager.inflowExpandState,
-                      toggleExpandState: _manager.toggleInflowExpand,
-                      onBaseUpdate: _manager.updateBaseSalary,
-                      onUpdate: _manager.updateInflow,
-                      onRemove: _manager.removeInflow,
-                    ),
+                  child: InflowSection(
+                    plan: currentPlan,
+                    expandState: _manager.inflowExpandState,
+                    toggleExpandState: _manager.toggleInflowExpand,
+                    onBaseUpdate: _manager.updateBaseSalary,
+                    onUpdate: _manager.updateInflow,
+                    onRemove: _manager.removeInflow,
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),

@@ -16,6 +16,7 @@ class InflowSectionRow extends StatelessWidget {
   const InflowSectionRow(
     this.row, {
     required this.index,
+    required this.isReadOnly,
     required this.isLast,
     required this.absVal,
     required this.onUpdate,
@@ -25,6 +26,7 @@ class InflowSectionRow extends StatelessWidget {
 
   final InflowRow row;
   final int index;
+  final bool isReadOnly;
   final bool isLast;
   final double absVal;
   final Function(int index, {InflowType? type, double? value, int? day})
@@ -58,7 +60,10 @@ class InflowSectionRow extends StatelessWidget {
                 width: AppSizes.dropdownWidth,
                 child: DropdownButtonFormField<InflowType>(
                   initialValue: row.type,
-                  decoration: StackMoneyTheme.inputDecoration(l10n.type),
+                  decoration: StackMoneyTheme.inputDecoration(
+                    l10n.type,
+                    readOnly: isReadOnly,
+                  ),
                   dropdownColor: StackMoneyTheme.surface,
                   items: InflowType.values.map((type) {
                     return DropdownMenuItem(
@@ -89,6 +94,7 @@ class InflowSectionRow extends StatelessWidget {
                     row.type == InflowType.fixed
                         ? l10n.brlCurrency
                         : l10n.percentSignal,
+                    readOnly: isReadOnly,
                   ),
                   inputFormatters: row.type == InflowType.fixed
                       ? [MoneyInputFormatter()]
@@ -103,7 +109,10 @@ class InflowSectionRow extends StatelessWidget {
                 width: AppSizes.dropdownWidth,
                 child: DropdownButtonFormField<int>(
                   initialValue: row.day.clamp(_startMonth, _endMonth),
-                  decoration: StackMoneyTheme.inputDecoration(l10n.day),
+                  decoration: StackMoneyTheme.inputDecoration(
+                    l10n.day,
+                    readOnly: isReadOnly,
+                  ),
                   dropdownColor: StackMoneyTheme.surface,
                   items: List.generate(_endMonth, (i) => i + 1).map((d) {
                     return DropdownMenuItem(
@@ -116,28 +125,35 @@ class InflowSectionRow extends StatelessWidget {
               ),
 
               /// Delete icon
-              if (!isLast) ...[
-                IconButton(
-                  icon: const Icon(
-                    Icons.delete_forever,
-                    color: StackMoneyTheme.mutedGrey,
-                    size: AppSizes.x10,
+              if (!isLast && !isReadOnly) ...[
+                SizedBox(
+                  height: AppSizes.x16,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.delete_forever,
+                      color: StackMoneyTheme.mutedGrey,
+                      size: AppSizes.x10,
+                    ),
+                    onPressed: () => onRemove(index, context),
                   ),
-                  onPressed: () => onRemove(index, context),
                 ),
               ],
             ],
           ),
-          if (row.type == InflowType.percentageBase && row.value > 0)
-            Align(
-              alignment: Alignment.centerRight,
+          Align(
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+              height: AppSizes.x8,
               child: Text(
-                l10n.converted(
-                  StackMoneyString.formatMoney(absVal, symbol: true),
-                ),
+                row.type == InflowType.percentageBase
+                    ? l10n.converted(
+                        StackMoneyString.formatMoney(absVal, symbol: true),
+                      )
+                    : '',
                 style: textTheme.labelSmall,
               ),
             ),
+          ),
         ],
       ),
     );
