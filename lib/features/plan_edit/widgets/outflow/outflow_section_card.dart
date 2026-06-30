@@ -169,18 +169,15 @@ class OutflowSectionCard extends StatelessWidget {
             ],
           ),
           if (row.type == DeductionType.percentageGross && row.value > 0)
-            Padding(
-              padding: EdgeInsets.only(top: AppSizes.x3),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  l10n.deducted(
-                    StackMoneyString.formatMoney(absVal, symbol: true),
-                  ),
-                  style: textTheme.labelSmall,
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                l10n.deducted(
+                  StackMoneyString.formatMoney(absVal, symbol: true),
                 ),
+                style: textTheme.labelSmall,
               ),
-            ),
+            )
         ],
       ),
     );
