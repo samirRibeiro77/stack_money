@@ -56,9 +56,12 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
               ),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            title: EditableTitle(
-              currentPlan.name,
-              onSave: currentPlan.isActive ? (_){} : (newName) => _manager.updatePlanName(newName),
+            title: IgnorePointer(
+              ignoring: currentPlan.isActive,
+              child: EditableTitle(
+                currentPlan.name,
+                onSave: (newName) => _manager.updatePlanName(newName),
+              ),
             ),
             centerTitle: false,
             backgroundColor: StackMoneyTheme.background,
