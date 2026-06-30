@@ -16,6 +16,7 @@ class DistributionCard extends StatelessWidget {
     required this.row,
     required this.techColor,
     required this.index,
+    required this.isReadOnly,
     required this.availableDays,
     required this.computedValue,
     required this.onUpdate,
@@ -27,6 +28,7 @@ class DistributionCard extends StatelessWidget {
   final DistributionRow row;
   final Color techColor;
   final int index;
+  final bool isReadOnly;
   final List<int> availableDays;
   final double computedValue;
   final Function(
@@ -92,6 +94,7 @@ class DistributionCard extends StatelessWidget {
                       style: textTheme.bodySmall,
                       decoration: StackMoneyTheme.inputDecoration(
                         l10n.category,
+                        readOnly: isReadOnly,
                       ),
                       onChanged: (val) => onUpdate(index, cat: val),
                     ),
@@ -104,6 +107,7 @@ class DistributionCard extends StatelessWidget {
                       style: textTheme.bodySmall,
                       decoration: StackMoneyTheme.inputDecoration(
                         l10n.subcategory,
+                        readOnly: isReadOnly,
                       ),
                       onChanged: (val) => onUpdate(index, sub: val),
                     ),
@@ -119,7 +123,10 @@ class DistributionCard extends StatelessWidget {
                     child: DropdownButtonFormField<AllocationType>(
                       initialValue: row.type,
                       isDense: true,
-                      decoration: StackMoneyTheme.inputDecoration(l10n.type),
+                      decoration: StackMoneyTheme.inputDecoration(
+                        l10n.type,
+                        readOnly: isReadOnly,
+                      ),
                       dropdownColor: StackMoneyTheme.surface,
                       items: AllocationType.values.map((type) {
                         return DropdownMenuItem(
@@ -150,6 +157,7 @@ class DistributionCard extends StatelessWidget {
                         row.type == AllocationType.fixed
                             ? l10n.brlCurrency
                             : l10n.percentSignal,
+                        readOnly: isReadOnly,
                       ),
                       inputFormatters: row.type == AllocationType.fixed
                           ? [MoneyInputFormatter()]

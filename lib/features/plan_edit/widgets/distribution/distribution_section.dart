@@ -54,6 +54,7 @@ class DistributionSection extends StatelessWidget {
             row: row,
             techColor: techColor,
             index: index,
+            isReadOnly: plan.isActive,
             availableDays: availableDays,
             computedValue: computedValue,
             onUpdate: onUpdate,
