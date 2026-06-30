@@ -122,7 +122,9 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
               controller: _manager.scrollController,
               clipBehavior: Clip.none,
               slivers: [
-                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.sizedBoxLarge)),
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: AppSizes.sizedBoxLarge),
+                ),
 
                 /// Inflow Section
                 SliverToBoxAdapter(
@@ -139,15 +141,12 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
 
                 /// Outflow Section
                 SliverToBoxAdapter(
-                  child: IgnorePointer(
-                    ignoring: currentPlan.isActive,
-                    child: OutflowSection(
-                      plan: currentPlan,
-                      expandState: _manager.outflowExpandState,
-                      toggleExpandState: _manager.toggleOutflowExpand,
-                      onUpdate: _manager.updateOutflow,
-                      onRemove: _manager.removeOutflow,
-                    ),
+                  child: OutflowSection(
+                    plan: currentPlan,
+                    expandState: _manager.outflowExpandState,
+                    toggleExpandState: _manager.toggleOutflowExpand,
+                    onUpdate: _manager.updateOutflow,
+                    onRemove: _manager.removeOutflow,
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),

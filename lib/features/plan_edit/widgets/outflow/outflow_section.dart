@@ -59,33 +59,37 @@ class OutflowSection extends StatelessWidget {
             builder: (_, isExpand, _) {
               if (!isExpand) return const SizedBox.shrink();
 
-              return Column(
-                children: [
-                  const Divider(color: StackMoneyTheme.background, height: 1),
+              return IgnorePointer(
+                ignoring: plan.isActive,
+                child: Column(
+                  children: [
+                    const Divider(color: StackMoneyTheme.background, height: 1),
 
-                  Padding(
-                    padding: EdgeInsets.all(AppSizes.x8),
-                    child: Column(
-                      children: List.generate(plan.outflows.length, (index) {
-                        final row = plan.outflows[index];
-                        final isLast = index == plan.outflows.length - 1;
-                        final double absVal = plan.calculateOutflowAbsolute(
-                          row,
-                        );
+                    Padding(
+                      padding: EdgeInsets.all(AppSizes.x8),
+                      child: Column(
+                        children: List.generate(plan.outflows.length, (index) {
+                          final row = plan.outflows[index];
+                          final isLast = index == plan.outflows.length - 1;
+                          final double absVal = plan.calculateOutflowAbsolute(
+                            row,
+                          );
 
-                        return OutflowSectionCard(
-                          row: row,
-                          index: index,
-                          availableDays: availableDays,
-                          isLast: isLast,
-                          absVal: absVal,
-                          onUpdate: onUpdate,
-                          onRemove: onRemove,
-                        );
-                      }),
+                          return OutflowSectionCard(
+                            row: row,
+                            index: index,
+                            isReadOnly: plan.isActive,
+                            availableDays: availableDays,
+                            isLast: isLast,
+                            absVal: absVal,
+                            onUpdate: onUpdate,
+                            onRemove: onRemove,
+                          );
+                        }),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
           ),
