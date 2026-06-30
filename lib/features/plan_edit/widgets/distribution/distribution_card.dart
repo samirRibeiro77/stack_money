@@ -83,157 +83,170 @@ class DistributionCard extends StatelessWidget {
         child: SmCard(
           key: ValueKey(row.id),
           shadowColor: techColor,
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      initialValue: row.category,
-                      textCapitalization: TextCapitalization.sentences,
-                      style: textTheme.bodySmall,
-                      decoration: StackMoneyTheme.inputDecoration(
-                        l10n.category,
-                        readOnly: isReadOnly,
-                      ),
-                      onChanged: (val) => onUpdate(index, cat: val),
-                    ),
-                  ),
-                  const SizedBox(width: AppSizes.sizedBoxMedium),
-                  Expanded(
-                    child: TextFormField(
-                      initialValue: row.subCategory,
-                      textCapitalization: TextCapitalization.sentences,
-                      style: textTheme.bodySmall,
-                      decoration: StackMoneyTheme.inputDecoration(
-                        l10n.subcategory,
-                        readOnly: isReadOnly,
-                      ),
-                      onChanged: (val) => onUpdate(index, sub: val),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSizes.sizedBoxMedium),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: DropdownButtonFormField<AllocationType>(
-                      initialValue: row.type,
-                      isDense: true,
-                      decoration: StackMoneyTheme.inputDecoration(
-                        l10n.type,
-                        readOnly: isReadOnly,
-                      ),
-                      dropdownColor: StackMoneyTheme.surface,
-                      items: AllocationType.values.map((type) {
-                        return DropdownMenuItem(
-                          value: type,
-                          child: Text(
-                            StackMoneyString.formatTitle(type.symbol(l10n)),
-                            style: textTheme.bodySmall,
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (val) =>
-                          onUpdate(index, type: val, value: 0.0),
-                    ),
-                  ),
-                  const SizedBox(width: AppSizes.sizedBoxMedium),
-                  Expanded(
-                    flex: 1,
-                    child: TextFormField(
-                      key: ValueKey('${row.id}_nested_${row.type.name}'),
-                      initialValue: row.value > 0
-                          ? (row.type == AllocationType.fixed
-                                ? StackMoneyString.formatMoney(row.value)
-                                : StackMoneyString.formatPercentage(row.value))
-                          : '',
-                      keyboardType: TextInputType.number,
-                      style: textTheme.bodySmall,
-                      decoration: StackMoneyTheme.inputDecoration(
-                        row.type == AllocationType.fixed
-                            ? l10n.brlCurrency
-                            : l10n.percentSignal,
-                        readOnly: isReadOnly,
-                      ),
-                      inputFormatters: row.type == AllocationType.fixed
-                          ? [MoneyInputFormatter()]
-                          : [PercentageInputFormatter()],
-                      onChanged: onChanged,
-                    ),
-                  ),
-                  const SizedBox(width: AppSizes.sizedBoxMedium),
-                  Container(
-                    height: AppSizes.x16,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSizes.x2,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppSizes.x3),
-                      border: Border.all(
-                        color: isReadOnly
-                            ? StackMoneyTheme.cyanNeon.withValues(alpha: 0.30)
-                            : Colors.white.withValues(alpha: 0.06),
+          removePadding: true,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              AppSizes.x8,
+              AppSizes.x10,
+              AppSizes.x8,
+              AppSizes.x2,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        initialValue: row.category,
+                        textCapitalization: TextCapitalization.sentences,
+                        style: textTheme.bodySmall,
+                        decoration: StackMoneyTheme.inputDecoration(
+                          l10n.category,
+                          readOnly: isReadOnly,
+                        ),
+                        onChanged: (val) => onUpdate(index, cat: val),
                       ),
                     ),
-                    child: Row(
-                      children: daysList.map((d) {
-                        final bool isSelected = row.targetDay == d;
-                        if (isReadOnly && !isSelected) {
-                          return SizedBox.shrink();
-                        }
-
-                        return GestureDetector(
-                          onTap: () => onUpdate(index, targetDay: d),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppSizes.x3,
-                              vertical: AppSizes.x3,
-                            ),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? techColor.withValues(alpha: 0.15)
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(AppSizes.x2),
-                            ),
+                    const SizedBox(width: AppSizes.sizedBoxMedium),
+                    Expanded(
+                      child: TextFormField(
+                        initialValue: row.subCategory,
+                        textCapitalization: TextCapitalization.sentences,
+                        style: textTheme.bodySmall,
+                        decoration: StackMoneyTheme.inputDecoration(
+                          l10n.subcategory,
+                          readOnly: isReadOnly,
+                        ),
+                        onChanged: (val) => onUpdate(index, sub: val),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSizes.sizedBoxMedium),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: DropdownButtonFormField<AllocationType>(
+                        initialValue: row.type,
+                        isDense: true,
+                        decoration: StackMoneyTheme.inputDecoration(
+                          l10n.type,
+                          readOnly: isReadOnly,
+                        ),
+                        dropdownColor: StackMoneyTheme.surface,
+                        items: AllocationType.values.map((type) {
+                          return DropdownMenuItem(
+                            value: type,
                             child: Text(
-                              l10n.dayX(d),
-                              style: textTheme.bodySmall?.copyWith(
-                                fontSize: AppTypography.fontSmallest,
-                                fontWeight: AppTypography.weightBold,
-                                color: isSelected
-                                    ? techColor
-                                    : StackMoneyTheme.mutedGrey,
-                              ),
+                              StackMoneyString.formatTitle(type.symbol(l10n)),
+                              style: textTheme.bodySmall,
                             ),
-                          ),
-                        );
-                      }).toList(),
+                          );
+                        }).toList(),
+                        onChanged: (val) =>
+                            onUpdate(index, type: val, value: 0.0),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              if (row.type != AllocationType.fixed) ...[
-                Padding(
-                  padding: EdgeInsets.only(top: AppSizes.x3),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      l10n.deducted(
-                        StackMoneyString.formatMoney(
-                          computedValue,
-                          symbol: true,
+                    const SizedBox(width: AppSizes.sizedBoxMedium),
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
+                        key: ValueKey('${row.id}_nested_${row.type.name}'),
+                        initialValue: row.value > 0
+                            ? (row.type == AllocationType.fixed
+                                  ? StackMoneyString.formatMoney(row.value)
+                                  : StackMoneyString.formatPercentage(
+                                      row.value,
+                                    ))
+                            : '',
+                        keyboardType: TextInputType.number,
+                        style: textTheme.bodySmall,
+                        decoration: StackMoneyTheme.inputDecoration(
+                          row.type == AllocationType.fixed
+                              ? l10n.brlCurrency
+                              : l10n.percentSignal,
+                          readOnly: isReadOnly,
+                        ),
+                        inputFormatters: row.type == AllocationType.fixed
+                            ? [MoneyInputFormatter()]
+                            : [PercentageInputFormatter()],
+                        onChanged: onChanged,
+                      ),
+                    ),
+                    const SizedBox(width: AppSizes.sizedBoxMedium),
+                    Container(
+                      height: AppSizes.x16,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSizes.x2,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(AppSizes.x3),
+                        border: Border.all(
+                          color: isReadOnly
+                              ? StackMoneyTheme.cyanNeon.withValues(alpha: 0.30)
+                              : Colors.white.withValues(alpha: 0.06),
                         ),
                       ),
+                      child: Row(
+                        children: daysList.map((d) {
+                          final bool isSelected = row.targetDay == d;
+                          if (isReadOnly && !isSelected) {
+                            return SizedBox.shrink();
+                          }
+
+                          return GestureDetector(
+                            onTap: () => onUpdate(index, targetDay: d),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppSizes.x3,
+                                vertical: AppSizes.x3,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? techColor.withValues(alpha: 0.15)
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(
+                                  AppSizes.x2,
+                                ),
+                              ),
+                              child: Text(
+                                l10n.dayX(d),
+                                style: textTheme.bodySmall?.copyWith(
+                                  fontSize: AppTypography.fontSmallest,
+                                  fontWeight: AppTypography.weightBold,
+                                  color: isSelected
+                                      ? techColor
+                                      : StackMoneyTheme.mutedGrey,
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: SizedBox(
+                    height: AppSizes.x8,
+                    child: Text(
+                      row.type != AllocationType.fixed
+                          ? l10n.deducted(
+                              StackMoneyString.formatMoney(
+                                computedValue,
+                                symbol: true,
+                              ),
+                            )
+                          : '',
                       style: textTheme.labelSmall,
                     ),
                   ),
                 ),
               ],
-            ],
+            ),
           ),
         ),
       ),
