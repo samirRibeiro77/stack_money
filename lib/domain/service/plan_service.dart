@@ -20,8 +20,7 @@ class PlanManagementService {
     await _repository.purgePlan(id);
   }
 
-  /// 🔥 NOVO GATILHO DE ATIVAÇÃO ATÔMICA: Delega o lote de inversão de estado para o repositório
-  Future<void> setActivePlanInBatch(String targetPlanId) async {
-    await _repository.setActivePlanInBatch(targetPlanId);
+  Future<void> updateActiveStatusInBatch(String targetPlanId, bool isActive) async {
+    await _repository.updateActiveStatusInBatch(targetPlanId, isActive);
   }
 }

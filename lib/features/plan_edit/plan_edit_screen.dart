@@ -44,83 +44,77 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: AppSizes.x10,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: EditableTitle(
-          _manager.currentPlan.name,
-          onSave: (newName) => _manager.updatePlanName(newName),
-        ),
-        centerTitle: false,
-        backgroundColor: StackMoneyTheme.background,
-        surfaceTintColor: StackMoneyTheme.carbonGrey,
-        actions: [
-          ValueListenableBuilder<SalaryPlan>(
-            valueListenable: _manager.planNotifier,
-            builder: (_, currentPlan, _) {
-              return SmChipButton(
+    return ValueListenableBuilder<SalaryPlan>(
+      valueListenable: _manager.planNotifier,
+      builder: (context, currentPlan, _) {
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: AppSizes.x10,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            title: EditableTitle(
+              currentPlan.name,
+              onSave: currentPlan.isActive ? (_){} : (newName) => _manager.updatePlanName(newName),
+            ),
+            centerTitle: false,
+            backgroundColor: StackMoneyTheme.background,
+            surfaceTintColor: StackMoneyTheme.carbonGrey,
+            actions: [
+              SmChipButton(
                 currentPlan.isActive ? l10n.activePlan : l10n.setActive,
                 color: currentPlan.isActive
                     ? StackMoneyTheme.cyanNeon
                     : StackMoneyTheme.mutedGrey,
-                onTap: currentPlan.isActive
-                    ? null
-                    : () async => await _manager.triggerPlanActivation(),
-              );
-            },
-          ),
+                onTap: () async => await _manager.togglePlanActivation(),
+              ),
 
-          PopupMenuButton<PlanEditActions>(
-            icon: const Icon(
-              Icons.more_vert_rounded,
-              color: StackMoneyTheme.mutedGrey,
-            ),
-            color: StackMoneyTheme.carbonGrey,
-            onSelected: (value) {
-              switch (value) {
-                case PlanEditActions.archive:
-                  _manager.archivePlan(context);
-                  break;
-                case PlanEditActions.delete:
-                  _manager.deletePlan(context);
-                  break;
-                case PlanEditActions.copy:
-                  _manager.copyPlan(context);
-                  break;
-              }
-            },
-            itemBuilder: (context) => PlanEditActions.values.map((action) {
-              return PopupMenuItem(
-                value: action,
-                child: Row(
-                  children: [
-                    Icon(action.icon, color: action.color),
-                    SizedBox(width: AppSizes.x2),
-                    Text(
-                      action.text(l10n),
-                      style: textTheme.bodySmall?.copyWith(
-                        color: action.color,
-                        fontWeight: AppTypography.weightBold,
-                      ),
-                    ),
-                  ],
+              PopupMenuButton<PlanEditActions>(
+                enabled: !currentPlan.isActive,
+                icon: const Icon(
+                  Icons.more_vert_rounded,
+                  color: StackMoneyTheme.mutedGrey,
                 ),
-              );
-            }).toList(),
+                color: StackMoneyTheme.carbonGrey,
+                onSelected: (value) {
+                  switch (value) {
+                    case PlanEditActions.archive:
+                      _manager.archivePlan(context);
+                      break;
+                    case PlanEditActions.delete:
+                      _manager.deletePlan(context);
+                      break;
+                    case PlanEditActions.copy:
+                      _manager.copyPlan(context);
+                      break;
+                  }
+                },
+                itemBuilder: (context) => PlanEditActions.values.map((action) {
+                  return PopupMenuItem(
+                    value: action,
+                    child: Row(
+                      children: [
+                        Icon(action.icon, color: action.color),
+                        const SizedBox(width: AppSizes.x2),
+                        Text(
+                          action.text(l10n),
+                          style: textTheme.bodySmall?.copyWith(
+                            color: action.color,
+                            fontWeight: AppTypography.weightBold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: ValueListenableBuilder<SalaryPlan>(
-        valueListenable: _manager.planNotifier,
-        builder: (_, currentPlan, _) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSizes.x8),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSizes.x8),
             child: CustomScrollView(
               controller: _manager.scrollController,
               clipBehavior: Clip.none,
@@ -129,30 +123,36 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
 
                 /// Inflow Section
                 SliverToBoxAdapter(
-                  child: InflowSection(
-                    plan: currentPlan,
-                    expandState: _manager.inflowExpandState,
-                    toggleExpandState: _manager.toggleInflowExpand,
-                    onBaseUpdate: _manager.updateBaseSalary,
-                    onUpdate: _manager.updateInflow,
-                    onRemove: _manager.removeInflow,
+                  child: IgnorePointer(
+                    ignoring: currentPlan.isActive,
+                    child: InflowSection(
+                      plan: currentPlan,
+                      expandState: _manager.inflowExpandState,
+                      toggleExpandState: _manager.toggleInflowExpand,
+                      onBaseUpdate: _manager.updateBaseSalary,
+                      onUpdate: _manager.updateInflow,
+                      onRemove: _manager.removeInflow,
+                    ),
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),
 
                 /// Outflow Section
                 SliverToBoxAdapter(
-                  child: OutflowSection(
-                    plan: currentPlan,
-                    expandState: _manager.outflowExpandState,
-                    toggleExpandState: _manager.toggleOutflowExpand,
-                    onUpdate: _manager.updateOutflow,
-                    onRemove: _manager.removeOutflow,
+                  child: IgnorePointer(
+                    ignoring: currentPlan.isActive,
+                    child: OutflowSection(
+                      plan: currentPlan,
+                      expandState: _manager.outflowExpandState,
+                      toggleExpandState: _manager.toggleOutflowExpand,
+                      onUpdate: _manager.updateOutflow,
+                      onRemove: _manager.removeOutflow,
+                    ),
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),
 
-                /// Net Salary Buffer Section
+                /// Net Salary Buffer Section (Mantido ativo por ser puramente visual)
                 SliverPersistentHeader(
                   pinned: true,
                   delegate: NetSalaryStickyHud(plan: currentPlan),
@@ -161,12 +161,15 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
 
                 /// Distribution Section
                 SliverToBoxAdapter(
-                  child: DistributionSection(
-                    plan: currentPlan,
-                    onAddSlot: _manager.initializeNewDistributionSlot,
-                    onUpdate: _manager.updateDistribution,
-                    confirmDismiss: _manager.removeDistributionConfirmation,
-                    onRemove: _manager.removeDistribution,
+                  child: IgnorePointer(
+                    ignoring: currentPlan.isActive,
+                    child: DistributionSection(
+                      plan: currentPlan,
+                      onAddSlot: _manager.initializeNewDistributionSlot,
+                      onUpdate: _manager.updateDistribution,
+                      confirmDismiss: _manager.removeDistributionConfirmation,
+                      onRemove: _manager.removeDistribution,
+                    ),
                   ),
                 ),
                 const SliverToBoxAdapter(
@@ -174,9 +177,9 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
