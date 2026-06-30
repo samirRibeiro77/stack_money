@@ -56,18 +56,18 @@ class NetSalaryProgress extends StatelessWidget {
                       color: dayColor,
                     ),
                   ),
-                  if (!isMaxCollapsed) ...[
-                    const SizedBox(width: AppSizes.x2),
-                    Text(
-                      l10n.netValue(
-                        StackMoneyString.formatMoney(netForDay, symbol: true),
-                      ),
-                      style: textTheme.bodySmall?.copyWith(
-                        color: StackMoneyTheme.mutedGrey,
-                        fontSize: AppTypography.fontSmallest,
-                      ),
+                  const SizedBox(width: AppSizes.x3),
+                  Text(
+                    l10n.netValue(
+                      StackMoneyString.formatMoney(netForDay, symbol: true),
                     ),
-                  ],
+                    style: textTheme.bodySmall?.copyWith(
+                      color: StackMoneyTheme.mutedGrey,
+                      fontSize: isMaxCollapsed
+                          ? AppTypography.navBar
+                          : AppTypography.fontSmallest,
+                    ),
+                  ),
                 ],
               ),
               Text(

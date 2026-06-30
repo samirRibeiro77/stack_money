@@ -44,26 +44,31 @@ class DistributionSection extends StatelessWidget {
         ? StackMoneyTheme.magentaNeon
         : StackMoneyTheme.cyanNeon;
 
-    return Column(
-      children: [
-        ...List.generate(plan.distributions.length, (index) {
-          final row = plan.distributions[index];
-          final double computedValue = plan.calculateRowAbsoluteValue(row);
+    return IgnorePointer(
+      ignoring: plan.isActive,
+      child: Column(
+        children: [
+          ...List.generate(plan.distributions.length, (index) {
+            final row = plan.distributions[index];
+            final double computedValue = plan.calculateRowAbsoluteValue(row);
 
-          return DistributionCard(
-            row: row,
-            techColor: techColor,
-            index: index,
-            availableDays: availableDays,
-            computedValue: computedValue,
-            onUpdate: onUpdate,
-            confirmDismiss: confirmDismiss,
-            onRemove: onRemove,
-          );
-        }),
-        const SizedBox(height: AppSizes.sizedBoxSmall),
-        CardInitializeSlot(l10n.newDistributionRule, onTap: onAddSlot),
-      ],
+            return DistributionCard(
+              row: row,
+              techColor: techColor,
+              index: index,
+              isReadOnly: plan.isActive,
+              availableDays: availableDays,
+              computedValue: computedValue,
+              onUpdate: onUpdate,
+              confirmDismiss: confirmDismiss,
+              onRemove: onRemove,
+            );
+          }),
+          const SizedBox(height: AppSizes.sizedBoxSmall),
+          if (!plan.isActive)
+            CardInitializeSlot(l10n.newDistributionRule, onTap: onAddSlot),
+        ],
+      ),
     );
   }
 }

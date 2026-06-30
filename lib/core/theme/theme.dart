@@ -19,6 +19,7 @@ class StackMoneyTheme {
     String label, {
     Color color = StackMoneyTheme.cyanNeon,
     bool useUnderline = true,
+    bool readOnly = false,
   }) {
     return InputDecoration(
       labelText: StackMoneyString.formatTitle(
@@ -27,7 +28,9 @@ class StackMoneyTheme {
       ),
       alignLabelWithHint: true,
       labelStyle: darkTheme.textTheme.bodySmall,
-      floatingLabelStyle: darkTheme.textTheme.bodyLarge?.copyWith(color: color),
+      floatingLabelStyle: darkTheme.textTheme.bodyLarge?.copyWith(
+        color: readOnly ? color.withValues(alpha: 0.30) : color,
+      ),
       isDense: true,
       contentPadding: const EdgeInsets.symmetric(
         horizontal: AppSizes.x4,
@@ -37,13 +40,28 @@ class StackMoneyTheme {
         minHeight: AppSizes.x16,
         maxHeight: AppSizes.x16,
       ),
+      suffixIcon: readOnly
+          ? Icon(
+              Icons.lock_outline_rounded,
+              color: color.withValues(alpha: 0.40),
+              size: AppSizes.x5,
+            )
+          : null,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppSizes.x3),
-        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.06)),
+        borderSide: BorderSide(
+          color: readOnly
+              ? color.withValues(alpha: 0.30)
+              : Colors.white.withValues(alpha: 0.06),
+          width: 1,
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppSizes.x3),
-        borderSide: BorderSide(color: color, width: 1),
+        borderSide: BorderSide(
+          color: readOnly ? color.withValues(alpha: 0.30) : color,
+          width: 1,
+        ),
       ),
     );
   }

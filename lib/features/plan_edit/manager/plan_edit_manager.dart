@@ -25,16 +25,11 @@ class PlanEditManager {
   final _scrollController = ScrollController();
 
   ScrollController get scrollController => _scrollController;
-
   ValueListenable<bool> get inflowExpandState => _inflowExpandState;
-
   ValueListenable<bool> get outflowExpandState => _outflowExpandState;
 
-  void toggleInflowExpand() =>
-      _inflowExpandState.value = !_inflowExpandState.value;
-
-  void toggleOutflowExpand() =>
-      _outflowExpandState.value = !_outflowExpandState.value;
+  void toggleInflowExpand() => _inflowExpandState.value = !_inflowExpandState.value;
+  void toggleOutflowExpand() => _outflowExpandState.value = !_outflowExpandState.value;
 
   PlanEditManager(SalaryPlan initialPlan) {
     planNotifier = ValueNotifier(initialPlan);
@@ -60,7 +55,6 @@ class PlanEditManager {
     _autoSave();
   }
 
-  // 👑 PROTOCOLO DE DUPLICAÇÃO ATÔMICA & REDIRECIONAMENTO DE PILHA
   Future<void> copyPlan(BuildContext context) async {
     try {
       final String newId = const Uuid().v4();
@@ -75,7 +69,6 @@ class PlanEditManager {
       await _service.saveSalaryPlan(copiedPlan);
 
       if (context.mounted) {
-        // 🚀 Substitui o editor atual pelo novo, limpando o histórico para o "voltar" cair na listagem principal
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => PlanEditScreen(plan: copiedPlan)),
         );
@@ -85,7 +78,6 @@ class PlanEditManager {
     }
   }
 
-  // 📦 PROTOCOLO ARQUIVAR VIA MENU
   Future<void> archivePlan(BuildContext context) async {
     try {
       await _service.toggleArchiveSalaryPlan(currentPlan.id, true);
@@ -95,7 +87,6 @@ class PlanEditManager {
     }
   }
 
-  // 🗑️ PROTOCOLO PURGE PERMANENTE VIA MENU
   Future<void> deletePlan(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
 
@@ -121,7 +112,6 @@ class PlanEditManager {
     }
   }
 
-  // 🟢 INFLOW ENGINE (Com suporte a Undo)
   void _ensureEmptyInflowRow() {
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (list.isEmpty || list.last.value > 0) {
@@ -186,7 +176,6 @@ class PlanEditManager {
     }
   }
 
-  // 🔴 OUTFLOW ENGINE (Com suporte a Undo)
   void _ensureEmptyOutflowRow() {
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (list.isEmpty || list.last.value > 0 || list.last.name.isNotEmpty) {
@@ -207,12 +196,12 @@ class PlanEditManager {
   }
 
   void updateOutflow(
-    int index, {
-    String? name,
-    DeductionType? type,
-    double? value,
-    int? targetDay,
-  }) {
+      int index, {
+        String? name,
+        DeductionType? type,
+        double? value,
+        int? targetDay,
+      }) {
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (index >= 0 && index < list.length) {
       list[index] = OutflowRow(
@@ -262,7 +251,6 @@ class PlanEditManager {
     }
   }
 
-  // ⚡ DISTRIBUTION ENGINE (Com suporte a Undo)
   void initializeNewDistributionSlot() {
     final list = List<DistributionRow>.from(currentPlan.distributions);
     final int defaultDay = currentPlan.inflows.isNotEmpty
@@ -277,13 +265,13 @@ class PlanEditManager {
   }
 
   void updateDistribution(
-    int index, {
-    String? cat,
-    String? sub,
-    AllocationType? type,
-    double? value,
-    int? targetDay,
-  }) {
+      int index, {
+        String? cat,
+        String? sub,
+        AllocationType? type,
+        double? value,
+        int? targetDay,
+      }) {
     final list = List<DistributionRow>.from(currentPlan.distributions);
     if (index >= 0 && index < list.length) {
       list[index] = DistributionRow(
@@ -300,9 +288,9 @@ class PlanEditManager {
   }
 
   Future<bool?> removeDistributionConfirmation(
-    String distributionName,
-    BuildContext context,
-  ) {
+      String distributionName,
+      BuildContext context,
+      ) {
     final l10n = AppLocalizations.of(context)!;
 
     return showDialog<bool>(
@@ -320,7 +308,6 @@ class PlanEditManager {
 
   void removeDistribution(String id, BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
-
     final backupState = currentPlan;
 
     final list = List<DistributionRow>.from(currentPlan.distributions);
@@ -331,17 +318,18 @@ class PlanEditManager {
     _triggerUndoSnackBar(context, l10n.deletedDistribution, backupState);
   }
 
-  Future<void> triggerPlanActivation() async {
-    planNotifier.value = currentPlan.copyWith(isActive: true);
-    await _service.setActivePlanInBatch(currentPlan.id);
+  Future<void> togglePlanActivation() async {
+    final bool newActiveState = !currentPlan.isActive;
+    planNotifier.value = currentPlan.copyWith(isActive: newActiveState);
+
+    await _service.updateActiveStatusInBatch(currentPlan.id, newActiveState);
   }
 
-  // 🛠️ MÓDULO SNACKBAR RECOVERY INTERCEPTOR
   void _triggerUndoSnackBar(
-    BuildContext context,
-    String message,
-    SalaryPlan backup,
-  ) {
+      BuildContext context,
+      String message,
+      SalaryPlan backup,
+      ) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 

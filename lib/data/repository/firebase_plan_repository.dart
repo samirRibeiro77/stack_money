@@ -45,41 +45,48 @@ class FirebasePlanRepository {
     }
   }
 
-  /// 🎛️ ALTERNADOR MESTRE DE ATIVAÇÃO EM LOTE (BATCH OTIMIZADO)
-  /// Garante que ao ativar o plano alvo, TODOS os outros documentos mudem para 'is_active = false' aerobicamente
-  Future<void> setActivePlanInBatch(String targetPlanId) async {
+  /// 🔥 AJUSTE MESTRE: Suporte completo bidirecional para ativação e desativação segura
+  Future<void> updateActiveStatusInBatch(String targetPlanId, bool isActive) async {
     try {
-      print('🔥 [BATCH_PROTOCOL] -> Activating plan $targetPlanId and resetting other profiles...');
-      final batch = _firestore.batch();
       final collection = _getPlanCollection();
 
-      // Captura todos os planos do usuário para varrer os status de ativação
-      final querySnapshot = await collection.get();
+      if (isActive) {
+        // 🚀 FLUXO DE ATIVAÇÃO: Inversão atômica em lote (Batch)
+        print('🔥 [BATCH_PROTOCOL] -> Activating plan $targetPlanId and resetting other profiles...');
+        final batch = _firestore.batch();
+        final querySnapshot = await collection.get();
 
-      for (final doc in querySnapshot.docs) {
-        final planId = doc.id;
+        for (final doc in querySnapshot.docs) {
+          final planId = doc.id;
 
-        if (planId == targetPlanId) {
-          batch.update(collection.doc(planId), {
-            'is_active': true,
-            'is_archived': false, // Por regra de cockpit, o plano mestre ativo nunca pode estar arquivado
-          });
-        } else {
-          batch.update(collection.doc(planId), {
-            'is_active': false,
-          });
+          if (planId == targetPlanId) {
+            batch.update(collection.doc(planId), {
+              'is_active': true,
+              'is_archived': false, // Plano ativo nunca pode estar arquivado
+            });
+          } else {
+            batch.update(collection.doc(planId), {
+              'is_active': false,
+            });
+          }
         }
+        await batch.commit();
+        print('✅ [BATCH_SUCCESS] -> Activation unique cascade completed successfully.');
+      } else {
+        // 🔒 FLUXO DE DESATIVAÇÃO: Ponto a ponto ultra-rápido via Update
+        print('🔒 [DEACTIVATION_PROTOCOL] -> Deactivating plan: $targetPlanId');
+        await collection.doc(targetPlanId).update({
+          'is_active': false,
+        });
+        print('✅ [DEACTIVATION_SUCCESS] -> Plan is now safely set to inactive.');
       }
-
-      await batch.commit();
-      print('✅ [BATCH_SUCCESS] -> Activation unique cascade completed successfully.');
     } catch (e) {
-      print('DEBUG_SYSTEM [PlanRepository]: Batch activation failed -> $e');
+      print('DEBUG_SYSTEM [PlanRepository]: Active status update failed -> $e');
       rethrow;
     }
   }
 
-  /// 📦 ATUALIZAÇÃO LOGICA DE ARQUIVAMENTO
+  /// 📦 ATUALIZAÇÃO LÓGICA DE ARQUIVAMENTO
   Future<void> updateArchiveStatus(String id, bool isArchived) async {
     try {
       print('📦 [ARCHIVE_STATUS] -> Setting is_archived to $isArchived for plan: $id');

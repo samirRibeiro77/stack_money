@@ -13,6 +13,7 @@ class OutflowSectionCard extends StatelessWidget {
   const OutflowSectionCard({
     required this.row,
     required this.index,
+    required this.isReadOnly,
     required this.availableDays,
     required this.isLast,
     required this.absVal,
@@ -23,6 +24,7 @@ class OutflowSectionCard extends StatelessWidget {
 
   final OutflowRow row;
   final int index;
+  final bool isReadOnly;
   final List<int> availableDays;
   final bool isLast;
   final double absVal;
@@ -73,6 +75,7 @@ class OutflowSectionCard extends StatelessWidget {
                   decoration: StackMoneyTheme.inputDecoration(
                     l10n.deductionName,
                     color: StackMoneyTheme.magentaNeon,
+                    readOnly: isReadOnly,
                   ),
                   onChanged: (val) => onUpdate(index, name: val),
                 ),
@@ -88,6 +91,7 @@ class OutflowSectionCard extends StatelessWidget {
                   decoration: StackMoneyTheme.inputDecoration(
                     l10n.target,
                     color: StackMoneyTheme.magentaNeon,
+                    readOnly: isReadOnly,
                   ),
                   dropdownColor: StackMoneyTheme.surface,
                   items: daysList.map((d) {
@@ -99,14 +103,17 @@ class OutflowSectionCard extends StatelessWidget {
                   onChanged: (val) => onUpdate(index, targetDay: val),
                 ),
               ),
-              if (!isLast)
-                IconButton(
-                  icon: const Icon(
-                    Icons.delete_forever,
-                    color: StackMoneyTheme.mutedGrey,
-                    size: AppSizes.x10,
+              if (!isLast && !isReadOnly)
+                SizedBox(
+                  height: AppSizes.x16,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.delete_forever,
+                      color: StackMoneyTheme.mutedGrey,
+                      size: AppSizes.x10,
+                    ),
+                    onPressed: () => onRemove(index, context),
                   ),
-                  onPressed: () => onRemove(index, context),
                 ),
             ],
           ),
@@ -120,6 +127,7 @@ class OutflowSectionCard extends StatelessWidget {
                   decoration: StackMoneyTheme.inputDecoration(
                     l10n.rule,
                     color: StackMoneyTheme.magentaNeon,
+                    readOnly: isReadOnly,
                   ),
                   dropdownColor: StackMoneyTheme.surface,
                   items: DeductionType.values.map((type) {
@@ -150,6 +158,7 @@ class OutflowSectionCard extends StatelessWidget {
                         ? l10n.brlCurrency
                         : l10n.percentSignal,
                     color: StackMoneyTheme.magentaNeon,
+                    readOnly: isReadOnly,
                   ),
                   inputFormatters: row.type == DeductionType.fixed
                       ? [MoneyInputFormatter()]
@@ -160,18 +169,15 @@ class OutflowSectionCard extends StatelessWidget {
             ],
           ),
           if (row.type == DeductionType.percentageGross && row.value > 0)
-            Padding(
-              padding: EdgeInsets.only(top: AppSizes.x3),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  l10n.deducted(
-                    StackMoneyString.formatMoney(absVal, symbol: true),
-                  ),
-                  style: textTheme.labelSmall,
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                l10n.deducted(
+                  StackMoneyString.formatMoney(absVal, symbol: true),
                 ),
+                style: textTheme.labelSmall,
               ),
-            ),
+            )
         ],
       ),
     );
