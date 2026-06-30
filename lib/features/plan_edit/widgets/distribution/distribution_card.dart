@@ -174,12 +174,18 @@ class DistributionCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(AppSizes.x3),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.06),
+                        color: isReadOnly
+                            ? StackMoneyTheme.cyanNeon.withValues(alpha: 0.30)
+                            : Colors.white.withValues(alpha: 0.06),
                       ),
                     ),
                     child: Row(
                       children: daysList.map((d) {
                         final bool isSelected = row.targetDay == d;
+                        if (isReadOnly && !isSelected) {
+                          return SizedBox.shrink();
+                        }
+
                         return GestureDetector(
                           onTap: () => onUpdate(index, targetDay: d),
                           child: Container(

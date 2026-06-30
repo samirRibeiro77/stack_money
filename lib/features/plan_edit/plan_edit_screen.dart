@@ -76,7 +76,6 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
               ),
 
               PopupMenuButton<PlanEditActions>(
-                enabled: !currentPlan.isActive,
                 icon: const Icon(
                   Icons.more_vert_rounded,
                   color: StackMoneyTheme.mutedGrey,
@@ -160,15 +159,12 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
 
                 /// Distribution Section
                 SliverToBoxAdapter(
-                  child: IgnorePointer(
-                    ignoring: currentPlan.isActive,
-                    child: DistributionSection(
-                      plan: currentPlan,
-                      onAddSlot: _manager.initializeNewDistributionSlot,
-                      onUpdate: _manager.updateDistribution,
-                      confirmDismiss: _manager.removeDistributionConfirmation,
-                      onRemove: _manager.removeDistribution,
-                    ),
+                  child: DistributionSection(
+                    plan: currentPlan,
+                    onAddSlot: _manager.initializeNewDistributionSlot,
+                    onUpdate: _manager.updateDistribution,
+                    confirmDismiss: _manager.removeDistributionConfirmation,
+                    onRemove: _manager.removeDistribution,
                   ),
                 ),
                 const SliverToBoxAdapter(
