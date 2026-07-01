@@ -65,7 +65,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             return ValueListenableBuilder<List<Bucket>>(
               valueListenable: _manager.parametersNotifier,
               builder: (context, paramList, child) {
-                paramList.sort((a, b) => a.name.compareTo(b.name));
+                paramList.sort((a, b) => a.position.compareTo(b.position));
 
                 return ValueListenableBuilder<List<History>>(
                   valueListenable: _manager.historyTimelineNotifier,

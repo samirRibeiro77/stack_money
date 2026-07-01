@@ -142,6 +142,7 @@ class ContributionSprintManager {
       where: whereController.text.trim(),
       minValue: bucket.minValue + verifiedMinValue,
       isImmediateLiquidity: _isLiquid.value,
+      position: bucket.position,
     );
 
     _lastKnownValues[bucket.id] = verifiedActualValue;
