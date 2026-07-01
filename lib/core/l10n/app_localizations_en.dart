@@ -111,6 +111,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get activePlan => 'Active plan';
 
   @override
+  String get active => 'Active';
+
+  @override
   String get setActive => 'Set active';
 
   @override

@@ -111,6 +111,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get activePlan => 'Plano ativo';
 
   @override
+  String get active => 'Ativo';
+
+  @override
   String get setActive => 'Tornar ativo';
 
   @override

@@ -33,6 +33,7 @@
   "plansConfig": "Configurações dos planos",
   "newPlan": "Novo plano",
   "activePlan": "Plano ativo",
+  "active": "Ativo",
   "setActive": "Tornar ativo",
   "grossRevenue": "Salário bruto",
   "remainingRest": "Restante livre",

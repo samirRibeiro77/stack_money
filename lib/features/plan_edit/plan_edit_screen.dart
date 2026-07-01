@@ -68,7 +68,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
             surfaceTintColor: StackMoneyTheme.carbonGrey,
             actions: [
               SmChipButton(
-                currentPlan.isActive ? l10n.activePlan : l10n.setActive,
+                currentPlan.isActive ? l10n.active : l10n.setActive,
                 color: currentPlan.isActive
                     ? StackMoneyTheme.cyanNeon
                     : StackMoneyTheme.mutedGrey,
