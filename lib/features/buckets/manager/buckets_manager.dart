@@ -33,7 +33,6 @@ class BucketsManager {
     }
   }
 
-  // 🔥 RESTAURADO: O método de expansão individual está são e salvo de volta no cockpit
   void toggleBucketExpansion(String id) {
     print('Click to open id $id');
     final currentSet = Set<String>.from(_expandedBucketIds.value);
