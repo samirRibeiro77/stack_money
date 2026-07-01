@@ -59,19 +59,18 @@ class PlansManager {
     navigateToPlanDetails(context, newPlan);
   }
 
-  /// 🔥 RECALIBRADO: Processador direto de indexadores atômicos
   void reorderFilteredPlans(
     List<SalaryPlan> filteredList,
     int oldIndex,
     int newIndex,
   ) {
-    // Transplante de posição direto e otimista na memória RAM
+    // Change RAM index
     final item = filteredList.removeAt(oldIndex);
     filteredList.insert(newIndex, item);
 
     final fullList = List<SalaryPlan>.from(_planDeck.value);
 
-    // Remapeia as chaves de peso sequencial salvando no deck
+    // Remap positions
     for (int i = 0; i < filteredList.length; i++) {
       final updatedPlan = filteredList[i].copyWith(position: i + 1);
       filteredList[i] = updatedPlan;
@@ -84,9 +83,9 @@ class PlansManager {
 
     _planDeck.value = fullList;
 
-    // Persiste as novas coordenadas no cluster cloud
+    // Save on Firebase
     for (final plan in filteredList) {
-      _service.saveSalaryPlan(plan);
+      _service.saveSalaryPlan(plan); //TODO: Create a batch update
     }
   }
 

@@ -22,6 +22,24 @@ class PlansScreen extends StatefulWidget {
 class _PlansScreenState extends State<PlansScreen> {
   final _manager = PlansManager();
 
+  Future<bool?> _confirmDismiss(
+    DismissDirection direction,
+    SalaryPlan plan,
+  ) async {
+    if (direction == DismissDirection.endToStart) {
+      return await _manager.showTerminalConfirmDialog(plan.name, context);
+    } else {
+      _manager.archivePlan(plan.id, plan.isArchived);
+      return false;
+    }
+  }
+
+  void _purgePlan(DismissDirection direction, String id) async {
+    if (direction == DismissDirection.endToStart) {
+      _manager.purgePlan(id);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -58,17 +76,17 @@ class _PlansScreenState extends State<PlansScreen> {
 
     return ValueListenableBuilder<bool>(
       valueListenable: _manager.showArchivedNotifier,
-      builder: (context, showArchived, child) {
-        // 1. Filtragem inicial por status de arquivamento
+      builder: (_, showArchived, _) {
+        /// Filter Archived
         final baseList = planList
             .where((p) => showArchived ? true : !p.isArchived)
             .toList();
 
-        // 🔥 CORREÇÃO CIRÚRGICA: Mapeia o plano ativo como elemento único e opcional via firstOrNull
+        /// Active and Inactive plans
         final activePlan = baseList.where((p) => p.isActive).firstOrNull;
         final inactivePlans = baseList.where((p) => !p.isActive).toList();
 
-        // 2. Ordena a fila exclusiva de inativos por posição manual
+        /// Order by position
         inactivePlans.sort((a, b) {
           if (a.position != b.position) {
             return a.position.compareTo(b.position);
@@ -97,38 +115,22 @@ class _PlansScreenState extends State<PlansScreen> {
               ),
               const SizedBox(height: AppSizes.sizedBoxSmall),
 
-              // 🔥 CORREÇÃO CIRÚRGICA: Renderização direta e limpa do card sem laço de repetição ou .map
+              /// Show/Hide active plan
               if (activePlan != null) ...[
                 DismissiblePlanCard(
                   activePlan,
                   key: ValueKey(activePlan.id),
                   onTap: () =>
                       _manager.navigateToPlanDetails(context, activePlan),
-                  confirmDismiss: (direction) async {
-                    if (direction == DismissDirection.endToStart) {
-                      return await _manager.showTerminalConfirmDialog(
-                        activePlan.name,
-                        context,
-                      );
-                    } else {
-                      _manager.archivePlan(
-                        activePlan.id,
-                        activePlan.isArchived,
-                      );
-                      return false;
-                    }
-                  },
-                  onDismissed: (direction) {
-                    if (direction == DismissDirection.endToStart) {
-                      _manager.purgePlan(activePlan.id);
-                    }
-                  },
+                  confirmDismiss: (direction) =>
+                      _confirmDismiss(direction, activePlan),
+                  onDismissed: (direction) =>
+                      _purgePlan(direction, activePlan.id),
                 ),
                 const SizedBox(height: AppSizes.sizedBoxSmall),
-                // Separador tático para a esteira reordenável abaixo
               ],
 
-              // Fila Reordenável exclusiva para perfis inativos
+              /// Reorderable list
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: List.generate(inactivePlans.length, (index) {
@@ -198,26 +200,10 @@ class _PlansScreenState extends State<PlansScreen> {
                               key: ValueKey(plan.id),
                               onTap: () =>
                                   _manager.navigateToPlanDetails(context, plan),
-                              confirmDismiss: (direction) async {
-                                if (direction == DismissDirection.endToStart) {
-                                  return await _manager
-                                      .showTerminalConfirmDialog(
-                                        plan.name,
-                                        context,
-                                      );
-                                } else {
-                                  _manager.archivePlan(
-                                    plan.id,
-                                    plan.isArchived,
-                                  );
-                                  return false;
-                                }
-                              },
-                              onDismissed: (direction) {
-                                if (direction == DismissDirection.endToStart) {
-                                  _manager.purgePlan(plan.id);
-                                }
-                              },
+                              confirmDismiss: (direction) =>
+                                  _confirmDismiss(direction, plan),
+                              onDismissed: (direction) =>
+                                  _purgePlan(direction, plan.id),
                             ),
                           ),
                         ],
