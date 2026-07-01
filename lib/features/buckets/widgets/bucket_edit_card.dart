@@ -112,6 +112,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
       category: _categoryController.text,
       minValue: doubleValue,
       isImmediateLiquidity: _isImmediateLiquidity.value,
+      position: widget.bucket.position,
     );
 
     if (widget.bucket.equalsTo(updated)) return;
