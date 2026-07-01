@@ -9,7 +9,6 @@ class BucketsManager {
   final ValueNotifier<List<Bucket>> _bucketDeck = ValueNotifier([]);
   final ValueNotifier<bool> _isLoading = ValueNotifier(true);
   final ValueNotifier<bool> _masterExpandState = ValueNotifier(true);
-
   final ValueNotifier<Set<String>> _expandedBucketIds = ValueNotifier({});
 
   ValueListenable<bool> get isLoading => _isLoading;
@@ -34,6 +33,7 @@ class BucketsManager {
     }
   }
 
+  // 🔥 RESTAURADO: O método de expansão individual está são e salvo de volta no cockpit
   void toggleBucketExpansion(String id) {
     print('Click to open id $id');
     final currentSet = Set<String>.from(_expandedBucketIds.value);
@@ -43,6 +43,35 @@ class BucketsManager {
       currentSet.add(id);
     }
     _expandedBucketIds.value = currentSet;
+  }
+
+  void reorderFilteredBuckets(
+    List<Bucket> filteredList,
+    int oldIndex,
+    int newIndex,
+  ) {
+    final item = filteredList.removeAt(oldIndex);
+    filteredList.insert(newIndex, item);
+
+    final fullList = List<Bucket>.from(_bucketDeck.value);
+
+    for (int i = 0; i < filteredList.length; i++) {
+      final updatedBucket = filteredList[i].copyWith(position: i + 1);
+      filteredList[i] = updatedBucket;
+
+      final mainIndex = fullList.indexWhere((b) => b.id == updatedBucket.id);
+      if (mainIndex != -1) {
+        fullList[mainIndex] = updatedBucket;
+      }
+    }
+
+    _bucketDeck.value = fullList;
+
+    for (final bucket in filteredList) {
+      BucketManagementService().save(bucket).catchError((e) {
+        print('❌ [BUCKET_REORDER_SYNC_FAIL] -> $e');
+      });
+    }
   }
 
   Future<void> saveBucketToFirebase(Bucket updatedBucket) async {

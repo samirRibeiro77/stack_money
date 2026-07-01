@@ -65,7 +65,6 @@ class FirebaseBucketRepository {
     }
   }
 
-  /// 🚀 COMMIT ATÔMICO DO SPRINT: Atualiza parametros, insere historico e computa o Net Worth na raiz do usuário
   Future<void> commitSprint({
     required List<Bucket> updatedBuckets,
     required List<Transaction> transactions,
@@ -76,13 +75,11 @@ class FirebaseBucketRepository {
       final batch = _firestore.batch();
       final userDoc = _getUserDoc();
 
-      // 1. Atualiza os metadados dos buckets na coleção parameters
       for (final bucket in updatedBuckets) {
         final docRef = userDoc.collection('parameters').doc(bucket.id);
         batch.set(docRef, bucket.toJson(), SetOptions(merge: true));
       }
 
-      // 2. Cria o novo documento consolidador dentro da coleção history
       var transactionsMap = {for (var t in transactions) t.id: t};
       final history = History(
         date: DateTime.now(),
@@ -91,14 +88,12 @@ class FirebaseBucketRepository {
         immediateLiquidityTotal: totalLiquidity,
       );
 
-      // TODO: Change to UUID later
       final historyId =
           '${history.date.year}_${history.date.month.toString().padLeft(2, '0')}_${history.date.day.toString().padLeft(2, '0')}';
 
       final historyDocRef = userDoc.collection('history').doc(historyId);
       batch.set(historyDocRef, history.toJson());
 
-      // 3. Alinha os nós de simplificação de busca do Net Worth na raiz do documento do usuário
       batch.set(userDoc, {
         'net_worth': {
           'total': totalNetWorth,
@@ -116,13 +111,11 @@ class FirebaseBucketRepository {
     }
   }
 
-  // 🚀 SILENT SYNC PROTOCOL + FALLBACK TEMPORÁRIO
   Future<void> save(Bucket bucket) async {
     try {
       final currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');
 
-      // 🧪 FALLBACK: Injeta strings temporárias se o usuário inicializou o slot mas não digitou nada ainda
       final cleanWhere = bucket.where.trim().isEmpty
           ? 'New'
           : bucket.where.trim();
@@ -130,20 +123,20 @@ class FirebaseBucketRepository {
           ? 'Bucket'
           : bucket.category.trim();
 
+      // 🔥 CORREÇÃO CIRÚRGICA: Repassa a propriedade position para o fallback não resetar a ordem no banco
       final bkpBucket = Bucket(
         id: bucket.id,
         where: cleanWhere,
         category: cleanCategory,
         minValue: bucket.minValue,
         isImmediateLiquidity: bucket.isImmediateLiquidity,
+        position: bucket.position,
       );
 
       print(
         '📡 [FIRESTORE_WRITE] -> Initializing sync for UUID: ${bkpBucket.id}',
       );
 
-      // Executa sem o 'await' explícito na chamada da tela (Silent Sync)
-      // para a UI destravar na hora, deixando o Firestore sincronizar em background!
       _firestore
           .collection('users')
           .doc(currentUser.uid)
@@ -168,7 +161,6 @@ class FirebaseBucketRepository {
     }
   }
 
-  // 🗑️ SAFE DELETE INTERCEPTOR (BLOQUEIO DE SEGURANÇA)
   Future<void> delete(String id) async {
     try {
       final currentUser = _auth.currentUser;
@@ -178,7 +170,6 @@ class FirebaseBucketRepository {
         '🔍 [SECURITY_CHECK] -> Evaluating purge authorization for UUID: $id',
       );
 
-      // Busca o documento atual direto no banco para checar o saldo real dele antes de apagar
       final docSnap = await _firestore
           .collection('users')
           .doc(currentUser.uid)
@@ -188,12 +179,9 @@ class FirebaseBucketRepository {
 
       if (docSnap.exists) {
         final currentData = docSnap.data();
-        // Nota: Assumindo que seu JSON salve o saldo acumulado atual no campo 'currentValue' ou similar.
-        // Se o seu model de Bucket só tiver o 'minValue', use o 'minValue' para o teste de validação:
         final double currentBalance =
             (currentData?['minValue'] as num?)?.toDouble() ?? 0.0;
 
-        // 🛑 SÓ DEIXA EXCLUIR SE O VALOR ESTIVER ZERADO!
         if (currentBalance > 0.0) {
           print(
             '🚫 [PURGE_DENIED] -> Operation aborted. Bucket $id contains active allocation funds (R\$ $currentBalance).',
