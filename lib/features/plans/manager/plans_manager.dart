@@ -26,9 +26,9 @@ class PlansManager {
     final isSecureActive = SecurityProvider.isSecureOf(context);
 
     if (!isSecureActive) {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => PlanEditScreen(plan: plan)),
-      ).then((_) => loadFirebasePlans());
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => PlanEditScreen(plan: plan)))
+          .then((_) => loadFirebasePlans());
     }
   }
 
@@ -59,11 +59,39 @@ class PlansManager {
     navigateToPlanDetails(context, newPlan);
   }
 
-  /// 📦 INTERCEPTOR DE ARQUIVAMENTO OTIMISTA: UI atualiza no mesmo milissegundo do gesto
+  void reorderFilteredPlans(
+    List<SalaryPlan> filteredList,
+    int oldIndex,
+    int newIndex,
+  ) {
+    // Change RAM index
+    final item = filteredList.removeAt(oldIndex);
+    filteredList.insert(newIndex, item);
+
+    final fullList = List<SalaryPlan>.from(_planDeck.value);
+
+    // Remap positions
+    for (int i = 0; i < filteredList.length; i++) {
+      final updatedPlan = filteredList[i].copyWith(position: i + 1);
+      filteredList[i] = updatedPlan;
+
+      final mainIndex = fullList.indexWhere((p) => p.id == updatedPlan.id);
+      if (mainIndex != -1) {
+        fullList[mainIndex] = updatedPlan;
+      }
+    }
+
+    _planDeck.value = fullList;
+
+    // Save on Firebase
+    for (final plan in filteredList) {
+      _service.saveSalaryPlan(plan); //TODO: Create a batch update
+    }
+  }
+
   Future<void> archivePlan(String id, bool currentIsArchived) async {
     final bool nextState = !currentIsArchived;
 
-    // 1. Mutação instantânea da memória local para liberar o frame do Flutter
     final updatedList = List<SalaryPlan>.from(_planDeck.value);
     final index = updatedList.indexWhere((p) => p.id == id);
     if (index != -1) {
@@ -75,24 +103,19 @@ class PlansManager {
     }
 
     try {
-      // 2. Sincronização em background com o Cloud Firestore
       await _service.toggleArchiveSalaryPlan(id, nextState);
     } catch (e) {
       debugPrint('DEBUG_SYSTEM [PlansManager]: Archive operation fail -> $e');
-      // Rollback tático de segurança se houver queda crítica de conexão
       loadFirebasePlans();
     }
   }
 
-  /// 🗑️ INTERCEPTOR DE EXPAREDO PROTOCOLO PURGE OTIMISTA
   Future<void> purgePlan(String id) async {
-    // 1. Remove da tela imediatamente sem travar esperando a rede
     final updatedList = List<SalaryPlan>.from(_planDeck.value);
     updatedList.removeWhere((p) => p.id == id);
     _planDeck.value = updatedList;
 
     try {
-      // 2. Executa a deleção física no cluster Firebase
       await _service.purgeSalaryPlan(id);
     } catch (e) {
       debugPrint('DEBUG_SYSTEM [PlansManager]: Purge operation fail -> $e');
@@ -100,8 +123,10 @@ class PlansManager {
     }
   }
 
-  /// 🚨 DIALOG TERMINAL CONFIRM
-  Future<bool?> showTerminalConfirmDialog(String planName, BuildContext context) {
+  Future<bool?> showTerminalConfirmDialog(
+    String planName,
+    BuildContext context,
+  ) {
     final l10n = AppLocalizations.of(context)!;
 
     return showDialog<bool>(

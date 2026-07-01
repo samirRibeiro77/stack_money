@@ -296,6 +296,12 @@ abstract class AppLocalizations {
   /// **'Active plan'**
   String get activePlan;
 
+  /// Active plan short tag
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
   /// Set active tag
   ///
   /// In en, this message translates to:

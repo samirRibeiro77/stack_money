@@ -13,6 +13,7 @@ class SalaryPlan {
   final bool isActive;
   final bool isArchived;
   final DateTime createdAt;
+  final int position;
   final List<InflowRow> inflows;
   final List<OutflowRow> outflows;
   final List<DistributionRow> distributions;
@@ -24,6 +25,7 @@ class SalaryPlan {
     required this.isActive,
     required this.isArchived,
     required this.createdAt,
+    required this.position,
     required this.inflows,
     required this.outflows,
     required this.distributions,
@@ -37,6 +39,7 @@ class SalaryPlan {
       isActive: isActive ?? false,
       isArchived: false,
       createdAt: DateTime.now(),
+      position: 0,
       inflows: [],
       outflows: [],
       distributions: [],
@@ -44,7 +47,6 @@ class SalaryPlan {
   }
 
   // --- 📐 MOTOR MATEMÁTICO DE ENTRADAS ---
-
   double calculateInflowAbsolute(InflowRow row) {
     return row.type == InflowType.percentageBase
         ? baseSalary * (row.value / 100.0)
@@ -65,7 +67,6 @@ class SalaryPlan {
   }
 
   // --- 📐 MOTOR MATEMÁTICO DE DEDUÇÕES ---
-
   double calculateOutflowAbsolute(OutflowRow row) {
     if (row.type == DeductionType.percentageGross) {
       final double grossForDay = grossSalaryForDay(row.targetDay);
@@ -83,26 +84,17 @@ class SalaryPlan {
 
   double get netSalary => totalGrossSalary - totalOutflows;
 
-  // --- 📐 MOTOR MATEMÁTICO DE DISTRIBUIÇÃO (UPGRADE DE FLUXO TEMPORAL) ---
-
-  /// 🔥 ATUALIZADO: Intercepta e calcula os pesos baseando-se estritamente na regra informada
+  // --- 📐 MOTOR MATEMÁTICO DE DISTRIBUIÇÃO ---
   double calculateRowAbsoluteValue(DistributionRow row) {
     switch (row.type) {
       case AllocationType.fixed:
-        // ⚡ Valor fixo: Retorna a quantia direta atada ao dia
         return row.value;
-
       case AllocationType.percentageGross:
-        // ⚡ % do Gross: O cálculo é feito em cima do salário total (todos os inflows do mês)
         double raw = totalGrossSalary * (row.value / 100.0);
-        // Arredonda para CIMA na centena mais próxima (1255.58 -> 1300)
         return (raw / 100.0).ceil() * 100.0;
-
       case AllocationType.percentageNet:
-        // ⚡ % do Net: Faz o cálculo cirúrgico em cima do NET específico daquele dia alvo
         double dayNet = netSalaryForDay(row.targetDay);
         double raw = dayNet * (row.value / 100.0);
-        // Arredonda para BAIXO na centena mais próxima (1255.58 -> 1200)
         return (raw / 100.0).floor() * 100.0;
     }
   }
@@ -118,8 +110,7 @@ class SalaryPlan {
 
   bool get isOverflowed => remainingRest < 0.0;
 
-  // --- 🛰️ MOTOR DE FATIAMENTO TEMPORAL (TIME-SLICE ENGINE) ---
-
+  // --- 🛰️ MOTOR DE FATIAMENTO TEMPORAL ---
   List<int> get activePaymentDays {
     final days = inflows
         .where((e) => e.value > 0)
@@ -162,6 +153,7 @@ class SalaryPlan {
       'is_active': isActive,
       'is_archived': isArchived,
       'created_at': createdAt.toIso8601String(),
+      'position': position,
       'inflows': inflows.map((e) => e.toJson()).toList(),
       'outflows': outflows.map((e) => e.toJson()).toList(),
       'distributions': distributions.map((e) => e.toJson()).toList(),
@@ -178,6 +170,7 @@ class SalaryPlan {
       createdAt: DateTime.parse(
         json['created_at'] as String? ?? DateTime.now().toIso8601String(),
       ),
+      position: json['position'] as int? ?? 0,
       inflows:
           (json['inflows'] as List<dynamic>?)
               ?.map((e) => InflowRow.fromJson(e as Map<String, dynamic>))
@@ -203,6 +196,7 @@ class SalaryPlan {
     bool? isActive,
     bool? isArchived,
     DateTime? createdAt,
+    int? position,
     List<InflowRow>? inflows,
     List<OutflowRow>? outflows,
     List<DistributionRow>? distributions,
@@ -214,6 +208,7 @@ class SalaryPlan {
       isActive: isActive ?? this.isActive,
       isArchived: isArchived ?? this.isArchived,
       createdAt: createdAt ?? this.createdAt,
+      position: position ?? this.position,
       inflows: inflows ?? this.inflows,
       outflows: outflows ?? this.outflows,
       distributions: distributions ?? this.distributions,

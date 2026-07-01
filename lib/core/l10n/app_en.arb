@@ -132,6 +132,10 @@
   "@activePlan": {
     "description": "Active plan tag"
   },
+  "active": "Active",
+  "@active": {
+    "description": "Active plan short tag"
+  },
   "setActive": "Set active",
   "@setActive": {
     "description": "Set active tag"
