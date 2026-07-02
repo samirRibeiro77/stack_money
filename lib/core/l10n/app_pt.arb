@@ -103,6 +103,7 @@
   "noChangesDetected": "Nenhuma alteração identificada",
   "arrowUp": "▲",
   "arrowDown": "▼",
+  "reorderBuckets": "Reordenar caixinhas",
   "filterByPosition": "Posição da caixinha",
   "filterByName": "Nome da caixinha",
   "filterByActual": "Maior valor atual",

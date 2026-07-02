@@ -22,14 +22,23 @@ class DashboardSortBottomSheet extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final screenWidth = MediaQuery.of(context).size.width;
 
+    final borderStyle = BorderSide(
+      color: StackMoneyTheme.carbonGrey,
+      width: 0.6,
+    );
+
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.035,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.035),
       child: GlassmorphismEffect(
         containerHeight: null,
-        borderRadius: AppSizes.radiusLarge,
-        borderColor: StackMoneyTheme.platinumSilver,
+        borderRadiusSpec: BorderRadius.vertical(
+          top: Radius.circular(AppSizes.radiusLarge),
+        ),
+        borderSpec: Border(
+          top: borderStyle,
+          left: borderStyle,
+          right: borderStyle,
+        ),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: AppSizes.x10),
@@ -39,8 +48,10 @@ class DashboardSortBottomSheet extends StatelessWidget {
               children: [
                 Center(
                   child: Text(
-                    StackMoneyString.formatTitle('Reorder buckets'),
-                    style: textTheme.titleMedium?.copyWith(color: StackMoneyTheme.magentaNeon),
+                    StackMoneyString.formatTitle(l10n.reorderBuckets),
+                    style: textTheme.titleMedium?.copyWith(
+                      color: StackMoneyTheme.magentaNeon,
+                    ),
                   ),
                 ),
                 const SizedBox(height: AppSizes.sizedBoxSmall),
@@ -56,37 +67,53 @@ class DashboardSortBottomSheet extends StatelessWidget {
                           // Opção 2: Ativa o feedback visual do pulso antes do pop
                           setItemState(() {});
                           onFilterSelected(filter);
-                          await Future.delayed(const Duration(milliseconds: 100));
+                          await Future.delayed(
+                            const Duration(milliseconds: 100),
+                          );
                           if (context.mounted) Navigator.of(context).pop();
                         },
-                        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
+                        borderRadius: BorderRadius.circular(
+                          AppSizes.radiusSmall,
+                        ),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                             vertical: AppSizes.x5,
                             horizontal: AppSizes.x4,
                           ),
-                          margin: const EdgeInsets.symmetric(vertical: AppSizes.min),
+                          margin: const EdgeInsets.symmetric(
+                            vertical: AppSizes.min,
+                          ),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? StackMoneyTheme.cyanNeon.withValues(alpha: 0.08)
+                                ? StackMoneyTheme.cyanNeon.withValues(
+                                    alpha: 0.08,
+                                  )
                                 : Colors.transparent,
-                            borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
+                            borderRadius: BorderRadius.circular(
+                              AppSizes.radiusSmall,
+                            ),
                           ),
                           child: Row(
                             children: [
                               Icon(
                                 filter.icon,
-                                color: isSelected ? StackMoneyTheme.cyanNeon : StackMoneyTheme.mutedGrey,
+                                color: isSelected
+                                    ? StackMoneyTheme.cyanNeon
+                                    : StackMoneyTheme.mutedGrey,
                                 size: AppSizes.x10,
                               ),
                               const SizedBox(width: AppSizes.sizedBoxMedium),
                               Text(
-                                StackMoneyString.formatTitle(filter.label(l10n)),
+                                StackMoneyString.formatTitle(
+                                  filter.label(l10n),
+                                ),
                                 style: textTheme.bodyMedium?.copyWith(
                                   color: isSelected
                                       ? StackMoneyTheme.cyanNeon
                                       : StackMoneyTheme.mutedGrey,
-                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
                                 ),
                               ),
                             ],

@@ -344,6 +344,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get arrowDown => '▼';
 
   @override
+  String get reorderBuckets => 'Reorder buckets';
+
+  @override
   String get filterByPosition => 'Bucket position';
 
   @override

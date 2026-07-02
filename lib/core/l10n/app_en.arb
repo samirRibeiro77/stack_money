@@ -408,6 +408,10 @@
   "@arrowDown": {
     "description": "Arrow down icon"
   },
+  "reorderBuckets": "Reorder buckets",
+  "@reorderBuckets": {
+    "description": "Title to use on sort bottom sheet"
+  },
   "filterByPosition": "Bucket position",
   "@filterByPosition": {
     "description": "Sort by bucket position on bucket screen"

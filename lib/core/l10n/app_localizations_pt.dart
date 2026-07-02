@@ -344,6 +344,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get arrowDown => '▼';
 
   @override
+  String get reorderBuckets => 'Reordenar caixinhas';
+
+  @override
   String get filterByPosition => 'Posição da caixinha';
 
   @override

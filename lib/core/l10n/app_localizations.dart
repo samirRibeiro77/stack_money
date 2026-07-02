@@ -714,6 +714,12 @@ abstract class AppLocalizations {
   /// **'▼'**
   String get arrowDown;
 
+  /// Title to use on sort bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder buckets'**
+  String get reorderBuckets;
+
   /// Sort by bucket position on bucket screen
   ///
   /// In en, this message translates to:
