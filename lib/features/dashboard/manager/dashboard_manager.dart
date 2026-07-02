@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
+import 'package:stack_money/data/enum/dashboard_sort_filter.dart'; // 🔥 Novo Enum
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
@@ -14,22 +15,41 @@ class DashboardManager {
   final ValueNotifier<List<Bucket>> _realParameters = ValueNotifier([]);
   final ValueNotifier<List<History>> _realHistoryTimeline = ValueNotifier([]);
   final ValueNotifier<Set<String>> _expandedBucketIds = ValueNotifier({});
+
+  // 🔥 NOVO: Controle de estado da ordenação ativa do Dashboard (padrão: position)
+  final ValueNotifier<DashboardSortFilter> _sortFilter = ValueNotifier(
+    DashboardSortFilter.position,
+  );
+
   final ValueNotifier<ChartFilterState> _chartFilter = ValueNotifier(
     const ChartFilterState(filter: ChartFilter.threeMonths),
   );
 
   ValueListenable<bool> get isLoading => _isLoading;
+
   ValueListenable<bool> get hasError => _hasError;
+
   ValueListenable<bool> get masterExpandState => _masterExpandState;
 
   ValueListenable<List<Bucket>> get parametersNotifier => _realParameters;
-  ValueListenable<List<History>> get historyTimelineNotifier => _realHistoryTimeline;
+
+  ValueListenable<List<History>> get historyTimelineNotifier =>
+      _realHistoryTimeline;
+
   ValueListenable<Set<String>> get expandedIdsNotifier => _expandedBucketIds;
+
   ValueListenable<ChartFilterState> get chartFilterNotifier => _chartFilter;
 
+  ValueListenable<DashboardSortFilter> get sortFilterNotifier =>
+      _sortFilter; // 🔥 Getter do Filtro
+
   List<Bucket> get parameters => _realParameters.value;
+
   List<History> get historyTimeline => _realHistoryTimeline.value;
+
   ChartFilterState get chartFilter => _chartFilter.value;
+
+  DashboardSortFilter get activeSort => _sortFilter.value;
 
   Future<void> loadFirebaseDashboardData() async {
     try {
@@ -50,6 +70,11 @@ class DashboardManager {
       _isLoading.value = false;
       _hasError.value = true;
     }
+  }
+
+  /// 🔥 NOVO: Atualizador tático de ordenação
+  void updateSortFilter(DashboardSortFilter newFilter) {
+    _sortFilter.value = newFilter;
   }
 
   void updateChartFilter(ChartFilterState newState) {

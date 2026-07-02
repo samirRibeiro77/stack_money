@@ -6,10 +6,13 @@ import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
+import 'package:stack_money/core/widgets/sm_gravity_swop_list.dart';
+import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/features/dashboard/manager/dashboard_manager.dart';
+import 'package:stack_money/features/dashboard/widgets/dashboard_sort_bottom_sheet.dart'; // 🔥 Novo Import
 import 'package:stack_money/features/dashboard/widgets/dashboard_bucket_card.dart';
 import 'package:stack_money/features/dashboard/widgets/patrimonial_hud.dart';
 import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart';
@@ -61,12 +64,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               return _buildErrorState(l10n, textTheme);
             }
 
-            // Injeta a fiação reativa tripla para reconstruir o painel sob demanda
             return ValueListenableBuilder<List<Bucket>>(
               valueListenable: _manager.parametersNotifier,
               builder: (context, paramList, child) {
-                paramList.sort((a, b) => a.position.compareTo(b.position));
-
                 return ValueListenableBuilder<List<History>>(
                   valueListenable: _manager.historyTimelineNotifier,
                   builder: (context, historyList, child) {
@@ -76,13 +76,57 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         return ValueListenableBuilder<ChartFilterState>(
                           valueListenable: _manager.chartFilterNotifier,
                           builder: (context, currentFilter, _) {
-                            return _buildBodyContent(
-                              l10n,
-                              textTheme,
-                              paramList,
-                              historyList,
-                              expandedIds,
-                              currentFilter,
+                            return ValueListenableBuilder<DashboardSortFilter>(
+                              valueListenable: _manager.sortFilterNotifier,
+                              builder: (context, activeSort, _) {
+                                final latestHistory = historyList.last;
+
+                                paramList.sort((a, b) {
+                                  final double valA =
+                                      latestHistory
+                                          .transactions[a.id.replaceAll(
+                                            ' ',
+                                            '',
+                                          )]
+                                          ?.actualValue ??
+                                      0.0;
+                                  final double valB =
+                                      latestHistory
+                                          .transactions[b.id.replaceAll(
+                                            ' ',
+                                            '',
+                                          )]
+                                          ?.actualValue ??
+                                      0.0;
+
+                                  switch (activeSort) {
+                                    case DashboardSortFilter.position:
+                                      return a.position.compareTo(b.position);
+                                    case DashboardSortFilter.name:
+                                      return a.name.compareTo(b.name);
+                                    case DashboardSortFilter.currentValue:
+                                      return valB.compareTo(valA);
+                                    case DashboardSortFilter.minValue:
+                                      return b.minValue.compareTo(a.minValue);
+                                    case DashboardSortFilter.allocation:
+                                      final double allocA =
+                                          (valA / latestHistory.total) * 100;
+                                      final double allocB =
+                                          (valB / latestHistory.total) * 100;
+                                      return allocB.compareTo(allocA);
+                                  }
+                                });
+
+                                return _buildBodyContent(
+                                  l10n,
+                                  textTheme,
+                                  paramList,
+                                  historyList,
+                                  expandedIds,
+                                  currentFilter,
+                                  activeSort,
+                                );
+                              },
                             );
                           },
                         );
@@ -140,11 +184,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     List<History> historyList,
     Set<String> expandedIds,
     ChartFilterState currentFilter,
+    DashboardSortFilter activeSort,
   ) {
     final isSecureActive = SecurityProvider.isSecureOf(context);
-    final isVisible =
-        !isSecureActive; // Lógica inversa unificada: visível se segurança biométrica estiver aberta
-
+    final isVisible = !isSecureActive;
     final latestAudit = historyList.last;
 
     return Column(
@@ -155,10 +198,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           totalAmount: latestAudit.total,
           liquidityAmount: latestAudit.immediateLiquidityTotal,
         ),
-
         const SizedBox(height: AppSizes.x10),
-
-        // Painel Telemetria com Gráfico Principal
         SmCard(
           title: l10n.telemetryStream,
           child: Column(
@@ -184,30 +224,66 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
         ),
-
         const SizedBox(height: AppSizes.x12),
-
-        // Cabeçalho da listagem de alocação de Potes
-        ExpandableHeader(
-          title: l10n.allocationBuckets,
-          toggle: _manager.toggleAllBuckets,
-          validation: _manager.masterExpandState,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: ExpandableHeader(
+                title: l10n.allocationBuckets,
+                toggle: _manager.toggleAllBuckets,
+                validation: _manager.masterExpandState,
+              ),
+            ),
+            if (!isSecureActive)
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(
+                    scale: animation,
+                    child: RotationTransition(turns: animation, child: child),
+                  );
+                },
+                child: IconButton(
+                  key: ValueKey<DashboardSortFilter>(activeSort),
+                  // Opção 1: Morphing Cyber-Icon ativo
+                  icon: Icon(
+                    activeSort.icon,
+                    color: StackMoneyTheme.cyanNeon,
+                    size: AppSizes.x10,
+                  ),
+                  // 🔥 MODIFICADO: Invocação direta e desacoplada do novo widget externo
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      useRootNavigator: true,
+                      backgroundColor: Colors.transparent,
+                      elevation: 1,
+                      builder: (_) => DashboardSortBottomSheet(
+                        currentSort: activeSort,
+                        onFilterSelected: _manager.updateSortFilter,
+                      ),
+                    );
+                  },
+                ),
+              ),
+          ],
         ),
         const SizedBox(height: AppSizes.sizedBoxMedium),
+        SmGravitySwopList(
+          children: List.generate(paramList.length, (index) {
+            final param = paramList[index];
+            final isCardExpanded = expandedIds.contains(param.id);
 
-        // Listagem dos Potes Convertidos em Componentes Dedicados do Dashboard
-        ...List.generate(paramList.length, (index) {
-          final param = paramList[index];
-          final isCardExpanded = expandedIds.contains(param.id);
-
-          return DashboardBucketCard(
-            key: ValueKey(param.id),
-            parameter: param,
-            historyList: historyList,
-            isExpanded: isCardExpanded,
-            onHeaderTap: () => _manager.toggleBucketExpansion(param.id),
-          );
-        }),
+            return DashboardBucketCard(
+              key: ValueKey(param.id),
+              parameter: param,
+              historyList: historyList,
+              isExpanded: isCardExpanded,
+              onHeaderTap: () => _manager.toggleBucketExpansion(param.id),
+            );
+          }),
+        ),
       ],
     );
   }
