@@ -407,5 +407,25 @@
   "arrowDown": "▼",
   "@arrowDown": {
     "description": "Arrow down icon"
+  },
+  "filterByPosition": "Bucket position",
+  "@filterByPosition": {
+    "description": "Sort by bucket position on bucket screen"
+  },
+  "filterByName": "Bucket name",
+  "@filterByName": {
+    "description": "Sort by bucket name (A-Z)"
+  },
+  "filterByActual": "Higher actual value",
+  "@filterByActual": {
+    "description": "Sort by higher amount of money"
+  },
+  "filterByMin": "Lower min value",
+  "@filterByMin": {
+    "description": "Sort by lower min value"
+  },
+  "filterByAlloc": "Wallet allocation",
+  "@filterByAlloc": {
+    "description": "Sort by higher wallet allocation"
   }
 }

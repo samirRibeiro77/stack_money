@@ -102,5 +102,10 @@
   "confirmContributionSprintNoteLine": "{bucket}: {oldValue} -> {newValue}",
   "noChangesDetected": "Nenhuma alteração identificada",
   "arrowUp": "▲",
-  "arrowDown": "▼"
+  "arrowDown": "▼",
+  "filterByPosition": "Posição da caixinha",
+  "filterByName": "Nome da caixinha",
+  "filterByActual": "Maior valor atual",
+  "filterByMin": "Menor valor minimo",
+  "filterByAlloc": "Alocação na carteira"
 }

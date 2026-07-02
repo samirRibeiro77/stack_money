@@ -342,4 +342,19 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get arrowDown => '▼';
+
+  @override
+  String get filterByPosition => 'Posição da caixinha';
+
+  @override
+  String get filterByName => 'Nome da caixinha';
+
+  @override
+  String get filterByActual => 'Maior valor atual';
+
+  @override
+  String get filterByMin => 'Menor valor minimo';
+
+  @override
+  String get filterByAlloc => 'Alocação na carteira';
 }

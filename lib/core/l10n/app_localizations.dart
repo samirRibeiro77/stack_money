@@ -713,6 +713,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'▼'**
   String get arrowDown;
+
+  /// Sort by bucket position on bucket screen
+  ///
+  /// In en, this message translates to:
+  /// **'Bucket position'**
+  String get filterByPosition;
+
+  /// Sort by bucket name (A-Z)
+  ///
+  /// In en, this message translates to:
+  /// **'Bucket name'**
+  String get filterByName;
+
+  /// Sort by higher amount of money
+  ///
+  /// In en, this message translates to:
+  /// **'Higher actual value'**
+  String get filterByActual;
+
+  /// Sort by lower min value
+  ///
+  /// In en, this message translates to:
+  /// **'Lower min value'**
+  String get filterByMin;
+
+  /// Sort by higher wallet allocation
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet allocation'**
+  String get filterByAlloc;
 }
 
 class _AppLocalizationsDelegate

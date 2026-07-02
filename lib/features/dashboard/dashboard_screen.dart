@@ -107,7 +107,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     case DashboardSortFilter.currentValue:
                                       return valB.compareTo(valA);
                                     case DashboardSortFilter.minValue:
-                                      return b.minValue.compareTo(a.minValue);
+                                      return a.minValue.compareTo(b.minValue);
                                     case DashboardSortFilter.allocation:
                                       final double allocA =
                                           (valA / latestHistory.total) * 100;

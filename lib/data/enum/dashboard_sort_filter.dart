@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 
 enum DashboardSortFilter {
-  position(Icons.grid_view_rounded),
+  position(Icons.reorder_rounded),
   name(Icons.sort_by_alpha_rounded),
   currentValue(Icons.account_balance_wallet_rounded),
   minValue(Icons.vertical_align_bottom_rounded),
@@ -15,15 +15,15 @@ enum DashboardSortFilter {
   String label(AppLocalizations l10n) {
     switch (this) {
       case position:
-        return 'Posição do Pote';
+        return l10n.filterByPosition;
       case name:
-        return 'Nome do Pote';
+        return l10n.filterByName;
       case currentValue:
-        return 'Valor Atual';
+        return l10n.filterByActual;
       case minValue:
-        return 'Valor Mínimo';
+        return l10n.filterByMin;
       case allocation:
-        return 'Alocação na Carteira';
+        return l10n.filterByAlloc;
     }
   }
 }

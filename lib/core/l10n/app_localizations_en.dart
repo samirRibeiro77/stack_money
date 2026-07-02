@@ -342,4 +342,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get arrowDown => '▼';
+
+  @override
+  String get filterByPosition => 'Bucket position';
+
+  @override
+  String get filterByName => 'Bucket name';
+
+  @override
+  String get filterByActual => 'Higher actual value';
+
+  @override
+  String get filterByMin => 'Lower min value';
+
+  @override
+  String get filterByAlloc => 'Wallet allocation';
 }
