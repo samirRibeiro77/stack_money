@@ -17,7 +17,7 @@ class FloatingNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double customWidth = MediaQuery.of(context).size.width * 0.70;
+    final double customWidth = MediaQuery.of(context).size.width * 0.75;
 
     return Center(
       child: SizedBox(

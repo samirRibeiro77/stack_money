@@ -19,7 +19,7 @@ class NavBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color itemColor = isActive
-        ? StackMoneyTheme.cyanNeon
+        ? tab.color
         : StackMoneyTheme.mutedGrey;
     final double increaseSize = isActive ? 2 : 0;
     final textTheme = Theme.of(context).textTheme;

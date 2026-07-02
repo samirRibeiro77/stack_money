@@ -35,6 +35,8 @@ class MainNavigationManager {
         return DashboardScreen();
       case NavBarTabs.plans:
         return PlansScreen();
+      case NavBarTabs.ai:
+        return Container();
       case NavBarTabs.buckets:
         return BucketControlScreen();
       case NavBarTabs.log:
