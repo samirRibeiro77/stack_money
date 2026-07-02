@@ -8,7 +8,7 @@ class SmGravitySwopList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 750),
       switchInCurve: Curves.fastOutSlowIn,
       switchOutCurve: Curves.fastOutSlowIn,
       // 🛸 Transição Tridimensional (Gravity Swop): Recua os cards no plano Z e altera opacidade

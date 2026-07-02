@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 
 enum DashboardSortFilter {
-  position(Icons.reorder_rounded),
+  position(Icons.tune_rounded),
   name(Icons.sort_by_alpha_rounded),
   currentValue(Icons.account_balance_wallet_rounded),
-  minValue(Icons.vertical_align_bottom_rounded),
+  minValue(Icons.keyboard_double_arrow_down),
   allocation(Icons.pie_chart_outline_rounded);
 
   final IconData icon;
