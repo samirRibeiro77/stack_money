@@ -46,24 +46,26 @@ class SmReorderableList<T> extends StatelessWidget {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (isHovered)
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    height: AppSizes.x4,
-                    margin: const EdgeInsets.symmetric(vertical: AppSizes.min),
-                    decoration: BoxDecoration(
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.fastOutSlowIn,
+                  height: isHovered ? AppSizes.x4 : 0,
+                  margin: EdgeInsets.symmetric(
+                    vertical: isHovered ? AppSizes.x8 : 0,
+                  ),
+                  decoration: BoxDecoration(
+                    color: StackMoneyTheme.platinumSilver.withValues(
+                      alpha: isHovered ? 0.15 : 0,
+                    ),
+                    borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
+                    border: Border.all(
                       color: StackMoneyTheme.platinumSilver.withValues(
-                        alpha: 0.15,
+                        alpha: isHovered ? 0.3 : 0,
                       ),
-                      borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
-                      border: Border.all(
-                        color: StackMoneyTheme.platinumSilver.withValues(
-                          alpha: 0.3,
-                        ),
-                        width: 0.8,
-                      ),
+                      width: isHovered ? 0.8 : 0,
                     ),
                   ),
+                ),
 
                 LongPressDraggable<int>(
                   data: index,
