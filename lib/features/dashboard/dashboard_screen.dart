@@ -246,6 +246,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 },
                 child: IconButton(
                   key: ValueKey<DashboardSortFilter>(activeSort),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
                   // Opção 1: Morphing Cyber-Icon ativo
                   icon: Icon(
                     activeSort.icon,
