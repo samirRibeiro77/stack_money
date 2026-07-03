@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class SmGravitySwopList extends StatelessWidget {
   final List<Widget> children;
+  final Object sortKey;
 
-  const SmGravitySwopList({required this.children, super.key});
+  const SmGravitySwopList({required this.children, required this.sortKey, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,6 @@ class SmGravitySwopList extends StatelessWidget {
       duration: const Duration(milliseconds: 750),
       switchInCurve: Curves.fastOutSlowIn,
       switchOutCurve: Curves.fastOutSlowIn,
-      // 🛸 Transição Tridimensional (Gravity Swop): Recua os cards no plano Z e altera opacidade
       transitionBuilder: (Widget child, Animation<double> animation) {
         return FadeTransition(
           opacity: animation,
@@ -25,13 +25,13 @@ class SmGravitySwopList extends StatelessWidget {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (currentChild != null) currentChild,
+            ?currentChild,
             ...previousChildren,
           ],
         );
       },
       child: Column(
-        key: ValueKey<int>(children.hashCode), // Força o gatilho da animação ao detectar mudanças na estrutura interna
+        key: ValueKey<Object>(sortKey),
         mainAxisSize: MainAxisSize.min,
         children: children,
       ),

@@ -271,6 +271,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         const SizedBox(height: AppSizes.sizedBoxMedium),
         SmGravitySwopList(
+          sortKey: activeSort,
           children: List.generate(paramList.length, (index) {
             final param = paramList[index];
             final isCardExpanded = expandedIds.contains(param.id);
