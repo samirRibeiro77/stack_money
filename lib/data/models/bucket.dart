@@ -2,39 +2,38 @@ import 'package:uuid/uuid.dart';
 
 class Bucket {
   final String id;
-  final String category;
+  final String? category;
   final String where;
   final double minValue;
   final bool isImmediateLiquidity;
   final int position;
 
-  Bucket({
+  Bucket._({
     required this.id,
-    required this.category,
     required this.where,
     required this.minValue,
     required this.isImmediateLiquidity,
     required this.position,
+    this.category,
   });
 
   factory Bucket.empty() {
-    return Bucket(
+    return Bucket._(
       id: const Uuid().v4(),
-      category: 'New',
-      where: 'Bucket',
+      where: 'New Bucket',
       minValue: 0.0,
       isImmediateLiquidity: false,
       position: 0,
     );
   }
 
-  factory Bucket.fromJson(Map<String, dynamic> json, {String? id}) {
-    return Bucket(
-      id: id ?? json['id'] ?? '',
-      category: json['category'] ?? '',
-      where: json['where'] ?? '',
-      minValue: (json['minValue'] as num).toDouble(),
-      isImmediateLiquidity: json['isImmediateLiquidity'] ?? false,
+  factory Bucket.fromJson(Map<String, Object?> json, {String? id}) {
+    return Bucket._(
+      id: id ?? json['id'] as String? ?? '',
+      category: json['category'] as String? ?? '',
+      where: json['where'] as String? ?? '',
+      minValue: (json['minValue'] as num?)?.toDouble() ?? 0.0,
+      isImmediateLiquidity: json['isImmediateLiquidity'] as bool? ?? false,
       position: json['position'] as int? ?? 0,
     );
   }
@@ -56,8 +55,7 @@ class Bucket {
     return where == b.where &&
         category == b.category &&
         minValue == b.minValue &&
-        isImmediateLiquidity == b.isImmediateLiquidity &&
-        position == b.position; // 🔥 Rastreabilidade completa
+        isImmediateLiquidity == b.isImmediateLiquidity;
   }
 
   Bucket copyWith({
@@ -68,10 +66,10 @@ class Bucket {
     bool? isImmediateLiquidity,
     int? position,
   }) {
-    return Bucket(
+    return Bucket._(
       id: id ?? this.id,
-      category: category ?? this.category,
-      where: where ?? this.where,
+      category: (category ?? this.category)?.trim(),
+      where: (where ?? this.where).trim(),
       minValue: minValue ?? this.minValue,
       isImmediateLiquidity: isImmediateLiquidity ?? this.isImmediateLiquidity,
       position: position ?? this.position,

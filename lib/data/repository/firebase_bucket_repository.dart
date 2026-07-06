@@ -116,41 +116,24 @@ class FirebaseBucketRepository {
       final currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');
 
-      final cleanWhere = bucket.where.trim().isEmpty
-          ? 'New'
-          : bucket.where.trim();
-      final cleanCategory = bucket.category.trim().isEmpty
-          ? 'Bucket'
-          : bucket.category.trim();
-
-      // 🔥 CORREÇÃO CIRÚRGICA: Repassa a propriedade position para o fallback não resetar a ordem no banco
-      final bkpBucket = Bucket(
-        id: bucket.id,
-        where: cleanWhere,
-        category: cleanCategory,
-        minValue: bucket.minValue,
-        isImmediateLiquidity: bucket.isImmediateLiquidity,
-        position: bucket.position,
-      );
-
       print(
-        '📡 [FIRESTORE_WRITE] -> Initializing sync for UUID: ${bkpBucket.id}',
+        '📡 [FIRESTORE_WRITE] -> Initializing sync for UUID: ${bucket.id}',
       );
 
       _firestore
           .collection('users')
           .doc(currentUser.uid)
           .collection('parameters')
-          .doc(bkpBucket.id)
-          .set(bkpBucket.toJson(), SetOptions(merge: true))
+          .doc(bucket.id)
+          .set(bucket.toJson(), SetOptions(merge: true))
           .then((_) {
             print(
-              '✅ [FIRESTORE_SUCCESS] -> Document synced in background: ${bkpBucket.id} (${cleanCategory}_$cleanWhere)',
+              '✅ [FIRESTORE_SUCCESS] -> Document synced in background: ${bucket.id} (${bucket.name})',
             );
           })
           .catchError((error) {
             print(
-              '❌ [FIRESTORE_FAIL] -> Background sync failed for ${bkpBucket.id}: $error',
+              '❌ [FIRESTORE_FAIL] -> Background sync failed for ${bucket.id}: $error',
             );
           });
     } catch (e) {

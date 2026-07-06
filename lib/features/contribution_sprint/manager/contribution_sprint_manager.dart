@@ -68,7 +68,7 @@ class ContributionSprintManager {
     if (index >= 0 && index < buckets.length) {
       final bucket = buckets[index];
 
-      nameController.text = bucket.category;
+      nameController.text = bucket.category ?? '';
       whereController.text = bucket.where;
       minValueController.text = '';
       actualValueController.text = '';
@@ -136,13 +136,11 @@ class ContributionSprintManager {
       verifiedMinValue = -verifiedMinValue;
     }
 
-    buckets[currentIndex] = Bucket(
-      id: bucket.id,
-      category: nameController.text.trim(),
-      where: whereController.text.trim(),
-      minValue: bucket.minValue + verifiedMinValue,
-      isImmediateLiquidity: _isLiquid.value,
-      position: bucket.position,
+    buckets[currentIndex] = bucket.copyWith(
+        category: nameController.text,
+        where: whereController.text,
+        minValue: bucket.minValue + verifiedMinValue,
+        isImmediateLiquidity: _isLiquid.value
     );
 
     _lastKnownValues[bucket.id] = verifiedActualValue;
