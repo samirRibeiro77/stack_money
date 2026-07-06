@@ -9,7 +9,7 @@ class DistributionRow {
   final double value;
   final int targetDay;
 
-  const DistributionRow({
+  const DistributionRow._({
     required this.id,
     required this.category,
     required this.subCategory,
@@ -19,7 +19,7 @@ class DistributionRow {
   });
 
   factory DistributionRow.empty({int defaultDay = 0}) {
-    return DistributionRow(
+    return DistributionRow._(
       id: const Uuid().v4(),
       category: '',
       subCategory: '',
@@ -43,13 +43,31 @@ class DistributionRow {
   String get name => '$category $subCategory';
 
   factory DistributionRow.fromJson(Map<String, dynamic> json) {
-    return DistributionRow(
+    return DistributionRow._(
       id: json['id'] as String,
       category: json['category'] as String,
       subCategory: json['sub_category'] as String,
       type: AllocationType.fromJson(json['type'] as String),
       value: (json['value'] as num).toDouble(),
       targetDay: json['target_day'] as int,
+    );
+  }
+
+  DistributionRow copyWith({
+    String? id,
+    String? category,
+    String? subCategory,
+    AllocationType? type,
+    double? value,
+    int? targetDay,
+  }) {
+    return DistributionRow._(
+      id: id ?? this.id,
+      category: (category ?? this.category).trim(),
+      subCategory: (subCategory ?? this.subCategory).trim(),
+      type: type ?? this.type,
+      value: value ?? this.value,
+      targetDay: targetDay ?? this.targetDay,
     );
   }
 }

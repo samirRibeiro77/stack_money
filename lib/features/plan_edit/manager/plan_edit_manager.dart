@@ -274,14 +274,16 @@ class PlanEditManager {
       }) {
     final list = List<DistributionRow>.from(currentPlan.distributions);
     if (index >= 0 && index < list.length) {
-      list[index] = DistributionRow(
-        id: list[index].id,
-        category: cat ?? list[index].category,
-        subCategory: sub ?? list[index].subCategory,
-        type: type ?? list[index].type,
-        value: value ?? list[index].value,
-        targetDay: targetDay ?? list[index].targetDay,
+      final distribution = list[index];
+
+      list[index] = distribution.copyWith(
+          category: cat,
+          subCategory: sub,
+          type: type,
+          value: value,
+          targetDay: targetDay
       );
+
       planNotifier.value = currentPlan.copyWith(distributions: list);
       _autoSave();
     }
