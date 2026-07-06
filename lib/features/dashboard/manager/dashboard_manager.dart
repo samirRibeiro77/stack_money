@@ -40,8 +40,7 @@ class DashboardManager {
 
   ValueListenable<ChartFilterState> get chartFilterNotifier => _chartFilter;
 
-  ValueListenable<DashboardSortFilter> get sortFilterNotifier =>
-      _sortFilter; // 🔥 Getter do Filtro
+  ValueListenable<DashboardSortFilter> get sortFilterNotifier => _sortFilter;
 
   List<Bucket> get parameters => _realParameters.value;
 
@@ -74,6 +73,44 @@ class DashboardManager {
 
   /// 🔥 NOVO: Atualizador tático de ordenação
   void updateSortFilter(DashboardSortFilter newFilter) {
+    final latestHistory = _realHistoryTimeline.value.last;
+
+    _realParameters.value.sort((a, b) {
+      final double valA =
+          latestHistory
+              .transactions[a.id.replaceAll(
+            ' ',
+            '',
+          )]
+              ?.actualValue ??
+              0.0;
+      final double valB =
+          latestHistory
+              .transactions[b.id.replaceAll(
+            ' ',
+            '',
+          )]
+              ?.actualValue ??
+              0.0;
+
+      switch (newFilter) {
+        case DashboardSortFilter.position:
+          return a.position.compareTo(b.position);
+        case DashboardSortFilter.name:
+          return a.name.compareTo(b.name);
+        case DashboardSortFilter.currentValue:
+          return valB.compareTo(valA);
+        case DashboardSortFilter.minValue:
+          return a.minValue.compareTo(b.minValue);
+        case DashboardSortFilter.allocation:
+          final double allocA =
+              (valA / latestHistory.total) * 100;
+          final double allocB =
+              (valB / latestHistory.total) * 100;
+          return allocB.compareTo(allocA);
+      }
+    });
+
     _sortFilter.value = newFilter;
   }
 

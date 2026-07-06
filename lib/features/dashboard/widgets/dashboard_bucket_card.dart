@@ -142,7 +142,6 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                 const SizedBox(height: AppSizes.sizedBoxMedium),
                 TelemetryFilterBar(
                   currentState: _chartFilter,
-                  isEnabled: true,
                   firstDate: firstDate,
                   chipColor: healthColor,
                   onFilterChanged: (newState) {

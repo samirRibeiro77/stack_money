@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
@@ -10,7 +11,6 @@ class TelemetryFilterBar extends StatelessWidget {
   final DateTime firstDate;
   final ChartFilterState currentState;
   final ValueChanged<ChartFilterState> onFilterChanged;
-  final bool isEnabled;
   final Color chipColor;
 
   const TelemetryFilterBar({
@@ -18,13 +18,13 @@ class TelemetryFilterBar extends StatelessWidget {
     required this.firstDate,
     required this.currentState,
     required this.onFilterChanged,
-    required this.isEnabled,
     this.chipColor = StackMoneyTheme.cyanNeon,
   });
 
   Future<void> _openCustomDatePicker(
     BuildContext context,
     AppLocalizations l10n,
+      bool isEnabled
   ) async {
     if (!isEnabled) return;
 
@@ -66,9 +66,10 @@ class TelemetryFilterBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isSecureActive = SecurityProvider.isSecureOf(context);
 
     return Opacity(
-      opacity: isEnabled ? 1.0 : 0.3,
+      opacity: !isSecureActive ? 1.0 : 0.3,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -76,7 +77,7 @@ class TelemetryFilterBar extends StatelessWidget {
             label: l10n.threeMonths,
             isSelected: currentState.filter == ChartFilter.threeMonths,
             borderColor: chipColor,
-            onTap: isEnabled
+            onTap: !isSecureActive
                 ? () => onFilterChanged(
                     ChartFilterState(filter: ChartFilter.threeMonths),
                   )
@@ -86,7 +87,7 @@ class TelemetryFilterBar extends StatelessWidget {
             label: l10n.sixMonths,
             isSelected: currentState.filter == ChartFilter.sixMonths,
             borderColor: chipColor,
-            onTap: isEnabled
+            onTap: !isSecureActive
                 ? () => onFilterChanged(
                     ChartFilterState(filter: ChartFilter.sixMonths),
                   )
@@ -96,7 +97,7 @@ class TelemetryFilterBar extends StatelessWidget {
             label: l10n.oneYear,
             isSelected: currentState.filter == ChartFilter.oneYear,
             borderColor: chipColor,
-            onTap: isEnabled
+            onTap: !isSecureActive
                 ? () => onFilterChanged(
                     ChartFilterState(filter: ChartFilter.oneYear),
                   )
@@ -106,8 +107,8 @@ class TelemetryFilterBar extends StatelessWidget {
             label: currentState.customLabel,
             isSelected: currentState.filter == ChartFilter.custom,
             borderColor: chipColor,
-            onTap: isEnabled
-                ? () => _openCustomDatePicker(context, l10n)
+            onTap: !isSecureActive
+                ? () => _openCustomDatePicker(context, l10n, !isSecureActive)
                 : null,
           ),
         ],
