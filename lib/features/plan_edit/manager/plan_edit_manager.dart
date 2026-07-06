@@ -183,13 +183,7 @@ class PlanEditManager {
           ? currentPlan.inflows.first.day
           : 5;
       list.add(
-        OutflowRow(
-          id: const Uuid().v4(),
-          name: '',
-          type: DeductionType.fixed,
-          value: 0.0,
-          targetDay: defaultDay,
-        ),
+        OutflowRow.empty(defaultDay: defaultDay),
       );
       planNotifier.value = currentPlan.copyWith(outflows: list);
     }
@@ -204,13 +198,15 @@ class PlanEditManager {
   }) {
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (index >= 0 && index < list.length) {
-      list[index] = OutflowRow(
-        id: list[index].id,
-        name: name ?? list[index].name,
-        type: type ?? list[index].type,
-        value: value ?? list[index].value,
-        targetDay: targetDay ?? list[index].targetDay,
+      final outflow = list[index];
+
+      list[index] = outflow.copyWith(
+          name: name,
+          type: type,
+          value: value,
+          targetDay: targetDay
       );
+
       planNotifier.value = currentPlan.copyWith(outflows: list);
       if (index == list.length - 1 &&
           ((value ?? 0) > 0 || (name ?? '').isNotEmpty)) {
