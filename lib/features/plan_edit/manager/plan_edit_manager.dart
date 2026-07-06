@@ -25,11 +25,16 @@ class PlanEditManager {
   final _scrollController = ScrollController();
 
   ScrollController get scrollController => _scrollController;
+
   ValueListenable<bool> get inflowExpandState => _inflowExpandState;
+
   ValueListenable<bool> get outflowExpandState => _outflowExpandState;
 
-  void toggleInflowExpand() => _inflowExpandState.value = !_inflowExpandState.value;
-  void toggleOutflowExpand() => _outflowExpandState.value = !_outflowExpandState.value;
+  void toggleInflowExpand() =>
+      _inflowExpandState.value = !_inflowExpandState.value;
+
+  void toggleOutflowExpand() =>
+      _outflowExpandState.value = !_outflowExpandState.value;
 
   PlanEditManager(SalaryPlan initialPlan) {
     planNotifier = ValueNotifier(initialPlan);
@@ -115,14 +120,7 @@ class PlanEditManager {
   void _ensureEmptyInflowRow() {
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (list.isEmpty || list.last.value > 0) {
-      list.add(
-        InflowRow(
-          id: const Uuid().v4(),
-          type: InflowType.percentageBase,
-          value: 0.0,
-          day: 5,
-        ),
-      );
+      list.add(InflowRow.empty());
       planNotifier.value = currentPlan.copyWith(inflows: list);
     }
   }
@@ -130,12 +128,14 @@ class PlanEditManager {
   void updateInflow(int index, {InflowType? type, double? value, int? day}) {
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (index >= 0 && index < list.length) {
-      list[index] = InflowRow(
-        id: list[index].id,
-        type: type ?? list[index].type,
-        value: value ?? list[index].value,
-        day: day ?? list[index].day,
+      final inflow = list[index];
+
+      list[index] = inflow.copyWith(
+          type: type,
+          value: value,
+          day: day
       );
+
       planNotifier.value = currentPlan.copyWith(inflows: list);
       if (index == list.length - 1 && (value ?? 0) > 0) _ensureEmptyInflowRow();
       _autoSave();
@@ -196,12 +196,12 @@ class PlanEditManager {
   }
 
   void updateOutflow(
-      int index, {
-        String? name,
-        DeductionType? type,
-        double? value,
-        int? targetDay,
-      }) {
+    int index, {
+    String? name,
+    DeductionType? type,
+    double? value,
+    int? targetDay,
+  }) {
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (index >= 0 && index < list.length) {
       list[index] = OutflowRow(
@@ -265,23 +265,23 @@ class PlanEditManager {
   }
 
   void updateDistribution(
-      int index, {
-        String? cat,
-        String? sub,
-        AllocationType? type,
-        double? value,
-        int? targetDay,
-      }) {
+    int index, {
+    String? cat,
+    String? sub,
+    AllocationType? type,
+    double? value,
+    int? targetDay,
+  }) {
     final list = List<DistributionRow>.from(currentPlan.distributions);
     if (index >= 0 && index < list.length) {
       final distribution = list[index];
 
       list[index] = distribution.copyWith(
-          category: cat,
-          subCategory: sub,
-          type: type,
-          value: value,
-          targetDay: targetDay
+        category: cat,
+        subCategory: sub,
+        type: type,
+        value: value,
+        targetDay: targetDay,
       );
 
       planNotifier.value = currentPlan.copyWith(distributions: list);
@@ -290,9 +290,9 @@ class PlanEditManager {
   }
 
   Future<bool?> removeDistributionConfirmation(
-      String distributionName,
-      BuildContext context,
-      ) {
+    String distributionName,
+    BuildContext context,
+  ) {
     final l10n = AppLocalizations.of(context)!;
 
     return showDialog<bool>(
@@ -328,10 +328,10 @@ class PlanEditManager {
   }
 
   void _triggerUndoSnackBar(
-      BuildContext context,
-      String message,
-      SalaryPlan backup,
-      ) {
+    BuildContext context,
+    String message,
+    SalaryPlan backup,
+  ) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
