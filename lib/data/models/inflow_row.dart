@@ -34,7 +34,7 @@ class InflowRow {
 
   Map<String, dynamic> toJson() => {
     'id': _id,
-    'type': type,
+    'type': type.name,
     'value': value,
     'day': day,
   };

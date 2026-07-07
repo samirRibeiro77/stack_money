@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
@@ -68,7 +69,7 @@ class PlanEditManager {
         name: 'Copy of ${currentPlan.name}',
         isActive: false,
         isArchived: false,
-        createdAt: DateTime.now(),
+        createdAt: Timestamp.now(),
       );
 
       await _service.saveSalaryPlan(copiedPlan);

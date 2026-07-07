@@ -44,7 +44,7 @@ class DistributionRow {
     'id': _id,
     'category': category,
     'sub_category': subCategory,
-    'type': type.toJson(),
+    'type': type.name,
     'value': value,
     'target_day': targetDay,
   };

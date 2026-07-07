@@ -5,20 +5,21 @@ enum AllocationType {
   percentageNet,
   percentageGross;
 
-  String toJson() => name;
-
-  static AllocationType fromJson(String json) {
+  static AllocationType fromJson(String? json) {
     return AllocationType.values.firstWhere(
-          (e) => e.name == json,
+      (e) => e.name == json,
       orElse: () => AllocationType.fixed,
     );
   }
 
   String symbol(AppLocalizations l10n) {
     switch (this) {
-      case fixed: return l10n.brlCurrency;
-      case percentageNet: return l10n.percentNet;
-      case percentageGross: return l10n.percentGross;
+      case fixed:
+        return l10n.brlCurrency;
+      case percentageNet:
+        return l10n.percentNet;
+      case percentageGross:
+        return l10n.percentGross;
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
@@ -12,7 +13,7 @@ class SalaryPlan {
   final double baseSalary;
   final bool isActive;
   final bool isArchived;
-  final DateTime createdAt;
+  final Timestamp createdAt;
   final int position;
   final List<InflowRow> inflows;
   final List<OutflowRow> outflows;
@@ -38,7 +39,7 @@ class SalaryPlan {
       baseSalary: 0.0,
       isActive: isActive ?? false,
       isArchived: false,
-      createdAt: DateTime.now(),
+      createdAt: Timestamp.now(),
       position: 0,
       inflows: [],
       outflows: [],
@@ -53,9 +54,7 @@ class SalaryPlan {
       baseSalary: (json?['base_salary'] as num? ?? 0.0).toDouble(),
       isActive: json?['is_active'] as bool? ?? false,
       isArchived: json?['is_archived'] as bool? ?? false,
-      createdAt: DateTime.parse(
-        json?['created_at'] as String? ?? DateTime.now().toIso8601String(),
-      ),
+      createdAt: json?['created_at'] as Timestamp? ?? Timestamp.now(),
       position: json?['position'] as int? ?? 0,
       inflows:
           (json?['inflows'] as List<dynamic>?)
@@ -81,7 +80,7 @@ class SalaryPlan {
     'base_salary': baseSalary,
     'is_active': isActive,
     'is_archived': isArchived,
-    'created_at': createdAt.toIso8601String(),
+    'created_at': createdAt,
     'position': position,
     'inflows': inflows.map((e) => e.toJson()).toList(),
     'outflows': outflows.map((e) => e.toJson()).toList(),
@@ -94,7 +93,7 @@ class SalaryPlan {
     double? baseSalary,
     bool? isActive,
     bool? isArchived,
-    DateTime? createdAt,
+    Timestamp? createdAt,
     int? position,
     List<InflowRow>? inflows,
     List<OutflowRow>? outflows,

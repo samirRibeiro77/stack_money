@@ -39,7 +39,7 @@ class OutflowRow {
   Map<String, dynamic> toJson() => {
     'id': _id,
     'name': name,
-    'type': type,
+    'type': type.name,
     'value': value,
     'target_day': targetDay,
   };
