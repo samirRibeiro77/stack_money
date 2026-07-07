@@ -29,8 +29,8 @@ class TelemetryLineChart extends StatelessWidget {
       return rawHistoryData
           .where(
             (h) =>
-                h.date.isAfter(filterState.start!) &&
-                h.date.isBefore(filterState.end!),
+                h.date.toDate().isAfter(filterState.start!) &&
+                h.date.toDate().isBefore(filterState.end!),
           )
           .toList();
     }
@@ -38,7 +38,7 @@ class TelemetryLineChart extends StatelessWidget {
     return rawHistoryData
         .where(
           (h) =>
-              latestDate.difference(h.date).inDays <= filterState.filter.days,
+              latestDate.toDate().difference(h.date.toDate()).inDays <= filterState.filter.days,
         )
         .toList();
   }
@@ -114,7 +114,7 @@ class TelemetryLineChart extends StatelessWidget {
                   final historyItem = data[spot.x.toInt()];
 
                   return LineTooltipItem(
-                    '${StackMoneyString.formatDate(historyItem.date, showYear: true)}\n${StackMoneyString.formatMoney(spot.y)}',
+                    '${StackMoneyString.formatDate(historyItem.date.toDate(), showYear: true)}\n${StackMoneyString.formatMoney(spot.y)}',
                     textTheme.labelMedium!.copyWith(
                       color: StackMoneyTheme.platinumSilver,
                     ),
@@ -207,7 +207,7 @@ class TelemetryLineChart extends StatelessWidget {
                     return Padding(
                       padding: EdgeInsets.only(top: AppSizes.x3),
                       child: Text(
-                        StackMoneyString.formatDate(data[idx].date),
+                        StackMoneyString.formatDate(data[idx].date.toDate()),
                         style: textTheme.bodySmall?.copyWith(fontSize: AppTypography.fontSmallest),
                       ),
                     );

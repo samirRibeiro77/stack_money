@@ -44,8 +44,8 @@ class ContributionSprintManager {
       final loadedBuckets = await _service.fetch();
       final lastValues = await _service.fetchLastSprintValues();
       for (var t in lastValues) {
-        _originalValues[t.id] = t.actualValue;
-        _lastKnownValues[t.id] = t.actualValue;
+        _originalValues[t.bucketId] = t.actualValue;
+        _lastKnownValues[t.bucketId] = t.actualValue;
       }
 
       _bucketsNotifier.value = loadedBuckets;
@@ -160,10 +160,10 @@ class ContributionSprintManager {
       final double oldValue = _originalValues[bucket.id] ?? 0.0;
 
       compiledTransactions.add(
-        Transaction(
+        Transaction.create(
+          bucket.id, finalValue,
           category: bucket.category,
           where: bucket.where,
-          actualValue: finalValue,
         ),
       );
 

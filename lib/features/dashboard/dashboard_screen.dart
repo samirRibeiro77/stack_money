@@ -142,7 +142,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(height: AppSizes.sizedBoxMedium),
                       TelemetryFilterBar(
                         currentState: currentFilter,
-                        firstDate: historyList.first.date,
+                        firstDate: historyList.first.date.toDate(),
                         onFilterChanged: _manager.updateChartFilter,
                       ),
                     ],

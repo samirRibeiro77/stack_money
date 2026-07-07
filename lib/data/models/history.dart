@@ -1,51 +1,51 @@
+import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:stack_money/data/models/transaction.dart';
+import 'package:uuid/uuid.dart';
 
 class History {
-  final String? id; // Format: "AAAA_MM_DD"
-  final DateTime date;
-  final Map<String, Transaction> transactions;
+  final String id;
+  final Timestamp date;
+  final List<Transaction> transactions;
   final double total;
   final double immediateLiquidityTotal;
 
-  const History({
-    this.id,
+  const History._({
+    required this.id,
     required this.date,
     required this.transactions,
     required this.total,
     required this.immediateLiquidityTotal,
   });
 
-  factory History.fromJson(String documentId, Map<String, dynamic> json) {
-    final transactionsMap = <String, Transaction>{};
+  factory History.withValues({
+    List<Transaction>? transactions,
+    double? total,
+    double? immediateLiquidityTotal,
+  }) {
+    return History._(
+      id: const Uuid().v4(),
+      date: Timestamp.now(),
+      transactions: transactions ?? [],
+      total: total ?? 0,
+      immediateLiquidityTotal: immediateLiquidityTotal ?? 0,
+    );
+  }
 
-    if (json['transactions'] != null) {
-      final rawTransactions = json['transactions'] as Map<dynamic, dynamic>;
-      rawTransactions.forEach((key, value) {
-        transactionsMap[key] = Transaction.fromJson(
-          value as Map<String, dynamic>,
-        );
-      });
-    }
-
-    return History(
-      id: documentId,
-      date: DateTime.parse(json['date'] as String),
-      transactions: transactionsMap,
-      total: (json['total'] as num).toDouble(),
-      immediateLiquidityTotal: (json['immediateLiquidityTotal'] ?? 0.0 as num)
-          .toDouble(),
+  factory History.fromJson(Map<String, Object?>? json, {String? documentId}) {
+    return History._(
+      id: documentId ?? json?['id'] as String? ?? '',
+      date: json?['date'] as Timestamp? ?? Timestamp.now(),
+      transactions: json?['transactions'] as List<Transaction>? ?? [],
+      total: (json?['total'] as num?)?.toDouble() ?? 0,
+      immediateLiquidityTotal:
+          (json?['immediateLiquidityTotal'] as num?)?.toDouble() ?? 0,
     );
   }
 
   Map<String, dynamic> toJson() {
-    final jsonTransactions = transactions.map(
-      (key, value) => MapEntry(key, value.toJson()),
-    );
-
     return {
-      'date':
-          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}',
-      'transactions': jsonTransactions,
+      'date': date,
+      'transactions': transactions,
       'total': total,
       'immediateLiquidityTotal': immediateLiquidityTotal,
     };

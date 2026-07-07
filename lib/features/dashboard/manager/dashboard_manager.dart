@@ -78,18 +78,12 @@ class DashboardManager {
     _realParameters.value.sort((a, b) {
       final double valA =
           latestHistory
-              .transactions[a.id.replaceAll(
-            ' ',
-            '',
-          )]
+              .transactions.where((t) => t.bucketId == a.id).firstOrNull
               ?.actualValue ??
               0.0;
       final double valB =
           latestHistory
-              .transactions[b.id.replaceAll(
-            ' ',
-            '',
-          )]
+              .transactions.where((t) => t.bucketId == b.id).firstOrNull
               ?.actualValue ??
               0.0;
 

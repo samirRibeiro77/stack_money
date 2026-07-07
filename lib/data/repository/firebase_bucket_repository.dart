@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/history.dart';
+import 'package:stack_money/data/models/net_worth.dart';
 import 'package:stack_money/data/models/transaction.dart';
 
 class FirebaseBucketRepository {
@@ -50,11 +51,10 @@ class FirebaseBucketRepository {
 
       if (snapshot.docs.isNotEmpty) {
         final history = History.fromJson(
-          snapshot.docs.first.id,
-          snapshot.docs.first.data(),
+          snapshot.docs.first.data(), documentId: snapshot.docs.first.id
         );
 
-        return history.transactions.values.toList();
+        return history.transactions.toList();
       }
       return [];
     } catch (e) {
@@ -80,26 +80,19 @@ class FirebaseBucketRepository {
         batch.set(docRef, bucket.toJson(), SetOptions(merge: true));
       }
 
-      var transactionsMap = {for (var t in transactions) t.id: t};
-      final history = History(
-        date: DateTime.now(),
-        transactions: transactionsMap,
+      final history = History.withValues(
+        transactions: transactions,
         total: totalNetWorth,
         immediateLiquidityTotal: totalLiquidity,
       );
 
-      final historyId =
-          '${history.date.year}_${history.date.month.toString().padLeft(2, '0')}_${history.date.day.toString().padLeft(2, '0')}';
-
-      final historyDocRef = userDoc.collection('history').doc(historyId);
+      final historyDocRef = userDoc.collection('history').doc(history.id);
       batch.set(historyDocRef, history.toJson());
 
+      final netWorth = NetWorth.create(total: totalNetWorth, liquidity: totalLiquidity);
+
       batch.set(userDoc, {
-        'net_worth': {
-          'total': totalNetWorth,
-          'liquidity': totalLiquidity,
-          'updated_at': DateTime.now().toIso8601String(),
-        },
+        'net_worth': netWorth.toJson(),
       }, SetOptions(merge: true));
 
       await batch.commit();

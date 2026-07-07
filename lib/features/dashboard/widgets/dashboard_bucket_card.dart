@@ -39,7 +39,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
 
   double _getBucketValueAt(History history) {
     final transaction =
-        history.transactions[widget.parameter.id.replaceAll(' ', '')];
+        history.transactions.where((t) => t.bucketId == widget.parameter.id).firstOrNull;
     return transaction?.actualValue ?? 0.0;
   }
 
@@ -142,7 +142,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                 const SizedBox(height: AppSizes.sizedBoxMedium),
                 TelemetryFilterBar(
                   currentState: _chartFilter,
-                  firstDate: firstDate,
+                  firstDate: firstDate.toDate(),
                   chipColor: healthColor,
                   onFilterChanged: (newState) {
                     setState(() {
@@ -165,10 +165,10 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
 
     List<History> filteredHistory = widget.historyList.where((h) {
       if (_chartFilter.filter == ChartFilter.custom && _chartFilter.hasDates) {
-        return h.date.isAfter(_chartFilter.start!) &&
-            h.date.isBefore(_chartFilter.end!);
+        return h.date.toDate().isAfter(_chartFilter.start!) &&
+            h.date.toDate().isBefore(_chartFilter.end!);
       }
-      return latestDate.difference(h.date).inDays <= _chartFilter.filter.days;
+      return latestDate.toDate().difference(h.date.toDate()).inDays <= _chartFilter.filter.days;
     }).toList();
 
     if (filteredHistory.isEmpty) filteredHistory = [widget.historyList.last];

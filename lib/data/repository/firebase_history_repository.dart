@@ -20,7 +20,7 @@ class FirebaseHistoryRepository {
           .get();
 
       return snapshot.docs.map((doc) {
-        return History.fromJson(doc.id, doc.data());
+        return History.fromJson(doc.data());
       }).toList();
     } catch (e) {
       print('DEBUG_SYSTEM [HistoryRepository]: Error fetching history timeline -> $e');
