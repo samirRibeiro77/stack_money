@@ -45,7 +45,7 @@ class History {
     return {
       'id': _id,
       'date': date,
-      'transactions': transactions,
+      'transactions': transactions.map((t) => t.toJson()).toList(),
       'total': total,
       'immediateLiquidityTotal': immediateLiquidityTotal,
     };
