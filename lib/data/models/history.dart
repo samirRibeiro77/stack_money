@@ -3,14 +3,13 @@ import 'package:stack_money/data/models/transaction.dart';
 import 'package:uuid/uuid.dart';
 
 class History {
-  final String id;
+  final String _id;
   final Timestamp date;
   final List<Transaction> transactions;
   final double total;
   final double immediateLiquidityTotal;
 
-  const History._({
-    required this.id,
+  const History._(this._id, {
     required this.date,
     required this.transactions,
     required this.total,
@@ -23,7 +22,7 @@ class History {
     double? immediateLiquidityTotal,
   }) {
     return History._(
-      id: const Uuid().v4(),
+      const Uuid().v4(),
       date: Timestamp.now(),
       transactions: transactions ?? [],
       total: total ?? 0,
@@ -33,7 +32,7 @@ class History {
 
   factory History.fromJson(Map<String, Object?>? json, {String? documentId}) {
     return History._(
-      id: documentId ?? json?['id'] as String? ?? '',
+      documentId ?? json?['id'] as String? ?? '',
       date: json?['date'] as Timestamp? ?? Timestamp.now(),
       transactions: json?['transactions'] as List<Transaction>? ?? [],
       total: (json?['total'] as num?)?.toDouble() ?? 0,
@@ -44,10 +43,13 @@ class History {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': _id,
       'date': date,
       'transactions': transactions,
       'total': total,
       'immediateLiquidityTotal': immediateLiquidityTotal,
     };
   }
+
+  String get id => _id;
 }

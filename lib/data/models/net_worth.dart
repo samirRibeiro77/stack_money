@@ -27,7 +27,9 @@ class NetWorth {
     );
   }
 
-  Map<String, Object> toJson() {
-    return {'updateAt': updateAt, 'total': total, 'liquidity': liquidity};
-  }
+  Map<String, Object> toJson() => {
+    'updateAt': updateAt,
+    'total': total,
+    'liquidity': liquidity,
+  };
 }

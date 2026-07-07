@@ -34,12 +34,10 @@ class Transaction {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'bucketId': bucketId,
-      'category': category,
-      'where': where,
-      'actualValue': actualValue,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'bucketId': bucketId,
+    'category': category,
+    'where': where,
+    'actualValue': actualValue,
+  };
 }
