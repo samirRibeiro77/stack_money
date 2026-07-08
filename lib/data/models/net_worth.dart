@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../helper/model_key.dart';
+
 class NetWorth {
   final Timestamp updateAt;
   final double total;
@@ -21,15 +23,15 @@ class NetWorth {
 
   factory NetWorth.fromJson(Map<String, Object?>? json) {
     return NetWorth._(
-      updateAt: json?['updateAt'] as Timestamp? ?? Timestamp.now(),
-      total: (json?['total'] as num?)?.toDouble() ?? 0,
-      liquidity: (json?['liquidity'] as num?)?.toDouble() ?? 0,
+      updateAt: json?[ModelKey.updateAt] as Timestamp? ?? Timestamp.now(),
+      total: (json?[ModelKey.total] as num?)?.toDouble() ?? 0,
+      liquidity: (json?[ModelKey.liquidity] as num?)?.toDouble() ?? 0,
     );
   }
 
   Map<String, Object> toJson() => {
-    'updateAt': updateAt,
-    'total': total,
-    'liquidity': liquidity,
+    ModelKey.updateAt: updateAt,
+    ModelKey.total: total,
+    ModelKey.liquidity: liquidity,
   };
 }

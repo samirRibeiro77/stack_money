@@ -1,3 +1,5 @@
+import 'package:stack_money/data/helper/model_key.dart';
+
 class Transaction {
   final String bucketId;
   final String category;
@@ -27,17 +29,17 @@ class Transaction {
 
   factory Transaction.fromJson(Map<String, Object?>? json) {
     return Transaction._(
-      bucketId: json?['bucketId'] as String? ?? '',
-      category: json?['category'] as String? ?? '',
-      where: json?['where'] as String? ?? '',
-      actualValue: (json?['actualValue'] as num?)?.toDouble() ?? 0,
+      bucketId: json?[ModelKey.bucketId] as String? ?? '',
+      category: json?[ModelKey.category] as String? ?? '',
+      where: json?[ModelKey.where] as String? ?? '',
+      actualValue: (json?[ModelKey.value] as num?)?.toDouble() ?? 0,
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'bucketId': bucketId,
-    'category': category,
-    'where': where,
-    'actualValue': actualValue,
+    ModelKey.bucketId: bucketId,
+    ModelKey.category: category,
+    ModelKey.where: where,
+    ModelKey.value: actualValue,
   };
 }

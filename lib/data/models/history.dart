@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
+import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/transaction.dart';
 import 'package:uuid/uuid.dart';
 
@@ -9,7 +10,8 @@ class History {
   final double total;
   final double immediateLiquidityTotal;
 
-  const History._(this._id, {
+  const History._(
+    this._id, {
     required this.date,
     required this.transactions,
     required this.total,
@@ -32,22 +34,22 @@ class History {
 
   factory History.fromJson(Map<String, Object?>? json, {String? documentId}) {
     return History._(
-      documentId ?? json?['id'] as String? ?? '',
-      date: json?['date'] as Timestamp? ?? Timestamp.now(),
-      transactions: json?['transactions'] as List<Transaction>? ?? [],
-      total: (json?['total'] as num?)?.toDouble() ?? 0,
+      documentId ?? json?[ModelKey.id] as String? ?? '',
+      date: json?[ModelKey.date] as Timestamp? ?? Timestamp.now(),
+      transactions: json?[ModelKey.transactions] as List<Transaction>? ?? [],
+      total: (json?[ModelKey.total] as num?)?.toDouble() ?? 0,
       immediateLiquidityTotal:
-          (json?['immediateLiquidityTotal'] as num?)?.toDouble() ?? 0,
+          (json?[ModelKey.immediateLiquidityTotal] as num?)?.toDouble() ?? 0,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': _id,
-      'date': date,
-      'transactions': transactions.map((t) => t.toJson()).toList(),
-      'total': total,
-      'immediateLiquidityTotal': immediateLiquidityTotal,
+      ModelKey.id: _id,
+      ModelKey.date: date,
+      ModelKey.transactions: transactions.map((t) => t.toJson()).toList(),
+      ModelKey.total: total,
+      ModelKey.immediateLiquidityTotal: immediateLiquidityTotal,
     };
   }
 

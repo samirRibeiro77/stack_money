@@ -1,3 +1,4 @@
+import 'package:stack_money/data/helper/model_key.dart';
 import 'package:uuid/uuid.dart';
 
 class Bucket {
@@ -29,22 +30,23 @@ class Bucket {
 
   factory Bucket.fromJson(Map<String, Object?>? json, {String? id}) {
     return Bucket._(
-      id ?? json?['id'] as String? ?? '',
-      category: json?['category'] as String? ?? '',
-      where: json?['where'] as String? ?? '',
-      minValue: (json?['minValue'] as num?)?.toDouble() ?? 0.0,
-      isImmediateLiquidity: json?['isImmediateLiquidity'] as bool? ?? false,
-      position: json?['position'] as int? ?? 0,
+      id ?? json?[ModelKey.id] as String? ?? '',
+      category: json?[ModelKey.category] as String? ?? '',
+      where: json?[ModelKey.where] as String? ?? '',
+      minValue: (json?[ModelKey.minValue] as num?)?.toDouble() ?? 0.0,
+      isImmediateLiquidity:
+          json?[ModelKey.isImmediateLiquidity] as bool? ?? false,
+      position: json?[ModelKey.position] as int? ?? 0,
     );
   }
 
   Map<String, Object?> toJson() => {
-    'id': _id,
-    'category': category,
-    'where': where,
-    'minValue': minValue,
-    'isImmediateLiquidity': isImmediateLiquidity,
-    'position': position,
+    ModelKey.id: _id,
+    ModelKey.category: category,
+    ModelKey.where: where,
+    ModelKey.minValue: minValue,
+    ModelKey.isImmediateLiquidity: isImmediateLiquidity,
+    ModelKey.position: position,
   };
 
   Bucket copyWith({

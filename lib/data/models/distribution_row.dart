@@ -1,4 +1,5 @@
 import 'package:stack_money/data/enum/allocation_type.dart';
+import 'package:stack_money/data/helper/model_key.dart';
 import 'package:uuid/uuid.dart';
 
 class DistributionRow {
@@ -31,22 +32,22 @@ class DistributionRow {
 
   factory DistributionRow.fromJson(Map<String, Object?>? json) {
     return DistributionRow._(
-      json?['id'] as String? ?? '',
-      category: json?['category'] as String? ?? '',
-      subCategory: json?['sub_category'] as String? ?? '',
-      type: AllocationType.fromJson(json?['type'] as String? ?? ''),
-      value: (json?['value'] as num?)?.toDouble() ?? 0,
-      targetDay: json?['target_day'] as int? ?? 0,
+      json?[ModelKey.id] as String? ?? '',
+      category: json?[ModelKey.category] as String? ?? '',
+      subCategory: json?[ModelKey.subCategory] as String? ?? '',
+      type: AllocationType.fromJson(json?[ModelKey.type] as String? ?? ''),
+      value: (json?[ModelKey.value] as num?)?.toDouble() ?? 0,
+      targetDay: json?[ModelKey.targetDay] as int? ?? 0,
     );
   }
 
   Map<String, Object?> toJson() => {
-    'id': _id,
-    'category': category,
-    'sub_category': subCategory,
-    'type': type.name,
-    'value': value,
-    'target_day': targetDay,
+    ModelKey.id: _id,
+    ModelKey.category: category,
+    ModelKey.subCategory: subCategory,
+    ModelKey.type: type.name,
+    ModelKey.value: value,
+    ModelKey.targetDay: targetDay,
   };
 
   DistributionRow copyWith({

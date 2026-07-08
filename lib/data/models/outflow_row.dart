@@ -1,4 +1,5 @@
 import 'package:stack_money/data/enum/deduction_type.dart';
+import 'package:stack_money/data/helper/model_key.dart';
 import 'package:uuid/uuid.dart';
 
 class OutflowRow {
@@ -28,20 +29,20 @@ class OutflowRow {
 
   factory OutflowRow.fromJson(Map<String, Object?>? json) {
     return OutflowRow._(
-      json?['id'] as String? ?? '',
-      name: json?['name'] as String? ?? '',
-      type: DeductionType.fromJson(json?['type'] as String? ?? ''),
-      value: (json?['value'] as num? ?? 0.0).toDouble(),
-      targetDay: json?['target_day'] as int? ?? 0,
+      json?[ModelKey.id] as String? ?? '',
+      name: json?[ModelKey.name] as String? ?? '',
+      type: DeductionType.fromJson(json?[ModelKey.type] as String? ?? ''),
+      value: (json?[ModelKey.value] as num? ?? 0.0).toDouble(),
+      targetDay: json?[ModelKey.targetDay] as int? ?? 0,
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'id': _id,
-    'name': name,
-    'type': type.name,
-    'value': value,
-    'target_day': targetDay,
+    ModelKey.id: _id,
+    ModelKey.name: name,
+    ModelKey.type: type.name,
+    ModelKey.value: value,
+    ModelKey.targetDay: targetDay,
   };
 
   OutflowRow copyWith({

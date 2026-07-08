@@ -1,4 +1,5 @@
 import 'package:stack_money/data/enum/inflow_type.dart';
+import 'package:stack_money/data/helper/model_key.dart';
 import 'package:uuid/uuid.dart';
 
 class InflowRow {
@@ -25,18 +26,18 @@ class InflowRow {
 
   factory InflowRow.fromJson(Map<String, Object?>? json) {
     return InflowRow._(
-      json?['id'] as String? ?? '',
-      type: InflowType.fromJson(json?['type'] as String? ?? ''),
-      value: (json?['value'] as num? ?? 0.0).toDouble(),
-      day: json?['day'] as int? ?? 0,
+      json?[ModelKey.id] as String? ?? '',
+      type: InflowType.fromJson(json?[ModelKey.type] as String? ?? ''),
+      value: (json?[ModelKey.value] as num? ?? 0.0).toDouble(),
+      day: json?[ModelKey.day] as int? ?? 0,
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'id': _id,
-    'type': type.name,
-    'value': value,
-    'day': day,
+    ModelKey.id: _id,
+    ModelKey.type: type.name,
+    ModelKey.value: value,
+    ModelKey.day: day,
   };
 
   InflowRow copyWith({InflowType? type, double? value, int? day}) {
