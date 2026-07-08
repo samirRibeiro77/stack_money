@@ -14,6 +14,7 @@ abstract class BaseFirebaseRepository {
     if (user == null) {
       throw StackMoneyException(
         message: 'User not authenticated in database session.',
+        where: 'BaseRepository',
         scope: ExceptionScope.auth,
       );
     }

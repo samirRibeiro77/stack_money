@@ -7,13 +7,15 @@ class FirebaseNetWorthRepository extends BaseFirebaseRepository {
   Future<NetWorth> get() async {
     try {
       SmLogger.debug(
-        '[NetworthRepository] Handshaking core assets snapshot...',
+        'Handshaking core assets snapshot...',
+        where: 'NetWorthRepository',
       );
 
       final snapshot = await getUserDoc().get();
 
       SmLogger.info(
-        '[NetworthRepository] Profile ledger asset stream verified.',
+        'Profile ledger asset stream verified.',
+        where: 'NetWorthRepository',
       );
 
       return NetWorth.fromJson(
@@ -21,7 +23,8 @@ class FirebaseNetWorthRepository extends BaseFirebaseRepository {
       );
     } catch (e, stack) {
       throw StackMoneyException(
-        message: '[NetworthRepository] Error fetching global networth metrics',
+        message: 'Error fetching global networth metrics',
+        where: 'NetWorthRepository',
         scope: ExceptionScope.database,
         payload: {
           'timestamp': DateTime.now().toIso8601String(),

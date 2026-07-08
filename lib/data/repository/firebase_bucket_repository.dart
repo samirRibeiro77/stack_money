@@ -17,6 +17,7 @@ class FirebaseBucketRepository {
     if (_currentUser == null) {
       throw StackMoneyException(
         message: 'User not authenticated',
+        where: 'BucketRepository',
         scope: ExceptionScope.auth,
       );
     }
@@ -28,6 +29,7 @@ class FirebaseBucketRepository {
       if (_currentUser == null) {
         throw StackMoneyException(
           message: 'User not authenticated',
+          where: 'BucketRepository',
           scope: ExceptionScope.auth,
         );
       }
@@ -39,7 +41,8 @@ class FirebaseBucketRepository {
           .get();
 
       SmLogger.debug(
-        '[BucketRepository] Fetch complete -> ${snapshot.docs.length} entries loaded.',
+        'Fetch complete -> ${snapshot.docs.length} entries loaded.',
+        where: 'BucketRepository',
       );
 
       return snapshot.docs.map((doc) {
@@ -47,10 +50,14 @@ class FirebaseBucketRepository {
       }).toList();
     } catch (e, stack) {
       throw StackMoneyException(
-        message: '[BucketRepository] Error fetching buckets',
+        message: 'Error fetching buckets',
+        where: 'BucketRepository',
         scope: ExceptionScope.database,
-        payload: {'timestamp': DateTime.now().toIso8601String(), 'exception': e},
-        stackTrace: stack
+        payload: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'exception': e,
+        },
+        stackTrace: stack,
       );
     }
   }
@@ -74,10 +81,14 @@ class FirebaseBucketRepository {
       return [];
     } catch (e, stack) {
       throw StackMoneyException(
-          message: '[BucketRepository] Error fetching last history snapshot',
-          scope: ExceptionScope.database,
-          payload: {'timestamp': DateTime.now().toIso8601String(), 'exception': e},
-          stackTrace: stack
+        message: 'Error fetching last history snapshot',
+        where: 'BucketRepository',
+        scope: ExceptionScope.database,
+        payload: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'exception': e,
+        },
+        stackTrace: stack,
       );
     }
   }
@@ -120,10 +131,14 @@ class FirebaseBucketRepository {
       await batch.commit();
     } catch (e, stack) {
       throw StackMoneyException(
-          message: '[BucketRepository] Failed to execute atomic sprint batch',
-          scope: ExceptionScope.database,
-          payload: {'timestamp': DateTime.now().toIso8601String(), 'exception': e},
-          stackTrace: stack
+        message: 'Failed to execute atomic sprint batch',
+        where: 'BucketRepository',
+        scope: ExceptionScope.database,
+        payload: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'exception': e,
+        },
+        stackTrace: stack,
       );
     }
   }
@@ -133,11 +148,15 @@ class FirebaseBucketRepository {
       if (_currentUser == null) {
         throw StackMoneyException(
           message: 'User not authenticated',
+          where: 'BucketRepository',
           scope: ExceptionScope.auth,
         );
       }
 
-      SmLogger.debug('[FIRESTORE_WRITE] -> Initializing sync for UUID: ${bucket.id}');
+      SmLogger.debug(
+        'Initializing sync for UUID: ${bucket.id}',
+        where: 'BucketRepository',
+      );
 
       _firestore
           .collection(FirebaseKey.users)
@@ -146,17 +165,28 @@ class FirebaseBucketRepository {
           .doc(bucket.id)
           .set(bucket.toJson(), SetOptions(merge: true))
           .then((_) {
-        SmLogger.info('[FIRESTORE_SUCCESS] -> Document synced in background: ${bucket.id} (${bucket.name})');
+            SmLogger.info(
+              'Document synced in background: ${bucket.id} (${bucket.name})',
+              where: 'BucketRepository',
+            );
           })
           .catchError((error) {
-        SmLogger.error('[FIRESTORE_FAIL] -> Background sync failed for ${bucket.id}', error: error);
+            SmLogger.error(
+              'Background sync failed for ${bucket.id}',
+              where: 'BucketRepository',
+              error: error,
+            );
           });
     } catch (e, stack) {
       throw StackMoneyException(
-          message: '[BucketRepository] Critical error pre-saving',
-          scope: ExceptionScope.database,
-          payload: {'timestamp': DateTime.now().toIso8601String(), 'exception': e},
-          stackTrace: stack
+        message: 'Critical error pre-saving',
+        where: 'BucketRepository',
+        scope: ExceptionScope.database,
+        payload: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'exception': e,
+        },
+        stackTrace: stack,
       );
     }
   }
@@ -166,12 +196,14 @@ class FirebaseBucketRepository {
       if (_currentUser == null) {
         throw StackMoneyException(
           message: 'User not authenticated',
+          where: 'BucketRepository',
           scope: ExceptionScope.auth,
         );
       }
 
       SmLogger.debug(
-        '[SECURITY_CHECK] -> Evaluating purge authorization for UUID: $id',
+        'Evaluating purge authorization for UUID: $id',
+        where: 'BucketRepository',
       );
 
       final docSnap = await _firestore
@@ -188,15 +220,18 @@ class FirebaseBucketRepository {
 
         if (currentBalance > 0.0) {
           throw StackMoneyException(
-              message: '[BucketRepository] [PURGE_DENIED] Operation aborted. Bucket $id contains active allocation funds',
-              scope: ExceptionScope.database,
-              payload: {'timestamp': DateTime.now().toIso8601String()},
+            message:
+                'Operation aborted. Bucket $id contains active allocation funds',
+            where: 'BucketRepository',
+            scope: ExceptionScope.database,
+            payload: {'timestamp': DateTime.now().toIso8601String()},
           );
         }
       }
 
       SmLogger.debug(
-        '[PURGE_PROTOCOL] -> Executing permanent destruction on UUID: $id',
+        'Executing permanent destruction on UUID: $id',
+        where: 'BucketRepository',
       );
 
       await _firestore
@@ -207,14 +242,19 @@ class FirebaseBucketRepository {
           .delete();
 
       SmLogger.info(
-        '[FIRESTORE_SUCCESS] -> Document expurged from system core: $id',
+        'Document expurged from system core: $id',
+        where: 'BucketRepository',
       );
     } catch (e, stack) {
       throw StackMoneyException(
-          message: '[BucketRepository] Error executing purge protocol',
-          scope: ExceptionScope.database,
-          payload: {'timestamp': DateTime.now().toIso8601String(), 'exception': e},
-          stackTrace: stack
+        message: 'Error executing purge protocol',
+        where: 'BucketRepository',
+        scope: ExceptionScope.database,
+        payload: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'exception': e,
+        },
+        stackTrace: stack,
       );
     }
   }

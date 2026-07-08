@@ -9,7 +9,8 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
   Future<List<History>> fetch() async {
     try {
       SmLogger.debug(
-        '[HistoryRepository] Querying historical timeline ledger...',
+        'Querying historical timeline ledger...',
+        where: 'HistoryRepository',
       );
 
       final snapshot = await getUserDoc()
@@ -18,7 +19,8 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
           .get();
 
       SmLogger.info(
-        '[HistoryRepository] Fetch complete -> ${snapshot.docs.length} audit logs synchronized.',
+        'Fetch complete -> ${snapshot.docs.length} audit logs synchronized.',
+        where: 'HistoryRepository',
       );
 
       return snapshot.docs.map((doc) {
@@ -26,7 +28,8 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
       }).toList();
     } catch (e, stack) {
       throw StackMoneyException(
-        message: '[HistoryRepository] Error fetching history timeline',
+        message: 'Error fetching history timeline',
+        where: 'HistoryRepository',
         scope: ExceptionScope.database,
         payload: {
           'timestamp': DateTime.now().toIso8601String(),
