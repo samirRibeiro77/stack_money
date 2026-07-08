@@ -1,59 +1,82 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/data/helper/firebase_key.dart';
+import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
+import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
-class FirebasePlanRepository {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
+class FirebasePlanRepository extends BaseFirebaseRepository {
   CollectionReference<Map<String, dynamic>> _getPlanCollection() {
-    final currentUser = _auth.currentUser;
-    if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');
-
-    return _firestore
-        .collection('users')
-        .doc(currentUser.uid)
-        .collection('salary_plans');
+    return getUserDoc().collection(FirebaseKey.salaryPlans);
   }
 
-  /// 🛰️ BUSCA GERAL: Traz todos os planos do banco ordenados por data de criação mais recente
   Future<List<SalaryPlan>> fetchAllPlans() async {
     try {
+      SmLogger.debug('[PlanRepository] Fetching salary profiling roster...');
+
       final snapshot = await _getPlanCollection()
-          .orderBy('created_at', descending: true)
+          .orderBy(ModelKey.createdAt, descending: true)
           .get();
 
-      print('DEBUG_SYSTEM [PlanRepository]: Fetch complete -> ${snapshot.docs.length} total plans loaded.');
-
-      return snapshot.docs.map((doc) => SalaryPlan.fromJson(doc.data())).toList();
-    } catch (e) {
-      print('DEBUG_SYSTEM [PlanRepository]: Error fetching plans -> $e');
-      rethrow;
+      SmLogger.info(
+        '[PlanRepository] Fetch success -> ${snapshot.docs.length} configuration maps loaded.',
+      );
+      return snapshot.docs
+          .map((doc) => SalaryPlan.fromJson(doc.data()))
+          .toList();
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: '[PlanRepository] Error compiling plans ledger',
+        scope: ExceptionScope.database,
+        payload: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'exception': e,
+        },
+        stackTrace: stack,
+      );
     }
   }
 
-  /// 📥 SALVAR / ATUALIZAR PLANO INDIVIDUAL
   Future<void> savePlan(SalaryPlan plan) async {
     try {
-      await _getPlanCollection().doc(plan.id).set(
-        plan.toJson(),
-        SetOptions(merge: true),
+      SmLogger.debug(
+        '[PlanRepository] Opening synchronization transaction for UUID: ${plan.id}',
       );
-    } catch (e) {
-      print('DEBUG_SYSTEM [PlanRepository]: Error saving plan -> $e');
-      rethrow;
+
+      await _getPlanCollection()
+          .doc(plan.id)
+          .set(plan.toJson(), SetOptions(merge: true));
+
+      SmLogger.info(
+        '[PlanRepository] Document successfully synced: ${plan.id}',
+      );
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: '[PlanRepository] Error saving plan structure configuration',
+        scope: ExceptionScope.database,
+        payload: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'id': plan.id,
+          'exception': e,
+        },
+        stackTrace: stack,
+      );
     }
   }
 
-  /// 🔥 AJUSTE MESTRE: Suporte completo bidirecional para ativação e desativação segura
-  Future<void> updateActiveStatusInBatch(String targetPlanId, bool isActive) async {
+  Future<void> updateActiveStatusInBatch(
+    String targetPlanId,
+    bool isActive,
+  ) async {
     try {
       final collection = _getPlanCollection();
 
       if (isActive) {
-        // 🚀 FLUXO DE ATIVAÇÃO: Inversão atômica em lote (Batch)
-        print('🔥 [BATCH_PROTOCOL] -> Activating plan $targetPlanId and resetting other profiles...');
-        final batch = _firestore.batch();
+        SmLogger.debug(
+          '[BATCH_PROTOCOL] -> Activating profile $targetPlanId and flattening parallel profiles...',
+        );
+        final batch = firestore.batch();
         final querySnapshot = await collection.get();
 
         for (final doc in querySnapshot.docs) {
@@ -61,56 +84,87 @@ class FirebasePlanRepository {
 
           if (planId == targetPlanId) {
             batch.update(collection.doc(planId), {
-              'is_active': true,
-              'is_archived': false, // Plano ativo nunca pode estar arquivado
+              ModelKey.isActive: true,
+              ModelKey.isArchived: false,
             });
           } else {
-            batch.update(collection.doc(planId), {
-              'is_active': false,
-            });
+            batch.update(collection.doc(planId), {ModelKey.isActive: false});
           }
         }
         await batch.commit();
-        print('✅ [BATCH_SUCCESS] -> Activation unique cascade completed successfully.');
+        SmLogger.info(
+          '[BATCH_SUCCESS] -> Cascading unique profile allocation committed to core.',
+        );
       } else {
-        // 🔒 FLUXO DE DESATIVAÇÃO: Ponto a ponto ultra-rápido via Update
-        print('🔒 [DEACTIVATION_PROTOCOL] -> Deactivating plan: $targetPlanId');
-        await collection.doc(targetPlanId).update({
-          'is_active': false,
-        });
-        print('✅ [DEACTIVATION_SUCCESS] -> Plan is now safely set to inactive.');
+        SmLogger.debug(
+          '[DEACTIVATION_PROTOCOL] -> Toggling engine to inactive: $targetPlanId',
+        );
+        await collection.doc(targetPlanId).update({ModelKey.isActive: false});
+        SmLogger.info(
+          '[DEACTIVATION_SUCCESS] -> Profile configuration status update completed.',
+        );
       }
-    } catch (e) {
-      print('DEBUG_SYSTEM [PlanRepository]: Active status update failed -> $e');
-      rethrow;
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: '[PlanRepository] Atomic batch state synchronization crashed',
+        scope: ExceptionScope.database,
+        payload: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'targetId': targetPlanId,
+          'exception': e,
+        },
+        stackTrace: stack,
+      );
     }
   }
 
-  /// 📦 ATUALIZAÇÃO LÓGICA DE ARQUIVAMENTO
   Future<void> updateArchiveStatus(String id, bool isArchived) async {
     try {
-      print('📦 [ARCHIVE_STATUS] -> Setting is_archived to $isArchived for plan: $id');
-      final updates = <String, dynamic>{'is_archived': isArchived};
+      SmLogger.debug(
+        '[ARCHIVE_STATUS] -> Flipping logical archive flag to $isArchived for UUID: $id',
+      );
+      final updates = <String, dynamic>{ModelKey.isArchived: isArchived};
 
       if (isArchived) {
-        updates['is_active'] = false;
+        updates[ModelKey.isActive] = false;
       }
 
       await _getPlanCollection().doc(id).update(updates);
-    } catch (e) {
-      print('DEBUG_SYSTEM [PlanRepository]: Archive status update failed -> $e');
-      rethrow;
+      SmLogger.info('[ARCHIVE_SUCCESS] -> Document visibility bit updated.');
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: '[PlanRepository] Archive status alteration protocol aborted',
+        scope: ExceptionScope.database,
+        payload: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'id': id,
+          'exception': e,
+        },
+        stackTrace: stack,
+      );
     }
   }
 
-  /// 🗑️ DELEÇÃO PROTOCOLO PURGE PERMANENTE
   Future<void> purgePlan(String id) async {
     try {
-      print('🔥 [PURGE_PROTOCOL] -> Purging Plan UUID: $id');
+      SmLogger.warning(
+        '[PURGE_PROTOCOL] -> Initializing terminal deletion sequence on UUID: $id',
+      );
       await _getPlanCollection().doc(id).delete();
-    } catch (e) {
-      print('DEBUG_SYSTEM [PlanRepository]: Purge operation failed -> $e');
-      rethrow;
+      SmLogger.info(
+        '[PURGE_SUCCESS] -> Document swept out from system infrastructure core.',
+      );
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: '[PlanRepository] Hard purge execution failed on core cluster',
+        scope: ExceptionScope.database,
+        payload: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'id': id,
+          'exception': e,
+        },
+        stackTrace: stack,
+      );
     }
   }
 }
