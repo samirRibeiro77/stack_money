@@ -1,30 +1,39 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/data/helper/firebase_key.dart';
+import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/history.dart';
+import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
-class FirebaseHistoryRepository {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
+class FirebaseHistoryRepository extends BaseFirebaseRepository {
   Future<List<History>> fetch() async {
     try {
-      final currentUser = _auth.currentUser;
-      if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');
+      SmLogger.debug(
+        '[HistoryRepository] Querying historical timeline ledger...',
+      );
 
-      // 🎯 Correção de rota: entra na pasta privada do usuário logado antes de buscar a coleção
-      final snapshot = await _firestore
-          .collection('users')
-          .doc(currentUser.uid)
-          .collection('history')
-          .orderBy('date', descending: false)
+      final snapshot = await getUserDoc()
+          .collection(FirebaseKey.history)
+          .orderBy(ModelKey.date, descending: false)
           .get();
 
+      SmLogger.info(
+        '[HistoryRepository] Fetch complete -> ${snapshot.docs.length} audit logs synchronized.',
+      );
+
       return snapshot.docs.map((doc) {
-        return History.fromJson(doc.data());
+        return History.fromJson(doc.data(), documentId: doc.id);
       }).toList();
-    } catch (e) {
-      print('DEBUG_SYSTEM [HistoryRepository]: Error fetching history timeline -> $e');
-      rethrow;
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: '[HistoryRepository] Error fetching history timeline',
+        scope: ExceptionScope.database,
+        payload: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'exception': e,
+        },
+        stackTrace: stack,
+      );
     }
   }
 }
