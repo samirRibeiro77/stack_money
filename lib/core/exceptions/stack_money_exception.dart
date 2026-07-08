@@ -1,6 +1,5 @@
+import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
-
-enum ExceptionScope { database, auth, business, network }
 
 class StackMoneyException implements Exception {
   final String message;
