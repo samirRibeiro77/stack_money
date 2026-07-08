@@ -2,7 +2,6 @@ import 'package:stack_money/core/utils/sm_logger.dart';
 
 enum ExceptionScope { database, auth, business, network }
 
-/// 🛡️ CLASSE ÚNICA E POLIVALENTE: Concentra todo o tratamento de exceções do ecossistema
 class StackMoneyException implements Exception {
   final String message;
   final ExceptionScope scope;
