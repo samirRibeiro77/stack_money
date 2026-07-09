@@ -31,7 +31,7 @@ class SmLogger {
       if (stackTrace != null) {
         buffer.writeln('   🛰️ StackTrace:');
         final lines = stackTrace.toString().split('\n');
-        final localLines = lines.where((line) => line.contains('package:stack_money')).take(3);
+        final localLines = lines.where((line) => line.contains('package:stack_money')).take(5);
         for (var line in localLines) {
           buffer.writeln('     -> ${line.trim()}');
         }
