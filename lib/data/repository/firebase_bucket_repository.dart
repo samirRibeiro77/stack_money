@@ -28,10 +28,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         message: 'Error fetching buckets',
         where: 'BucketRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'timestamp': DateTime.now().toIso8601String(),
-          'exception': e,
-        },
+        payload: {'exception': e},
         stackTrace: stack,
       );
     }
@@ -59,10 +56,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         message: 'Error fetching last history snapshot',
         where: 'BucketRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'timestamp': DateTime.now().toIso8601String(),
-          'exception': e,
-        },
+        payload: {'exception': e},
         stackTrace: stack,
       );
     }
@@ -109,10 +103,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         message: 'Failed to execute atomic sprint batch',
         where: 'BucketRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'timestamp': DateTime.now().toIso8601String(),
-          'exception': e,
-        },
+        payload: {'exception': e},
         stackTrace: stack,
       );
     }
@@ -147,10 +138,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         message: 'Critical error pre-saving',
         where: 'BucketRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'timestamp': DateTime.now().toIso8601String(),
-          'exception': e,
-        },
+        payload: {'exception': e},
         stackTrace: stack,
       );
     }
@@ -169,17 +157,15 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           .get();
 
       if (docSnap.exists) {
-        final currentData = docSnap.data();
-        final double currentBalance =
-            (currentData?[ModelKey.minValue] as num?)?.toDouble() ?? 0.0;
+        final currentBucket = Bucket.fromJson(docSnap.data(), id: docSnap.id);
 
-        if (currentBalance > 0.0) {
+        if (currentBucket.minValue > 0.0) {
           throw StackMoneyException(
             message:
                 'Operation aborted. Bucket $id contains active allocation funds',
             where: 'BucketRepository',
             scope: ExceptionScope.database,
-            payload: {'timestamp': DateTime.now().toIso8601String()},
+            payload: {'bucket': currentBucket.toJson()},
           );
         }
       }
@@ -200,10 +186,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         message: 'Error executing purge protocol',
         where: 'BucketRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'timestamp': DateTime.now().toIso8601String(),
-          'exception': e,
-        },
+        payload: {'exception': e},
         stackTrace: stack,
       );
     }
