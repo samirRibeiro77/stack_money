@@ -8,7 +8,8 @@ import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
 class FirebasePlanRepository extends BaseFirebaseRepository {
-  CollectionReference<Map<String, Object?>> get planCollection => getUserDoc().collection(FirebaseKey.salaryPlans);
+  CollectionReference<Map<String, Object?>> get _collection =>
+      getUserDoc().collection(FirebaseKey.salaryPlans);
 
   Future<List<SalaryPlan>> fetchAllPlans() async {
     try {
@@ -17,7 +18,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         where: 'PlanRepository',
       );
 
-      final snapshot = await planCollection
+      final snapshot = await _collection
           .orderBy(ModelKey.createdAt, descending: true)
           .get();
 
@@ -33,9 +34,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         message: 'Error compiling plans ledger',
         where: 'PlanRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'exception': e,
-        },
+        payload: {'exception': e},
         stackTrace: stack,
       );
     }
@@ -48,7 +47,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         where: 'PlanRepository',
       );
 
-      await planCollection
+      await _collection
           .doc(plan.id)
           .set(plan.toJson(), SetOptions(merge: true));
 
@@ -61,10 +60,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         message: 'Error saving plan structure configuration',
         where: 'PlanRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'plan': plan.toJson(),
-          'exception': e,
-        },
+        payload: {'plan': plan.toJson(), 'exception': e},
         stackTrace: stack,
       );
     }
@@ -100,7 +96,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       'Toggling engine to inactive: $targetPlanId',
       where: 'PlanRepository',
     );
-    await planCollection.doc(targetPlanId).update({ModelKey.isActive: false});
+    await _collection.doc(targetPlanId).update({ModelKey.isActive: false});
     SmLogger.info(
       'Profile configuration status update completed.',
       where: 'PlanRepository',
@@ -113,16 +109,16 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       where: 'PlanRepository',
     );
     final batch = firestore.batch();
-    final querySnapshot = await planCollection.get();
+    final querySnapshot = await _collection.get();
 
     for (final doc in querySnapshot.docs) {
       if (doc.id == targetPlanId) {
-        batch.update(planCollection.doc(doc.id), {
+        batch.update(_collection.doc(doc.id), {
           ModelKey.isActive: true,
           ModelKey.isArchived: false,
         });
       } else {
-        batch.update(planCollection.doc(doc.id), {ModelKey.isActive: false});
+        batch.update(_collection.doc(doc.id), {ModelKey.isActive: false});
       }
     }
     await batch.commit();
@@ -144,7 +140,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         updates[ModelKey.isActive] = false;
       }
 
-      await planCollection.doc(id).update(updates);
+      await _collection.doc(id).update(updates);
       SmLogger.info(
         'Document visibility bit updated.',
         where: 'PlanRepository',
@@ -154,11 +150,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         message: 'Archive status alteration protocol aborted',
         where: 'PlanRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'id': id,
-          'isArchived': isArchived,
-          'exception': e,
-        },
+        payload: {'id': id, 'isArchived': isArchived, 'exception': e},
         stackTrace: stack,
       );
     }
@@ -170,7 +162,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         'Initializing terminal deletion sequence on UUID: $id',
         where: 'PlanRepository',
       );
-      await planCollection.doc(id).delete();
+      await _collection.doc(id).delete();
       SmLogger.info(
         'Document swept out from system infrastructure core.',
         where: 'PlanRepository',
@@ -180,10 +172,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         message: 'Hard purge execution failed on core cluster',
         where: 'PlanRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'id': id,
-          'exception': e,
-        },
+        payload: {'id': id, 'exception': e},
         stackTrace: stack,
       );
     }

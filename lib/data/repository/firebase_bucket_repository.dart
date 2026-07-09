@@ -11,9 +11,12 @@ import 'package:stack_money/data/models/transaction.dart';
 import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
 class FirebaseBucketRepository extends BaseFirebaseRepository {
+  CollectionReference<Map<String, Object?>> get _collection =>
+      getUserDoc().collection(FirebaseKey.buckets);
+
   Future<List<Bucket>> fetch() async {
     try {
-      final snapshot = await getUserDoc().collection(FirebaseKey.buckets).get();
+      final snapshot = await _collection.get();
 
       SmLogger.debug(
         'Fetch complete -> ${snapshot.docs.length} entries loaded.',
@@ -36,8 +39,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
 
   Future<List<Transaction>> fetchLastSprintValues() async {
     try {
-      final snapshot = await getUserDoc()
-          .collection(FirebaseKey.history)
+      final snapshot = await _collection
           .orderBy(ModelKey.date, descending: true)
           .limit(1)
           .get();
@@ -73,8 +75,11 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
       final userDoc = getUserDoc();
 
       for (final bucket in updatedBuckets) {
-        final docRef = userDoc.collection(FirebaseKey.buckets).doc(bucket.id);
-        batch.set(docRef, bucket.toJson(), SetOptions(merge: true));
+        batch.set(
+          _collection.doc(bucket.id),
+          bucket.toJson(),
+          SetOptions(merge: true),
+        );
       }
 
       final history = History.withValues(
@@ -116,8 +121,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         where: 'BucketRepository',
       );
 
-      getUserDoc()
-          .collection(FirebaseKey.buckets)
+      _collection
           .doc(bucket.id)
           .set(bucket.toJson(), SetOptions(merge: true))
           .then((_) {
@@ -151,10 +155,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         where: 'BucketRepository',
       );
 
-      final docSnap = await getUserDoc()
-          .collection(FirebaseKey.buckets)
-          .doc(id)
-          .get();
+      final docSnap = await _collection.doc(id).get();
 
       if (docSnap.exists) {
         final currentBucket = Bucket.fromJson(docSnap.data(), id: docSnap.id);
@@ -175,7 +176,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         where: 'BucketRepository',
       );
 
-      await getUserDoc().collection(FirebaseKey.buckets).doc(id).delete();
+      await _collection.doc(id).delete();
 
       SmLogger.info(
         'Document expurged from system core: $id',

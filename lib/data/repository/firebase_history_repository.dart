@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
@@ -7,6 +8,9 @@ import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
 class FirebaseHistoryRepository extends BaseFirebaseRepository {
+  CollectionReference<Map<String, Object?>> get _collection =>
+      getUserDoc().collection(FirebaseKey.salaryPlans);
+
   Future<List<History>> fetch() async {
     try {
       SmLogger.debug(
@@ -14,8 +18,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
         where: 'HistoryRepository',
       );
 
-      final snapshot = await getUserDoc()
-          .collection(FirebaseKey.history)
+      final snapshot = await _collection
           .orderBy(ModelKey.date, descending: false)
           .get();
 
@@ -32,9 +35,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
         message: 'Error fetching history timeline',
         where: 'HistoryRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'exception': e,
-        },
+        payload: {'exception': e},
         stackTrace: stack,
       );
     }
