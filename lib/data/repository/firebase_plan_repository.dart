@@ -8,9 +8,7 @@ import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
 class FirebasePlanRepository extends BaseFirebaseRepository {
-  CollectionReference<Map<String, dynamic>> _getPlanCollection() {
-    return getUserDoc().collection(FirebaseKey.salaryPlans);
-  }
+  CollectionReference<Map<String, Object?>> get planCollection => getUserDoc().collection(FirebaseKey.salaryPlans);
 
   Future<List<SalaryPlan>> fetchAllPlans() async {
     try {
@@ -19,7 +17,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         where: 'PlanRepository',
       );
 
-      final snapshot = await _getPlanCollection()
+      final snapshot = await planCollection
           .orderBy(ModelKey.createdAt, descending: true)
           .get();
 
@@ -36,7 +34,6 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {
-          'timestamp': DateTime.now().toIso8601String(),
           'exception': e,
         },
         stackTrace: stack,
@@ -51,7 +48,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         where: 'PlanRepository',
       );
 
-      await _getPlanCollection()
+      await planCollection
           .doc(plan.id)
           .set(plan.toJson(), SetOptions(merge: true));
 
@@ -65,8 +62,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {
-          'timestamp': DateTime.now().toIso8601String(),
-          'id': plan.id,
+          'plan': plan.toJson(),
           'exception': e,
         },
         stackTrace: stack,
@@ -79,43 +75,10 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     bool isActive,
   ) async {
     try {
-      final collection = _getPlanCollection();
-
       if (isActive) {
-        SmLogger.debug(
-          'Activating profile $targetPlanId and flattening parallel profiles...',
-          where: 'PlanRepository',
-        );
-        final batch = firestore.batch();
-        final querySnapshot = await collection.get();
-
-        for (final doc in querySnapshot.docs) {
-          final planId = doc.id;
-
-          if (planId == targetPlanId) {
-            batch.update(collection.doc(planId), {
-              ModelKey.isActive: true,
-              ModelKey.isArchived: false,
-            });
-          } else {
-            batch.update(collection.doc(planId), {ModelKey.isActive: false});
-          }
-        }
-        await batch.commit();
-        SmLogger.info(
-          'Cascading unique profile allocation committed to core.',
-          where: 'PlanRepository',
-        );
+        await _activatePlan(targetPlanId);
       } else {
-        SmLogger.debug(
-          'Toggling engine to inactive: $targetPlanId',
-          where: 'PlanRepository',
-        );
-        await collection.doc(targetPlanId).update({ModelKey.isActive: false});
-        SmLogger.info(
-          'Profile configuration status update completed.',
-          where: 'PlanRepository',
-        );
+        await _deactivatePlan(targetPlanId);
       }
     } catch (e, stack) {
       throw StackMoneyException(
@@ -123,13 +86,50 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {
-          'timestamp': DateTime.now().toIso8601String(),
           'targetId': targetPlanId,
+          'isActive': isActive,
           'exception': e,
         },
         stackTrace: stack,
       );
     }
+  }
+
+  Future<void> _deactivatePlan(String targetPlanId) async {
+    SmLogger.debug(
+      'Toggling engine to inactive: $targetPlanId',
+      where: 'PlanRepository',
+    );
+    await planCollection.doc(targetPlanId).update({ModelKey.isActive: false});
+    SmLogger.info(
+      'Profile configuration status update completed.',
+      where: 'PlanRepository',
+    );
+  }
+
+  Future<void> _activatePlan(String targetPlanId) async {
+    SmLogger.debug(
+      'Activating profile $targetPlanId and flattening parallel profiles...',
+      where: 'PlanRepository',
+    );
+    final batch = firestore.batch();
+    final querySnapshot = await planCollection.get();
+
+    for (final doc in querySnapshot.docs) {
+      if (doc.id == targetPlanId) {
+        batch.update(planCollection.doc(doc.id), {
+          ModelKey.isActive: true,
+          ModelKey.isArchived: false,
+        });
+      } else {
+        batch.update(planCollection.doc(doc.id), {ModelKey.isActive: false});
+      }
+    }
+    await batch.commit();
+    SmLogger.info(
+      'Cascading unique profile allocation committed to core.',
+      where: 'PlanRepository',
+    );
   }
 
   Future<void> updateArchiveStatus(String id, bool isArchived) async {
@@ -138,13 +138,13 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         'Flipping logical archive flag to $isArchived for UUID: $id',
         where: 'PlanRepository',
       );
-      final updates = <String, dynamic>{ModelKey.isArchived: isArchived};
+      final updates = <String, Object?>{ModelKey.isArchived: isArchived};
 
       if (isArchived) {
         updates[ModelKey.isActive] = false;
       }
 
-      await _getPlanCollection().doc(id).update(updates);
+      await planCollection.doc(id).update(updates);
       SmLogger.info(
         'Document visibility bit updated.',
         where: 'PlanRepository',
@@ -155,8 +155,8 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {
-          'timestamp': DateTime.now().toIso8601String(),
           'id': id,
+          'isArchived': isArchived,
           'exception': e,
         },
         stackTrace: stack,
@@ -170,7 +170,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         'Initializing terminal deletion sequence on UUID: $id',
         where: 'PlanRepository',
       );
-      await _getPlanCollection().doc(id).delete();
+      await planCollection.doc(id).delete();
       SmLogger.info(
         'Document swept out from system infrastructure core.',
         where: 'PlanRepository',
@@ -181,7 +181,6 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {
-          'timestamp': DateTime.now().toIso8601String(),
           'id': id,
           'exception': e,
         },
