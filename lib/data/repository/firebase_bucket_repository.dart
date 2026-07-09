@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
@@ -9,37 +8,12 @@ import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/models/net_worth.dart';
 import 'package:stack_money/data/models/transaction.dart';
+import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
-class FirebaseBucketRepository {
-  final _firestore = FirebaseFirestore.instance;
-  final _currentUser = FirebaseAuth.instance.currentUser;
-
-  DocumentReference<Map<String, Object?>> _getUserDoc() {
-    if (_currentUser == null) {
-      throw StackMoneyException(
-        message: 'User not authenticated',
-        where: 'BucketRepository',
-        scope: ExceptionScope.auth,
-      );
-    }
-    return _firestore.collection(FirebaseKey.users).doc(_currentUser.uid);
-  }
-
+class FirebaseBucketRepository extends BaseFirebaseRepository {
   Future<List<Bucket>> fetch() async {
     try {
-      if (_currentUser == null) {
-        throw StackMoneyException(
-          message: 'User not authenticated',
-          where: 'BucketRepository',
-          scope: ExceptionScope.auth,
-        );
-      }
-
-      final snapshot = await _firestore
-          .collection(FirebaseKey.users)
-          .doc(_currentUser.uid)
-          .collection(FirebaseKey.buckets)
-          .get();
+      final snapshot = await getUserDoc().collection(FirebaseKey.buckets).get();
 
       SmLogger.debug(
         'Fetch complete -> ${snapshot.docs.length} entries loaded.',
@@ -65,7 +39,7 @@ class FirebaseBucketRepository {
 
   Future<List<Transaction>> fetchLastSprintValues() async {
     try {
-      final snapshot = await _getUserDoc()
+      final snapshot = await getUserDoc()
           .collection(FirebaseKey.history)
           .orderBy(ModelKey.date, descending: true)
           .limit(1)
@@ -101,8 +75,8 @@ class FirebaseBucketRepository {
     required double totalLiquidity,
   }) async {
     try {
-      final batch = _firestore.batch();
-      final userDoc = _getUserDoc();
+      final batch = firestore.batch();
+      final userDoc = getUserDoc();
 
       for (final bucket in updatedBuckets) {
         final docRef = userDoc.collection(FirebaseKey.buckets).doc(bucket.id);
@@ -146,22 +120,12 @@ class FirebaseBucketRepository {
 
   Future<void> save(Bucket bucket) async {
     try {
-      if (_currentUser == null) {
-        throw StackMoneyException(
-          message: 'User not authenticated',
-          where: 'BucketRepository',
-          scope: ExceptionScope.auth,
-        );
-      }
-
       SmLogger.debug(
         'Initializing sync for UUID: ${bucket.id}',
         where: 'BucketRepository',
       );
 
-      _firestore
-          .collection(FirebaseKey.users)
-          .doc(_currentUser.uid)
+      getUserDoc()
           .collection(FirebaseKey.buckets)
           .doc(bucket.id)
           .set(bucket.toJson(), SetOptions(merge: true))
@@ -194,22 +158,12 @@ class FirebaseBucketRepository {
 
   Future<void> delete(String id) async {
     try {
-      if (_currentUser == null) {
-        throw StackMoneyException(
-          message: 'User not authenticated',
-          where: 'BucketRepository',
-          scope: ExceptionScope.auth,
-        );
-      }
-
       SmLogger.debug(
         'Evaluating purge authorization for UUID: $id',
         where: 'BucketRepository',
       );
 
-      final docSnap = await _firestore
-          .collection(FirebaseKey.users)
-          .doc(_currentUser.uid)
+      final docSnap = await getUserDoc()
           .collection(FirebaseKey.buckets)
           .doc(id)
           .get();
@@ -235,12 +189,7 @@ class FirebaseBucketRepository {
         where: 'BucketRepository',
       );
 
-      await _firestore
-          .collection(FirebaseKey.users)
-          .doc(_currentUser.uid)
-          .collection(FirebaseKey.buckets)
-          .doc(id)
-          .delete();
+      await getUserDoc().collection(FirebaseKey.buckets).doc(id).delete();
 
       SmLogger.info(
         'Document expurged from system core: $id',
