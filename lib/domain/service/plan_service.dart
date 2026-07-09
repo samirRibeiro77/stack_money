@@ -20,7 +20,12 @@ class PlanManagementService {
     await _repository.purgePlan(id);
   }
 
-  Future<void> updateActiveStatusInBatch(String targetPlanId, bool isActive) async {
-    await _repository.updateActiveStatusInBatch(targetPlanId, isActive);
+  Future<void> toggleActiveStatus(String targetPlanId, bool isActive) async {
+    if (isActive) {
+      await _repository.activatePlan(targetPlanId);
+    }
+    else {
+      await _repository.deactivatePlan(targetPlanId);
+    }
   }
 }

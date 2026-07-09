@@ -321,7 +321,7 @@ class PlanEditManager {
     final bool newActiveState = !currentPlan.isActive;
     planNotifier.value = currentPlan.copyWith(isActive: newActiveState);
 
-    await _service.updateActiveStatusInBatch(currentPlan.id, newActiveState);
+    await _service.toggleActiveStatus(currentPlan.id, newActiveState);
   }
 
   void _triggerUndoSnackBar(
