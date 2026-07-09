@@ -28,7 +28,6 @@ class FirebaseNetWorthRepository extends BaseFirebaseRepository {
         where: 'NetWorthRepository',
         scope: ExceptionScope.database,
         payload: {
-          'timestamp': DateTime.now().toIso8601String(),
           'exception': e,
         },
         stackTrace: stack,
