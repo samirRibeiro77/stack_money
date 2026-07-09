@@ -61,7 +61,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error fetching last history snapshot',
-        where: 'BucketRepository',
+        where: 'HistoryRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,

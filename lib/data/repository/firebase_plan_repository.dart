@@ -107,7 +107,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   Future<void> deactivatePlan(String targetPlanId) async {
     try {
       SmLogger.debug(
-        'Toggling engine to inactive: $targetPlanId',
+        'Toggling plan to inactive: $targetPlanId',
         where: 'PlanRepository',
       );
       await _collection.doc(targetPlanId).update({ModelKey.isActive: false});
