@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
+import 'package:stack_money/core/extension/map_extension.dart';
 import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/transaction.dart';
 import 'package:uuid/uuid.dart';
@@ -36,7 +37,8 @@ class History {
     return History._(
       documentId ?? json?[ModelKey.id] as String? ?? '',
       date: json?[ModelKey.date] as Timestamp? ?? Timestamp.now(),
-      transactions: json?[ModelKey.transactions] as List<Transaction>? ?? [],
+      transactions:
+          json?.decodeList(ModelKey.transactions, Transaction.fromJson) ?? [],
       total: (json?[ModelKey.total] as num?)?.toDouble() ?? 0,
       immediateLiquidityTotal:
           (json?[ModelKey.immediateLiquidityTotal] as num?)?.toDouble() ?? 0,

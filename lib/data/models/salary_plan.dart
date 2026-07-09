@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:stack_money/core/extension/map_extension.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
@@ -57,20 +58,10 @@ class SalaryPlan {
       isArchived: json?[ModelKey.isArchived] as bool? ?? false,
       createdAt: json?[ModelKey.createdAt] as Timestamp? ?? Timestamp.now(),
       position: json?[ModelKey.position] as int? ?? 0,
-      inflows:
-          (json?[ModelKey.inflows] as List<dynamic>?)
-              ?.map((e) => InflowRow.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      outflows:
-          (json?[ModelKey.outflows] as List<dynamic>?)
-              ?.map((e) => OutflowRow.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      inflows: json?.decodeList(ModelKey.inflows, InflowRow.fromJson) ?? [],
+      outflows: json?.decodeList(ModelKey.outflows, OutflowRow.fromJson) ?? [],
       distributions:
-          (json?[ModelKey.distributions] as List<dynamic>?)
-              ?.map((e) => DistributionRow.fromJson(e as Map<String, dynamic>))
-              .toList() ??
+          json?.decodeList(ModelKey.distributions, DistributionRow.fromJson) ??
           [],
     );
   }

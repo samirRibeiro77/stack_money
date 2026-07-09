@@ -66,24 +66,37 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     }
   }
 
-  Future<void> updateActiveStatusInBatch(
-    String targetPlanId,
-    bool isActive,
-  ) async {
+  Future<void> activatePlan(String targetPlanId) async {
     try {
-      if (isActive) {
-        await _activatePlan(targetPlanId);
-      } else {
-        await _deactivatePlan(targetPlanId);
+      SmLogger.debug(
+        'Activating profile $targetPlanId and flattening parallel profiles...',
+        where: 'PlanRepository',
+      );
+      final batch = firestore.batch();
+      final querySnapshot = await _collection.get();
+
+      for (final doc in querySnapshot.docs) {
+        if (doc.id == targetPlanId) {
+          batch.update(_collection.doc(doc.id), {
+            ModelKey.isActive: true,
+            ModelKey.isArchived: false,
+          });
+        } else {
+          batch.update(_collection.doc(doc.id), {ModelKey.isActive: false});
+        }
       }
-    } catch (e, stack) {
+      await batch.commit();
+      SmLogger.info(
+        'Cascading unique profile allocation committed to core.',
+        where: 'PlanRepository',
+      );
+    } catch(e, stack) {
       throw StackMoneyException(
-        message: 'Atomic batch state synchronization crashed',
+        message: 'Failed to batch activate plan',
         where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {
-          'targetId': targetPlanId,
-          'isActive': isActive,
+          'planId': targetPlanId,
           'exception': e,
         },
         stackTrace: stack,
@@ -91,41 +104,30 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     }
   }
 
-  Future<void> _deactivatePlan(String targetPlanId) async {
-    SmLogger.debug(
-      'Toggling engine to inactive: $targetPlanId',
-      where: 'PlanRepository',
-    );
-    await _collection.doc(targetPlanId).update({ModelKey.isActive: false});
-    SmLogger.info(
-      'Profile configuration status update completed.',
-      where: 'PlanRepository',
-    );
-  }
-
-  Future<void> _activatePlan(String targetPlanId) async {
-    SmLogger.debug(
-      'Activating profile $targetPlanId and flattening parallel profiles...',
-      where: 'PlanRepository',
-    );
-    final batch = firestore.batch();
-    final querySnapshot = await _collection.get();
-
-    for (final doc in querySnapshot.docs) {
-      if (doc.id == targetPlanId) {
-        batch.update(_collection.doc(doc.id), {
-          ModelKey.isActive: true,
-          ModelKey.isArchived: false,
-        });
-      } else {
-        batch.update(_collection.doc(doc.id), {ModelKey.isActive: false});
-      }
+  Future<void> deactivatePlan(String targetPlanId) async {
+    try {
+      SmLogger.debug(
+        'Toggling engine to inactive: $targetPlanId',
+        where: 'PlanRepository',
+      );
+      await _collection.doc(targetPlanId).update({ModelKey.isActive: false});
+      SmLogger.info(
+        'Profile configuration status update completed.',
+        where: 'PlanRepository',
+      );
     }
-    await batch.commit();
-    SmLogger.info(
-      'Cascading unique profile allocation committed to core.',
-      where: 'PlanRepository',
-    );
+    catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Failed to deactivate plan',
+        where: 'PlanRepository',
+        scope: ExceptionScope.database,
+        payload: {
+          'planId': targetPlanId,
+          'exception': e,
+        },
+        stackTrace: stack,
+      );
+    }
   }
 
   Future<void> updateArchiveStatus(String id, bool isArchived) async {

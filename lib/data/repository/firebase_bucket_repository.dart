@@ -16,7 +16,9 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
 
   Future<List<Bucket>> fetch() async {
     try {
-      final snapshot = await _collection.get();
+      final snapshot = await _collection
+          .orderBy(ModelKey.position, descending: false)
+          .get();
 
       SmLogger.debug(
         'Fetch complete -> ${snapshot.docs.length} entries loaded.',
@@ -29,33 +31,6 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error fetching buckets',
-        where: 'BucketRepository',
-        scope: ExceptionScope.database,
-        payload: {'exception': e},
-        stackTrace: stack,
-      );
-    }
-  }
-
-  Future<List<Transaction>> fetchLastSprintValues() async {
-    try {
-      final snapshot = await _collection
-          .orderBy(ModelKey.date, descending: true)
-          .limit(1)
-          .get();
-
-      if (snapshot.docs.isNotEmpty) {
-        final history = History.fromJson(
-          snapshot.docs.first.data(),
-          documentId: snapshot.docs.first.id,
-        );
-
-        return history.transactions.toList();
-      }
-      return [];
-    } catch (e, stack) {
-      throw StackMoneyException(
-        message: 'Error fetching last history snapshot',
         where: 'BucketRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},

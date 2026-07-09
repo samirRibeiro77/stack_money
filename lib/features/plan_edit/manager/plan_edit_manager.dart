@@ -72,7 +72,7 @@ class PlanEditManager {
         createdAt: Timestamp.now(),
       );
 
-      await _service.saveSalaryPlan(copiedPlan);
+      await _service.save(copiedPlan);
 
       if (context.mounted) {
         Navigator.of(context).pushReplacement(
@@ -86,7 +86,7 @@ class PlanEditManager {
 
   Future<void> archivePlan(BuildContext context) async {
     try {
-      await _service.toggleArchiveSalaryPlan(currentPlan.id, true);
+      await _service.toggleArchive(currentPlan.id, true);
       if (context.mounted) Navigator.of(context).pop();
     } catch (e) {
       debugPrint('❌ [ARCHIVE_FAIL] -> $e');
@@ -110,7 +110,7 @@ class PlanEditManager {
 
     if (confirm == true) {
       try {
-        await _service.purgeSalaryPlan(currentPlan.id);
+        await _service.purge(currentPlan.id);
         if (context.mounted) Navigator.of(context).pop();
       } catch (e) {
         debugPrint('❌ [MENU_PURGE_FAIL] -> $e');
@@ -321,7 +321,7 @@ class PlanEditManager {
     final bool newActiveState = !currentPlan.isActive;
     planNotifier.value = currentPlan.copyWith(isActive: newActiveState);
 
-    await _service.updateActiveStatusInBatch(currentPlan.id, newActiveState);
+    await _service.toggleActiveStatus(currentPlan.id, newActiveState);
   }
 
   void _triggerUndoSnackBar(
@@ -368,7 +368,7 @@ class PlanEditManager {
       outflows: cleanOutflows,
     );
 
-    _service.saveSalaryPlan(cleanPlan).catchError((err) {
+    _service.save(cleanPlan).catchError((err) {
       debugPrint('❌ [AUTOSAVE_FAIL] -> Sync error: $err');
     });
   }
