@@ -9,8 +9,6 @@ class BucketManagementService {
     return await _repository.fetch();
   }
 
-
-
   Future<void> executeContributionSprint({
     required List<Bucket> updatedBuckets,
     required List<Transaction> transactions,
