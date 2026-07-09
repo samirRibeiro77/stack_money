@@ -3,6 +3,7 @@ import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
+import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/models/net_worth.dart';
@@ -15,7 +16,9 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
 
   Future<List<Bucket>> fetch() async {
     try {
-      final snapshot = await _collection.get();
+      final snapshot = await _collection
+          .orderBy(ModelKey.position, descending: false)
+          .get();
 
       SmLogger.debug(
         'Fetch complete -> ${snapshot.docs.length} entries loaded.',
