@@ -43,8 +43,9 @@ class SmLogger {
   }
 
   static void _logMessage(String message) {
+    final dateTime = DateTime.now().toIso8601String();
     if (kDebugMode) {
-      debugPrint(message);
+      debugPrint('$dateTime - $message');
     }
   }
 }
