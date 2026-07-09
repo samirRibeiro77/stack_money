@@ -1,67 +1,66 @@
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/data/helper/firebase_key.dart';
+import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/models/net_worth.dart';
 import 'package:stack_money/data/models/transaction.dart';
+import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
-class FirebaseBucketRepository {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  DocumentReference<Map<String, dynamic>> _getUserDoc() {
-    final currentUser = _auth.currentUser;
-    if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');
-    return _firestore.collection('users').doc(currentUser.uid);
-  }
+class FirebaseBucketRepository extends BaseFirebaseRepository {
+  CollectionReference<Map<String, Object?>> get _collection =>
+      getUserDoc().collection(FirebaseKey.buckets);
 
   Future<List<Bucket>> fetch() async {
     try {
-      final currentUser = _auth.currentUser;
-      if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');
+      final snapshot = await _collection.get();
 
-      final snapshot = await _firestore
-          .collection('users')
-          .doc(currentUser.uid)
-          .collection('parameters')
-          .get();
-
-      print(
-        'DEBUG_SYSTEM [ParameterRepository]: Fetch complete -> ${snapshot.docs.length} entries loaded.',
+      SmLogger.debug(
+        'Fetch complete -> ${snapshot.docs.length} entries loaded.',
+        where: 'BucketRepository',
       );
 
       return snapshot.docs.map((doc) {
         return Bucket.fromJson(doc.data(), id: doc.id);
       }).toList();
-    } catch (e) {
-      print(
-        'DEBUG_SYSTEM [ParameterRepository]: Error fetching parameters -> $e',
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Error fetching buckets',
+        where: 'BucketRepository',
+        scope: ExceptionScope.database,
+        payload: {'exception': e},
+        stackTrace: stack,
       );
-      rethrow;
     }
   }
 
   Future<List<Transaction>> fetchLastSprintValues() async {
     try {
-      final snapshot = await _getUserDoc()
-          .collection('history')
-          .orderBy('date', descending: true)
+      final snapshot = await _collection
+          .orderBy(ModelKey.date, descending: true)
           .limit(1)
           .get();
 
       if (snapshot.docs.isNotEmpty) {
         final history = History.fromJson(
-          snapshot.docs.first.data(), documentId: snapshot.docs.first.id
+          snapshot.docs.first.data(),
+          documentId: snapshot.docs.first.id,
         );
 
         return history.transactions.toList();
       }
       return [];
-    } catch (e) {
-      print(
-        'DEBUG_SYSTEM [ParameterRepository]: Error fetching last history snapshot -> $e',
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Error fetching last history snapshot',
+        where: 'BucketRepository',
+        scope: ExceptionScope.database,
+        payload: {'exception': e},
+        stackTrace: stack,
       );
-      rethrow;
     }
   }
 
@@ -72,12 +71,15 @@ class FirebaseBucketRepository {
     required double totalLiquidity,
   }) async {
     try {
-      final batch = _firestore.batch();
-      final userDoc = _getUserDoc();
+      final batch = firestore.batch();
+      final userDoc = getUserDoc();
 
       for (final bucket in updatedBuckets) {
-        final docRef = userDoc.collection('parameters').doc(bucket.id);
-        batch.set(docRef, bucket.toJson(), SetOptions(merge: true));
+        batch.set(
+          _collection.doc(bucket.id),
+          bucket.toJson(),
+          SetOptions(merge: true),
+        );
       }
 
       final history = History.withValues(
@@ -86,105 +88,108 @@ class FirebaseBucketRepository {
         immediateLiquidityTotal: totalLiquidity,
       );
 
-      final historyDocRef = userDoc.collection('history').doc(history.id);
+      final historyDocRef = userDoc
+          .collection(FirebaseKey.history)
+          .doc(history.id);
       batch.set(historyDocRef, history.toJson());
 
-      final netWorth = NetWorth.create(total: totalNetWorth, liquidity: totalLiquidity);
+      final netWorth = NetWorth.create(
+        total: totalNetWorth,
+        liquidity: totalLiquidity,
+      );
 
       batch.set(userDoc, {
-        'net_worth': netWorth.toJson(),
+        FirebaseKey.netWorth: netWorth.toJson(),
       }, SetOptions(merge: true));
 
       await batch.commit();
-    } catch (e) {
-      print(
-        'DEBUG_SYSTEM [ParameterRepository]: Failed to execute atomic sprint batch -> $e',
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Failed to execute atomic sprint batch',
+        where: 'BucketRepository',
+        scope: ExceptionScope.database,
+        payload: {'exception': e},
+        stackTrace: stack,
       );
-      rethrow;
     }
   }
 
   Future<void> save(Bucket bucket) async {
     try {
-      final currentUser = _auth.currentUser;
-      if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');
-
-      print(
-        '📡 [FIRESTORE_WRITE] -> Initializing sync for UUID: ${bucket.id}',
+      SmLogger.debug(
+        'Initializing sync for UUID: ${bucket.id}',
+        where: 'BucketRepository',
       );
 
-      _firestore
-          .collection('users')
-          .doc(currentUser.uid)
-          .collection('parameters')
+      _collection
           .doc(bucket.id)
           .set(bucket.toJson(), SetOptions(merge: true))
           .then((_) {
-            print(
-              '✅ [FIRESTORE_SUCCESS] -> Document synced in background: ${bucket.id} (${bucket.name})',
+            SmLogger.info(
+              'Document synced in background: ${bucket.id} (${bucket.name})',
+              where: 'BucketRepository',
             );
           })
           .catchError((error) {
-            print(
-              '❌ [FIRESTORE_FAIL] -> Background sync failed for ${bucket.id}: $error',
+            SmLogger.error(
+              'Background sync failed for ${bucket.id}',
+              where: 'BucketRepository',
+              error: error,
             );
           });
-    } catch (e) {
-      print(
-        'DEBUG_SYSTEM [ParameterRepository]: Critical error pre-saving -> $e',
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Critical error pre-saving',
+        where: 'BucketRepository',
+        scope: ExceptionScope.database,
+        payload: {'exception': e},
+        stackTrace: stack,
       );
-      rethrow;
     }
   }
 
   Future<void> delete(String id) async {
     try {
-      final currentUser = _auth.currentUser;
-      if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');
-
-      print(
-        '🔍 [SECURITY_CHECK] -> Evaluating purge authorization for UUID: $id',
+      SmLogger.debug(
+        'Evaluating purge authorization for UUID: $id',
+        where: 'BucketRepository',
       );
 
-      final docSnap = await _firestore
-          .collection('users')
-          .doc(currentUser.uid)
-          .collection('parameters')
-          .doc(id)
-          .get();
+      final docSnap = await _collection.doc(id).get();
 
       if (docSnap.exists) {
-        final currentData = docSnap.data();
-        final double currentBalance =
-            (currentData?['minValue'] as num?)?.toDouble() ?? 0.0;
+        final currentBucket = Bucket.fromJson(docSnap.data(), id: docSnap.id);
 
-        if (currentBalance > 0.0) {
-          print(
-            '🚫 [PURGE_DENIED] -> Operation aborted. Bucket $id contains active allocation funds (R\$ $currentBalance).',
+        if (currentBucket.minValue > 0.0) {
+          throw StackMoneyException(
+            message:
+                'Operation aborted. Bucket $id contains active allocation funds',
+            where: 'BucketRepository',
+            scope: ExceptionScope.database,
+            payload: {'bucket': currentBucket.toJson()},
           );
-          throw Exception('PURGE_DENIED: BUCKET_HAS_ACTIVE_FUNDS');
         }
       }
 
-      print(
-        '🔥 [PURGE_PROTOCOL] -> Executing permanent destruction on UUID: $id',
+      SmLogger.debug(
+        'Executing permanent destruction on UUID: $id',
+        where: 'BucketRepository',
       );
 
-      await _firestore
-          .collection('users')
-          .doc(currentUser.uid)
-          .collection('parameters')
-          .doc(id)
-          .delete();
+      await _collection.doc(id).delete();
 
-      print(
-        '🗑️ [FIRESTORE_SUCCESS] -> Document expurged from system core: $id',
+      SmLogger.info(
+        'Document expurged from system core: $id',
+        where: 'BucketRepository',
       );
-    } catch (e) {
-      print(
-        'DEBUG_SYSTEM [ParameterRepository]: Error executing purge protocol -> $e',
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Error executing purge protocol',
+        where: 'BucketRepository',
+        scope: ExceptionScope.database,
+        payload: {'exception': e},
+        stackTrace: stack,
       );
-      rethrow;
     }
   }
 }

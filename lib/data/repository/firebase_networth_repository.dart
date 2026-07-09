@@ -1,25 +1,37 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/data/models/net_worth.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
-class FirebaseNetworthRepository {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
+class FirebaseNetWorthRepository extends BaseFirebaseRepository {
   Future<NetWorth> get() async {
     try {
-      final currentUser = _auth.currentUser;
-      if (currentUser == null) throw Exception('USER_NOT_AUTHENTICATED');
+      SmLogger.debug(
+        'Handshaking core assets snapshot...',
+        where: 'NetWorthRepository',
+      );
 
-      final snapshot = await _firestore
-          .collection('users')
-          .doc(currentUser.uid)
-          .get();
+      final snapshot = await getUserDoc().get();
 
-      return NetWorth.fromJson(snapshot.data()?['net_worth']);
-    } catch (e) {
-      print('DEBUG_SYSTEM [NetworthRepository]: Error fetching networth -> $e');
-      rethrow;
+      SmLogger.info(
+        'Profile ledger asset stream verified.',
+        where: 'NetWorthRepository',
+      );
+
+      return NetWorth.fromJson(
+        snapshot.data()?['net_worth'] as Map<String, Object?>?,
+      );
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Error fetching global networth metrics',
+        where: 'NetWorthRepository',
+        scope: ExceptionScope.database,
+        payload: {
+          'exception': e,
+        },
+        stackTrace: stack,
+      );
     }
   }
 }
