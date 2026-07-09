@@ -33,7 +33,6 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
         where: 'HistoryRepository',
         scope: ExceptionScope.database,
         payload: {
-          'timestamp': DateTime.now().toIso8601String(),
           'exception': e,
         },
         stackTrace: stack,
