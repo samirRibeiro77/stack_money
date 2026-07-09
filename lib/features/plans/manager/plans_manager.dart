@@ -35,7 +35,7 @@ class PlansManager {
   Future<void> loadFirebasePlans() async {
     try {
       _isLoading.value = true;
-      final data = await _service.getAllSalaryPlans();
+      final data = await _service.fetch();
       _planDeck.value = data;
       _isLoading.value = false;
     } catch (e) {
@@ -55,7 +55,7 @@ class PlansManager {
       ..insert(0, newPlan);
     _planDeck.value = updatedList;
 
-    _service.saveSalaryPlan(newPlan);
+    _service.save(newPlan);
     navigateToPlanDetails(context, newPlan);
   }
 
@@ -85,7 +85,7 @@ class PlansManager {
 
     // Save on Firebase
     for (final plan in filteredList) {
-      _service.saveSalaryPlan(plan); //TODO: Create a batch update
+      _service.save(plan); //TODO: Create a batch update
     }
   }
 
@@ -103,7 +103,7 @@ class PlansManager {
     }
 
     try {
-      await _service.toggleArchiveSalaryPlan(id, nextState);
+      await _service.toggleArchive(id, nextState);
     } catch (e) {
       debugPrint('DEBUG_SYSTEM [PlansManager]: Archive operation fail -> $e');
       loadFirebasePlans();
@@ -116,7 +116,7 @@ class PlansManager {
     _planDeck.value = updatedList;
 
     try {
-      await _service.purgeSalaryPlan(id);
+      await _service.purge(id);
     } catch (e) {
       debugPrint('DEBUG_SYSTEM [PlansManager]: Purge operation fail -> $e');
       loadFirebasePlans();

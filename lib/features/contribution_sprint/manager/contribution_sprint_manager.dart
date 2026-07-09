@@ -8,9 +8,11 @@ import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/transaction.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
+import 'package:stack_money/domain/service/history_service.dart';
 
 class ContributionSprintManager {
-  final BucketManagementService _service = BucketManagementService();
+  final _bucketService = BucketManagementService();
+  final _historyService = HistoryManagementService();
 
   final ValueNotifier<List<Bucket>> _bucketsNotifier = ValueNotifier([]);
   final ValueNotifier<int> _currentIndexNotifier = ValueNotifier(0);
@@ -41,8 +43,8 @@ class ContributionSprintManager {
     try {
       _isLoadingNotifier.value = true;
 
-      final loadedBuckets = await _service.fetch();
-      final lastValues = await _service.fetchLastSprintValues();
+      final loadedBuckets = await _bucketService.fetch();
+      final lastValues = await _historyService.fetchLastSprintValues();
       for (var t in lastValues) {
         _originalValues[t.bucketId] = t.actualValue;
         _lastKnownValues[t.bucketId] = t.actualValue;
@@ -225,7 +227,7 @@ class ContributionSprintManager {
     final navigatorContext = Navigator.of(context);
     try {
       _isLoadingNotifier.value = true;
-      await _service.executeContributionSprint(
+      await _bucketService.executeContributionSprint(
         updatedBuckets: buckets,
         transactions: transactions,
         totalNetWorth: total,

@@ -3,7 +3,6 @@ import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
-import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/models/net_worth.dart';
@@ -29,33 +28,6 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error fetching buckets',
-        where: 'BucketRepository',
-        scope: ExceptionScope.database,
-        payload: {'exception': e},
-        stackTrace: stack,
-      );
-    }
-  }
-
-  Future<List<Transaction>> fetchLastSprintValues() async {
-    try {
-      final snapshot = await _collection
-          .orderBy(ModelKey.date, descending: true)
-          .limit(1)
-          .get();
-
-      if (snapshot.docs.isNotEmpty) {
-        final history = History.fromJson(
-          snapshot.docs.first.data(),
-          documentId: snapshot.docs.first.id,
-        );
-
-        return history.transactions.toList();
-      }
-      return [];
-    } catch (e, stack) {
-      throw StackMoneyException(
-        message: 'Error fetching last history snapshot',
         where: 'BucketRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
