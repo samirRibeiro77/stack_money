@@ -19,7 +19,12 @@ class SmLogger {
   }
 
   /// ERROR LOG: Fatal errors with more details
-  static void error(String message, {required String where, Object? error, StackTrace? stackTrace}) {
+  static void error(
+    String message, {
+    required String where,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
     if (kDebugMode) {
       final buffer = StringBuffer();
       buffer.writeln('🚨 [ERROR] [$where] $message');
@@ -31,7 +36,9 @@ class SmLogger {
       if (stackTrace != null) {
         buffer.writeln('   🛰️ StackTrace:');
         final lines = stackTrace.toString().split('\n');
-        final localLines = lines.where((line) => line.contains('package:stack_money')).take(5);
+        final localLines = lines
+            .where((line) => line.contains('package:stack_money'))
+            .take(5);
         for (var line in localLines) {
           buffer.writeln('     -> ${line.trim()}');
         }
