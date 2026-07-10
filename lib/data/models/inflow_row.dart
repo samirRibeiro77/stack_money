@@ -33,16 +33,21 @@ class InflowRow {
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, Object?> toJson() => {
     ModelKey.id: _id,
     ModelKey.type: type.name,
     ModelKey.value: value,
     ModelKey.day: day,
   };
 
-  InflowRow copyWith({InflowType? type, double? value, int? day}) {
+  InflowRow copyWith({
+    bool newId = false,
+    InflowType? type,
+    double? value,
+    int? day,
+  }) {
     return InflowRow._(
-      _id,
+      newId ? const Uuid().v4() : _id,
       type: type ?? this.type,
       value: value ?? this.value,
       day: day ?? this.day,

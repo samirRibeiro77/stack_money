@@ -36,7 +36,7 @@ class Transaction {
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, Object?> toJson() => {
     ModelKey.bucketId: bucketId,
     ModelKey.category: category,
     ModelKey.where: where,

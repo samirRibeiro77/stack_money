@@ -51,6 +51,7 @@ class DistributionRow {
   };
 
   DistributionRow copyWith({
+    bool newId = false,
     String? category,
     String? subCategory,
     AllocationType? type,
@@ -58,7 +59,7 @@ class DistributionRow {
     int? targetDay,
   }) {
     return DistributionRow._(
-      _id,
+      newId ? const Uuid().v4() : _id,
       category: (category ?? this.category).trim(),
       subCategory: (subCategory ?? this.subCategory).trim(),
       type: type ?? this.type,

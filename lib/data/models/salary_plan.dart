@@ -66,7 +66,7 @@ class SalaryPlan {
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, Object?> toJson() => {
     ModelKey.id: _id,
     ModelKey.name: name,
     ModelKey.baseSalary: baseSalary,
@@ -80,7 +80,7 @@ class SalaryPlan {
   };
 
   SalaryPlan copyWith({
-    String? id,
+    bool newId = false,
     String? name,
     double? baseSalary,
     bool? isActive,
@@ -92,7 +92,7 @@ class SalaryPlan {
     List<DistributionRow>? distributions,
   }) {
     return SalaryPlan._(
-      id ?? _id,
+      newId ? const Uuid().v4() : _id,
       name: name ?? this.name,
       baseSalary: baseSalary ?? this.baseSalary,
       isActive: isActive ?? this.isActive,

@@ -15,7 +15,6 @@ import 'package:stack_money/data/models/outflow_row.dart';
 import 'package:stack_money/data/models/distribution_row.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
-import 'package:uuid/uuid.dart';
 
 class PlanEditManager {
   final PlanManagementService _service = PlanManagementService();
@@ -63,9 +62,8 @@ class PlanEditManager {
 
   Future<void> copyPlan(BuildContext context) async {
     try {
-      final String newId = const Uuid().v4();
       final copiedPlan = currentPlan.copyWith(
-        id: newId,
+        newId: true,
         name: 'Copy of ${currentPlan.name}',
         isActive: false,
         isArchived: false,
@@ -131,11 +129,7 @@ class PlanEditManager {
     if (index >= 0 && index < list.length) {
       final inflow = list[index];
 
-      list[index] = inflow.copyWith(
-          type: type,
-          value: value,
-          day: day
-      );
+      list[index] = inflow.copyWith(type: type, value: value, day: day);
 
       planNotifier.value = currentPlan.copyWith(inflows: list);
       if (index == list.length - 1 && (value ?? 0) > 0) _ensureEmptyInflowRow();
@@ -183,9 +177,7 @@ class PlanEditManager {
       final int defaultDay = currentPlan.inflows.isNotEmpty
           ? currentPlan.inflows.first.day
           : 5;
-      list.add(
-        OutflowRow.empty(defaultDay: defaultDay),
-      );
+      list.add(OutflowRow.empty(defaultDay: defaultDay));
       planNotifier.value = currentPlan.copyWith(outflows: list);
     }
   }
@@ -202,10 +194,10 @@ class PlanEditManager {
       final outflow = list[index];
 
       list[index] = outflow.copyWith(
-          name: name,
-          type: type,
-          value: value,
-          targetDay: targetDay
+        name: name,
+        type: type,
+        value: value,
+        targetDay: targetDay,
       );
 
       planNotifier.value = currentPlan.copyWith(outflows: list);

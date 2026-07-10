@@ -37,7 +37,7 @@ class OutflowRow {
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, Object?> toJson() => {
     ModelKey.id: _id,
     ModelKey.name: name,
     ModelKey.type: type.name,
@@ -46,13 +46,14 @@ class OutflowRow {
   };
 
   OutflowRow copyWith({
+    bool newId = false,
     String? name,
     DeductionType? type,
     double? value,
     int? targetDay,
   }) {
     return OutflowRow._(
-      _id,
+      newId ? const Uuid().v4() : _id,
       name: name ?? this.name,
       type: type ?? this.type,
       value: value ?? this.value,

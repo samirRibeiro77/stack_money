@@ -45,7 +45,7 @@ class History {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, Object?> toJson() {
     return {
       ModelKey.id: _id,
       ModelKey.date: date,

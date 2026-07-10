@@ -21,7 +21,7 @@ class Bucket {
   factory Bucket.empty() {
     return Bucket._(
       const Uuid().v4(),
-      where: 'New Bucket',
+      where: '',
       minValue: 0.0,
       isImmediateLiquidity: false,
       position: 0,
@@ -50,6 +50,7 @@ class Bucket {
   };
 
   Bucket copyWith({
+    bool newId = false,
     String? category,
     String? where,
     double? minValue,
@@ -57,7 +58,7 @@ class Bucket {
     int? position,
   }) {
     return Bucket._(
-      id,
+      newId ? const Uuid().v4() : _id,
       category: (category ?? this.category)?.trim(),
       where: (where ?? this.where).trim(),
       minValue: minValue ?? this.minValue,

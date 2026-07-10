@@ -29,7 +29,7 @@ class NetWorth {
     );
   }
 
-  Map<String, Object> toJson() => {
+  Map<String, Object?> toJson() => {
     ModelKey.updateAt: updateAt,
     ModelKey.total: total,
     ModelKey.liquidity: liquidity,
