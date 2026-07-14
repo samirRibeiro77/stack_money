@@ -30,7 +30,6 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error fetching buckets',
-        where: 'BucketRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,
@@ -80,7 +79,6 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Failed to execute atomic sprint batch',
-        where: 'BucketRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,
@@ -109,7 +107,6 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Critical error pre-saving',
-        where: 'BucketRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,
@@ -130,7 +127,6 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           throw StackMoneyException(
             message:
                 'Operation aborted. Bucket $id contains active allocation funds',
-            where: 'BucketRepository',
             scope: ExceptionScope.database,
             payload: {'bucket': currentBucket.toJson()},
           );
@@ -145,7 +141,6 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error executing purge protocol',
-        where: 'BucketRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,

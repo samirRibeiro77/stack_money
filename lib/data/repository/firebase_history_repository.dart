@@ -30,7 +30,6 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error fetching history timeline',
-        where: 'HistoryRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,
@@ -57,7 +56,6 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error fetching last history snapshot',
-        where: 'HistoryRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,

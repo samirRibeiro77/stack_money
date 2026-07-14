@@ -28,7 +28,6 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error compiling plans ledger',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,
@@ -50,7 +49,6 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error saving plan structure configuration',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {'plan': plan.toJson(), 'exception': e},
         stackTrace: stack,
@@ -81,7 +79,6 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Failed to batch activate plan',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {'planId': targetPlanId, 'exception': e},
         stackTrace: stack,
@@ -97,7 +94,6 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Failed to deactivate plan',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {'planId': targetPlanId, 'exception': e},
         stackTrace: stack,
@@ -121,7 +117,6 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Archive status alteration protocol aborted',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {'id': id, 'isArchived': isArchived, 'exception': e},
         stackTrace: stack,
@@ -137,7 +132,6 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Hard purge execution failed on core cluster',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {'id': id, 'exception': e},
         stackTrace: stack,

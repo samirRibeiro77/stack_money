@@ -19,7 +19,6 @@ class FirebaseNetWorthRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error fetching global networth metrics',
-        where: 'NetWorthRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,
