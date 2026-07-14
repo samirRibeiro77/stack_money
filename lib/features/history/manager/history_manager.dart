@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/domain/service/history_service.dart';
 
@@ -23,8 +25,13 @@ class HistoryManager {
 
       _consolidatedDays = logs.reversed.toList();
       _isLoading.value = false;
-    } catch (e) {
-      print('DEBUG_SYSTEM [HistoryScreen]: Mismatch structure fail -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed loading history data',
+        scope: ExceptionScope.business,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
       _isLoading.value = false;
       _hasError.value = true;
     }
