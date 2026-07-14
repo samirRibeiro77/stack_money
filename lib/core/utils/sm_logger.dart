@@ -4,40 +4,48 @@ import 'package:stack_money/core/utils/log_level.dart';
 class SmLogger {
   const SmLogger._();
 
-  /// Default message format
-  static const _message = '{icon} {level} {place} {message}';
+  /// Static values
+  static const _unknown = 'Unknown';
+  static const _prefix = 'SJR77';
 
   /// Print message if in debug mode
   static void _logMessage(LogLevel level, String message) {
-    final place = _getCallerInfo() ?? '';
-    String log = _message
-        .replaceAll('{icon}', level.emoji)
-        .replaceAll('{level}', '[${level.level}]')
-        .replaceAll('{place}', place)
-        .replaceAll('{message}', message);
+    final logBuffer = StringBuffer();
+    
+    if (_prefix.isNotEmpty) {
+      logBuffer.write('[$_prefix] ');
+    }
+
+    logBuffer.write('${level.emoji} ${level.level} ');
 
     if (kDebugMode) {
-      debugPrint(log);
+      logBuffer.write('[${_getCallerInfo()}] ');
+    }
+
+    logBuffer.write(message);
+
+    if (kDebugMode) {
+      debugPrint(logBuffer.toString().trim());
     }
   }
 
   /// Class and Method
-  static String? _getCallerInfo() {
-    if (!kDebugMode) return null;
+  static String _getCallerInfo() {
+    if (!kDebugMode) return _unknown;
 
     final stackLines = StackTrace.current.toString().split('\n');
 
-    if (stackLines.length > 2) {
-      final targetLine = stackLines[2];
+    if (stackLines.length > 3) {
+      final targetLine = stackLines[3];
       final match = RegExp(r'#\d+\s+([^\s]+)').firstMatch(targetLine);
 
       if (match != null && match.groupCount >= 1) {
         final member = match.group(1)!;
-        return "[${member.replaceAll('.<anonymous closure>', '')}]";
+        return member.replaceAll('.<anonymous closure>', '');
       }
     }
 
-    return null;
+    return _unknown;
   }
 
   /// DEBUG LOG: Internal and developer info
