@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
@@ -27,14 +30,19 @@ class BucketsManager {
       final data = await BucketManagementService().fetch();
       _bucketDeck.value = data;
       _isLoading.value = false;
-    } catch (e) {
-      print('DEBUG_SYSTEM [BucketsManager]: Fail to fetch -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to fetch buckets',
+        scope: ExceptionScope.business,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
       _isLoading.value = false;
     }
   }
 
   void toggleBucketExpansion(String id) {
-    print('Click to open id $id');
+    SmLogger.info('Click to open bucket id $id');
     final currentSet = Set<String>.from(_expandedBucketIds.value);
     if (currentSet.contains(id)) {
       currentSet.remove(id);
@@ -49,6 +57,10 @@ class BucketsManager {
     int oldIndex,
     int newIndex,
   ) {
+    SmLogger.debug(
+      'Reorder buckets -> Old Index: $oldIndex // New Index: $newIndex',
+    );
+
     final item = filteredList.removeAt(oldIndex);
     filteredList.insert(newIndex, item);
 
@@ -67,8 +79,13 @@ class BucketsManager {
     _bucketDeck.value = fullList;
 
     for (final bucket in filteredList) {
-      BucketManagementService().save(bucket).catchError((e) {
-        print('❌ [BUCKET_REORDER_SYNC_FAIL] -> $e');
+      BucketManagementService().save(bucket).catchError((e, stack) {
+        StackMoneyException(
+          message: 'Failed to save reordered buckets',
+          scope: ExceptionScope.business,
+          payload: {'exception': e, 'buckets': bucket},
+          stackTrace: stack,
+        );
       });
     }
   }
@@ -84,8 +101,13 @@ class BucketsManager {
         updatedList[index] = updatedBucket;
         _bucketDeck.value = updatedList;
       }
-    } catch (e) {
-      print('DEBUG_SYSTEM [BucketsManager]: Save fail -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to save bucket',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'bucket': updatedBucket},
+        stackTrace: stack,
+      );
     }
   }
 
@@ -117,8 +139,13 @@ class BucketsManager {
         _expandedBucketIds.value = currentSet;
         _bucketDeck.value = updatedList;
       }
-    } catch (e) {
-      print('DEBUG_SYSTEM [BucketsManager]: Purge fail -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to delete bucket',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'bucketId': id},
+        stackTrace: stack,
+      );
       loadFirebaseBuckets();
     }
   }
