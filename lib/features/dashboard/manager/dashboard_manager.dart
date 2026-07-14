@@ -1,4 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart'; // 🔥 Novo Enum
 import 'package:stack_money/data/models/bucket.dart';
@@ -64,8 +67,13 @@ class DashboardManager {
       _realHistoryTimeline.value = results[1] as List<History>;
 
       _isLoading.value = false;
-    } catch (e) {
-      print('DEBUG_SYSTEM [DashboardManager]: Critical fail -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed loading dashboard data',
+        scope: ExceptionScope.business,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
       _isLoading.value = false;
       _hasError.value = true;
     }
@@ -73,6 +81,7 @@ class DashboardManager {
 
   /// 🔥 NOVO: Atualizador tático de ordenação
   void updateSortFilter(DashboardSortFilter newFilter) {
+    SmLogger.debug('Sorting filter: ${newFilter.name}');
     final latestHistory = _realHistoryTimeline.value.last;
 
     _realParameters.value.sort((a, b) {
