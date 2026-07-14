@@ -14,10 +14,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
 
   Future<List<History>> fetch() async {
     try {
-      SmLogger.debug(
-        'Querying historical timeline ledger...',
-        where: 'HistoryRepository',
-      );
+      SmLogger.debug('Querying historical timeline ledger...');
 
       final snapshot = await _collection
           .orderBy(ModelKey.date, descending: false)
@@ -25,7 +22,6 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
 
       SmLogger.info(
         'Fetch complete -> ${snapshot.docs.length} audit logs synchronized.',
-        where: 'HistoryRepository',
       );
 
       return snapshot.docs.map((doc) {

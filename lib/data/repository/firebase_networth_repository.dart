@@ -7,17 +7,11 @@ import 'package:stack_money/data/repository/base_firebase_repository.dart';
 class FirebaseNetWorthRepository extends BaseFirebaseRepository {
   Future<NetWorth> get() async {
     try {
-      SmLogger.debug(
-        'Handshaking core assets snapshot...',
-        where: 'NetWorthRepository',
-      );
+      SmLogger.debug('Handshaking core assets snapshot...');
 
       final snapshot = await getUserDoc().get();
 
-      SmLogger.info(
-        'Profile ledger asset stream verified.',
-        where: 'NetWorthRepository',
-      );
+      SmLogger.info('Profile ledger asset stream verified.');
 
       return NetWorth.fromJson(
         snapshot.data()?['net_worth'] as Map<String, Object?>?,
@@ -27,9 +21,7 @@ class FirebaseNetWorthRepository extends BaseFirebaseRepository {
         message: 'Error fetching global networth metrics',
         where: 'NetWorthRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'exception': e,
-        },
+        payload: {'exception': e},
         stackTrace: stack,
       );
     }
