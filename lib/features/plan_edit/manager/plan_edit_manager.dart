@@ -19,7 +19,7 @@ import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
 class PlanEditManager {
-  final PlanManagementService _service = PlanManagementService();
+  final PlanManagementService _planService = PlanManagementService();
   late final ValueNotifier<SalaryPlan> planNotifier;
 
   final _inflowExpandState = ValueNotifier(false);
@@ -72,7 +72,7 @@ class PlanEditManager {
         createdAt: Timestamp.now(),
       );
 
-      await _service.save(copiedPlan);
+      await _planService.save(copiedPlan);
 
       if (context.mounted) {
         Navigator.of(context).pushReplacement(
@@ -91,7 +91,7 @@ class PlanEditManager {
 
   Future<void> archivePlan(BuildContext context) async {
     try {
-      await _service.toggleArchive(currentPlan.id, true);
+      await _planService.toggleArchive(currentPlan.id, true);
       if (context.mounted) Navigator.of(context).pop();
     } catch (e, stack) {
       StackMoneyException(
@@ -120,7 +120,7 @@ class PlanEditManager {
 
     if (confirm == true) {
       try {
-        await _service.purge(currentPlan.id);
+        await _planService.purge(currentPlan.id);
         if (context.mounted) Navigator.of(context).pop();
       } catch (e, stack) {
         StackMoneyException(
@@ -330,7 +330,7 @@ class PlanEditManager {
     final bool newActiveState = !currentPlan.isActive;
     planNotifier.value = currentPlan.copyWith(isActive: newActiveState);
 
-    await _service.toggleActiveStatus(currentPlan.id, newActiveState);
+    await _planService.toggleActiveStatus(currentPlan.id, newActiveState);
   }
 
   void _triggerUndoSnackBar(
@@ -377,7 +377,7 @@ class PlanEditManager {
       outflows: cleanOutflows,
     );
 
-    _service.save(cleanPlan).catchError((e, stack) {
+    _planService.save(cleanPlan).catchError((e, stack) {
       StackMoneyException(
         message: 'Failed to save plan',
         scope: ExceptionScope.business,

@@ -11,6 +11,9 @@ import 'package:stack_money/domain/service/history_service.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
 
 class DashboardManager {
+  final _bucketService = BucketManagementService();
+  final _historyService = HistoryManagementService();
+
   final ValueNotifier<bool> _isLoading = ValueNotifier(true);
   final ValueNotifier<bool> _hasError = ValueNotifier(false);
   final ValueNotifier<bool> _masterExpandState = ValueNotifier(true);
@@ -59,8 +62,8 @@ class DashboardManager {
       _hasError.value = false;
 
       final results = await Future.wait([
-        BucketManagementService().fetch(),
-        HistoryManagementService().fetch(),
+        _bucketService.fetch(),
+        _historyService.fetch(),
       ]);
 
       _realParameters.value = results[0] as List<Bucket>;

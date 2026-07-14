@@ -11,7 +11,7 @@ import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
 class PlansManager {
-  final PlanManagementService _service = PlanManagementService();
+  final PlanManagementService _planService = PlanManagementService();
 
   final ValueNotifier<List<SalaryPlan>> _planDeck = ValueNotifier([]);
   final ValueNotifier<bool> _isLoading = ValueNotifier(true);
@@ -38,7 +38,7 @@ class PlansManager {
   Future<void> loadFirebasePlans() async {
     try {
       _isLoading.value = true;
-      final data = await _service.fetch();
+      final data = await _planService.fetch();
       _planDeck.value = data;
       _isLoading.value = false;
     } catch (e, stack) {
@@ -63,7 +63,7 @@ class PlansManager {
       ..insert(0, newPlan);
     _planDeck.value = updatedList;
 
-    _service.save(newPlan);
+    _planService.save(newPlan);
     navigateToPlanDetails(context, newPlan);
   }
 
@@ -97,7 +97,7 @@ class PlansManager {
 
     // Save on Firebase
     for (final plan in filteredList) {
-      _service.save(plan); //TODO: Create a batch update
+      _planService.save(plan); //TODO: Create a batch update
     }
   }
 
@@ -115,7 +115,7 @@ class PlansManager {
     }
 
     try {
-      await _service.toggleArchive(id, nextState);
+      await _planService.toggleArchive(id, nextState);
     } catch (e, stack) {
       StackMoneyException(
         message: 'Failed to archive plan',
@@ -136,7 +136,7 @@ class PlansManager {
     _planDeck.value = updatedList;
 
     try {
-      await _service.purge(id);
+      await _planService.purge(id);
     } catch (e, stack) {
       StackMoneyException(
         message: 'Failed to delete plans',

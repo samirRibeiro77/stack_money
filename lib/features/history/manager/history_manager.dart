@@ -5,6 +5,8 @@ import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/domain/service/history_service.dart';
 
 class HistoryManager {
+  final _historyService = HistoryManagementService();
+
   List<History> _consolidatedDays = [];
   final ValueNotifier<bool> _isLoading = ValueNotifier(true);
   final ValueNotifier<bool> _hasError = ValueNotifier(false);
@@ -21,7 +23,7 @@ class HistoryManager {
       _hasError.value = false;
 
       // Puxa a lista de snapshots consolidados por data (Documentos do Firebase)
-      final logs = await HistoryManagementService().fetch();
+      final logs = await _historyService.fetch();
 
       _consolidatedDays = logs.reversed.toList();
       _isLoading.value = false;
