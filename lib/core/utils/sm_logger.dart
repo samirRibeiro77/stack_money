@@ -10,23 +10,18 @@ class SmLogger {
 
   /// Print message if in debug mode
   static void _logMessage(LogLevel level, String message) {
-    final logBuffer = StringBuffer();
-    
-    if (_prefix.isNotEmpty) {
-      logBuffer.write('[$_prefix] ');
-    }
+    final logBuffer = <String>[];
 
-    logBuffer.write('${level.emoji} ${level.level} ');
+    logBuffer.add(level.message);
+    logBuffer.add(message);
 
     if (kDebugMode) {
-      logBuffer.write('[${_getCallerInfo()}] ');
+      logBuffer.insert(0, _prefix);
+      logBuffer.insert(2, '[${_getCallerInfo()}]');
+      debugPrint(logBuffer.join(' '));
     }
 
-    logBuffer.write(message);
-
-    if (kDebugMode) {
-      debugPrint(logBuffer.toString().trim());
-    }
+    // TODO: Log on firebase
   }
 
   /// Class and Method

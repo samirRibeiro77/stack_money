@@ -4,9 +4,9 @@ enum LogLevel {
   warning('⚠️'),
   error('🚨');
 
-  final String emoji;
+  final String _emoji;
 
-  const LogLevel(this.emoji);
+  const LogLevel(this._emoji);
 
-  String get level => '[${name.toUpperCase()}]';
+  String get message => '$_emoji [${name.toUpperCase()}]';
 }
