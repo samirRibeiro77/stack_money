@@ -146,10 +146,10 @@ class ContributionSprintManager {
     }
 
     buckets[currentIndex] = bucket.copyWith(
-        category: nameController.text,
-        where: whereController.text,
-        minValue: bucket.minValue + verifiedMinValue,
-        isImmediateLiquidity: _isLiquid.value
+      category: nameController.text,
+      where: whereController.text,
+      minValue: bucket.minValue + verifiedMinValue,
+      isImmediateLiquidity: _isLiquid.value,
     );
 
     _lastKnownValues[bucket.id] = verifiedActualValue;
@@ -170,7 +170,8 @@ class ContributionSprintManager {
 
       compiledTransactions.add(
         Transaction.create(
-          bucket.id, finalValue,
+          bucket.id,
+          finalValue,
           category: bucket.category,
           where: bucket.where,
         ),

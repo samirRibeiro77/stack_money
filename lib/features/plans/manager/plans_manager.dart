@@ -72,7 +72,9 @@ class PlansManager {
     int oldIndex,
     int newIndex,
   ) {
-    SmLogger.debug('Reorder plan -> Old Index: $oldIndex // New index: $newIndex');
+    SmLogger.debug(
+      'Reorder plan -> Old Index: $oldIndex // New index: $newIndex',
+    );
 
     // Change RAM index
     final item = filteredList.removeAt(oldIndex);
@@ -118,7 +120,10 @@ class PlansManager {
       StackMoneyException(
         message: 'Failed to archive plan',
         scope: ExceptionScope.business,
-        payload: {'exception': e, 'plan': {'id': id, 'nextState': nextState}},
+        payload: {
+          'exception': e,
+          'plan': {'id': id, 'nextState': nextState},
+        },
         stackTrace: stack,
       );
       loadFirebasePlans();

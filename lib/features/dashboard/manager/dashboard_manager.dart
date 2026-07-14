@@ -86,15 +86,17 @@ class DashboardManager {
 
     _realParameters.value.sort((a, b) {
       final double valA =
-          latestHistory
-              .transactions.where((t) => t.bucketId == a.id).firstOrNull
+          latestHistory.transactions
+              .where((t) => t.bucketId == a.id)
+              .firstOrNull
               ?.actualValue ??
-              0.0;
+          0.0;
       final double valB =
-          latestHistory
-              .transactions.where((t) => t.bucketId == b.id).firstOrNull
+          latestHistory.transactions
+              .where((t) => t.bucketId == b.id)
+              .firstOrNull
               ?.actualValue ??
-              0.0;
+          0.0;
 
       switch (newFilter) {
         case DashboardSortFilter.position:
@@ -106,10 +108,8 @@ class DashboardManager {
         case DashboardSortFilter.minValue:
           return a.minValue.compareTo(b.minValue);
         case DashboardSortFilter.allocation:
-          final double allocA =
-              (valA / latestHistory.total) * 100;
-          final double allocB =
-              (valB / latestHistory.total) * 100;
+          final double allocA = (valA / latestHistory.total) * 100;
+          final double allocB = (valB / latestHistory.total) * 100;
           return allocB.compareTo(allocA);
       }
     });
