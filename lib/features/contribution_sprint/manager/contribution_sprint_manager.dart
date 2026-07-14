@@ -240,8 +240,13 @@ class ContributionSprintManager {
         totalNetWorth: total,
         totalLiquidity: liquidity,
       );
-    } catch (e) {
-      debugPrint('❌ [SPRINT_COMMIT_FAIL] -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Sprint commit failed',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'transactionsQty': transactions.length},
+        stackTrace: stack,
+      );
     } finally {
       _isLoadingNotifier.value = false;
       if (navigatorContext.mounted) {
