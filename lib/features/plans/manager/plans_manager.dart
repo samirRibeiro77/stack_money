@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
@@ -38,8 +41,13 @@ class PlansManager {
       final data = await _service.fetch();
       _planDeck.value = data;
       _isLoading.value = false;
-    } catch (e) {
-      debugPrint('DEBUG_SYSTEM [PlansManager]: Fail to fetch plans -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to fetch plans',
+        scope: ExceptionScope.business,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
       _isLoading.value = false;
     }
   }
@@ -64,6 +72,8 @@ class PlansManager {
     int oldIndex,
     int newIndex,
   ) {
+    SmLogger.debug('Reorder plan -> Old Index: $oldIndex // New index: $newIndex');
+
     // Change RAM index
     final item = filteredList.removeAt(oldIndex);
     filteredList.insert(newIndex, item);
@@ -104,8 +114,13 @@ class PlansManager {
 
     try {
       await _service.toggleArchive(id, nextState);
-    } catch (e) {
-      debugPrint('DEBUG_SYSTEM [PlansManager]: Archive operation fail -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to archive plan',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'plan': {'id': id, 'nextState': nextState}},
+        stackTrace: stack,
+      );
       loadFirebasePlans();
     }
   }
@@ -117,8 +132,13 @@ class PlansManager {
 
     try {
       await _service.purge(id);
-    } catch (e) {
-      debugPrint('DEBUG_SYSTEM [PlansManager]: Purge operation fail -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to delete plans',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'planId': id},
+        stackTrace: stack,
+      );
       loadFirebasePlans();
     }
   }
