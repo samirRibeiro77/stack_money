@@ -1,52 +1,105 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/utils/log_level.dart';
 
 class SmLogger {
   const SmLogger._();
 
+  /// Static values
+  static const _unknown = 'Unknown';
+  static const _prefix = 'SJR77';
+
+  /// Print message if in debug mode
+  static void _logMessage(LogLevel level, String message) {
+    final logBuffer = <String>[];
+
+    logBuffer.add(level.message);
+    logBuffer.add(message);
+
+    if (kDebugMode) {
+      logBuffer.insert(0, _prefix);
+      logBuffer.insert(2, '[${_getCallerInfo()}]');
+      debugPrint(logBuffer.join(' ').trim());
+    }
+
+    // TODO: Log on firebase
+  }
+
+  /// Class and Method
+  static String _getCallerInfo() {
+    if (!kDebugMode) return _unknown;
+
+    final stackLines = StackTrace.current.toString().split('\n');
+
+    if (stackLines.length > 3) {
+      final targetLine = stackLines[3];
+      final match = RegExp(r'#\d+\s+([^\s]+)').firstMatch(targetLine);
+
+      if (match != null && match.groupCount >= 1) {
+        final member = match.group(1)!;
+        return member.replaceAll('.<anonymous closure>', '');
+      }
+    }
+
+    return _unknown;
+  }
+
   /// DEBUG LOG: Internal and developer info
-  static void debug(String message, {required String where}) {
-    _logMessage('🐛 [DEBUG] [$where] $message');
+  static void debug(String message, {required Map<String, Object?> payload}) {
+    final logMessage = StringBuffer();
+    logMessage.writeln(message);
+
+    if (payload.isNotEmpty) {
+      try {
+        final encoder = const JsonEncoder.withIndent('  ');
+        final prettyJson = encoder.convert(payload);
+
+        logMessage.writeln('  📦 [PAYLOAD]:');
+        for (final line in prettyJson.split('\n')) {
+          logMessage.writeln('     $line');
+        }
+      } catch (_) {
+        logMessage.write('  📦 [PAYLOAD_RAW]: $payload');
+      }
+    }
+
+    _logMessage(LogLevel.debug, logMessage.toString());
   }
 
   /// INFO LOG: Handshake, success and state
-  static void info(String message, {required String where}) {
-    _logMessage('💡 [INFO] [$where] $message');
+  static void info(String message) {
+    _logMessage(LogLevel.info, message);
   }
 
   /// WARNING LOG: Non-fatal errors
-  static void warning(String message, {required String where}) {
-    _logMessage('⚠️ [WARN] [$where] $message');
+  static void warning(String message) {
+    _logMessage(LogLevel.warning, message);
   }
 
   /// ERROR LOG: Fatal errors with more details
-  static void error(String message, {required String where, Object? error, StackTrace? stackTrace}) {
+  static void error(String message, {Object? error, StackTrace? stackTrace}) {
     if (kDebugMode) {
       final buffer = StringBuffer();
-      buffer.writeln('🚨 [ERROR] [$where] $message');
+      buffer.writeln(message);
 
       if (error != null) {
-        buffer.writeln('   ⚠️ Details: $error');
+        buffer.writeln('  📋 [DETAILS]: $error');
       }
 
       if (stackTrace != null) {
-        buffer.writeln('   🛰️ StackTrace:');
+        buffer.writeln('  🛰️ [STACK_TRACE]:');
         final lines = stackTrace.toString().split('\n');
-        final localLines = lines.where((line) => line.contains('package:stack_money')).take(5);
+        final localLines = lines
+            .where((line) => line.contains('package:stack_money'))
+            .take(5);
         for (var line in localLines) {
           buffer.writeln('     -> ${line.trim()}');
         }
       }
 
       final fullMessage = buffer.toString().trimRight();
-      _logMessage(fullMessage);
-    }
-  }
-
-  /// Method to log the message on developer console
-  static void _logMessage(String message) {
-    final dateTime = DateTime.now().toIso8601String();
-    if (kDebugMode) {
-      debugPrint('$dateTime - $message');
+      _logMessage(LogLevel.error, fullMessage);
     }
   }
 }

@@ -1,14 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
 class PlansManager {
-  final PlanManagementService _service = PlanManagementService();
+  final PlanManagementService _planService = PlanManagementService();
 
   final ValueNotifier<List<SalaryPlan>> _planDeck = ValueNotifier([]);
   final ValueNotifier<bool> _isLoading = ValueNotifier(true);
@@ -35,11 +38,16 @@ class PlansManager {
   Future<void> loadFirebasePlans() async {
     try {
       _isLoading.value = true;
-      final data = await _service.fetch();
+      final data = await _planService.fetch();
       _planDeck.value = data;
       _isLoading.value = false;
-    } catch (e) {
-      debugPrint('DEBUG_SYSTEM [PlansManager]: Fail to fetch plans -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to fetch plans',
+        scope: ExceptionScope.business,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
       _isLoading.value = false;
     }
   }
@@ -55,7 +63,7 @@ class PlansManager {
       ..insert(0, newPlan);
     _planDeck.value = updatedList;
 
-    _service.save(newPlan);
+    _planService.save(newPlan);
     navigateToPlanDetails(context, newPlan);
   }
 
@@ -64,6 +72,11 @@ class PlansManager {
     int oldIndex,
     int newIndex,
   ) {
+    SmLogger.debug(
+      'Reorder plan',
+      payload: {'oldIndex': oldIndex, 'newIndex': newIndex},
+    );
+
     // Change RAM index
     final item = filteredList.removeAt(oldIndex);
     filteredList.insert(newIndex, item);
@@ -85,7 +98,7 @@ class PlansManager {
 
     // Save on Firebase
     for (final plan in filteredList) {
-      _service.save(plan); //TODO: Create a batch update
+      _planService.save(plan); //TODO: Create a batch update
     }
   }
 
@@ -103,9 +116,17 @@ class PlansManager {
     }
 
     try {
-      await _service.toggleArchive(id, nextState);
-    } catch (e) {
-      debugPrint('DEBUG_SYSTEM [PlansManager]: Archive operation fail -> $e');
+      await _planService.toggleArchive(id, nextState);
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to archive plan',
+        scope: ExceptionScope.business,
+        payload: {
+          'exception': e,
+          'plan': {'id': id, 'nextState': nextState},
+        },
+        stackTrace: stack,
+      );
       loadFirebasePlans();
     }
   }
@@ -116,9 +137,14 @@ class PlansManager {
     _planDeck.value = updatedList;
 
     try {
-      await _service.purge(id);
-    } catch (e) {
-      debugPrint('DEBUG_SYSTEM [PlansManager]: Purge operation fail -> $e');
+      await _planService.purge(id);
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to delete plans',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'planId': id},
+        stackTrace: stack,
+      );
       loadFirebasePlans();
     }
   }

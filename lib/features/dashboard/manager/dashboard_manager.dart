@@ -1,4 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart'; // 🔥 Novo Enum
 import 'package:stack_money/data/models/bucket.dart';
@@ -8,6 +11,9 @@ import 'package:stack_money/domain/service/history_service.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
 
 class DashboardManager {
+  final _bucketService = BucketManagementService();
+  final _historyService = HistoryManagementService();
+
   final ValueNotifier<bool> _isLoading = ValueNotifier(true);
   final ValueNotifier<bool> _hasError = ValueNotifier(false);
   final ValueNotifier<bool> _masterExpandState = ValueNotifier(true);
@@ -56,16 +62,21 @@ class DashboardManager {
       _hasError.value = false;
 
       final results = await Future.wait([
-        BucketManagementService().fetch(),
-        HistoryManagementService().fetch(),
+        _bucketService.fetch(),
+        _historyService.fetch(),
       ]);
 
       _realParameters.value = results[0] as List<Bucket>;
       _realHistoryTimeline.value = results[1] as List<History>;
 
       _isLoading.value = false;
-    } catch (e) {
-      print('DEBUG_SYSTEM [DashboardManager]: Critical fail -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed loading dashboard data',
+        scope: ExceptionScope.business,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
       _isLoading.value = false;
       _hasError.value = true;
     }
@@ -73,19 +84,22 @@ class DashboardManager {
 
   /// 🔥 NOVO: Atualizador tático de ordenação
   void updateSortFilter(DashboardSortFilter newFilter) {
+    SmLogger.debug('Sorting filter', payload: {'filter': newFilter.name});
     final latestHistory = _realHistoryTimeline.value.last;
 
     _realParameters.value.sort((a, b) {
       final double valA =
-          latestHistory
-              .transactions.where((t) => t.bucketId == a.id).firstOrNull
+          latestHistory.transactions
+              .where((t) => t.bucketId == a.id)
+              .firstOrNull
               ?.actualValue ??
-              0.0;
+          0.0;
       final double valB =
-          latestHistory
-              .transactions.where((t) => t.bucketId == b.id).firstOrNull
+          latestHistory.transactions
+              .where((t) => t.bucketId == b.id)
+              .firstOrNull
               ?.actualValue ??
-              0.0;
+          0.0;
 
       switch (newFilter) {
         case DashboardSortFilter.position:
@@ -97,10 +111,8 @@ class DashboardManager {
         case DashboardSortFilter.minValue:
           return a.minValue.compareTo(b.minValue);
         case DashboardSortFilter.allocation:
-          final double allocA =
-              (valA / latestHistory.total) * 100;
-          final double allocB =
-              (valB / latestHistory.total) * 100;
+          final double allocA = (valA / latestHistory.total) * 100;
+          final double allocB = (valB / latestHistory.total) * 100;
           return allocB.compareTo(allocA);
       }
     });

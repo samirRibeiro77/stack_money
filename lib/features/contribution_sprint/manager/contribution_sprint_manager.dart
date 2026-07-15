@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
@@ -56,8 +58,13 @@ class ContributionSprintManager {
         _populateFieldsForIndex(0);
       }
       _isLoadingNotifier.value = false;
-    } catch (e) {
-      debugPrint('❌ [SPRINT_INITIALIZE_FAIL] -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to initialize a new sprint',
+        scope: ExceptionScope.business,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
       _isLoadingNotifier.value = false;
     }
   }
@@ -139,10 +146,10 @@ class ContributionSprintManager {
     }
 
     buckets[currentIndex] = bucket.copyWith(
-        category: nameController.text,
-        where: whereController.text,
-        minValue: bucket.minValue + verifiedMinValue,
-        isImmediateLiquidity: _isLiquid.value
+      category: nameController.text,
+      where: whereController.text,
+      minValue: bucket.minValue + verifiedMinValue,
+      isImmediateLiquidity: _isLiquid.value,
     );
 
     _lastKnownValues[bucket.id] = verifiedActualValue;
@@ -163,7 +170,8 @@ class ContributionSprintManager {
 
       compiledTransactions.add(
         Transaction.create(
-          bucket.id, finalValue,
+          bucket.id,
+          finalValue,
           category: bucket.category,
           where: bucket.where,
         ),
@@ -233,8 +241,13 @@ class ContributionSprintManager {
         totalNetWorth: total,
         totalLiquidity: liquidity,
       );
-    } catch (e) {
-      debugPrint('❌ [SPRINT_COMMIT_FAIL] -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Sprint commit failed',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'transactionsQty': transactions.length},
+        stackTrace: stack,
+      );
     } finally {
       _isLoadingNotifier.value = false;
       if (navigatorContext.mounted) {

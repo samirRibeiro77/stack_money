@@ -5,7 +5,7 @@ import 'package:stack_money/domain/service/auth_service.dart';
 /// State and business logic coordinator for the Authentication feature.
 /// Uses ValueNotifier to expose lightweight reactive states to the UI.
 class LoginManager {
-  final AuthService _authService = AuthService();
+  final _authService = AuthService();
 
   /// Encapsulated state notifier to tracking async operations
   final ValueNotifier<bool> _isLoadingNotifier = ValueNotifier<bool>(false);

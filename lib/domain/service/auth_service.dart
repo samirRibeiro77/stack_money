@@ -31,7 +31,6 @@ class AuthService {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Google authentication protocol failed',
-        where: 'AuthService',
         scope: ExceptionScope.auth,
         payload: {'exception': e},
         stackTrace: stack,

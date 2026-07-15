@@ -13,18 +13,14 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
 
   Future<List<SalaryPlan>> fetchAllPlans() async {
     try {
-      SmLogger.debug(
-        'Fetching salary profiling roster...',
-        where: 'PlanRepository',
-      );
+      SmLogger.debug('Fetching salary profiling roster...', payload: {});
 
       final snapshot = await _collection
           .orderBy(ModelKey.createdAt, descending: true)
           .get();
 
       SmLogger.info(
-        'Fetch success -> ${snapshot.docs.length} configuration maps loaded.',
-        where: 'PlanRepository',
+        'Fetch plans completed with ${snapshot.docs.length} entries.',
       );
       return snapshot.docs
           .map((doc) => SalaryPlan.fromJson(doc.data()))
@@ -32,7 +28,6 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error compiling plans ledger',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,
@@ -43,22 +38,18 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   Future<void> savePlan(SalaryPlan plan) async {
     try {
       SmLogger.debug(
-        'Opening synchronization transaction for UUID: ${plan.id}',
-        where: 'PlanRepository',
+        'Opening synchronization transaction',
+        payload: plan.toJson(),
       );
 
       await _collection
           .doc(plan.id)
           .set(plan.toJson(), SetOptions(merge: true));
 
-      SmLogger.info(
-        'Document successfully synced: ${plan.id}',
-        where: 'PlanRepository',
-      );
+      SmLogger.info('Document successfully synced: ${plan.id}');
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error saving plan structure configuration',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {'plan': plan.toJson(), 'exception': e},
         stackTrace: stack,
@@ -69,8 +60,8 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   Future<void> activatePlan(String targetPlanId) async {
     try {
       SmLogger.debug(
-        'Activating profile $targetPlanId and flattening parallel profiles...',
-        where: 'PlanRepository',
+        'Activating profile and flattening parallel profiles...',
+        payload: {'planId': targetPlanId},
       );
       final batch = firestore.batch();
       final querySnapshot = await _collection.get();
@@ -86,19 +77,12 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         }
       }
       await batch.commit();
-      SmLogger.info(
-        'Cascading unique profile allocation committed to core.',
-        where: 'PlanRepository',
-      );
-    } catch(e, stack) {
+      SmLogger.info('Cascading unique profile allocation committed to core.');
+    } catch (e, stack) {
       throw StackMoneyException(
         message: 'Failed to batch activate plan',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'planId': targetPlanId,
-          'exception': e,
-        },
+        payload: {'planId': targetPlanId, 'exception': e},
         stackTrace: stack,
       );
     }
@@ -107,24 +91,16 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   Future<void> deactivatePlan(String targetPlanId) async {
     try {
       SmLogger.debug(
-        'Toggling plan to inactive: $targetPlanId',
-        where: 'PlanRepository',
+        'Toggling plan to inactive',
+        payload: {'id': targetPlanId},
       );
       await _collection.doc(targetPlanId).update({ModelKey.isActive: false});
-      SmLogger.info(
-        'Profile configuration status update completed.',
-        where: 'PlanRepository',
-      );
-    }
-    catch (e, stack) {
+      SmLogger.warning('Profile configuration status update completed.');
+    } catch (e, stack) {
       throw StackMoneyException(
         message: 'Failed to deactivate plan',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
-        payload: {
-          'planId': targetPlanId,
-          'exception': e,
-        },
+        payload: {'planId': targetPlanId, 'exception': e},
         stackTrace: stack,
       );
     }
@@ -133,8 +109,8 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   Future<void> updateArchiveStatus(String id, bool isArchived) async {
     try {
       SmLogger.debug(
-        'Flipping logical archive flag to $isArchived for UUID: $id',
-        where: 'PlanRepository',
+        'Flipping logical archive flag',
+        payload: {'planId': id, 'isArchived': isArchived},
       );
       final updates = <String, Object?>{ModelKey.isArchived: isArchived};
 
@@ -143,14 +119,10 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       }
 
       await _collection.doc(id).update(updates);
-      SmLogger.info(
-        'Document visibility bit updated.',
-        where: 'PlanRepository',
-      );
+      SmLogger.warning('Document visibility bit updated.');
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Archive status alteration protocol aborted',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {'id': id, 'isArchived': isArchived, 'exception': e},
         stackTrace: stack,
@@ -160,19 +132,15 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
 
   Future<void> purgePlan(String id) async {
     try {
-      SmLogger.warning(
-        'Initializing terminal deletion sequence on UUID: $id',
-        where: 'PlanRepository',
+      SmLogger.debug(
+        'Initializing terminal deletion sequence',
+        payload: {'id': id},
       );
       await _collection.doc(id).delete();
-      SmLogger.info(
-        'Document swept out from system infrastructure core.',
-        where: 'PlanRepository',
-      );
+      SmLogger.warning('Document swept out from system infrastructure core.');
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Hard purge execution failed on core cluster',
-        where: 'PlanRepository',
         scope: ExceptionScope.database,
         payload: {'id': id, 'exception': e},
         stackTrace: stack,

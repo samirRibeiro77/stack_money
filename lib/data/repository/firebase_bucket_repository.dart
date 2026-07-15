@@ -20,9 +20,8 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           .orderBy(ModelKey.position, descending: false)
           .get();
 
-      SmLogger.debug(
-        'Fetch complete -> ${snapshot.docs.length} entries loaded.',
-        where: 'BucketRepository',
+      SmLogger.info(
+        'Fetch buckets completed with ${snapshot.docs.length} entries.',
       );
 
       return snapshot.docs.map((doc) {
@@ -31,7 +30,6 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error fetching buckets',
-        where: 'BucketRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,
@@ -81,7 +79,6 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Failed to execute atomic sprint batch',
-        where: 'BucketRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,
@@ -91,10 +88,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
 
   Future<void> save(Bucket bucket) async {
     try {
-      SmLogger.debug(
-        'Initializing sync for UUID: ${bucket.id}',
-        where: 'BucketRepository',
-      );
+      SmLogger.debug('Initializing save', payload: bucket.toJson());
 
       _collection
           .doc(bucket.id)
@@ -102,20 +96,19 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           .then((_) {
             SmLogger.info(
               'Document synced in background: ${bucket.id} (${bucket.name})',
-              where: 'BucketRepository',
             );
           })
-          .catchError((error) {
-            SmLogger.error(
-              'Background sync failed for ${bucket.id}',
-              where: 'BucketRepository',
-              error: error,
+          .catchError((e, stack) {
+            StackMoneyException(
+              message: 'Background sync failed',
+              scope: ExceptionScope.database,
+              payload: {'exception': e, 'bucket': bucket},
+              stackTrace: stack,
             );
           });
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Critical error pre-saving',
-        where: 'BucketRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,
@@ -125,10 +118,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
 
   Future<void> delete(String id) async {
     try {
-      SmLogger.debug(
-        'Evaluating purge authorization for UUID: $id',
-        where: 'BucketRepository',
-      );
+      SmLogger.debug('Evaluating purge authorization', payload: {'id': id});
 
       final docSnap = await _collection.doc(id).get();
 
@@ -139,28 +129,20 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           throw StackMoneyException(
             message:
                 'Operation aborted. Bucket $id contains active allocation funds',
-            where: 'BucketRepository',
             scope: ExceptionScope.database,
             payload: {'bucket': currentBucket.toJson()},
           );
         }
       }
 
-      SmLogger.debug(
-        'Executing permanent destruction on UUID: $id',
-        where: 'BucketRepository',
-      );
+      SmLogger.warning('Executing permanent destruction on UUID: $id');
 
       await _collection.doc(id).delete();
 
-      SmLogger.info(
-        'Document expurged from system core: $id',
-        where: 'BucketRepository',
-      );
+      SmLogger.info('Document expurged from system core: $id');
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error executing purge protocol',
-        where: 'BucketRepository',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -17,7 +19,7 @@ import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
 class PlanEditManager {
-  final PlanManagementService _service = PlanManagementService();
+  final PlanManagementService _planService = PlanManagementService();
   late final ValueNotifier<SalaryPlan> planNotifier;
 
   final _inflowExpandState = ValueNotifier(false);
@@ -70,24 +72,34 @@ class PlanEditManager {
         createdAt: Timestamp.now(),
       );
 
-      await _service.save(copiedPlan);
+      await _planService.save(copiedPlan);
 
       if (context.mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => PlanEditScreen(plan: copiedPlan)),
         );
       }
-    } catch (e) {
-      debugPrint('❌ [COPY_PLAN_FAIL] -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to copy plan',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'plan': currentPlan.toJson()},
+        stackTrace: stack,
+      );
     }
   }
 
   Future<void> archivePlan(BuildContext context) async {
     try {
-      await _service.toggleArchive(currentPlan.id, true);
+      await _planService.toggleArchive(currentPlan.id, true);
       if (context.mounted) Navigator.of(context).pop();
-    } catch (e) {
-      debugPrint('❌ [ARCHIVE_FAIL] -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to archive plan',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'plan': currentPlan.toJson()},
+        stackTrace: stack,
+      );
     }
   }
 
@@ -108,10 +120,15 @@ class PlanEditManager {
 
     if (confirm == true) {
       try {
-        await _service.purge(currentPlan.id);
+        await _planService.purge(currentPlan.id);
         if (context.mounted) Navigator.of(context).pop();
-      } catch (e) {
-        debugPrint('❌ [MENU_PURGE_FAIL] -> $e');
+      } catch (e, stack) {
+        StackMoneyException(
+          message: 'Failed to delete plan',
+          scope: ExceptionScope.business,
+          payload: {'exception': e, 'plan': currentPlan.toJson()},
+          stackTrace: stack,
+        );
       }
     }
   }
@@ -313,7 +330,7 @@ class PlanEditManager {
     final bool newActiveState = !currentPlan.isActive;
     planNotifier.value = currentPlan.copyWith(isActive: newActiveState);
 
-    await _service.toggleActiveStatus(currentPlan.id, newActiveState);
+    await _planService.toggleActiveStatus(currentPlan.id, newActiveState);
   }
 
   void _triggerUndoSnackBar(
@@ -345,7 +362,7 @@ class PlanEditManager {
             _autoSave();
           },
         ),
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 3),
       ),
     );
   }
@@ -360,8 +377,13 @@ class PlanEditManager {
       outflows: cleanOutflows,
     );
 
-    _service.save(cleanPlan).catchError((err) {
-      debugPrint('❌ [AUTOSAVE_FAIL] -> Sync error: $err');
+    _planService.save(cleanPlan).catchError((e, stack) {
+      StackMoneyException(
+        message: 'Failed to save plan',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'plan': cleanPlan.toJson()},
+        stackTrace: stack,
+      );
     });
   }
 
