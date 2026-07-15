@@ -21,7 +21,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
           .get();
 
       SmLogger.info(
-        'Fetch complete -> ${snapshot.docs.length} audit logs synchronized.',
+        'Fetch history completed with ${snapshot.docs.length} entries.',
       );
 
       return snapshot.docs.map((doc) {

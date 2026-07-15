@@ -44,7 +44,7 @@ class BucketsManager {
   }
 
   void toggleBucketExpansion(String id) {
-    SmLogger.info('Click to open bucket id $id');
+    SmLogger.debug('Click to open bucket id $id');
     final currentSet = Set<String>.from(_expandedBucketIds.value);
     if (currentSet.contains(id)) {
       currentSet.remove(id);

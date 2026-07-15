@@ -20,8 +20,8 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           .orderBy(ModelKey.position, descending: false)
           .get();
 
-      SmLogger.debug(
-        'Fetch complete -> ${snapshot.docs.length} entries loaded.',
+      SmLogger.info(
+        'Fetch buckets completed with ${snapshot.docs.length} entries.',
       );
 
       return snapshot.docs.map((doc) {
@@ -135,7 +135,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         }
       }
 
-      SmLogger.debug('Executing permanent destruction on UUID: $id');
+      SmLogger.warning('Executing permanent destruction on UUID: $id');
 
       await _collection.doc(id).delete();
 

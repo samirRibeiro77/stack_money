@@ -20,7 +20,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
           .get();
 
       SmLogger.info(
-        'Fetch success -> ${snapshot.docs.length} configuration maps loaded.',
+        'Fetch plans completed with ${snapshot.docs.length} entries.',
       );
       return snapshot.docs
           .map((doc) => SalaryPlan.fromJson(doc.data()))
