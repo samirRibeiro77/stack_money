@@ -98,10 +98,12 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
               'Document synced in background: ${bucket.id} (${bucket.name})',
             );
           })
-          .catchError((error) {
-            SmLogger.error(
-              'Background sync failed for ${bucket.id}',
-              error: error,
+          .catchError((e, stack) {
+            StackMoneyException(
+              message: 'Background sync failed',
+              scope: ExceptionScope.database,
+              payload: {'exception': e, 'bucket': bucket},
+              stackTrace: stack,
             );
           });
     } catch (e, stack) {
