@@ -1,21 +1,37 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../helper/model_key.dart';
+
 class NetWorth {
+  final Timestamp updateAt;
   final double total;
   final double liquidity;
 
-  NetWorth({required this.total, required this.liquidity});
+  NetWorth._({
+    required this.updateAt,
+    required this.total,
+    required this.liquidity,
+  });
 
-  factory NetWorth.empty() {
-    return NetWorth(total: 0.0, liquidity: 0.0);
-  }
-
-  factory NetWorth.fromJson(Map<String, Object?>? json) {
-    return NetWorth(
-      total: (json?['total'] as num).toDouble(),
-      liquidity: (json?['liquidity'] as num).toDouble(),
+  factory NetWorth.create({double? total, double? liquidity}) {
+    return NetWorth._(
+      updateAt: Timestamp.now(),
+      total: total ?? 0,
+      liquidity: liquidity ?? 0,
     );
   }
 
-  Map<String, Object> toJson() {
-    return {'total': total, 'liquidity': liquidity};
+  factory NetWorth.fromJson(Map<String, Object?>? json) {
+    return NetWorth._(
+      updateAt: json?[ModelKey.updateAt] as Timestamp? ?? Timestamp.now(),
+      total: (json?[ModelKey.total] as num?)?.toDouble() ?? 0,
+      liquidity: (json?[ModelKey.liquidity] as num?)?.toDouble() ?? 0,
+    );
   }
+
+  Map<String, Object?> toJson() => {
+    ModelKey.updateAt: updateAt,
+    ModelKey.total: total,
+    ModelKey.liquidity: liquidity,
+  };
 }

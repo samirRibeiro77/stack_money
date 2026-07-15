@@ -34,6 +34,8 @@ class BucketEditCard extends StatefulWidget {
 }
 
 class _BucketEditCardState extends State<BucketEditCard> {
+  late final Bucket _bucket;
+
   late final TextEditingController _whereController;
   late final TextEditingController _categoryController;
   late final TextEditingController _minValueController;
@@ -57,13 +59,14 @@ class _BucketEditCardState extends State<BucketEditCard> {
   @override
   void initState() {
     super.initState();
-    _isImmediateLiquidity.value = widget.bucket.isImmediateLiquidity;
-    _isNegative.value = widget.bucket.minValue < 0;
+    _bucket = widget.bucket;
+    _isImmediateLiquidity.value = _bucket.isImmediateLiquidity;
+    _isNegative.value = _bucket.minValue < 0;
 
-    _whereController = TextEditingController(text: widget.bucket.where);
-    _categoryController = TextEditingController(text: widget.bucket.category);
+    _whereController = TextEditingController(text: _bucket.where);
+    _categoryController = TextEditingController(text: _bucket.category);
     _minValueController = TextEditingController(
-      text: StackMoneyString.formatMoney(widget.bucket.minValue.abs()),
+      text: StackMoneyString.formatMoney(_bucket.minValue.abs()),
     );
 
     _whereFocus.addListener(_handleWhereFocusChange);
@@ -93,7 +96,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
   }
 
   void _toggleValueSign() {
-    if (widget.bucket.minValue != 0) {
+    if (_bucket.minValue != 0) {
       _isNegative.value = !_isNegative.value;
       _triggerAutoSave();
     }
@@ -106,16 +109,14 @@ class _BucketEditCardState extends State<BucketEditCard> {
 
     if (_isNegative.value) doubleValue = -doubleValue;
 
-    final updated = Bucket(
-      id: widget.bucket.id,
+    final updated = _bucket.copyWith(
       where: _whereController.text,
       category: _categoryController.text,
       minValue: doubleValue,
-      isImmediateLiquidity: _isImmediateLiquidity.value,
-      position: widget.bucket.position,
+      isImmediateLiquidity: _isImmediateLiquidity.value
     );
 
-    if (widget.bucket.equalsTo(updated)) return;
+    if (_bucket.equalsTo(updated)) return;
 
     setState(() {
       _isSaving = true;
@@ -237,7 +238,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                     const Expanded(child: SizedBox()),
                     SecurityText(
                       StackMoneyString.formatMoney(
-                        widget.bucket.minValue,
+                        _bucket.minValue,
                         symbol: true,
                       ),
                       type: SecurityType.mask,
