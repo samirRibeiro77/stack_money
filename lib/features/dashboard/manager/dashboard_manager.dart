@@ -84,7 +84,7 @@ class DashboardManager {
 
   /// 🔥 NOVO: Atualizador tático de ordenação
   void updateSortFilter(DashboardSortFilter newFilter) {
-    SmLogger.debug('Sorting filter: ${newFilter.name}');
+    SmLogger.debug('Sorting filter', payload: {'filter': newFilter.name});
     final latestHistory = _realHistoryTimeline.value.last;
 
     _realParameters.value.sort((a, b) {

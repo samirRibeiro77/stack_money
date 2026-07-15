@@ -88,7 +88,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
 
   Future<void> save(Bucket bucket) async {
     try {
-      SmLogger.debug('Initializing sync for UUID: ${bucket.id}');
+      SmLogger.debug('Initializing save', payload: bucket.toJson());
 
       _collection
           .doc(bucket.id)
@@ -118,7 +118,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
 
   Future<void> delete(String id) async {
     try {
-      SmLogger.debug('Evaluating purge authorization for UUID: $id');
+      SmLogger.debug('Evaluating purge authorization', payload: {'id': id});
 
       final docSnap = await _collection.doc(id).get();
 

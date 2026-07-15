@@ -13,7 +13,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
 
   Future<List<SalaryPlan>> fetchAllPlans() async {
     try {
-      SmLogger.debug('Fetching salary profiling roster...');
+      SmLogger.debug('Fetching salary profiling roster...', payload: {});
 
       final snapshot = await _collection
           .orderBy(ModelKey.createdAt, descending: true)
@@ -38,7 +38,8 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   Future<void> savePlan(SalaryPlan plan) async {
     try {
       SmLogger.debug(
-        'Opening synchronization transaction for UUID: ${plan.id}',
+        'Opening synchronization transaction',
+        payload: plan.toJson(),
       );
 
       await _collection
@@ -59,7 +60,8 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   Future<void> activatePlan(String targetPlanId) async {
     try {
       SmLogger.debug(
-        'Activating profile $targetPlanId and flattening parallel profiles...',
+        'Activating profile and flattening parallel profiles...',
+        payload: {'planId': targetPlanId},
       );
       final batch = firestore.batch();
       final querySnapshot = await _collection.get();
@@ -88,9 +90,12 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
 
   Future<void> deactivatePlan(String targetPlanId) async {
     try {
-      SmLogger.debug('Toggling plan to inactive: $targetPlanId');
+      SmLogger.debug(
+        'Toggling plan to inactive',
+        payload: {'id': targetPlanId},
+      );
       await _collection.doc(targetPlanId).update({ModelKey.isActive: false});
-      SmLogger.info('Profile configuration status update completed.');
+      SmLogger.warning('Profile configuration status update completed.');
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Failed to deactivate plan',
@@ -104,7 +109,8 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   Future<void> updateArchiveStatus(String id, bool isArchived) async {
     try {
       SmLogger.debug(
-        'Flipping logical archive flag to $isArchived for UUID: $id',
+        'Flipping logical archive flag',
+        payload: {'planId': id, 'isArchived': isArchived},
       );
       final updates = <String, Object?>{ModelKey.isArchived: isArchived};
 
@@ -113,7 +119,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       }
 
       await _collection.doc(id).update(updates);
-      SmLogger.info('Document visibility bit updated.');
+      SmLogger.warning('Document visibility bit updated.');
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Archive status alteration protocol aborted',
@@ -126,9 +132,12 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
 
   Future<void> purgePlan(String id) async {
     try {
-      SmLogger.warning('Initializing terminal deletion sequence on UUID: $id');
+      SmLogger.debug(
+        'Initializing terminal deletion sequence',
+        payload: {'id': id},
+      );
       await _collection.doc(id).delete();
-      SmLogger.info('Document swept out from system infrastructure core.');
+      SmLogger.warning('Document swept out from system infrastructure core.');
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Hard purge execution failed on core cluster',

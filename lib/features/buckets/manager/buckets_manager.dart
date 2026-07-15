@@ -44,7 +44,7 @@ class BucketsManager {
   }
 
   void toggleBucketExpansion(String id) {
-    SmLogger.debug('Click to open bucket id $id');
+    SmLogger.debug('Click to open bucket', payload: {'id': id});
     final currentSet = Set<String>.from(_expandedBucketIds.value);
     if (currentSet.contains(id)) {
       currentSet.remove(id);
@@ -60,7 +60,8 @@ class BucketsManager {
     int newIndex,
   ) {
     SmLogger.debug(
-      'Reorder buckets -> Old Index: $oldIndex // New Index: $newIndex',
+      'Reorder buckets',
+      payload: {'oldIndex': oldIndex, 'newIndex': newIndex},
     );
 
     final item = filteredList.removeAt(oldIndex);

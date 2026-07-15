@@ -14,7 +14,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
 
   Future<List<History>> fetch() async {
     try {
-      SmLogger.debug('Querying historical timeline ledger...');
+      SmLogger.debug('Querying historical timeline ledger...', payload: {});
 
       final snapshot = await _collection
           .orderBy(ModelKey.date, descending: false)

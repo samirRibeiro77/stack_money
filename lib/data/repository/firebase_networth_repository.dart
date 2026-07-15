@@ -7,7 +7,7 @@ import 'package:stack_money/data/repository/base_firebase_repository.dart';
 class FirebaseNetWorthRepository extends BaseFirebaseRepository {
   Future<NetWorth> get() async {
     try {
-      SmLogger.debug('Handshaking core assets snapshot...');
+      SmLogger.debug('Handshaking core assets snapshot...', payload: {});
 
       final snapshot = await getUserDoc().get();
 

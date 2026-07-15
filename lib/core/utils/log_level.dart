@@ -1,7 +1,7 @@
 enum LogLevel {
   debug('🐛'),
   info('💡'),
-  warning('⚠️'),
+  warning('💥'),
   error('🚨');
 
   final String _emoji;

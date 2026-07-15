@@ -73,7 +73,8 @@ class PlansManager {
     int newIndex,
   ) {
     SmLogger.debug(
-      'Reorder plan -> Old Index: $oldIndex // New index: $newIndex',
+      'Reorder plan',
+      payload: {'oldIndex': oldIndex, 'newIndex': newIndex},
     );
 
     // Change RAM index

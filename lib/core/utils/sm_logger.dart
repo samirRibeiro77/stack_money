@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:stack_money/core/utils/log_level.dart';
 
@@ -18,7 +20,7 @@ class SmLogger {
     if (kDebugMode) {
       logBuffer.insert(0, _prefix);
       logBuffer.insert(2, '[${_getCallerInfo()}]');
-      debugPrint(logBuffer.join(' '));
+      debugPrint(logBuffer.join(' ').trim());
     }
 
     // TODO: Log on firebase
@@ -44,8 +46,25 @@ class SmLogger {
   }
 
   /// DEBUG LOG: Internal and developer info
-  static void debug(String message) {
-    _logMessage(LogLevel.debug, message);
+  static void debug(String message, {required Map<String, Object?> payload}) {
+    final logMessage = StringBuffer();
+    logMessage.writeln(message);
+
+    if (payload.isNotEmpty) {
+      try {
+        final encoder = const JsonEncoder.withIndent('  ');
+        final prettyJson = encoder.convert(payload);
+
+        logMessage.writeln('  📦 [PAYLOAD]:');
+        for (final line in prettyJson.split('\n')) {
+          logMessage.writeln('     $line');
+        }
+      } catch (_) {
+        logMessage.write('  📦 [PAYLOAD_RAW]: $payload');
+      }
+    }
+
+    _logMessage(LogLevel.debug, logMessage.toString());
   }
 
   /// INFO LOG: Handshake, success and state
@@ -65,11 +84,11 @@ class SmLogger {
       buffer.writeln(message);
 
       if (error != null) {
-        buffer.writeln('   ⚠️ Details: $error');
+        buffer.writeln('  📋 [DETAILS]: $error');
       }
 
       if (stackTrace != null) {
-        buffer.writeln('   🛰️ StackTrace:');
+        buffer.writeln('  🛰️ [STACK_TRACE]:');
         final lines = stackTrace.toString().split('\n');
         final localLines = lines
             .where((line) => line.contains('package:stack_money'))
