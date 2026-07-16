@@ -6,9 +6,8 @@ import 'package:stack_money/core/widgets/card_initialize_slot.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
 import 'package:stack_money/core/widgets/sm_reorderable_list.dart';
 import 'package:stack_money/data/models/bucket.dart';
+import 'package:stack_money/features/bucket_card/bucket_card.dart';
 import 'package:stack_money/features/buckets/manager/buckets_manager.dart';
-import 'package:stack_money/features/buckets/widgets/bucket_card.dart';
-import 'package:stack_money/features/buckets/widgets/bucket_edit_card.dart';
 
 class BucketControlScreen extends StatefulWidget {
   const BucketControlScreen({super.key = const ValueKey(route)});
@@ -83,7 +82,7 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
           ),
           const SizedBox(height: AppSizes.sizedBoxSmall),
 
-          SmReorderableList<Bucket>(
+          SmReorderableList(
             items: sortedBuckets,
             onReorder: (oldIdx, newIdx) =>
                 _manager.reorderFilteredBuckets(sortedBuckets, oldIdx, newIdx),
@@ -94,24 +93,22 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
                 bucket: bucket,
                 isExpanded: isCardExpanded,
                 onHeaderTap: () => _manager.toggleBucketExpansion(bucket.id),
-                confirmDismiss: _manager.showTerminalConfirmDialog,
-                onDismissed: _manager.purgeBucket,
-                onAutoSave: _manager.saveBucketToFirebase,
+                onDismissed: () => _manager.removeBucketFromLocalList(
+                  bucket.id,
+                ), // Apenas atualiza a listagem local
               );
             },
-            feedbackChildBuilder: (_, bucket, _) => BucketEditCard(
+            feedbackChildBuilder: (_, bucket, _) => BucketCard(
               bucket: bucket,
               isExpanded: false,
               onHeaderTap: () {},
-              onAutoSave: (_) {},
             ),
             draggingChildBuilder: (_, bucket, _) {
               final isCardExpanded = expandedIds.contains(bucket.id);
-              return BucketEditCard(
+              return BucketCard(
                 bucket: bucket,
                 isExpanded: isCardExpanded,
                 onHeaderTap: () {},
-                onAutoSave: (_) {},
               );
             },
           ),

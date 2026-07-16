@@ -151,10 +151,10 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
       if (docSnap.exists) {
         final currentBucket = Bucket.fromJson(docSnap.data(), id: docSnap.id);
 
-        if (currentBucket.minValue > 0.0) {
+        if (!currentBucket.isDeletable) {
           throw StackMoneyException(
             message:
-                'Operation aborted. Bucket $id contains active allocation funds',
+                'Operation aborted. Bucket contains active allocation funds',
             scope: ExceptionScope.database,
             payload: {'bucket': currentBucket.toJson()},
           );
