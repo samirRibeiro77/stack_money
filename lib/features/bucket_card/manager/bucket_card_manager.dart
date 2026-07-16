@@ -119,8 +119,18 @@ class BucketCardManager {
     isSaving.value = false;
   }
 
-  Future confirmPurge(BuildContext context) async {
+  Future<bool> confirmPurge(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
+
+    if (!_bucket.isDeletable) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Bucket still have values and can\'t be deleted'),
+        ),
+      );
+      return false;
+    }
+
     final result = await showDialog(
       context: context,
       barrierDismissible: false,
@@ -132,6 +142,7 @@ class BucketCardManager {
         onConfirm: () => Navigator.of(dialogContext).pop(true),
       ),
     );
+
     return result ?? false;
   }
 
