@@ -8,6 +8,7 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/core/widgets/sign_toggle_button.dart';
@@ -34,7 +35,7 @@ class BucketEditCard extends StatefulWidget {
 }
 
 class _BucketEditCardState extends State<BucketEditCard> {
-  late final Bucket _bucket;
+  late Bucket _bucket;
 
   late final TextEditingController _whereController;
   late final TextEditingController _categoryController;
@@ -51,10 +52,6 @@ class _BucketEditCardState extends State<BucketEditCard> {
   final _isImmediateLiquidity = ValueNotifier(false);
   final _isNegative = ValueNotifier(false);
   bool _isSaving = false;
-
-  ValueListenable<bool> get isImmediateLiquidity => _isImmediateLiquidity;
-
-  ValueListenable<bool> get isNegative => _isNegative;
 
   @override
   void initState() {
@@ -113,10 +110,12 @@ class _BucketEditCardState extends State<BucketEditCard> {
       where: _whereController.text,
       category: _categoryController.text,
       minValue: doubleValue,
-      isImmediateLiquidity: _isImmediateLiquidity.value
+      isImmediateLiquidity: _isImmediateLiquidity.value,
     );
 
     if (_bucket.equalsTo(updated)) return;
+
+    _bucket = updated;
 
     setState(() {
       _isSaving = true;
@@ -195,7 +194,7 @@ class _BucketEditCardState extends State<BucketEditCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ValueListenableBuilder(
-                      valueListenable: isImmediateLiquidity,
+                      valueListenable: _isImmediateLiquidity,
                       builder: (_, liquidity, _) {
                         return Container(
                           width: AppSizes.x2,
@@ -217,35 +216,61 @@ class _BucketEditCardState extends State<BucketEditCard> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SecurityText(
-                          StackMoneyString.formatTitle(
-                            _categoryController.text,
-                          ),
-                          style: textTheme.titleSmall?.copyWith(
-                            fontWeight: AppTypography.weightBold,
-                          ),
-                          type: SecurityType.systemLocked,
+                        ValueListenableBuilder(
+                          valueListenable: _categoryController,
+                          builder: (_, category, _) {
+                            return SecurityText(
+                              StackMoneyString.formatTitle(category.text),
+                              style: textTheme.titleSmall?.copyWith(
+                                fontWeight: AppTypography.weightBold,
+                              ),
+                              type: SecurityType.systemLocked,
+                            );
+                          },
                         ),
-                        SecurityText(
-                          StackMoneyString.formatTitle(_whereController.text),
-                          style: textTheme.titleSmall?.copyWith(
-                            fontSize: AppTypography.fontSmallest,
-                          ),
-                          activeColor: StackMoneyTheme.mutedGrey,
+                        ValueListenableBuilder(
+                          valueListenable: _whereController,
+                          builder: (_, where, _) {
+                            return SecurityText(
+                              StackMoneyString.formatTitle(where.text),
+                              style: textTheme.titleSmall?.copyWith(
+                                fontSize: AppTypography.fontSmallest,
+                              ),
+                              activeColor: StackMoneyTheme.mutedGrey,
+                            );
+                          },
                         ),
                       ],
                     ),
                     const Expanded(child: SizedBox()),
-                    SecurityText(
-                      StackMoneyString.formatMoney(
-                        _bucket.minValue,
-                        symbol: true,
-                      ),
-                      type: SecurityType.mask,
-                      style: textTheme.bodyMedium?.copyWith(
-                        fontWeight: AppTypography.weightBold,
-                      ),
-                      activeColor: techColor,
+                    ValueListenableBuilder(
+                      valueListenable: _isNegative,
+                      builder: (_, negative, _) {
+                        return ValueListenableBuilder(
+                          valueListenable: _minValueController,
+                          builder: (_, min, _) {
+                            var minValue =
+                                StackMoneyNumber.parseMoneyStringToDouble(
+                                  min.text,
+                                );
+                            if (negative) {
+                              minValue = -minValue;
+                            }
+
+                            return SecurityText(
+                              StackMoneyString.formatMoney(
+                                minValue,
+                                symbol: true,
+                              ),
+                              type: SecurityType.mask,
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontWeight: AppTypography.weightBold,
+                              ),
+                              activeColor: techColor,
+                            );
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -345,15 +370,20 @@ class _BucketEditCardState extends State<BucketEditCard> {
       child: Center(
         child: FittedBox(
           fit: BoxFit.contain,
-          child: Switch(
-            value: _isImmediateLiquidity.value,
-            activeThumbColor: techColor,
-            activeTrackColor: techColor.withValues(alpha: 0.15),
-            inactiveThumbColor: StackMoneyTheme.mutedGrey,
-            inactiveTrackColor: StackMoneyTheme.surface,
-            onChanged: (value) {
-              _isImmediateLiquidity.value = value;
-              _triggerAutoSave();
+          child: ValueListenableBuilder(
+            valueListenable: _isImmediateLiquidity,
+            builder: (_, liquidity, _) {
+              return Switch(
+                value: liquidity,
+                activeThumbColor: techColor,
+                activeTrackColor: techColor.withValues(alpha: 0.15),
+                inactiveThumbColor: StackMoneyTheme.mutedGrey,
+                inactiveTrackColor: StackMoneyTheme.surface,
+                onChanged: (value) {
+                  _isImmediateLiquidity.value = value;
+                  _triggerAutoSave();
+                },
+              );
             },
           ),
         ),
