@@ -12,7 +12,7 @@ class BucketCardBackground extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppSizes.x10),
       decoration: BoxDecoration(
         color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
+        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         border: Border.all(
           color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.3),
           width: 0.5,

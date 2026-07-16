@@ -24,7 +24,7 @@ class BucketCardSavingAnimation extends StatelessWidget {
               margin: const EdgeInsets.symmetric(vertical: AppSizes.x3),
               decoration: BoxDecoration(
                 color: StackMoneyTheme.surface,
-                borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
+                borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
                 border: Border.all(
                   color: saving
                       ? techColor
@@ -35,7 +35,7 @@ class BucketCardSavingAnimation extends StatelessWidget {
                     ? [
                         BoxShadow(
                           color: techColor.withValues(alpha: 0.3),
-                          blurRadius: AppSizes.radiusMedium,
+                          blurRadius: AppSizes.radiusSmall,
                           spreadRadius: 1,
                         ),
                       ]
