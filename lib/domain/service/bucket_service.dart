@@ -9,6 +9,10 @@ class BucketManagementService {
     return await _repository.fetch();
   }
 
+  Future<Bucket> fetchById(String id) async {
+    return await _repository.fetchById(id);
+  }
+
   Future<void> executeContributionSprint({
     required List<Bucket> updatedBuckets,
     required List<Transaction> transactions,

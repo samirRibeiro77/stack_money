@@ -37,6 +37,32 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     }
   }
 
+  Future<Bucket> fetchById(String id) async {
+    try {
+      final doc = await getUserDoc()
+          .collection(FirebaseKey.buckets)
+          .doc(id)
+          .get();
+
+      if (!doc.exists || doc.data() == null) {
+        throw StackMoneyException(
+          message: 'Bucket not found.',
+          payload: {'id': id},
+          scope: ExceptionScope.database,
+        );
+      }
+
+      return Bucket.fromJson(doc.data(), id: doc.id);
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: '[BucketRepository] Error fetching bucket by ID',
+        scope: ExceptionScope.database,
+        payload: {'id': id, 'exception': e},
+        stackTrace: stack,
+      );
+    }
+  }
+
   Future<void> commitSprint({
     required List<Bucket> updatedBuckets,
     required List<Transaction> transactions,
