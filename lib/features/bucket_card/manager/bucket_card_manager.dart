@@ -47,6 +47,9 @@ class BucketCardManager {
     _bucket = initialBucket;
     _isImmediateLiquidity.value = _bucket.isImmediateLiquidity;
     _minValueSign.value = ValueSign.define(_bucket.minValue);
+    _techColor.value = _bucket.minValue >= 0
+        ? StackMoneyTheme.cyanNeon
+        : StackMoneyTheme.magentaNeon;
 
     whereController = TextEditingController(text: _bucket.where);
     categoryController = TextEditingController(text: _bucket.category);
