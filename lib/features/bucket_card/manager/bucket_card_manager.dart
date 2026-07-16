@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
+import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
 
@@ -17,9 +20,18 @@ class BucketCardManager {
 
   Bucket get bucket => _bucket;
 
-  final isSaving = ValueNotifier(false);
-  final isNegative = ValueNotifier(false);
-  final isImmediateLiquidity = ValueNotifier(false);
+  final _isSaving = ValueNotifier(false);
+  final _isImmediateLiquidity = ValueNotifier(false);
+  final _minValueSign = ValueNotifier(ValueSign.positive);
+  final _techColor = ValueNotifier(StackMoneyTheme.cyanNeon);
+
+  ValueListenable<bool> get isSaving => _isSaving;
+
+  ValueListenable<bool> get isImmediateLiquidity => _isImmediateLiquidity;
+
+  ValueListenable<ValueSign> get minValueSign => _minValueSign;
+
+  ValueListenable<Color> get techColor => _techColor;
 
   late final TextEditingController whereController;
   late final TextEditingController categoryController;
@@ -33,8 +45,8 @@ class BucketCardManager {
 
   BucketCardManager(Bucket initialBucket) {
     _bucket = initialBucket;
-    isImmediateLiquidity.value = _bucket.isImmediateLiquidity;
-    isNegative.value = _bucket.minValue < 0;
+    _isImmediateLiquidity.value = _bucket.isImmediateLiquidity;
+    _minValueSign.value = ValueSign.define(_bucket.minValue);
 
     whereController = TextEditingController(text: _bucket.where);
     categoryController = TextEditingController(text: _bucket.category);
@@ -73,12 +85,17 @@ class BucketCardManager {
   }
 
   void toggleValueSign() {
-    isNegative.value = !isNegative.value;
+    _minValueSign.value = _minValueSign.value.change();
+
+    _techColor.value = _minValueSign.value.isNegative
+        ? StackMoneyTheme.magentaNeon
+        : StackMoneyTheme.cyanNeon;
+
     _triggerSaveNow();
   }
 
   void updateLiquidity(bool value) {
-    isImmediateLiquidity.value = value;
+    _isImmediateLiquidity.value = value;
     _triggerSaveNow();
   }
 
@@ -87,7 +104,7 @@ class BucketCardManager {
       minValueController.text,
     );
 
-    if (isNegative.value) doubleValue = -doubleValue;
+    if (minValueSign.value.isNegative) doubleValue = -doubleValue;
 
     final updated = _bucket.copyWith(
       where: whereController.text,
@@ -99,7 +116,7 @@ class BucketCardManager {
     if (_bucket.equalsTo(updated)) return;
 
     _bucket = updated;
-    isSaving.value = true;
+    _isSaving.value = true;
 
     await _bucketService
         .save(updated)
@@ -116,7 +133,7 @@ class BucketCardManager {
         });
 
     await Future.delayed(const Duration(milliseconds: 500));
-    isSaving.value = false;
+    _isSaving.value = false;
   }
 
   Future<bool> confirmPurge(BuildContext context) async {
@@ -170,8 +187,9 @@ class BucketCardManager {
     whereFocus.dispose();
     categoryFocus.dispose();
     minValueFocus.dispose();
-    isSaving.dispose();
-    isNegative.dispose();
-    isImmediateLiquidity.dispose();
+    _isSaving.dispose();
+    _minValueSign.dispose();
+    _isImmediateLiquidity.dispose();
+    _techColor.dispose();
   }
 }

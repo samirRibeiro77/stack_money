@@ -7,7 +7,6 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
 import 'package:stack_money/core/widgets/sign_toggle_button.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
@@ -56,12 +55,8 @@ class _BucketCardState extends State<BucketCard> {
     final textTheme = Theme.of(context).textTheme;
 
     return ValueListenableBuilder(
-      valueListenable: _cardManager.isNegative,
-      builder: (_, negative, _) {
-        final Color techColor = negative
-            ? StackMoneyTheme.magentaNeon
-            : StackMoneyTheme.cyanNeon;
-
+      valueListenable: _cardManager.techColor,
+      builder: (_, techColor, _) {
         return Dismissible(
           key: Key(_cardManager.bucket.id),
           direction: isSecureActive
@@ -203,15 +198,16 @@ class _BucketCardState extends State<BucketCard> {
             ),
             const Expanded(child: SizedBox()),
             ValueListenableBuilder(
-              valueListenable: _cardManager.isNegative,
-              builder: (_, negative, _) {
+              valueListenable: _cardManager.minValueSign,
+              builder: (_, minValueSign, _) {
                 return ValueListenableBuilder(
                   valueListenable: _cardManager.minValueController,
                   builder: (_, value, _) {
                     var minValue = StackMoneyNumber.parseMoneyStringToDouble(
                       value.text,
                     );
-                    if (negative) minValue = -minValue;
+
+                    if (minValueSign.isNegative) minValue = -minValue;
 
                     return SecurityText(
                       StackMoneyString.formatMoney(minValue, symbol: true),
@@ -272,11 +268,11 @@ class _BucketCardState extends State<BucketCard> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               ValueListenableBuilder(
-                valueListenable: _cardManager.isNegative,
-                builder: (_, negative, _) {
+                valueListenable: _cardManager.minValueSign,
+                builder: (_, minValueSign, _) {
                   return SignToggleButton(
                     _cardManager.toggleValueSign,
-                    initialValue: negative
+                    initialValue: minValueSign.isNegative
                         ? ValueSign.negative
                         : ValueSign.positive,
                   );
