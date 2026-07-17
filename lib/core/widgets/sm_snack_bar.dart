@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
-import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/data/enum/snack_bar_position.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
@@ -62,8 +62,7 @@ class SmSnackBar {
                   child: Text(
                     _message,
                     style: textTheme.bodySmall?.copyWith(
-                      color: StackMoneyTheme.platinumSilver,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTypography.weightBold,
                       letterSpacing: AppTypography.spacingTiny,
                     ),
                   ),
@@ -80,11 +79,11 @@ class SmSnackBar {
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                     child: Text(
-                      '[ ${_action.label.toUpperCase()} ]',
+                      '[ ${StackMoneyString.formatTitle(_action.label)} ]',
                       style: textTheme.bodySmall?.copyWith(
                         color: _type.color,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: AppTypography.spacingTiny,
+                        fontWeight: AppTypography.weightBold,
+                        letterSpacing: AppTypography.spacingSmall,
                         shadows: [
                           Shadow(
                             color: _type.color.withValues(alpha: 0.4),
@@ -105,7 +104,7 @@ class SmSnackBar {
 
   bool get _isTop => _position == SnackBarPosition.top;
 
-  BorderSide get _borderSide => BorderSide(color: _type.color, width: 0.6);
+  BorderSide get _borderSide => BorderSide(color: _type.color, width: 1);
 
   BorderRadius get _radius => _isTop
       ? BorderRadius.horizontal(
