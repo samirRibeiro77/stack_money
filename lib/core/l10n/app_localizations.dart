@@ -755,6 +755,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Bucket has \'MIN_VALUE\' filled, can\'t be deleted'**
   String get failDeleteBucketWithValue;
+
+  /// SnackBar message when is the day selected by the user to update it's money values.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned day to update your money'**
+  String get planMoneySprintDay;
+
+  /// SnackBar action to start the money sprint.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get start;
 }
 
 class _AppLocalizationsDelegate

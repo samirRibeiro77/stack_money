@@ -35,6 +35,11 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     }
   }
 
+  Future<SalaryPlan?> fetchActivatedPlan() async {
+    final plans = await fetchAllPlans();
+    return plans.where((p) => p.isActive).firstOrNull;
+  }
+
   Future<void> savePlan(SalaryPlan plan) async {
     try {
       SmLogger.debug(

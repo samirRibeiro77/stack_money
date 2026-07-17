@@ -364,4 +364,10 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get failDeleteBucketWithValue =>
       'Caixinha tem \'VALOR_MINIMO\' preenchido, não pode ser deletada';
+
+  @override
+  String get planMoneySprintDay => 'Planned day to update your money';
+
+  @override
+  String get start => 'Começar';
 }

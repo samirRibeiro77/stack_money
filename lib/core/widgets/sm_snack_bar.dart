@@ -36,6 +36,7 @@ class SmSnackBar {
         duration: _duration,
         behavior: SnackBarBehavior.floating,
         margin: _margin(context),
+        dismissDirection: _dismiss,
         content: GlassmorphismEffect(
           borderSpec: _border,
           borderRadiusSpec: _radius,
@@ -72,7 +73,10 @@ class SmSnackBar {
                 if (_action != null) ...[
                   const SizedBox(width: AppSizes.sizedBoxSmall),
                   TextButton(
-                    onPressed: _action.onPressed,
+                    onPressed: () {
+                      messenger.clearSnackBars();
+                      _action.onPressed();
+                    },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                       minimumSize: Size.zero,
@@ -124,7 +128,7 @@ class SmSnackBar {
         ? EdgeInsets.only(
             top: safeAreaTop + AppSizes.x10,
             bottom: screenHeight - safeAreaTop - AppSizes.snackBarTopPadding,
-            left: AppSizes.x20,
+            left: AppSizes.x30,
             right: 0,
           )
         : EdgeInsets.only(
@@ -145,4 +149,6 @@ class SmSnackBar {
     vertical: AppSizes.min,
     horizontal: AppSizes.x3,
   );
+
+  DismissDirection get _dismiss => _isTop ? DismissDirection.startToEnd : DismissDirection.endToStart;
 }

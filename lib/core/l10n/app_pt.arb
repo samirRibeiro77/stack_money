@@ -109,5 +109,8 @@
   "filterByActual": "Maior valor atual",
   "filterByMin": "Menor valor minimo",
   "filterByAlloc": "Alocação na carteira",
-  "failDeleteBucketWithValue": "Caixinha tem 'VALOR_MINIMO' preenchido, não pode ser deletada"
+  "failDeleteBucketWithValue": "Caixinha tem 'VALOR_MINIMO' preenchido, não pode ser deletada",
+  "planMoneySprintDay": "Dia planejado de atualizar seu dinheiro",
+  "planMoneySprintDay": "Planned day to update your money",
+  "start": "Começar"
 }

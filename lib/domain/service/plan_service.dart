@@ -8,6 +8,10 @@ class PlanManagementService {
     return await _repository.fetchAllPlans();
   }
 
+  Future<SalaryPlan?> fetchActivated() async {
+    return await _repository.fetchActivatedPlan();
+  }
+
   Future<void> save(SalaryPlan plan) async {
     await _repository.savePlan(plan);
   }

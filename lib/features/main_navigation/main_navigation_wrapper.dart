@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/widgets/tab_content.dart';
-import 'package:stack_money/core/widgets/user_header.dart';
+import 'package:stack_money/features/user_header/user_header.dart';
 import 'package:stack_money/data/enum/nav_bar_tabs.dart';
 import 'package:stack_money/features/main_navigation/manager/main_navigation_manager.dart';
 import 'package:stack_money/features/main_navigation/widgets/floating_nav_bar.dart';
@@ -50,6 +50,7 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
       child: Scaffold(
         body: Stack(
           children: [
+            /// Page
             CustomScrollView(
               controller: _manager.scrollController,
               slivers: [

@@ -5,26 +5,25 @@ import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
 
 // 🔥 NOVO IMPORT: Aponta diretamente para a nossa esteira de aportes sequenciais
 import 'package:stack_money/features/contribution_sprint/contribution_sprint_screen.dart';
+import 'package:stack_money/features/user_header/manager/user_header_manager.dart';
 
 class UserHeader extends StatelessWidget {
-  const UserHeader({super.key});
+  UserHeader({super.key});
 
-  void _openConfig() {
-    print('Open config page');
-  }
+  final _manager = UserHeaderManager();
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final textTheme = Theme.of(context).textTheme;
+    final isSecure = SecurityProvider.isSecureOf(context);
 
-    final User? user = AuthService().currentUser;
-    final String displayName = user?.displayName ?? l10n.unknow;
-    final String? photoUrl = user?.photoURL;
+    if (!isSecure) {
+      _manager.checkCurrentPlan(context);
+    }
 
     return SliverAppBar(
       backgroundColor: StackMoneyTheme.background,
@@ -37,10 +36,10 @@ class UserHeader extends StatelessWidget {
       leadingWidth: AppSizes.max,
 
       // --- 1. User image
-      leading: _buildAvatar(photoUrl, context),
+      leading: _buildAvatar(context),
 
       // --- 2. DISPLAY NAME ---
-      title: _buildName(displayName, textTheme),
+      title: _buildName(context),
 
       // --- 3. BOTOÕES DE COMANDO ---
       actions: [
@@ -50,7 +49,7 @@ class UserHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatar(String? photoUrl, BuildContext context) {
+  Widget _buildAvatar(BuildContext context) {
     final isSecure = SecurityProvider.isSecureOf(context);
 
     final gradientColors = isSecure
@@ -58,7 +57,7 @@ class UserHeader extends StatelessWidget {
         : [StackMoneyTheme.cyanNeon, StackMoneyTheme.background];
 
     return GestureDetector(
-      onTap: _openConfig,
+      onTap: _manager.openConfigs,
       child: Padding(
         padding: const EdgeInsets.only(left: AppSizes.x8),
         child: Center(
@@ -75,8 +74,8 @@ class UserHeader extends StatelessWidget {
             child: CircleAvatar(
               radius: AppSizes.x9,
               backgroundColor: StackMoneyTheme.surface,
-              backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-              child: photoUrl == null
+              backgroundImage: _manager.photoUrl != null ? NetworkImage(_manager.photoUrl!) : null,
+              child: _manager.photoUrl == null
                   ? const Icon(
                       Icons.person,
                       color: StackMoneyTheme.platinumSilver,
@@ -90,11 +89,14 @@ class UserHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildName(String displayName, TextTheme textTheme) {
+  Widget _buildName(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
+
     return GestureDetector(
-      onTap: _openConfig,
+      onTap: _manager.openConfigs,
       child: Text(
-        displayName,
+        _manager.displayName(l10n),
         style: textTheme.titleLarge?.copyWith(
           color: StackMoneyTheme.platinumSilver,
           letterSpacing: AppTypography.spacingSmall,
@@ -111,11 +113,7 @@ class UserHeader extends StatelessWidget {
 
     return IconButton(
       icon: const Icon(Icons.add_rounded, color: StackMoneyTheme.cyanNeon),
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const ContributionSprintScreen()),
-        );
-      },
+      onPressed: () => _manager.startMoneySprint(context),
     );
   }
 
