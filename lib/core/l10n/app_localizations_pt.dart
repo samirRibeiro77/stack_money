@@ -360,4 +360,8 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get filterByAlloc => 'Alocação na carteira';
+
+  @override
+  String get failDeleteBucketWithValue =>
+      'Apenas caixinha sem \'VALOR_MINIMO\' pode ser deletada';
 }
