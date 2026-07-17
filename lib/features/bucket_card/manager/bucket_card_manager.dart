@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_number.dart';
@@ -11,7 +10,6 @@ import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snackbar.dart';
-import 'package:stack_money/data/enum/snack_bar_position.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
