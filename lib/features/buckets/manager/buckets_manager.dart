@@ -180,4 +180,15 @@ class BucketsManager {
       ),
     );
   }
+
+  void removeBucketFromLocalList(String id) {
+    final index = _bucketDeck.value.indexWhere((b) => b.id == id);
+    if (index != -1) {
+      final updatedList = List<Bucket>.from(_bucketDeck.value)..removeAt(index);
+      final currentSet = Set<String>.from(_expandedBucketIds.value)..remove(id);
+
+      _expandedBucketIds.value = currentSet;
+      _bucketDeck.value = updatedList;
+    }
+  }
 }

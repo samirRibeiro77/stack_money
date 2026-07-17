@@ -71,6 +71,8 @@ class Bucket {
 
   String get name => '$where $category';
 
+  bool get isDeletable => minValue == 0;
+
   bool equalsTo(Bucket b) {
     return where == b.where &&
         category == b.category &&

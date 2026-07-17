@@ -37,6 +37,32 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     }
   }
 
+  Future<Bucket> fetchById(String id) async {
+    try {
+      final doc = await getUserDoc()
+          .collection(FirebaseKey.buckets)
+          .doc(id)
+          .get();
+
+      if (!doc.exists || doc.data() == null) {
+        throw StackMoneyException(
+          message: 'Bucket not found.',
+          payload: {'id': id},
+          scope: ExceptionScope.database,
+        );
+      }
+
+      return Bucket.fromJson(doc.data(), id: doc.id);
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Error fetching bucket by ID',
+        scope: ExceptionScope.database,
+        payload: {'id': id, 'exception': e},
+        stackTrace: stack,
+      );
+    }
+  }
+
   Future<void> commitSprint({
     required List<Bucket> updatedBuckets,
     required List<Transaction> transactions,
@@ -125,10 +151,10 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
       if (docSnap.exists) {
         final currentBucket = Bucket.fromJson(docSnap.data(), id: docSnap.id);
 
-        if (currentBucket.minValue > 0.0) {
+        if (!currentBucket.isDeletable) {
           throw StackMoneyException(
             message:
-                'Operation aborted. Bucket $id contains active allocation funds',
+                'Bucket contains active allocation funds. Only buckets with zero (0) \'minValue\' can be deleted',
             scope: ExceptionScope.database,
             payload: {'bucket': currentBucket.toJson()},
           );

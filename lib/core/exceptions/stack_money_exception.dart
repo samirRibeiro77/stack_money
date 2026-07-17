@@ -14,7 +14,7 @@ class StackMoneyException implements Exception {
     this.payload,
   }) {
     SmLogger.error(
-      '[$scope] $message',
+      '[${scope.name}] $message',
       error: payload != null ? 'Payload: ${payload.toString()}' : null,
       stackTrace: stackTrace,
     );
