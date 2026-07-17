@@ -95,7 +95,7 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
                 onHeaderTap: () => _manager.toggleBucketExpansion(bucket.id),
                 onDismissed: () => _manager.removeBucketFromLocalList(
                   bucket.id,
-                ), // Apenas atualiza a listagem local
+                ), 
               );
             },
             feedbackChildBuilder: (_, bucket, _) => BucketCard(

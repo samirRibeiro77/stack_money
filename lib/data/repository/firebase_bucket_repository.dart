@@ -55,7 +55,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
       return Bucket.fromJson(doc.data(), id: doc.id);
     } catch (e, stack) {
       throw StackMoneyException(
-        message: '[BucketRepository] Error fetching bucket by ID',
+        message: 'Error fetching bucket by ID',
         scope: ExceptionScope.database,
         payload: {'id': id, 'exception': e},
         stackTrace: stack,
@@ -154,7 +154,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         if (!currentBucket.isDeletable) {
           throw StackMoneyException(
             message:
-                'Operation aborted. Bucket contains active allocation funds',
+                'Bucket contains active allocation funds. Only buckets with zero (0) \'minValue\' can be deleted',
             scope: ExceptionScope.database,
             payload: {'bucket': currentBucket.toJson()},
           );
