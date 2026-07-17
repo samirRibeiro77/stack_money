@@ -69,7 +69,7 @@ class DistributionCard extends StatelessWidget {
         padding: const EdgeInsets.only(right: AppSizes.x10),
         decoration: BoxDecoration(
           color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(AppSizes.x4),
+          borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         ),
         alignment: Alignment.centerRight,
         child: const Icon(
@@ -182,7 +182,9 @@ class DistributionCard extends StatelessWidget {
                         horizontal: AppSizes.x2,
                       ),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(AppSizes.x3),
+                        borderRadius: BorderRadius.circular(
+                          AppSizes.radiusSmall,
+                        ),
                         border: Border.all(
                           color: isReadOnly
                               ? StackMoneyTheme.cyanNeon.withValues(alpha: 0.30)
@@ -208,7 +210,7 @@ class DistributionCard extends StatelessWidget {
                                     ? techColor.withValues(alpha: 0.15)
                                     : Colors.transparent,
                                 borderRadius: BorderRadius.circular(
-                                  AppSizes.x2,
+                                  AppSizes.radiusTiny,
                                 ),
                               ),
                               child: Text(
