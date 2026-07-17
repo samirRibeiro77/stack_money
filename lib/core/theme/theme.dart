@@ -48,7 +48,7 @@ class StackMoneyTheme {
             )
           : null,
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppSizes.x3),
+        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         borderSide: BorderSide(
           color: readOnly
               ? color.withValues(alpha: 0.30)
@@ -57,7 +57,7 @@ class StackMoneyTheme {
         ),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppSizes.x3),
+        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         borderSide: BorderSide(
           color: readOnly ? color.withValues(alpha: 0.30) : color,
           width: 1,
@@ -98,11 +98,11 @@ class StackMoneyTheme {
       inputDecorationTheme: darkTheme.inputDecorationTheme.copyWith(
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: cyanNeon.withValues(alpha: 0.3)),
-          borderRadius: BorderRadius.circular(AppSizes.x2),
+          borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: cyanNeon, width: 1.5),
-          borderRadius: BorderRadius.circular(AppSizes.x2),
+          borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         ),
         labelStyle: darkTheme.textTheme.bodySmall?.copyWith(
           color: cyanNeon,
@@ -282,15 +282,15 @@ class StackMoneyTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: magentaNeon, width: 1.5),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: mutedGrey, width: 1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
         ),
         errorBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: cyanNeon, width: 1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
         ),
       ),
 
