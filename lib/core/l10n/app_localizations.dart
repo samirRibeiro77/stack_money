@@ -749,6 +749,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Wallet allocation'**
   String get filterByAlloc;
+
+  /// SnackBar message when failed to delete bucket with MIN_VALUE filled.
+  ///
+  /// In en, this message translates to:
+  /// **'Bucket has \'MIN_VALUE\' filled, can\'t be deleted'**
+  String get failDeleteBucketWithValue;
 }
 
 class _AppLocalizationsDelegate

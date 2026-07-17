@@ -9,6 +9,8 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
+import 'package:stack_money/core/widgets/sm_snack_bar.dart';
+import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
@@ -143,11 +145,10 @@ class BucketCardManager {
     final l10n = AppLocalizations.of(context)!;
 
     if (!_bucket.isDeletable) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Bucket still have values and can\'t be deleted'),
-        ),
-      );
+      SmSnackBar(
+        message: l10n.failDeleteBucketWithValue,
+        type: SnackBarType.error,
+      ).show(context);
       return false;
     }
 

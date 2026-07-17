@@ -108,5 +108,6 @@
   "filterByName": "Nome da caixinha",
   "filterByActual": "Maior valor atual",
   "filterByMin": "Menor valor minimo",
-  "filterByAlloc": "Alocação na carteira"
+  "filterByAlloc": "Alocação na carteira",
+  "failDeleteBucketWithValue": "Caixinha tem 'VALOR_MINIMO' preenchido, não pode ser deletada"
 }

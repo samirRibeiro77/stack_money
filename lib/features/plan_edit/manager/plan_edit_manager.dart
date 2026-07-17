@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
-import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
+import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
+import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/data/models/inflow_row.dart';
 import 'package:stack_money/data/models/outflow_row.dart';
@@ -339,32 +339,15 @@ class PlanEditManager {
     SalaryPlan backup,
   ) {
     final l10n = AppLocalizations.of(context)!;
-    final textTheme = Theme.of(context).textTheme;
 
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: StackMoneyTheme.carbonGrey,
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(AppSizes.x6),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSizes.x4),
-        ),
-        content: Text(
-          StackMoneyString.formatTitle(message),
-          style: textTheme.bodySmall,
-        ),
-        action: SnackBarAction(
-          label: '[${StackMoneyString.formatTitle(l10n.undo)}]',
-          textColor: StackMoneyTheme.cyanNeon,
-          onPressed: () {
-            planNotifier.value = backup;
-            _autoSave();
-          },
-        ),
-        duration: const Duration(seconds: 3),
-      ),
-    );
+    SmSnackBar(
+        message: message,
+        type: SnackBarType.error,
+        action: SnackBarAction(label: l10n.undo, onPressed: () {
+          planNotifier.value = backup;
+          _autoSave();
+        })
+    ).show(context);
   }
 
   void _autoSave() {

@@ -306,6 +306,28 @@ class StackMoneyTheme {
 
       /// Divider
       dividerTheme: const DividerThemeData(color: carbonGrey),
+
+      /// SnackBar
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.fixed,
+        elevation: 4,
+        backgroundColor: StackMoneyTheme.surface.withValues(alpha: 0.85),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(AppSizes.radiusSmall),
+          ),
+          side: BorderSide(
+            color: StackMoneyTheme.mutedGrey.withValues(alpha: 0.25),
+            width: 1,
+          ),
+        ),
+        contentTextStyle: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontLabelMedium,
+          fontWeight: AppTypography.weightNormal,
+          color: textPrimary,
+          letterSpacing: AppTypography.spacingSmall,
+        ),
+      ),
     );
   }
 }
