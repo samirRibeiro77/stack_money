@@ -86,7 +86,7 @@ class NetSalaryProgress extends StatelessWidget {
           const SizedBox(height: AppSizes.min),
 
           ClipRRect(
-            borderRadius: BorderRadius.circular(AppSizes.min),
+            borderRadius: BorderRadius.circular(AppSizes.radiusTiny),
             child: LinearProgressIndicator(
               value: progressFactor,
               minHeight: isMaxCollapsed ? AppSizes.min : AppSizes.x2,

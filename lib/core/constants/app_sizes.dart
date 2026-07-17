@@ -30,6 +30,7 @@ class AppSizes {
   static const double sizedBoxLarge = 16.0;
 
   /// --- Border Radius ---
+  static const double radiusTiny = 4.0;
   static const double radiusSmall = 8.0;
   static const double radiusMedium = 12.0;
   static const double radiusLarge = 16.0;
