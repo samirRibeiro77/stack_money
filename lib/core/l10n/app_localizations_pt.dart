@@ -363,5 +363,5 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get failDeleteBucketWithValue =>
-      'Apenas caixinha sem \'VALOR_MINIMO\' pode ser deletada';
+      'Caixinha tem \'VALOR_MINIMO\' preenchido, não pode ser deletada';
 }
