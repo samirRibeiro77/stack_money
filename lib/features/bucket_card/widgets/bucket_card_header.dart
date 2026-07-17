@@ -28,7 +28,7 @@ class BucketCardHeader extends StatelessWidget {
 
     return ValueListenableBuilder<Color>(
       valueListenable: manager.techColor,
-      builder: (context, techColor, _) {
+      builder: (_, techColor, _) {
         return GestureDetector(
           onTap: () {
             if (isSecureActive) return;

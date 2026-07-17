@@ -132,7 +132,7 @@ class BucketCardManager {
           StackMoneyException(
             message: 'Failed to auto-save bucket dynamically',
             scope: ExceptionScope.business,
-            payload: {'exception': e, 'bucket': updated},
+            payload: {'exception': e, 'bucket': updated.toJson()},
             stackTrace: stack,
           );
         });

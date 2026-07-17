@@ -14,10 +14,10 @@ class BucketCardSavingAnimation extends StatelessWidget {
 
     return ValueListenableBuilder<Color>(
       valueListenable: manager.techColor,
-      builder: (context, techColor, _) {
+      builder: (_, techColor, _) {
         return ValueListenableBuilder<bool>(
           valueListenable: manager.isSaving,
-          builder: (context, saving, _) {
+          builder: (_, saving, _) {
             return AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               curve: Curves.fastOutSlowIn,
