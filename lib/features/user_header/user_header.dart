@@ -1,29 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/utils/sm_logger.dart';
-import 'package:stack_money/domain/service/auth_service.dart';
-
-// 🔥 NOVO IMPORT: Aponta diretamente para a nossa esteira de aportes sequenciais
-import 'package:stack_money/features/contribution_sprint/contribution_sprint_screen.dart';
 import 'package:stack_money/features/user_header/manager/user_header_manager.dart';
 
-class UserHeader extends StatelessWidget {
-  UserHeader({super.key});
+class UserHeader extends StatefulWidget {
+  const UserHeader({super.key});
 
-  final _manager = UserHeaderManager();
+  @override
+  State<UserHeader> createState() => _UserHeaderState();
+}
+
+class _UserHeaderState extends State<UserHeader> {
+  late final UserHeaderManager _manager;
+
+  @override
+  void initState() {
+    super.initState();
+    _manager = UserHeaderManager();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final isSecure = SecurityProvider.isSecureOf(context);
+    _manager.checkCurrentPlan(context, isSecure);
+  }
 
   @override
   Widget build(BuildContext context) {
     final isSecure = SecurityProvider.isSecureOf(context);
-
-    if (!isSecure) {
-      _manager.checkCurrentPlan(context);
-    }
 
     return SliverAppBar(
       backgroundColor: StackMoneyTheme.background,
@@ -34,24 +43,16 @@ class UserHeader extends StatelessWidget {
       floating: true,
       snap: true,
       leadingWidth: AppSizes.max,
-
-      // --- 1. User image
-      leading: _buildAvatar(context),
-
-      // --- 2. DISPLAY NAME ---
+      leading: _buildAvatar(context, isSecure),
       title: _buildName(context),
-
-      // --- 3. BOTOÕES DE COMANDO ---
       actions: [
-        _buildContributionAction(context),
-        _buildVisibilityAction(context),
+        _buildContributionAction(context, isSecure),
+        _buildVisibilityAction(context, isSecure),
       ],
     );
   }
 
-  Widget _buildAvatar(BuildContext context) {
-    final isSecure = SecurityProvider.isSecureOf(context);
-
+  Widget _buildAvatar(BuildContext context, bool isSecure) {
     final gradientColors = isSecure
         ? [StackMoneyTheme.background, StackMoneyTheme.magentaNeon]
         : [StackMoneyTheme.cyanNeon, StackMoneyTheme.background];
@@ -74,7 +75,9 @@ class UserHeader extends StatelessWidget {
             child: CircleAvatar(
               radius: AppSizes.x9,
               backgroundColor: StackMoneyTheme.surface,
-              backgroundImage: _manager.photoUrl != null ? NetworkImage(_manager.photoUrl!) : null,
+              backgroundImage: _manager.photoUrl != null
+                  ? NetworkImage(_manager.photoUrl!)
+                  : null,
               child: _manager.photoUrl == null
                   ? const Icon(
                       Icons.person,
@@ -98,17 +101,13 @@ class UserHeader extends StatelessWidget {
       child: Text(
         _manager.displayName(l10n),
         style: textTheme.titleLarge?.copyWith(
-          color: StackMoneyTheme.platinumSilver,
           letterSpacing: AppTypography.spacingSmall,
-          fontSize: AppTypography.fontTitleLarge,
         ),
       ),
     );
   }
 
-  Widget _buildContributionAction(BuildContext context) {
-    final isSecure = SecurityProvider.isSecureOf(context);
-
+  Widget _buildContributionAction(BuildContext context, bool isSecure) {
     if (isSecure) return const SizedBox.shrink();
 
     return IconButton(
@@ -117,9 +116,7 @@ class UserHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildVisibilityAction(BuildContext context) {
-    final isSecure = SecurityProvider.isSecureOf(context);
-
+  Widget _buildVisibilityAction(BuildContext context, bool isSecure) {
     return IconButton(
       icon: Icon(
         isSecure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
