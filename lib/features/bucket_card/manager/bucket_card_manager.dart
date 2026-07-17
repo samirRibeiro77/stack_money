@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_number.dart';
@@ -9,6 +10,9 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
+import 'package:stack_money/core/widgets/sm_snackbar.dart';
+import 'package:stack_money/data/enum/snack_bar_position.dart';
+import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
@@ -143,10 +147,11 @@ class BucketCardManager {
     final l10n = AppLocalizations.of(context)!;
 
     if (!_bucket.isDeletable) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Bucket still have values and can\'t be deleted'),
-        ),
+      SmSnackBar.show(
+        context,
+        message: 'Bucket still have values and can\'t be deleted. And if I place a bigger text here, what will happen?',
+        type: SnackBarType.info,
+        action: SnackBarAction(label: 'Undo', onPressed: (){print('Clicked');})
       );
       return false;
     }

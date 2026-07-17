@@ -49,4 +49,8 @@ class AppSizes {
   static const double stickyHudMinExtentMultiplier = 20;
   static const double stickyHudMaxExtent = 80;
   static const double stickyHudMaxExtentMultiplier = 30;
+
+  /// --- SnackBar ---
+  static const double snackBarTopPadding = 130;
+  static const double snackBarBottomPadding = 15;
 }
