@@ -9,13 +9,14 @@ import 'package:stack_money/features/contribution_sprint/contribution_sprint_scr
 
 class UserHeaderManager {
   final _planService = PlanManagementService();
-  final User? user = AuthService().currentUser;
+  final User? _user = AuthService().currentUser;
 
   bool _hasCheckedPlanInThisSession = false;
 
-  String displayName(AppLocalizations l10n) => user?.displayName ?? l10n.unknow;
+  String displayName(String? defaultName) =>
+      _user?.displayName ?? defaultName ?? 'Not Found';
 
-  String? get photoUrl => user?.photoURL;
+  String? get photoUrl => _user?.photoURL;
 
   void openConfigs() {
     SmLogger.debug('Open configs clicked', payload: {});
@@ -29,6 +30,14 @@ class UserHeaderManager {
 
   void checkCurrentPlan(BuildContext context, bool isSecure) {
     if (isSecure || _hasCheckedPlanInThisSession || !context.mounted) {
+      SmLogger.debug(
+        'Will not search for current plan to show the banner',
+        payload: {
+          'isSecure': isSecure,
+          'context': context.mounted,
+          'checkedThisSession': _hasCheckedPlanInThisSession,
+        },
+      );
       return;
     }
 

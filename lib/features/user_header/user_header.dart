@@ -99,7 +99,7 @@ class _UserHeaderState extends State<UserHeader> {
     return GestureDetector(
       onTap: _manager.openConfigs,
       child: Text(
-        _manager.displayName(l10n),
+        _manager.displayName(l10n.unknow),
         style: textTheme.titleLarge?.copyWith(
           letterSpacing: AppTypography.spacingSmall,
         ),

@@ -366,7 +366,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Caixinha tem \'VALOR_MINIMO\' preenchido, não pode ser deletada';
 
   @override
-  String get planMoneySprintDay => 'Planned day to update your money';
+  String get planMoneySprintDay => 'Dia planejado de atualizar seu dinheiro';
 
   @override
   String get start => 'Começar';
