@@ -44,31 +44,25 @@ class UserHeaderManager {
     _hasCheckedPlanInThisSession = true;
 
     _planService
-        .fetchActivated()
-        .then((plan) {
-          if (plan != null) {
-            final inflow = plan.inflows
-                .where((inflow) => inflow.day == DateTime.now().day)
-                .firstOrNull;
+        .isMoneySprintAvailableToday()
+        .then((result) {
+          if (context.mounted && result) {
+            final l10n = AppLocalizations.of(context)!;
 
-            if (inflow != null && context.mounted) {
-              final l10n = AppLocalizations.of(context)!;
-
-              SmSnackBar(
-                message: l10n.planMoneySprintDay,
-                duration: 10,
-                action: SnackBarAction(
-                  label: l10n.start,
-                  onPressed: () => startMoneySprint(context),
-                ),
-              ).show(context);
-            }
+            SmSnackBar(
+              message: l10n.planMoneySprintDay,
+              duration: 10,
+              action: SnackBarAction(
+                label: l10n.start,
+                onPressed: () => startMoneySprint(context),
+              ),
+            ).show(context);
           }
         })
         .catchError((e, stack) {
           _hasCheckedPlanInThisSession = false;
           SmLogger.error(
-            'Error fetching active plan',
+            'Error checking for available sprint',
             error: e,
             stackTrace: stack,
           );
