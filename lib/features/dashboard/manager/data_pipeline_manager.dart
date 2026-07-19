@@ -23,7 +23,7 @@ class DataPipelineManager {
       final List<dynamic> bucketsJson = data['buckets'];
       for (var bJson in bucketsJson) {
         // Instancia usando o construtor nativo (gera UUID automático no model)
-        final Bucket bucket = Bucket.fromJson(bJson as Map<String, dynamic>);
+        final Bucket bucket = Bucket.fromJson(bJson as Map<String, Object?>);
 
         final DocumentReference doc = bucketRef.doc(bucket.id);
         bucketBatch.set(doc, bucket.toJson());
