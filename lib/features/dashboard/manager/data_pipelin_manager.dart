@@ -10,7 +10,7 @@ class DataPipelineManager {
   Future<void> runSequentialAssetSeeder() async {
     try {
       // 1. Carrega e decodifica o arquivo do pipeline
-      final String jsonString = await rootBundle.loadString('assets/data/stack_money_backup.json');
+      final String jsonString = await rootBundle.loadString('assets/backup/stack_money_backup.json');
       final Map<String, dynamic> data = json.decode(jsonString);
 
       // -------------------------------------------------------------------
