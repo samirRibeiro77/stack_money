@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/domain/service/auth_service.dart';
+import 'package:stack_money/features/user_header/manager/user_header_manager.dart';
 
-// 🔥 NOVO IMPORT: Aponta diretamente para a nossa esteira de aportes sequenciais
-import 'package:stack_money/features/contribution_sprint/contribution_sprint_screen.dart';
-
-class UserHeader extends StatelessWidget {
+class UserHeader extends StatefulWidget {
   const UserHeader({super.key});
 
-  void _openConfig() {
-    print('Open config page');
+  @override
+  State<UserHeader> createState() => _UserHeaderState();
+}
+
+class _UserHeaderState extends State<UserHeader> {
+  late final UserHeaderManager _manager;
+
+  @override
+  void initState() {
+    super.initState();
+    _manager = UserHeaderManager();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final isSecure = SecurityProvider.isSecureOf(context);
+    _manager.checkCurrentPlan(context, isSecure);
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final textTheme = Theme.of(context).textTheme;
-
-    final User? user = AuthService().currentUser;
-    final String displayName = user?.displayName ?? l10n.unknow;
-    final String? photoUrl = user?.photoURL;
+    final isSecure = SecurityProvider.isSecureOf(context);
 
     return SliverAppBar(
       backgroundColor: StackMoneyTheme.background,
@@ -35,30 +43,22 @@ class UserHeader extends StatelessWidget {
       floating: true,
       snap: true,
       leadingWidth: AppSizes.max,
-
-      // --- 1. User image
-      leading: _buildAvatar(photoUrl, context),
-
-      // --- 2. DISPLAY NAME ---
-      title: _buildName(displayName, textTheme),
-
-      // --- 3. BOTOÕES DE COMANDO ---
+      leading: _buildAvatar(context, isSecure),
+      title: _buildName(context),
       actions: [
-        _buildContributionAction(context),
-        _buildVisibilityAction(context),
+        _buildContributionAction(context, isSecure),
+        _buildVisibilityAction(context, isSecure),
       ],
     );
   }
 
-  Widget _buildAvatar(String? photoUrl, BuildContext context) {
-    final isSecure = SecurityProvider.isSecureOf(context);
-
+  Widget _buildAvatar(BuildContext context, bool isSecure) {
     final gradientColors = isSecure
         ? [StackMoneyTheme.background, StackMoneyTheme.magentaNeon]
         : [StackMoneyTheme.cyanNeon, StackMoneyTheme.background];
 
     return GestureDetector(
-      onTap: _openConfig,
+      onTap: _manager.openConfigs,
       child: Padding(
         padding: const EdgeInsets.only(left: AppSizes.x8),
         child: Center(
@@ -75,8 +75,10 @@ class UserHeader extends StatelessWidget {
             child: CircleAvatar(
               radius: AppSizes.x9,
               backgroundColor: StackMoneyTheme.surface,
-              backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-              child: photoUrl == null
+              backgroundImage: _manager.photoUrl != null
+                  ? NetworkImage(_manager.photoUrl!)
+                  : null,
+              child: _manager.photoUrl == null
                   ? const Icon(
                       Icons.person,
                       color: StackMoneyTheme.platinumSilver,
@@ -90,38 +92,31 @@ class UserHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildName(String displayName, TextTheme textTheme) {
+  Widget _buildName(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
+
     return GestureDetector(
-      onTap: _openConfig,
+      onTap: _manager.openConfigs,
       child: Text(
-        displayName,
+        _manager.displayName(l10n.unknow),
         style: textTheme.titleLarge?.copyWith(
-          color: StackMoneyTheme.platinumSilver,
           letterSpacing: AppTypography.spacingSmall,
-          fontSize: AppTypography.fontTitleLarge,
         ),
       ),
     );
   }
 
-  Widget _buildContributionAction(BuildContext context) {
-    final isSecure = SecurityProvider.isSecureOf(context);
-
+  Widget _buildContributionAction(BuildContext context, bool isSecure) {
     if (isSecure) return const SizedBox.shrink();
 
     return IconButton(
       icon: const Icon(Icons.add_rounded, color: StackMoneyTheme.cyanNeon),
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const ContributionSprintScreen()),
-        );
-      },
+      onPressed: () => _manager.startMoneySprint(context),
     );
   }
 
-  Widget _buildVisibilityAction(BuildContext context) {
-    final isSecure = SecurityProvider.isSecureOf(context);
-
+  Widget _buildVisibilityAction(BuildContext context, bool isSecure) {
     return IconButton(
       icon: Icon(
         isSecure ? Icons.visibility_off_outlined : Icons.visibility_outlined,

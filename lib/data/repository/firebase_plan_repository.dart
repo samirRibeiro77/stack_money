@@ -12,9 +12,9 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       getUserDoc().collection(FirebaseKey.salaryPlans);
 
   Future<List<SalaryPlan>> fetchAllPlans() async {
-    try {
-      SmLogger.debug('Fetching salary profiling roster...', payload: {});
+    SmLogger.debug('Fetching salary profiling roster...', payload: {});
 
+    try {
       final snapshot = await _collection
           .orderBy(ModelKey.createdAt, descending: true)
           .get();
@@ -35,13 +35,38 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     }
   }
 
-  Future<void> savePlan(SalaryPlan plan) async {
-    try {
-      SmLogger.debug(
-        'Opening synchronization transaction',
-        payload: plan.toJson(),
-      );
+  Future<SalaryPlan?> fetchActivatedPlan() async {
+    SmLogger.debug('Fetching current activated salary plan...', payload: {});
 
+    try {
+      final snapshot = await _collection
+          .where(ModelKey.isActive, isEqualTo: true)
+          .limit(1)
+          .get();
+
+      SmLogger.info('Found ${snapshot.docs.length} activated plan(s).');
+
+      final plan = snapshot.docs.firstOrNull;
+      if (plan == null) return null;
+
+      return SalaryPlan.fromJson(plan.data());
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Error searching the current activated plan',
+        scope: ExceptionScope.database,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
+    }
+  }
+
+  Future<void> savePlan(SalaryPlan plan) async {
+    SmLogger.debug(
+      'Opening synchronization transaction',
+      payload: plan.toJson(),
+    );
+
+    try {
       await _collection
           .doc(plan.id)
           .set(plan.toJson(), SetOptions(merge: true));
@@ -58,11 +83,12 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   }
 
   Future<void> activatePlan(String targetPlanId) async {
+    SmLogger.debug(
+      'Activating profile and flattening parallel profiles...',
+      payload: {'planId': targetPlanId},
+    );
+
     try {
-      SmLogger.debug(
-        'Activating profile and flattening parallel profiles...',
-        payload: {'planId': targetPlanId},
-      );
       final batch = firestore.batch();
       final querySnapshot = await _collection.get();
 
@@ -89,11 +115,9 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   }
 
   Future<void> deactivatePlan(String targetPlanId) async {
+    SmLogger.debug('Toggling plan to inactive', payload: {'id': targetPlanId});
+
     try {
-      SmLogger.debug(
-        'Toggling plan to inactive',
-        payload: {'id': targetPlanId},
-      );
       await _collection.doc(targetPlanId).update({ModelKey.isActive: false});
       SmLogger.warning('Profile configuration status update completed.');
     } catch (e, stack) {
@@ -107,11 +131,12 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   }
 
   Future<void> updateArchiveStatus(String id, bool isArchived) async {
+    SmLogger.debug(
+      'Flipping logical archive flag',
+      payload: {'planId': id, 'isArchived': isArchived},
+    );
+
     try {
-      SmLogger.debug(
-        'Flipping logical archive flag',
-        payload: {'planId': id, 'isArchived': isArchived},
-      );
       final updates = <String, Object?>{ModelKey.isArchived: isArchived};
 
       if (isArchived) {
@@ -131,11 +156,12 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   }
 
   Future<void> purgePlan(String id) async {
+    SmLogger.debug(
+      'Initializing terminal deletion sequence',
+      payload: {'id': id},
+    );
+
     try {
-      SmLogger.debug(
-        'Initializing terminal deletion sequence',
-        payload: {'id': id},
-      );
       await _collection.doc(id).delete();
       SmLogger.warning('Document swept out from system infrastructure core.');
     } catch (e, stack) {

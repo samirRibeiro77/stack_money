@@ -1,6 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/nav_bar_tabs.dart';
+import 'package:stack_money/data/enum/snack_bar_position.dart';
+import 'package:stack_money/data/enum/snack_bar_type.dart';
+import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/buckets/buckets_screen.dart';
 import 'package:stack_money/features/dashboard/dashboard_screen.dart';
 import 'package:stack_money/features/history/history_screen.dart';
@@ -8,24 +13,18 @@ import 'package:stack_money/features/plans/plans_screen.dart';
 
 class MainNavigationManager {
   final _tabIndex = ValueNotifier<NavBarTabs>(NavBarTabs.hud);
-  final _securityMode = ValueNotifier<bool>(false);
   final _scrollController = ScrollController();
 
   ValueListenable<NavBarTabs> get currentTab => _tabIndex;
-
-  ValueListenable<bool> get securityMode => _securityMode;
 
   ScrollController get scrollController => _scrollController;
 
   void dispose() {
     _tabIndex.dispose();
-    _securityMode.dispose();
     _scrollController.dispose();
   }
 
   void addTabListener(VoidCallback f) => _tabIndex.addListener(f);
-
-  void switchSecurityMode() => _securityMode.value = !_securityMode.value;
 
   void changeTab(NavBarTabs tab) => _tabIndex.value = tab;
 

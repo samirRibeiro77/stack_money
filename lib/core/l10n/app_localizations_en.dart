@@ -364,4 +364,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get failDeleteBucketWithValue =>
       'Bucket has \'MIN_VALUE\' filled, can\'t be deleted';
+
+  @override
+  String get planMoneySprintDay => 'Planned day to update your money';
+
+  @override
+  String get start => 'Start';
 }

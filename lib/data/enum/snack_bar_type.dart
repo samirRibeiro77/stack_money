@@ -10,7 +10,7 @@ enum SnackBarType {
   Color get color => switch (this) {
     SnackBarType.success => StackMoneyTheme.cyanNeon,
     SnackBarType.error => StackMoneyTheme.magentaNeon,
-    SnackBarType.info => StackMoneyTheme.platinumSilver,
+    SnackBarType.info => StackMoneyTheme.cyanNeon,
   };
 
   IconData get icon => switch (this) {

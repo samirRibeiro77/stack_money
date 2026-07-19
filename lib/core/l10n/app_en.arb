@@ -435,5 +435,13 @@
   "failDeleteBucketWithValue": "Bucket has 'MIN_VALUE' filled, can't be deleted",
   "@failDeleteBucketWithValue": {
     "description": "SnackBar message when failed to delete bucket with MIN_VALUE filled."
+  },
+  "planMoneySprintDay": "Planned day to update your money",
+  "@planMoneySprintDay": {
+    "description": "SnackBar message when is the day selected by the user to update it's money values."
+  },
+  "start": "Start",
+  "@start": {
+    "description": "SnackBar action to start the money sprint."
   }
 }
