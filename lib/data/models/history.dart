@@ -22,11 +22,12 @@ class History {
   factory History.withValues({
     List<Transaction>? transactions,
     double? total,
+    Timestamp? date,
     double? immediateLiquidityTotal,
   }) {
     return History._(
       const Uuid().v4(),
-      date: Timestamp.now(),
+      date: date ?? Timestamp.now(),
       transactions: transactions ?? [],
       total: total ?? 0,
       immediateLiquidityTotal: immediateLiquidityTotal ?? 0,

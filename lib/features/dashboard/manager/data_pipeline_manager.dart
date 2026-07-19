@@ -1,29 +1,39 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
+import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/models/bucket.dart';
+import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/models/transaction.dart';
 
 class DataPipelineManager {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> runSequentialAssetSeeder() async {
+    SmLogger.info('-- Init backup upload --');
     try {
       // 1. Carrega e decodifica o arquivo do pipeline
-      final String jsonString = await rootBundle.loadString('assets/backup/stack_money_backup.json');
+      final String jsonString = await rootBundle.loadString(
+        'assets/backup/stack_money_backup.json',
+      );
       final Map<String, dynamic> data = json.decode(jsonString);
+      final user = FirebaseAuth.instance.currentUser;
+      final firebaseRef = _firestore.collection(FirebaseKey.users).doc(user?.uid);
 
       // -------------------------------------------------------------------
       // BATCH 1: CRIAÇÃO DOS BUCKETS & FILTRAGEM DE MAPA
       // -------------------------------------------------------------------
       final WriteBatch bucketBatch = _firestore.batch();
-      final CollectionReference bucketRef = _firestore.collection('buckets');
+      final CollectionReference bucketRef = firebaseRef.collection(FirebaseKey.buckets);
       final Map<String, String> resolvedBucketMap = {};
 
       final List<dynamic> bucketsJson = data['buckets'];
       for (var bJson in bucketsJson) {
         // Instancia usando o construtor nativo (gera UUID automático no model)
-        final Bucket bucket = Bucket.fromJson(bJson as Map<String, Object?>);
+        final bucketJson = Bucket.fromJson(bJson as Map<String, Object?>);
+        final bucket = bucketJson.copyWith(newId: true);
 
         final DocumentReference doc = bucketRef.doc(bucket.id);
         bucketBatch.set(doc, bucket.toJson());
@@ -35,13 +45,16 @@ class DataPipelineManager {
 
       // Commita a primeira fase obrigatoriamente
       await bucketBatch.commit();
-      print("🚀 [PIPELINE] Lote 1/2: Todos os Buckets populados com sucesso!");
+      SmLogger.debug(
+        '🚀 [PIPELINE] Lote 1/2: Todos os Buckets populados com sucesso!',
+        payload: {'buckets': resolvedBucketMap.length},
+      );
 
       // -------------------------------------------------------------------
       // BATCH 2: RESOLUÇÃO DE SNAPSHOTS E GRAVAÇÃO DO HISTÓRICO
       // -------------------------------------------------------------------
       final WriteBatch historyBatch = _firestore.batch();
-      final CollectionReference historyRef = _firestore.collection('history');
+      final CollectionReference historyRef = firebaseRef.collection(FirebaseKey.history);
 
       final List<dynamic> historyJson = data['history'];
       for (var hJson in historyJson) {
@@ -61,29 +74,38 @@ class DataPipelineManager {
         }).toList();
 
         // Converte os milissegundos brutos para o Timestamp do Firestore
-        final Timestamp firestoreTimestamp = Timestamp.fromMillisecondsSinceEpoch(hJson['date'] as int);
+        final Timestamp firestoreTimestamp =
+            Timestamp.fromMillisecondsSinceEpoch(hJson['date'] as int);
 
         final DocumentReference doc = historyRef.doc();
 
         // Monta o payload respeitando a assinatura do History.fromJson
-        final Map<String, dynamic> historyPayload = {
-          'id': doc.id,
-          'date': firestoreTimestamp,
-          'transactions': mappedTransactions.map((t) => t.toJson()).toList(),
-          'total': (hJson['total'] as num).toDouble(),
-          'immediateLiquidityTotal': (hJson['immediateLiquidityTotal'] as num).toDouble(),
-        };
+        final historyPayload = History.withValues(
+          transactions: mappedTransactions,
+          total: (hJson['total'] as num).toDouble(),
+          immediateLiquidityTotal: (hJson['immediateLiquidityTotal'] as num)
+              .toDouble(),
+          date: firestoreTimestamp
+        );
 
-        historyBatch.set(doc, historyPayload);
+        historyBatch.set(doc, historyPayload.toJson());
       }
 
       // Commita o histórico completo amarrado
       await historyBatch.commit();
-      print("🔥 [PIPELINE] Lote 2/2: Historial financeiro injetado sem quebras de integridade!");
-
-    } catch (e) {
-      print("❌ [PIPELINE ERROR]: Falha catastrófica na execução sequencial: $e");
+      SmLogger.debug(
+        '🔥 [PIPELINE] Lote 2/2: Historial financeiro injetado sem quebras de integridade!',
+        payload: {'history': historyJson.length},
+      );
+    } catch (e, stack) {
+      SmLogger.error(
+        '❌ [PIPELINE ERROR]: Falha catastrófica na execução sequencial',
+        error: e,
+        stackTrace: stack,
+      );
       rethrow;
     }
+
+    SmLogger.info('-- Finished backup upload --');
   }
 }
