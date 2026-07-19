@@ -84,7 +84,7 @@ class SmSnackBar {
                     ),
                     child: Text(
                       '[ ${StackMoneyString.formatTitle(_action.label)} ]',
-                      style: textTheme.bodySmall?.copyWith(
+                      style: textTheme.labelSmall?.copyWith(
                         color: _type.color,
                         fontWeight: AppTypography.weightBold,
                         letterSpacing: AppTypography.spacingSmall,
