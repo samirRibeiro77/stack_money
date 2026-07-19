@@ -40,24 +40,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    return ValueListenableBuilder<bool>(
-      valueListenable: _manager.isLoading,
-      builder: (_, isLoading, _) {
-        if (isLoading) {
-          return _buildLoadingState();
-        }
-
-        return ValueListenableBuilder<bool>(
-          valueListenable: _manager.hasError,
-          builder: (_, hasError, _) {
-            if (hasError || _manager.historyTimeline.isEmpty) {
-              return _buildErrorState(l10n, textTheme);
+    return Column(
+      children: [
+        GlassmorphicDevOverlay(
+          onTriggerPipeline: () =>
+              DataPipelineManager().runSequentialAssetSeeder(),
+        ),
+        const SizedBox(height: AppSizes.x10),
+        ValueListenableBuilder<bool>(
+          valueListenable: _manager.isLoading,
+          builder: (_, isLoading, _) {
+            if (isLoading) {
+              return _buildLoadingState();
             }
 
-            return _buildBodyContent(l10n);
+            return ValueListenableBuilder<bool>(
+              valueListenable: _manager.hasError,
+              builder: (_, hasError, _) {
+                if (hasError || _manager.historyTimeline.isEmpty) {
+                  return _buildErrorState(l10n, textTheme);
+                }
+
+                return _buildBodyContent(l10n);
+              },
+            );
           },
-        );
-      },
+        )
+      ],
     );
   }
 
@@ -119,10 +128,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            GlassmorphicDevOverlay(
-              onTriggerPipeline: () =>
-                  DataPipelineManager().runSequentialAssetSeeder(),
-            ),
             PatrimonialHud(
               totalAmount: latestAudit.total,
               liquidityAmount: latestAudit.immediateLiquidityTotal,
