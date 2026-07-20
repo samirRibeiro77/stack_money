@@ -1,12 +1,8 @@
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
-import 'package:stack_money/data/helper/firebase_key.dart';
-import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/models/transaction.dart';

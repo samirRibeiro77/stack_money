@@ -9,8 +9,7 @@ import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/core/widgets/sm_gravity_swop_list.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/features/dashboard/manager/dashboard_manager.dart';
-import 'package:stack_money/features/dashboard/manager/data_pipeline_manager.dart';
-import 'package:stack_money/features/dashboard/widgets/dashboard_sort_bottom_sheet.dart'; // 🔥 Novo Import
+import 'package:stack_money/features/dashboard/widgets/dashboard_sort_bottom_sheet.dart';
 import 'package:stack_money/features/dashboard/widgets/dashboard_bucket_card.dart';
 import 'package:stack_money/features/dashboard/widgets/dev_overlay.dart';
 import 'package:stack_money/features/dashboard/widgets/patrimonial_hud.dart';
