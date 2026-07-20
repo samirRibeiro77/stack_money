@@ -12,7 +12,7 @@ import 'package:stack_money/features/dashboard/manager/dashboard_manager.dart';
 import 'package:stack_money/features/dashboard/manager/data_pipeline_manager.dart';
 import 'package:stack_money/features/dashboard/widgets/dashboard_sort_bottom_sheet.dart'; // 🔥 Novo Import
 import 'package:stack_money/features/dashboard/widgets/dashboard_bucket_card.dart';
-import 'package:stack_money/features/dashboard/widgets/glassmorphic_dev_overlay.dart';
+import 'package:stack_money/features/dashboard/widgets/dev_overlay.dart';
 import 'package:stack_money/features/dashboard/widgets/patrimonial_hud.dart';
 import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart';
 import 'package:stack_money/features/dashboard/widgets/telemetry_line_chart.dart';
@@ -42,10 +42,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Column(
       children: [
-        GlassmorphicDevOverlay(
-          onTriggerPipeline: () =>
-              DataPipelineManager().runSequentialAssetSeeder(),
-        ),
+        DevOverlay(),
         const SizedBox(height: AppSizes.x10),
         ValueListenableBuilder<bool>(
           valueListenable: _manager.isLoading,

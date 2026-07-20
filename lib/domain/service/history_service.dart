@@ -13,4 +13,8 @@ class HistoryManagementService {
   Future<List<Transaction>> fetchLastSprintValues() async {
     return await _repository.fetchLastSprintValues();
   }
+
+  Future<void> save(History history) async {
+    return await _repository.save(history);
+  }
 }

@@ -62,4 +62,34 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
       );
     }
   }
+
+  Future<void> save(History history) async {
+    try {
+      SmLogger.debug('Initializing save', payload: history.toJson());
+
+      _collection
+          .doc(history.id)
+          .set(history.toJson(), SetOptions(merge: true))
+          .then((_) {
+            SmLogger.info(
+              'Document synced in background: ${history.id} (${history.date})',
+            );
+          })
+          .catchError((e, stack) {
+            StackMoneyException(
+              message: 'Background sync failed',
+              scope: ExceptionScope.database,
+              payload: {'exception': e, 'history': history.toJson()},
+              stackTrace: stack,
+            );
+          });
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Critical error pre-saving',
+        scope: ExceptionScope.database,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
+    }
+  }
 }

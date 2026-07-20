@@ -27,7 +27,7 @@ class History {
   }) {
     return History._(
       const Uuid().v4(),
-      date: date ?? Timestamp.now(),
+      date: _parseTimestamp(date),
       transactions: transactions ?? [],
       total: total ?? 0,
       immediateLiquidityTotal: immediateLiquidityTotal ?? 0,
@@ -37,7 +37,7 @@ class History {
   factory History.fromJson(Map<String, Object?>? json, {String? documentId}) {
     return History._(
       documentId ?? json?[ModelKey.id] as String? ?? '',
-      date: json?[ModelKey.date] as Timestamp? ?? Timestamp.now(),
+      date: _parseTimestamp(json?[ModelKey.date]),
       transactions:
           json?.decodeList(ModelKey.transactions, Transaction.fromJson) ?? [],
       total: (json?[ModelKey.total] as num?)?.toDouble() ?? 0,
@@ -57,4 +57,20 @@ class History {
   }
 
   String get id => _id;
+
+  static Timestamp _parseTimestamp(Object? date) {
+    if (date == null) {
+      return Timestamp.now();
+    }
+
+    if (date is int) {
+      return Timestamp.fromMillisecondsSinceEpoch(date);
+    }
+
+    if (date is DateTime) {
+      return Timestamp.fromDate(date);
+    }
+
+    return date as Timestamp;
+  }
 }
