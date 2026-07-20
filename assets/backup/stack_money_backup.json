@@ -481,5 +481,454 @@
       "total": 234394.07,
       "immediateLiquidityTotal": 2912.42
     }
+  ],
+  "plans": [
+    {
+      "isActive": true,
+      "inflows": [
+        {
+          "id": "3bd3cbb5-1bbf-4aa3-92e4-376dc3febcb3",
+          "type": "percentageBase",
+          "day": 5,
+          "value": 60.0
+        },
+        {
+          "id": "8c9aa77a-ec40-4f41-8277-d615db9b163d",
+          "type": "percentageBase",
+          "day": 20,
+          "value": 40.0
+        },
+        {
+          "id": "55858a42-5b3b-4b50-8547-a3c68a289ef2",
+          "type": "fixed",
+          "value": 150.0,
+          "day": 5
+        }
+      ],
+      "baseSalary": 13348.0,
+      "isArchived": false,
+      "name": "CI&T untill Sep",
+      "createdAt": "2026-06-19T12:18:16.055399",
+      "outflows": [
+        {
+          "name": "Gympass",
+          "id": "988eac50-0f0a-41ab-8bea-1dc44e594c92",
+          "targetDay": 5,
+          "type": "fixed",
+          "value": 183.3
+        },
+        {
+          "name": "IR",
+          "targetDay": 5,
+          "id": "a28e14da-f891-4406-90db-cd23f9deea28",
+          "type": "percentageGross",
+          "value": 12.52598
+        },
+        {
+          "name": "INSS",
+          "targetDay": 5,
+          "id": "93d164de-0141-45db-aaa8-cde1bcba1487",
+          "type": "fixed",
+          "value": 988.07
+        },
+        {
+          "name": "IR",
+          "id": "82df5ee7-54d8-402a-84ed-3e259ba23aa5",
+          "targetDay": 20,
+          "type": "percentageGross",
+          "value": 27.5
+        }
+      ],
+      "id": "bc98320c-9876-4a08-b297-861ff7917ae7",
+      "position": 1,
+      "distributions": [
+        {
+          "subCategory": "Card",
+          "id": "f66241de-be13-4dcf-89e9-0b10aeaa70ed",
+          "targetDay": 5,
+          "category": "Credit",
+          "type": "percentageNet",
+          "value": 76.0
+        },
+        {
+          "subCategory": "Internet",
+          "id": "3c3ce753-900e-4c7a-af83-0391bfc101d6",
+          "targetDay": 5,
+          "category": "Bill",
+          "type": "fixed",
+          "value": 179.89
+        },
+        {
+          "subCategory": "Eletricity",
+          "id": "bf0d29b7-a1ba-46a1-8b30-1648315d9278",
+          "targetDay": 5,
+          "category": "Bill",
+          "type": "fixed",
+          "value": 450.0
+        },
+        {
+          "subCategory": "Fund",
+          "targetDay": 5,
+          "id": "40990c68-311d-4f6d-8f61-7b0bd49ff816",
+          "type": "fixed",
+          "category": "Car",
+          "value": 500.0
+        },
+        {
+          "subCategory": "RF",
+          "id": "15b6bf65-b7b6-4640-aca4-9515841b4ed4",
+          "targetDay": 5,
+          "category": "IR",
+          "type": "fixed",
+          "value": 209.04
+        },
+        {
+          "subCategory": "NuCaixa",
+          "id": "739d80a0-f5ff-46d4-9b3e-b5f1b221d851",
+          "targetDay": 20,
+          "category": "Safety",
+          "type": "fixed",
+          "value": 1500.0
+        },
+        {
+          "subCategory": "Consortium",
+          "targetDay": 20,
+          "id": "7f8ec222-4348-4996-83de-42f4e57ce782",
+          "type": "fixed",
+          "category": "Car",
+          "value": 1849.79
+        },
+        {
+          "subCategory": "Travel",
+          "id": "310aa17d-6a50-4b79-906e-b809a717f813",
+          "targetDay": 20,
+          "category": "Off",
+          "type": "percentageNet",
+          "value": 13.0
+        }
+      ]
+    },
+    {
+      "inflows": [
+        {
+          "id": null,
+          "type": "fixed",
+          "value": 3900.0,
+          "day": 4
+        },
+        {
+          "id": "dda5edef-2a94-4c43-afca-8e045dca4449",
+          "type": "fixed",
+          "day": 6,
+          "value": 6000.0
+        }
+      ],
+      "baseSalary": 0.0,
+      "isActive": false,
+      "isArchived": false,
+      "name": "PLR 13º 2026",
+      "createdAt": "2026-06-12T00:02:58.036293",
+      "outflows": [],
+      "position": 1,
+      "id": "f626177e-f148-4732-9ddd-12ae7430d4f1",
+      "distributions": [
+        {
+          "subCategory": "Compass 4x4",
+          "targetDay": 4,
+          "id": "39d9b0f6-ca2a-49c8-b2e0-eb3fc3c63912",
+          "type": "percentageNet",
+          "category": "Car",
+          "value": 17.0
+        },
+        {
+          "subCategory": "USA",
+          "id": "d61c1917-feef-4309-aa1d-0f7c9c3e86ab",
+          "targetDay": 4,
+          "category": "Travel",
+          "type": "percentageNet",
+          "value": 70.0
+        },
+        {
+          "subCategory": "Nomad",
+          "id": "538674d3-ef3f-4afb-95b3-ddc7c0c44797",
+          "targetDay": 4,
+          "category": "Travel",
+          "type": "percentageNet",
+          "value": 13.0
+        },
+        {
+          "subCategory": "Nubank",
+          "id": "ded61c3f-f158-4bff-aa70-06ff1b49ad02",
+          "targetDay": 6,
+          "category": "Safety",
+          "type": "percentageNet",
+          "value": 82.0
+        },
+        {
+          "subCategory": "Compass 4x4",
+          "targetDay": 6,
+          "id": "c579baa9-58cb-48f5-9349-fe8b73646135",
+          "type": "percentageNet",
+          "category": "Car",
+          "value": 18.0
+        }
+      ]
+    },
+    {
+      "isActive": false,
+      "inflows": [
+        {
+          "id": "3bd3cbb5-1bbf-4aa3-92e4-376dc3febcb3",
+          "type": "percentageBase",
+          "value": 60.0,
+          "day": 5
+        },
+        {
+          "id": "8c9aa77a-ec40-4f41-8277-d615db9b163d",
+          "type": "percentageBase",
+          "value": 40.0,
+          "day": 20
+        },
+        {
+          "id": "55858a42-5b3b-4b50-8547-a3c68a289ef2",
+          "type": "fixed",
+          "value": 150.0,
+          "day": 5
+        }
+      ],
+      "baseSalary": 13348.0,
+      "isArchived": true,
+      "name": "CI&T 2027",
+      "createdAt": "2026-06-27T18:46:35.992500",
+      "outflows": [
+        {
+          "name": "Gympass",
+          "id": "988eac50-0f0a-41ab-8bea-1dc44e594c92",
+          "targetDay": 5,
+          "type": "fixed",
+          "value": 183.3
+        },
+        {
+          "name": "IR",
+          "id": "a28e14da-f891-4406-90db-cd23f9deea28",
+          "targetDay": 5,
+          "type": "percentageGross",
+          "value": 12.52598
+        },
+        {
+          "name": "INSS",
+          "targetDay": 5,
+          "id": "93d164de-0141-45db-aaa8-cde1bcba1487",
+          "type": "fixed",
+          "value": 988.07
+        },
+        {
+          "name": "IR",
+          "id": "82df5ee7-54d8-402a-84ed-3e259ba23aa5",
+          "targetDay": 20,
+          "type": "percentageGross",
+          "value": 27.5
+        }
+      ],
+      "id": "f959b251-a752-4e39-84d3-cdcce473076d",
+      "position": 3,
+      "distributions": [
+        {
+          "subCategory": "Card",
+          "targetDay": 5,
+          "id": "f66241de-be13-4dcf-89e9-0b10aeaa70ed",
+          "type": "percentageNet",
+          "category": "Credit",
+          "value": 75.0
+        },
+        {
+          "subCategory": "Internet",
+          "targetDay": 5,
+          "id": "3c3ce753-900e-4c7a-af83-0391bfc101d6",
+          "type": "fixed",
+          "category": "Bill",
+          "value": 159.85
+        },
+        {
+          "subCategory": "Eletricity",
+          "id": "bf0d29b7-a1ba-46a1-8b30-1648315d9278",
+          "targetDay": 5,
+          "category": "Bill",
+          "type": "fixed",
+          "value": 400.0
+        },
+        {
+          "subCategory": "Insurance",
+          "id": "f2dee83d-dc27-4608-9a4a-9b3e9731a7b0",
+          "type": "fixed",
+          "category": "Bill",
+          "value": 475.0
+        },
+        {
+          "subCategory": "Fund",
+          "id": "15b6bf65-b7b6-4640-aca4-9515841b4ed4",
+          "targetDay": 5,
+          "category": "Car",
+          "type": "fixed",
+          "value": 300.0
+        },
+        {
+          "subCategory": "XP",
+          "targetDay": 20,
+          "id": "739d80a0-f5ff-46d4-9b3e-b5f1b221d851",
+          "type": "percentageGross",
+          "category": "Investment",
+          "value": 8.5
+        },
+        {
+          "subCategory": "Consortium",
+          "id": "7f8ec222-4348-4996-83de-42f4e57ce782",
+          "targetDay": 20,
+          "category": "Car",
+          "value": 1513.64
+        },
+        {
+          "subCategory": "Travel",
+          "id": "310aa17d-6a50-4b79-906e-b809a717f813",
+          "targetDay": 20,
+          "category": "Off",
+          "type": "percentageNet",
+          "value": 26.0
+        }
+      ]
+    },
+    {
+      "baseSalary": 13348.0,
+      "inflows": [
+        {
+          "id": "3bd3cbb5-1bbf-4aa3-92e4-376dc3febcb3",
+          "type": "percentageBase",
+          "day": 5,
+          "value": 60.0
+        },
+        {
+          "id": "8c9aa77a-ec40-4f41-8277-d615db9b163d",
+          "type": "percentageBase",
+          "value": 40.0,
+          "day": 20
+        },
+        {
+          "id": "55858a42-5b3b-4b50-8547-a3c68a289ef2",
+          "type": "fixed",
+          "value": 150.0,
+          "day": 5
+        }
+      ],
+      "isActive": false,
+      "isArchived": false,
+      "name": "CI&T untill Dec",
+      "createdAt": "2026-06-27T18:35:09.621024",
+      "outflows": [
+        {
+          "name": "Gympass",
+          "targetDay": 5,
+          "id": "988eac50-0f0a-41ab-8bea-1dc44e594c92",
+          "type": "fixed",
+          "value": 183.3
+        },
+        {
+          "name": "IR",
+          "id": "a28e14da-f891-4406-90db-cd23f9deea28",
+          "targetDay": 5,
+          "type": "percentageGross",
+          "value": 12.52598
+        },
+        {
+          "name": "INSS",
+          "targetDay": 5,
+          "id": "93d164de-0141-45db-aaa8-cde1bcba1487",
+          "type": "fixed",
+          "value": 988.07
+        },
+        {
+          "name": "IR",
+          "id": "82df5ee7-54d8-402a-84ed-3e259ba23aa5",
+          "targetDay": 20,
+          "type": "percentageGross",
+          "value": 27.5
+        }
+      ],
+      "position": 2,
+      "id": "ff04dd3c-5edb-48f6-93ab-d7d47bdfb035",
+      "distributions": [
+        {
+          "subCategory": "Card",
+          "id": "f66241de-be13-4dcf-89e9-0b10aeaa70ed",
+          "targetDay": 5,
+          "category": "Credit",
+          "type": "percentageNet",
+          "value": 75.0
+        },
+        {
+          "subCategory": "Internet",
+          "id": "3c3ce753-900e-4c7a-af83-0391bfc101d6",
+          "targetDay": 5,
+          "category": "Bill",
+          "type": "fixed",
+          "value": 159.85
+        },
+        {
+          "subCategory": "Eletricity",
+          "targetDay": 5,
+          "id": "bf0d29b7-a1ba-46a1-8b30-1648315d9278",
+          "type": "fixed",
+          "category": "Bill",
+          "value": 400.0
+        },
+        {
+          "subCategory": "Insurance",
+          "targetDay": 5,
+          "id": "f2dee83d-dc27-4608-9a4a-9b3e9731a7b0",
+          "type": "fixed",
+          "category": "Bill",
+          "value": 475.0
+        },
+        {
+          "subCategory": "RF",
+          "id": "15b6bf65-b7b6-4640-aca4-9515841b4ed4",
+          "targetDay": 5,
+          "category": "IR",
+          "type": "fixed",
+          "value": 209.04
+        },
+        {
+          "subCategory": "XP",
+          "id": "739d80a0-f5ff-46d4-9b3e-b5f1b221d851",
+          "targetDay": 20,
+          "category": "Investment",
+          "type": "percentageGross",
+          "value": 8.5
+        },
+        {
+          "subCategory": "Consortium",
+          "targetDay": 20,
+          "id": "7f8ec222-4348-4996-83de-42f4e57ce782",
+          "type": "fixed",
+          "category": "Car",
+          "value": 1513.64
+        },
+        {
+          "subCategory": "Travel",
+          "targetDay": 20,
+          "id": "310aa17d-6a50-4b79-906e-b809a717f813",
+          "type": "percentageNet",
+          "category": "Off",
+          "value": 21.0
+        },
+        {
+          "subCategory": "Fund",
+          "targetDay": 20,
+          "id": "829ee4c6-c3c6-4405-9c05-438a9eaaf88f",
+          "type": "fixed",
+          "category": "Car",
+          "value": 300.0
+        }
+      ]
+    }
   ]
 }

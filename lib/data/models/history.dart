@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:stack_money/core/extension/map_extension.dart';
+import 'package:stack_money/core/extension/timestamp_extension.dart';
 import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/transaction.dart';
 import 'package:uuid/uuid.dart';
@@ -27,7 +28,7 @@ class History {
   }) {
     return History._(
       const Uuid().v4(),
-      date: _parseTimestamp(date),
+      date: TimestampExtension.parse(date),
       transactions: transactions ?? [],
       total: total ?? 0,
       immediateLiquidityTotal: immediateLiquidityTotal ?? 0,
@@ -37,7 +38,7 @@ class History {
   factory History.fromJson(Map<String, Object?>? json, {String? documentId}) {
     return History._(
       documentId ?? json?[ModelKey.id] as String? ?? '',
-      date: _parseTimestamp(json?[ModelKey.date]),
+      date: TimestampExtension.parse(json?[ModelKey.date]),
       transactions:
           json?.decodeList(ModelKey.transactions, Transaction.fromJson) ?? [],
       total: (json?[ModelKey.total] as num?)?.toDouble() ?? 0,
@@ -57,20 +58,4 @@ class History {
   }
 
   String get id => _id;
-
-  static Timestamp _parseTimestamp(Object? date) {
-    if (date == null) {
-      return Timestamp.now();
-    }
-
-    if (date is int) {
-      return Timestamp.fromMillisecondsSinceEpoch(date);
-    }
-
-    if (date is DateTime) {
-      return Timestamp.fromDate(date);
-    }
-
-    return date as Timestamp;
-  }
 }

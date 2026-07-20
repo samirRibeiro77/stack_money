@@ -5,6 +5,7 @@ import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/history.dart';
+import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/data/models/transaction.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
 import 'package:stack_money/domain/service/history_service.dart';
@@ -125,6 +126,34 @@ class DataPipelineManager {
 
     SmLogger.debug(
       'Finished upload history',
+      payload: {'created': howManyCreated},
+    );
+  }
+
+  Future<void> loadPlans() async {
+    SmLogger.debug('Init loading plans to Firebase', payload: {});
+    final firebaseData = await _planService.fetch();
+    final localData = await _getFileData(DataJsonClass.plans);
+    int howManyCreated = 0;
+
+    SmLogger.debug(
+      'Preparing to upload plans',
+      payload: {'firebase': firebaseData.length, 'local': localData.length},
+    );
+
+    for (final pJson in localData) {
+      final localPlan = SalaryPlan.fromJson(pJson as Map<String, Object?>);
+      final firebasePlan = firebaseData.where((p) => p.name == localPlan.name).firstOrNull;
+
+      if (firebasePlan == null) {
+        final createPlan = localPlan.copyWith(newId: true);
+        _planService.save(createPlan);
+        howManyCreated++;
+      }
+    }
+
+    SmLogger.debug(
+      'Finished upload plans',
       payload: {'created': howManyCreated},
     );
   }

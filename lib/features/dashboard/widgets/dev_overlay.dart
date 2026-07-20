@@ -39,7 +39,7 @@ class DevOverlay extends StatelessWidget {
                   SizedBox(width: AppSizes.sizedBoxMedium),
                   SmChipButton('History', onTap: _manager.loadHistory),
                   SizedBox(width: AppSizes.sizedBoxMedium),
-                  SmChipButton('Plans'),
+                  SmChipButton('Plans', onTap: _manager.loadPlans),
                 ],
               ),
             ],
