@@ -67,28 +67,419 @@
       "total": 162763.27,
       "immediateLiquidityTotal": 15978.49
     },
-    {"date": 1759449600000, "transactions": [{"category": "Debit", "where": "Nu", "value": 66.87}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 0.0}, {"category": "Nomad", "where": "Nu", "value": 931.9}, {"category": "Safety", "where": "Nu", "value": 6838.77}, {"category": "Compass", "where": "Nu", "value": 30458.28}, {"category": "Trips", "where": "XP", "value": 31412.51}, {"category": "Stocks", "where": "Nu", "value": 818.4}, {"category": "Investment", "where": "XP", "value": 83217.89}, {"category": "Crypto", "where": "Ripio", "value": 2314.19}, {"category": "FGTS", "where": "Caixa", "value": 35000}], "total": 157058.81, "immediateLiquidityTotal": 1998.77},
-    {"date": 1760918400000, "transactions": [{"category": "Debit", "where": "Nu", "value": 500.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 60.95}, {"category": "Nomad", "where": "Nu", "value": 1425.34}, {"category": "Safety", "where": "Nu", "value": 6884.17}, {"category": "Compass", "where": "Nu", "value": 33111.45}, {"category": "Trips", "where": "XP", "value": 31600.6}, {"category": "Stocks", "where": "Nu", "value": 834.0}, {"category": "Investment", "where": "XP", "value": 83217.89}, {"category": "Crypto", "where": "Ripio", "value": 2314.19},{"category": "FGTS", "where": "Caixa", "value": 45000}], "total": 160948.59, "immediateLiquidityTotal": 2925.34},
-    {"date": 1762300800000, "transactions": [{"category": "Debit", "where": "Nu", "value": 302.73}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 82.71}, {"category": "Nomad", "where": "Nu", "value": 1434.0}, {"category": "Safety", "where": "Nu", "value": 6926.02}, {"category": "Compass", "where": "Nu", "value": 33331.19}, {"category": "Trips", "where": "XP", "value": 31803.21}, {"category": "Stocks", "where": "Nu", "value": 858.0}, {"category": "Investment", "where": "XP", "value": 86309.66}, {"category": "Crypto", "where": "Ripio", "value": 1984.26}, {"category": "FGTS", "where": "Caixa", "value": 58000}], "total": 164031.78, "immediateLiquidityTotal": 2736.73},
-    {"date": 1763510400000, "transactions": [{"category": "Debit", "where": "Nu", "value": 500.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 104.02}, {"category": "Nomad", "where": "Nu", "value": 1700.14}, {"category": "Safety", "where": "Nu", "value": 6964.3}, {"category": "Compass", "where": "Nu", "value": 36015.38}, {"category": "Trips", "where": "XP", "value": 31978.3}, {"category": "Stocks", "where": "Nu", "value": 825.0}, {"category": "Investment", "where": "XP", "value": 87627.69}, {"category": "Crypto", "where": "Ripio", "value": 1785.87}, {"category": "FGTS", "where": "Caixa", "value": 58000.06}], "total": 168500.7, "immediateLiquidityTotal": 3200.14},
-    {"date": 1764201600000, "transactions": [{"category": "Debit", "where": "Nu", "value": 500.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 135.66}, {"category": "Nomad", "where": "Nu", "value": 2204.84}, {"category": "Safety", "where": "Nu", "value": 8519.32}, {"category": "Compass", "where": "Nu", "value": 36114.78}, {"category": "Trips", "where": "XP", "value": 32063.93}, {"category": "Stocks", "where": "Nu", "value": 940.8}, {"category": "Investment", "where": "XP", "value": 89322.93}, {"category": "Crypto", "where": "Ripio", "value": 1785.87}, {"category": "FGTS", "where": "Caixa", "value": 58000.06}], "total": 172588.13, "immediateLiquidityTotal": 3704.84},
-    {"date": 1764979200000, "transactions": [{"category": "Debit", "where": "Nu", "value": 500.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 225.01}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 8552.25}, {"category": "Compass", "where": "Nu", "value": 36254.2}, {"category": "Trips", "where": "XP", "value": 31846.26}, {"category": "Stocks", "where": "Nu", "value": 916.2}, {"category": "Investment", "where": "XP", "value": 91577.16}, {"category": "Crypto", "where": "Ripio", "value": 1784.91}, {"category": "FGTS", "where": "Caixa", "value": 61438.38}], "total": 172655.99, "immediateLiquidityTotal": 1500.0},
-    {"date": 1766102400000, "transactions": [{"category": "Debit", "where": "Nu", "value": 500.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 296.32}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 8552.25}, {"category": "Compass", "where": "Nu", "value": 59947.65}, {"category": "Trips", "where": "XP", "value": 32023.8}, {"category": "Stocks", "where": "Nu", "value": 905.4}, {"category": "Investment", "where": "XP", "value": 90229.35}, {"category": "Crypto", "where": "Ripio", "value": 1728.14}, {"category": "FGTS", "where": "Caixa", "value": 61438.38}], "total": 195182.91, "immediateLiquidityTotal": 1500.0},
-    {"date": 1767139200000, "transactions": [{"category": "Debit", "where": "Nu", "value": 766.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 366.15}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 8614.51}, {"category": "Compass", "where": "Nu", "value": 60212.53}, {"category": "Trips", "where": "XP", "value": 30161.93}, {"category": "Stocks", "where": "Nu", "value": 928.8}, {"category": "Investment", "where": "XP", "value": 91589.72}, {"category": "Crypto", "where": "Ripio", "value": 1778.93}, {"category": "FGTS", "where": "Caixa", "value": 61438.38}], "total": 195418.57, "immediateLiquidityTotal": 1766.0},
-    {"date": 1767571200000, "transactions": [{"category": "Debit", "where": "Nu", "value": 253.46}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 370.94}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 8619.28}, {"category": "Compass", "where": "Nu", "value": 57688.22}, {"category": "Trips", "where": "XP", "value": 30178.37}, {"category": "Stocks", "where": "Nu", "value": 924.6}, {"category": "Investment", "where": "XP", "value": 91674.79}, {"category": "Crypto", "where": "Ripio", "value": 1804.73}, {"category": "FGTS", "where": "Caixa", "value": 61686.07}], "total": 192514.39, "immediateLiquidityTotal": 1253.46},
-    {"date": 1768867200000, "transactions": [{"category": "Debit", "where": "Nu", "value": 500.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 386.76}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 9370.48}, {"category": "Compass", "where": "Nu", "value": 60039.72}, {"category": "Trips", "where": "XP", "value": 30363.82}, {"category": "Stocks", "where": "Nu", "value": 885.0}, {"category": "Investment", "where": "XP", "value": 91710.27}, {"category": "Crypto", "where": "Ripio", "value": 1808.71}, {"category": "FGTS", "where": "Caixa", "value": 63379.6}], "total": 196064.76, "immediateLiquidityTotal": 1500.0},
-    {"date": 1770768000000, "transactions": [{"category": "Debit", "where": "Nu", "value": 495.14}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 406.94}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 9453.48}, {"category": "Compass", "where": "Nu", "value": 2018.52}, {"category": "Trips", "where": "XP", "value": 28501.32}, {"category": "Stocks", "where": "Nu", "value": 919.2}, {"category": "Investment", "where": "XP", "value": 153576.15}, {"category": "Crypto", "where": "Ripio", "value": 1257.69}, {"category": "FGTS", "where": "Caixa", "value": 64620.7}], "total": 197628.44, "immediateLiquidityTotal": 1495.14},
-    {"date": 1771545600000, "transactions": [{"category": "Debit", "where": "Nu", "value": 500.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 419.32}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 10000.0}, {"category": "Compass", "where": "Nu", "value": 2024.34}, {"category": "Trips", "where": "XP", "value": 11091.5}, {"category": "Stocks", "where": "Nu", "value": 904.8}, {"category": "Investment", "where": "XP", "value": 152704.5}, {"category": "Crypto", "where": "Ripio", "value": 1255.78}, {"category": "FGTS", "where": "Caixa", "value": 64620.7}], "total": 179900.24, "immediateLiquidityTotal": 1500.0},
-    {"date": 1772668800000, "transactions": [{"category": "Debit", "where": "Nu", "value": 500.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 430.81}, {"category": "Nomad", "where": "Nu", "value": 1686.73}, {"category": "Safety", "where": "Nu", "value": 10549.73}, {"category": "Compass", "where": "Nu", "value": 2534.86}, {"category": "Trips", "where": "XP", "value": 11147.14}, {"category": "Stocks", "where": "Nu", "value": 789.0}, {"category": "Investment", "where": "XP", "value": 152543.05}, {"category": "Crypto", "where": "Ripio", "value": 1344.43}, {"category": "FGTS", "where": "Caixa", "value": 64887.22}], "total": 182525.75, "immediateLiquidityTotal": 3186.73},
-    {"date": 1773964800000, "transactions": [{"category": "Debit", "where": "Nu", "value": 500.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 480.23}, {"category": "Nomad", "where": "Nu", "value": 1996.29}, {"category": "Safety", "where": "Nu", "value": 10613.8}, {"category": "Compass", "where": "Nu", "value": 2550.81}, {"category": "Trips", "where": "XP", "value": 12214.82}, {"category": "Stocks", "where": "Nu", "value": 747.0}, {"category": "Investment", "where": "XP", "value": 151231.45}, {"category": "Crypto", "where": "Ripio", "value": 1325.9}, {"category": "FGTS", "where": "Caixa", "value": 65955.06}], "total": 182660.3, "immediateLiquidityTotal": 3496.29},
-    {"date": 1775088000000, "transactions": [{"category": "Debit", "where": "Nu", "value": 503.62}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 499.8}, {"category": "Nomad", "where": "Nu", "value": 2506.07}, {"category": "Safety", "where": "Nu", "value": 11165.74}, {"category": "Compass", "where": "Nu", "value": 3713.75}, {"category": "Trips", "where": "XP", "value": 15020.1}, {"category": "Stocks", "where": "Nu", "value": 753.0}, {"category": "Investment", "where": "XP", "value": 152145.76}, {"category": "Crypto", "where": "Ripio", "value": 1264.33}, {"category": "FGTS", "where": "Caixa", "value": 66193.58}], "total": 188572.17, "immediateLiquidityTotal": 4009.69},
-    {"date": 1776643200000, "transactions": [{"category": "Debit", "where": "Nu", "value": 500.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 549.35}, {"category": "Nomad", "where": "Nu", "value": 2864.01}, {"category": "Safety", "where": "Nu", "value": 11232.56}, {"category": "Compass", "where": "Nu", "value": 3736.52}, {"category": "Trips", "where": "XP", "value": 16586.0}, {"category": "Stocks", "where": "Nu", "value": 777.0}, {"category": "Investment", "where": "XP", "value": 155745.31}, {"category": "Crypto", "where": "Ripio", "value": 1330.67}, {"category": "FGTS", "where": "Caixa", "value": 67261.42}], "total": 194321.42, "immediateLiquidityTotal": 4364.01},
-    {"date": 1777939200000, "transactions": [{"category": "Debit", "where": "Nu", "value": 479.14}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 568.18}, {"category": "Nomad", "where": "Nu", "value": 2009.35}, {"category": "Safety", "where": "Nu", "value": 11662.36}, {"category": "Compass", "where": "Nu", "value": 3755.21}, {"category": "Trips", "where": "XP", "value": 15367.42}, {"category": "Stocks", "where": "Nu", "value": 709.2}, {"category": "Investment", "where": "XP", "value": 153256.15}, {"category": "Crypto", "where": "Ripio", "value": 1398.21}, {"category": "FGTS", "where": "Caixa", "value": 67539.76}], "total": 190205.22, "immediateLiquidityTotal": 3488.49},
-    {"date": 1778716800000, "transactions": [{"category": "Debit", "where": "Nu", "value": 111.89}, {"category": "Emergency", "where": "Nu", "value": 0.0}, {"category": "Cashback", "where": "Nu", "value": 656.53}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 0.0}, {"category": "Compass", "where": "Nu", "value": 2089.82}, {"category": "Trips", "where": "XP", "value": 0.0}, {"category": "Stocks", "where": "Nu", "value": 646.8}, {"category": "Investment", "where": "XP", "value": 147433.77}, {"category": "Crypto", "where": "Ripio", "value": 1359.73}], "total": 152298.54, "immediateLiquidityTotal": 111.89},
-    {"date": 1779408000000, "transactions": [{"category": "Debit", "where": "Nu", "value": 590.29}, {"category": "Emergency", "where": "Nu", "value": 0.0}, {"category": "Cashback", "where": "Nu", "value": 663.28}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 0.0}, {"category": "Compass", "where": "Nu", "value": 2697.47}, {"category": "Trips", "where": "XP", "value": 32622.28}, {"category": "Stocks", "where": "Nu", "value": 658.8}, {"category": "Investment", "where": "XP", "value": 148208.58}, {"category": "Crypto", "where": "Ripio", "value": 1319.03}], "total": 186759.73, "immediateLiquidityTotal": 590.29},
-    {"date": 1780617600000, "transactions": [{"category": "Debit", "where": "Nu", "value": 500.0}, {"category": "Emergency", "where": "Nu", "value": 1000.0}, {"category": "Cashback", "where": "Nu", "value": 688.24}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 0.0}, {"category": "Compass", "where": "Nu", "value": 3310.92}, {"category": "Trips", "where": "XP", "value": 33252.6}, {"category": "Stocks", "where": "Nu", "value": 597.6}, {"category": "Investment", "where": "XP", "value": 144941.22}, {"category": "Crypto", "where": "Ripio", "value": 1126.97}], "total": 185417.55, "immediateLiquidityTotal": 1500.0},
-    {"date": 1782000000000, "transactions": [{"category": "Debit", "where": "Nu", "value": 946.38}, {"category": "Emergency", "where": "Nu", "value": 1849.79}, {"category": "Cashback", "where": "Nu", "value": 680.42}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 0.0}, {"category": "Compass", "where": "Nu", "value": 3929.13}, {"category": "Trips", "where": "XP", "value": 33964.96}, {"category": "Stocks", "where": "Nu", "value": 662.4}, {"category": "Investment", "where": "XP", "value": 146739.31}, {"category": "Crypto", "where": "Ripio", "value": 1127.24}], "total": 189899.63, "immediateLiquidityTotal": 2796.17},
-    {"date": 1782777600000, "transactions": [{"category": "Debit", "where": "Nu", "value": 1445.38}, {"category": "Emergency", "where": "Nu", "value": 1856.8}, {"category": "Cashback", "where": "Nu", "value": 699.26}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 5000.0}, {"category": "Compass", "where": "Nu", "value": 4943.94}, {"category": "Trips", "where": "XP", "value": 34580.76}, {"category": "Stocks", "where": "Nu", "value": 684.0}, {"category": "Investment", "where": "XP", "value": 147886.42}, {"category": "Crypto", "where": "Ripio", "value": 1092.83}], "total": 198189.39, "immediateLiquidityTotal": 3302.18},
-    {"date": 1783036800000, "transactions": [{"category": "Debit", "where": "Nu", "value": 1052.11}, {"category": "Emergency", "where": "Nu", "value": 1860.31}, {"category": "Cashback", "where": "Nu", "value": 699.58}, {"category": "Nomad", "where": "Nu", "value": 0.0}, {"category": "Safety", "where": "Nu", "value": 5007.88}, {"category": "Compass", "where": "Nu", "value": 5451.89}, {"category": "Trips", "where": "XP", "value": 34620.07}, {"category": "Stocks", "where": "Nu", "value": 704.4}, {"category": "Investment", "where": "XP", "value": 148211.09}, {"category": "Crypto", "where": "Ripio", "value": 1164.79}], "total": 198772.12, "immediateLiquidityTotal": 2912.42}
+    {
+      "date": 1759449600000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 66.87},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 931.9},
+        {"category": "Safety", "where": "Nu", "value": 6838.77},
+        {"category": "Compass", "where": "Nu", "value": 30458.28},
+        {"category": "Cashback", "where": "Nu", "value": 0.0},
+        {"category": "Stocks", "where": "Nu", "value": 818.4},
+        {"category": "Trips", "where": "XP", "value": 31412.51},
+        {"category": "Investment", "where": "XP", "value": 51805.38},
+        {"category": "Crypto", "where": "Ripio", "value": 2314.19},
+        {"category": "FGTS", "where": "Caixa", "value": 58000.06}
+      ],
+      "total": 183646.36,
+      "immediateLiquidityTotal": 1998.77
+    },
+    {
+      "date": 1760918400000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 500.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 1425.34},
+        {"category": "Safety", "where": "Nu", "value": 6884.17},
+        {"category": "Compass", "where": "Nu", "value": 33111.45},
+        {"category": "Cashback", "where": "Nu", "value": 60.95},
+        {"category": "Stocks", "where": "Nu", "value": 834.0},
+        {"category": "Trips", "where": "XP", "value": 31600.6},
+        {"category": "Investment", "where": "XP", "value": 51617.29},
+        {"category": "Crypto", "where": "Ripio", "value": 2314.19},
+        {"category": "FGTS", "where": "Caixa", "value": 58000.06}
+      ],
+      "total": 187348.05,
+      "immediateLiquidityTotal": 2925.34
+    },
+    {
+      "date": 1762300800000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 302.73},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 1434.0},
+        {"category": "Safety", "where": "Nu", "value": 6926.02},
+        {"category": "Compass", "where": "Nu", "value": 33331.19},
+        {"category": "Cashback", "where": "Nu", "value": 82.71},
+        {"category": "Stocks", "where": "Nu", "value": 858.0},
+        {"category": "Trips", "where": "XP", "value": 31803.21},
+        {"category": "Investment", "where": "XP", "value": 54506.45},
+        {"category": "Crypto", "where": "Ripio", "value": 1984.26},
+        {"category": "FGTS", "where": "Caixa", "value": 58000.06}
+      ],
+      "total": 190228.63,
+      "immediateLiquidityTotal": 2736.73
+    },
+    {
+      "date": 1763510400000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 500.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 1700.14},
+        {"category": "Safety", "where": "Nu", "value": 6964.3},
+        {"category": "Compass", "where": "Nu", "value": 36015.38},
+        {"category": "Cashback", "where": "Nu", "value": 104.02},
+        {"category": "Stocks", "where": "Nu", "value": 825.0},
+        {"category": "Trips", "where": "XP", "value": 31978.3},
+        {"category": "Investment", "where": "XP", "value": 55649.39},
+        {"category": "Crypto", "where": "Ripio", "value": 1785.87},
+        {"category": "FGTS", "where": "Caixa", "value": 58000.06}
+      ],
+      "total": 194522.46,
+      "immediateLiquidityTotal": 3200.14
+    },
+    {
+      "date": 1764201600000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 500.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 2204.84},
+        {"category": "Safety", "where": "Nu", "value": 8519.32},
+        {"category": "Compass", "where": "Nu", "value": 36114.78},
+        {"category": "Cashback", "where": "Nu", "value": 135.66},
+        {"category": "Stocks", "where": "Nu", "value": 940.8},
+        {"category": "Trips", "where": "XP", "value": 32063.93},
+        {"category": "Investment", "where": "XP", "value": 57259.0},
+        {"category": "Crypto", "where": "Ripio", "value": 1785.87},
+        {"category": "FGTS", "where": "Caixa", "value": 58000.06}
+      ],
+      "total": 198524.26,
+      "immediateLiquidityTotal": 3704.84
+    },
+    {
+      "date": 1764979200000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 500.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 8552.25},
+        {"category": "Compass", "where": "Nu", "value": 36254.2},
+        {"category": "Cashback", "where": "Nu", "value": 225.01},
+        {"category": "Stocks", "where": "Nu", "value": 916.2},
+        {"category": "Trips", "where": "XP", "value": 31846.26},
+        {"category": "Investment", "where": "XP", "value": 59730.9},
+        {"category": "Crypto", "where": "Ripio", "value": 1784.91},
+        {"category": "FGTS", "where": "Caixa", "value": 61438.38}
+      ],
+      "total": 202248.11,
+      "immediateLiquidityTotal": 1500.0
+    },
+    {
+      "date": 1766102400000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 500.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 8552.25},
+        {"category": "Compass", "where": "Nu", "value": 59947.65},
+        {"category": "Cashback", "where": "Nu", "value": 296.32},
+        {"category": "Stocks", "where": "Nu", "value": 905.4},
+        {"category": "Trips", "where": "XP", "value": 32023.8},
+        {"category": "Investment", "where": "XP", "value": 58205.55},
+        {"category": "Crypto", "where": "Ripio", "value": 1728.14},
+        {"category": "FGTS", "where": "Caixa", "value": 61438.38}
+      ],
+      "total": 224597.49,
+      "immediateLiquidityTotal": 1500.0
+    },
+    {
+      "date": 1767139200000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 766.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 8614.51},
+        {"category": "Compass", "where": "Nu", "value": 60212.53},
+        {"category": "Cashback", "where": "Nu", "value": 366.15},
+        {"category": "Stocks", "where": "Nu", "value": 928.8},
+        {"category": "Trips", "where": "XP", "value": 30161.93},
+        {"category": "Investment", "where": "XP", "value": 61427.79},
+        {"category": "Crypto", "where": "Ripio", "value": 1778.93},
+        {"category": "FGTS", "where": "Caixa", "value": 61438.38}
+      ],
+      "total": 226695.02,
+      "immediateLiquidityTotal": 1766.0
+    },
+    {
+      "date": 1767571200000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 253.46},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 8619.28},
+        {"category": "Compass", "where": "Nu", "value": 57688.22},
+        {"category": "Cashback", "where": "Nu", "value": 370.94},
+        {"category": "Stocks", "where": "Nu", "value": 924.6},
+        {"category": "Trips", "where": "XP", "value": 30178.37},
+        {"category": "Investment", "where": "XP", "value": 61496.42},
+        {"category": "Crypto", "where": "Ripio", "value": 1804.73},
+        {"category": "FGTS", "where": "Caixa", "value": 61686.07}
+      ],
+      "total": 224022.09,
+      "immediateLiquidityTotal": 1253.46
+    },
+    {
+      "date": 1768867200000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 500.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 9370.48},
+        {"category": "Compass", "where": "Nu", "value": 60039.72},
+        {"category": "Cashback", "where": "Nu", "value": 386.76},
+        {"category": "Stocks", "where": "Nu", "value": 885.0},
+        {"category": "Trips", "where": "XP", "value": 30363.82},
+        {"category": "Investment", "where": "XP", "value": 61346.45},
+        {"category": "Crypto", "where": "Ripio", "value": 1808.71},
+        {"category": "FGTS", "where": "Caixa", "value": 63379.6}
+      ],
+      "total": 229080.54,
+      "immediateLiquidityTotal": 1500.0
+    },
+    {
+      "date": 1770768000000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 495.14},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 9453.48},
+        {"category": "Compass", "where": "Nu", "value": 2018.52},
+        {"category": "Cashback", "where": "Nu", "value": 406.94},
+        {"category": "Stocks", "where": "Nu", "value": 919.2},
+        {"category": "Trips", "where": "XP", "value": 28501.32},
+        {"category": "Investment", "where": "XP", "value": 125074.83},
+        {"category": "Crypto", "where": "Ripio", "value": 1257.69},
+        {"category": "FGTS", "where": "Caixa", "value": 64620.7}
+      ],
+      "total": 233747.82,
+      "immediateLiquidityTotal": 1495.14
+    },
+    {
+      "date": 1771545600000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 500.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 10000.0},
+        {"category": "Compass", "where": "Nu", "value": 2024.34},
+        {"category": "Cashback", "where": "Nu", "value": 419.32},
+        {"category": "Stocks", "where": "Nu", "value": 904.8},
+        {"category": "Trips", "where": "XP", "value": 11091.5},
+        {"category": "Investment", "where": "XP", "value": 141613.0},
+        {"category": "Crypto", "where": "Ripio", "value": 1255.78},
+        {"category": "FGTS", "where": "Caixa", "value": 64620.7}
+      ],
+      "total": 233429.44,
+      "immediateLiquidityTotal": 1500.0
+    },
+    {
+      "date": 1772668800000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 500.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 1686.73},
+        {"category": "Safety", "where": "Nu", "value": 10549.73},
+        {"category": "Compass", "where": "Nu", "value": 2534.86},
+        {"category": "Cashback", "where": "Nu", "value": 430.81},
+        {"category": "Stocks", "where": "Nu", "value": 789.0},
+        {"category": "Trips", "where": "XP", "value": 11147.14},
+        {"category": "Investment", "where": "XP", "value": 141395.91},
+        {"category": "Crypto", "where": "Ripio", "value": 1344.43},
+        {"category": "FGTS", "where": "Caixa", "value": 64887.22}
+      ],
+      "total": 236265.83,
+      "immediateLiquidityTotal": 3186.73
+    },
+    {
+      "date": 1773964800000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 500.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 1996.29},
+        {"category": "Safety", "where": "Nu", "value": 10613.8},
+        {"category": "Compass", "where": "Nu", "value": 2550.81},
+        {"category": "Cashback", "where": "Nu", "value": 480.23},
+        {"category": "Stocks", "where": "Nu", "value": 747.0},
+        {"category": "Trips", "where": "XP", "value": 12214.82},
+        {"category": "Investment", "where": "XP", "value": 139016.63},
+        {"category": "Crypto", "where": "Ripio", "value": 1325.9},
+        {"category": "FGTS", "where": "Caixa", "value": 65955.06}
+      ],
+      "total": 236400.54,
+      "immediateLiquidityTotal": 3496.29
+    },
+    {
+      "date": 1775088000000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 503.62},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 2506.07},
+        {"category": "Safety", "where": "Nu", "value": 11165.74},
+        {"category": "Compass", "where": "Nu", "value": 3713.75},
+        {"category": "Cashback", "where": "Nu", "value": 499.8},
+        {"category": "Stocks", "where": "Nu", "value": 753.0},
+        {"category": "Trips", "where": "XP", "value": 15020.1},
+        {"category": "Investment", "where": "XP", "value": 137125.66},
+        {"category": "Crypto", "where": "Ripio", "value": 1264.33},
+        {"category": "FGTS", "where": "Caixa", "value": 66193.58}
+      ],
+      "total": 239745.65,
+      "immediateLiquidityTotal": 4009.69
+    },
+    {
+      "date": 1776643200000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 500.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 2864.01},
+        {"category": "Safety", "where": "Nu", "value": 11232.56},
+        {"category": "Compass", "where": "Nu", "value": 3736.52},
+        {"category": "Cashback", "where": "Nu", "value": 549.35},
+        {"category": "Stocks", "where": "Nu", "value": 777.0},
+        {"category": "Trips", "where": "XP", "value": 16586.0},
+        {"category": "Investment", "where": "XP", "value": 139159.31},
+        {"category": "Crypto", "where": "Ripio", "value": 1330.67},
+        {"category": "FGTS", "where": "Caixa", "value": 67261.42}
+      ],
+      "total": 244996.84,
+      "immediateLiquidityTotal": 4364.01
+    },
+    {
+      "date": 1777939200000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 479.14},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 2009.35},
+        {"category": "Safety", "where": "Nu", "value": 11662.36},
+        {"category": "Compass", "where": "Nu", "value": 3755.21},
+        {"category": "Cashback", "where": "Nu", "value": 568.18},
+        {"category": "Stocks", "where": "Nu", "value": 709.2},
+        {"category": "Trips", "where": "XP", "value": 15367.42},
+        {"category": "Investment", "where": "XP", "value": 137888.73},
+        {"category": "Crypto", "where": "Ripio", "value": 1398.21},
+        {"category": "FGTS", "where": "Caixa", "value": 67539.76}
+      ],
+      "total": 242377.56,
+      "immediateLiquidityTotal": 3488.49
+    },
+    {
+      "date": 1778716800000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 111.89},
+        {"category": "Emergency", "where": "Nu", "value": 0.0},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 0.0},
+        {"category": "Compass", "where": "Nu", "value": 2089.82},
+        {"category": "Cashback", "where": "Nu", "value": 656.53},
+        {"category": "Stocks", "where": "Nu", "value": 646.8},
+        {"category": "Trips", "where": "XP", "value": 0.0},
+        {"category": "Investment", "where": "XP", "value": 147433.77},
+        {"category": "Crypto", "where": "Ripio", "value": 1359.73},
+        {"category": "FGTS", "where": "Caixa", "value": 68607.6}
+      ],
+      "total": 220906.14,
+      "immediateLiquidityTotal": 111.89
+    },
+    {
+      "date": 1779408000000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 590.29},
+        {"category": "Emergency", "where": "Nu", "value": 0.0},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 0.0},
+        {"category": "Compass", "where": "Nu", "value": 2697.47},
+        {"category": "Cashback", "where": "Nu", "value": 663.28},
+        {"category": "Stocks", "where": "Nu", "value": 658.8},
+        {"category": "Trips", "where": "XP", "value": 32622.28},
+        {"category": "Investment", "where": "XP", "value": 115586.3},
+        {"category": "Crypto", "where": "Ripio", "value": 1319.03},
+        {"category": "FGTS", "where": "Caixa", "value": 68887.82}
+      ],
+      "total": 223025.27,
+      "immediateLiquidityTotal": 590.29
+    },
+    {
+      "date": 1780617600000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 500.0},
+        {"category": "Emergency", "where": "Nu", "value": 1000.0},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 0.0},
+        {"category": "Compass", "where": "Nu", "value": 3310.92},
+        {"category": "Cashback", "where": "Nu", "value": 688.24},
+        {"category": "Stocks", "where": "Nu", "value": 597.6},
+        {"category": "Trips", "where": "XP", "value": 33252.6},
+        {"category": "Investment", "where": "XP", "value": 111688.62},
+        {"category": "Crypto", "where": "Ripio", "value": 1126.97},
+        {"category": "FGTS", "where": "Caixa", "value": 68887.82}
+      ],
+      "total": 221052.77,
+      "immediateLiquidityTotal": 1500.0
+    },
+    {
+      "date": 1782000000000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 946.38},
+        {"category": "Emergency", "where": "Nu", "value": 1849.79},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 0.0},
+        {"category": "Compass", "where": "Nu", "value": 3929.13},
+        {"category": "Cashback", "where": "Nu", "value": 680.42},
+        {"category": "Stocks", "where": "Nu", "value": 662.4},
+        {"category": "Trips", "where": "XP", "value": 33964.96},
+        {"category": "Investment", "where": "XP", "value": 112774.35},
+        {"category": "Crypto", "where": "Ripio", "value": 1127.24},
+        {"category": "FGTS", "where": "Caixa", "value": 69955.66}
+      ],
+      "total": 225890.33,
+      "immediateLiquidityTotal": 2796.17
+    },
+    {
+      "date": 1782777600000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 1445.38},
+        {"category": "Emergency", "where": "Nu", "value": 1856.8},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 5000.0},
+        {"category": "Compass", "where": "Nu", "value": 4943.94},
+        {"category": "Cashback", "where": "Nu", "value": 699.26},
+        {"category": "Stocks", "where": "Nu", "value": 684.0},
+        {"category": "Trips", "where": "XP", "value": 34580.76},
+        {"category": "Investment", "where": "XP", "value": 113305.66},
+        {"category": "Crypto", "where": "Ripio", "value": 1092.83},
+        {"category": "FGTS", "where": "Caixa", "value": 70242.02}
+      ],
+      "total": 233850.65,
+      "immediateLiquidityTotal": 3302.18
+    },
+    {
+      "date": 1783036800000,
+      "transactions": [
+        {"category": "Debit", "where": "Nu", "value": 1052.11},
+        {"category": "Emergency", "where": "Nu", "value": 1860.31},
+        {"category": "Nomad", "where": "Nu", "value": 0.0},
+        {"category": "Safety", "where": "Nu", "value": 5007.88},
+        {"category": "Compass", "where": "Nu", "value": 5451.89},
+        {"category": "Cashback", "where": "Nu", "value": 699.58},
+        {"category": "Stocks", "where": "Nu", "value": 704.4},
+        {"category": "Trips", "where": "XP", "value": 34620.07},
+        {"category": "Investment", "where": "XP", "value": 113591.02},
+        {"category": "Crypto", "where": "Ripio", "value": 1164.79},
+        {"category": "FGTS", "where": "Caixa", "value": 70242.02}
+      ],
+      "total": 234394.07,
+      "immediateLiquidityTotal": 2912.42
+    }
   ]
 }
