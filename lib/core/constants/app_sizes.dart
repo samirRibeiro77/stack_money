@@ -54,4 +54,8 @@ class AppSizes {
   /// --- SnackBar ---
   static const double snackBarTopPadding = 130;
   static const double snackBarBottomPadding = 15;
+
+  /// --- Config ---
+  static const double avatarRadius = 40.0;
+  static const double avatarPadding = avatarRadius + x24;
 }
