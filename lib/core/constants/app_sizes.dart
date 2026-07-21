@@ -57,5 +57,5 @@ class AppSizes {
 
   /// --- Config ---
   static const double avatarRadius = 40.0;
-  static const double avatarPadding = avatarRadius + x24;
+  static const double avatarPadding = avatarRadius + x2;
 }

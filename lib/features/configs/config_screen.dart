@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/widgets/tab_content.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
+import 'package:stack_money/features/configs/widgets/sign_out_button.dart';
 import 'package:stack_money/features/configs/widgets/user_badge_card.dart';
 
 class ConfigScreen extends StatelessWidget {
@@ -17,7 +19,15 @@ class ConfigScreen extends StatelessWidget {
     _nameController.text = user.displayName ?? '';
 
     return Scaffold(
-      appBar: AppBar(title: Text('Settings'), centerTitle: false),
+      appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new_rounded,
+              size: AppSizes.x12,
+            ),
+            onPressed: () => Navigator.pop(context)
+          ),
+          title: Text('Settings')
+      ),
       body: TabContent(
         child: Column(
           children: [
@@ -26,6 +36,7 @@ class ConfigScreen extends StatelessWidget {
               email: user.email ?? '',
               nameController: _nameController,
             ),
+            SignOutButton()
           ],
         ),
       ),

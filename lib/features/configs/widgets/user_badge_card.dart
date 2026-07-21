@@ -33,22 +33,16 @@ class UserIdBadgeCard extends StatelessWidget {
             shadowColor: StackMoneyTheme.cyanNeon,
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: nameController,
-                        style: textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        decoration: StackMoneyTheme.inputDecoration(
-                          'Name',
-                          boxHeight: AppSizes.x20,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: AppSizes.avatarPadding),
-                  ],
+                const SizedBox(height: AppSizes.avatarPadding),
+                TextFormField(
+                  controller: nameController,
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  decoration: StackMoneyTheme.inputDecoration(
+                    'Name',
+                    boxHeight: AppSizes.x20,
+                  ),
                 ),
                 const SizedBox(height: AppSizes.sizedBoxMedium),
                 IgnorePointer(
@@ -71,7 +65,6 @@ class UserIdBadgeCard extends StatelessWidget {
         // Avatar Flutuante Sobreposto na Borda
         Positioned(
           top: 0,
-          right: AppSizes.sizedBoxLarge,
           child: GestureDetector(
             onTap: () => SmLogger.info('Click to change profile image'),
             child: Container(
