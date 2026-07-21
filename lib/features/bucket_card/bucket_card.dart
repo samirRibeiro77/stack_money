@@ -61,20 +61,29 @@ class _BucketCardState extends State<BucketCard> {
         },
         background: const BucketCardBackground(),
         child: BucketCardSavingAnimation(
-          child: SmCard(
-            removePadding: true,
-            child: Column(
-              children: [
-                BucketCardHeader(
-                  isExpanded: widget.isExpanded,
-                  onHeaderTap: widget.onHeaderTap,
+          child: ValueListenableBuilder(
+            valueListenable: _cardManager.techColor,
+            builder: (_, techColor, _) {
+              return SmCard(
+                shadowColor: techColor,
+                removePadding: true,
+                child: Column(
+                  children: [
+                    BucketCardHeader(
+                      isExpanded: widget.isExpanded,
+                      onHeaderTap: widget.onHeaderTap,
+                    ),
+                    if (widget.isExpanded && !isSecureActive) ...[
+                      const Divider(
+                        color: StackMoneyTheme.background,
+                        height: 1,
+                      ),
+                      const BucketCardForm(),
+                    ],
+                  ],
                 ),
-                if (widget.isExpanded && !isSecureActive) ...[
-                  const Divider(color: StackMoneyTheme.background, height: 1),
-                  const BucketCardForm(),
-                ],
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),

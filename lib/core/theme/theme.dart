@@ -20,6 +20,7 @@ class StackMoneyTheme {
     Color color = StackMoneyTheme.cyanNeon,
     bool useUnderline = true,
     bool readOnly = false,
+    double boxHeight = AppSizes.x16,
   }) {
     return InputDecoration(
       labelText: StackMoneyString.formatTitle(
@@ -36,10 +37,7 @@ class StackMoneyTheme {
         horizontal: AppSizes.x4,
         vertical: AppSizes.x5,
       ),
-      constraints: const BoxConstraints(
-        minHeight: AppSizes.x16,
-        maxHeight: AppSizes.x16,
-      ),
+      constraints: BoxConstraints(minHeight: boxHeight, maxHeight: boxHeight),
       suffixIcon: readOnly
           ? Icon(
               Icons.lock_outline_rounded,
