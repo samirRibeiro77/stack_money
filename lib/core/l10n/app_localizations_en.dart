@@ -379,4 +379,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logout => 'Logout';
+
+  @override
+  String get systemPreferences => 'System Preferences';
+
+  @override
+  String get enabled => 'Enabled';
+
+  @override
+  String get disabled => 'Disabled';
+
+  @override
+  String get securityModeTitle => 'Boot under security mode';
+
+  @override
+  String get securityModeCode => 'SYS.SECURE_MODE';
+
+  @override
+  String get cardExpandTitle => 'Open with cards expanded';
+
+  @override
+  String get cardExpandCode => 'DASH.CARDS_EXPAND';
 }

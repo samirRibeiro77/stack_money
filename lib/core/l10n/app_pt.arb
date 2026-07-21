@@ -114,5 +114,12 @@
   "start": "Começar",
   "adminName": "Nome",
   "adminEmail": "Email",
-  "logout": "Sair"
+  "logout": "Sair",
+  "systemPreferences": "Preferências de sistema",
+  "enabled": "Habilitado",
+  "disabled": "Desabilitado",
+  "securityModeTitle": "Iniciar no modo seguro",
+  "securityModeCode": "SISTEMA.MODO_SEGURO",
+  "cardExpandTitle": "Expandir cards por padrão",
+  "cardExpandCode": "PAINEL.CARDS_EXPANDIDOS"
 }

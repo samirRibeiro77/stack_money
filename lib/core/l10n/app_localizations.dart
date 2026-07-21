@@ -785,6 +785,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logout'**
   String get logout;
+
+  /// System preferences title.
+  ///
+  /// In en, this message translates to:
+  /// **'System Preferences'**
+  String get systemPreferences;
+
+  /// Enabled value.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get enabled;
+
+  /// Disabled value.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get disabled;
+
+  /// Boot the app under security mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Boot under security mode'**
+  String get securityModeTitle;
+
+  /// Security mode code.
+  ///
+  /// In en, this message translates to:
+  /// **'SYS.SECURE_MODE'**
+  String get securityModeCode;
+
+  /// Expand cards on initialization.
+  ///
+  /// In en, this message translates to:
+  /// **'Open with cards expanded'**
+  String get cardExpandTitle;
+
+  /// Card expand code.
+  ///
+  /// In en, this message translates to:
+  /// **'DASH.CARDS_EXPAND'**
+  String get cardExpandCode;
 }
 
 class _AppLocalizationsDelegate

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 
 class SettingsSwitchTile extends StatelessWidget {
@@ -20,7 +22,9 @@ class SettingsSwitchTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final statusText = value ? 'ENABLED' : 'DISABLED';
+    final l10n = AppLocalizations.of(context)!;
+
+    final statusText = value ? l10n.enabled : l10n.disabled;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSizes.x4),
@@ -39,7 +43,7 @@ class SettingsSwitchTile extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSizes.min),
                 Text(
-                  '$systemCode: $statusText',
+                  '${StackMoneyString.formatTitle(systemCode)}: ${StackMoneyString.formatTitle(statusText)}',
                   style: textTheme.labelSmall,
                 ),
               ],

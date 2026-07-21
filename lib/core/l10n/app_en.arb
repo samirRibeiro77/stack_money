@@ -455,5 +455,33 @@
   "logout": "Logout",
   "@logout": {
     "description": "Logout from the app."
+  },
+  "systemPreferences": "System Preferences",
+  "@systemPreferences": {
+    "description": "System preferences title."
+  },
+  "enabled": "Enabled",
+  "@enabled": {
+    "description": "Enabled value."
+  },
+  "disabled": "Disabled",
+  "@disabled": {
+    "description": "Disabled value."
+  },
+  "securityModeTitle": "Boot under security mode",
+  "@securityModeTitle": {
+    "description": "Boot the app under security mode."
+  },
+  "securityModeCode": "SYS.SECURE_MODE",
+  "@securityModeCode": {
+    "description": "Security mode code."
+  },
+  "cardExpandTitle": "Open with cards expanded",
+  "@cardExpandTitle": {
+    "description": "Expand cards on initialization."
+  },
+  "cardExpandCode": "DASH.CARDS_EXPAND",
+  "@cardExpandCode": {
+    "description": "Card expand code."
   }
 }

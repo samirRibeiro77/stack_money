@@ -379,4 +379,25 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get logout => 'Sair';
+
+  @override
+  String get systemPreferences => 'Preferências de sistema';
+
+  @override
+  String get enabled => 'Habilitado';
+
+  @override
+  String get disabled => 'Desabilitado';
+
+  @override
+  String get securityModeTitle => 'Iniciar no modo seguro';
+
+  @override
+  String get securityModeCode => 'SISTEMA.MODO_SEGURO';
+
+  @override
+  String get cardExpandTitle => 'Expandir cards por padrão';
+
+  @override
+  String get cardExpandCode => 'PAINEL.CARDS_EXPANDIDOS';
 }
