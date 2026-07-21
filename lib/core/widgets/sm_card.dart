@@ -35,8 +35,9 @@ class SmCard extends StatelessWidget {
         boxShadow: !isSecureActive
             ? [
                 BoxShadow(
-                  color: shadowColor.withValues(alpha: 0.06),
+                  color: shadowColor.withValues(alpha: 0.07),
                   blurRadius: 20,
+                  spreadRadius: 3,
                   offset: const Offset(0, 6),
                 ),
               ]
