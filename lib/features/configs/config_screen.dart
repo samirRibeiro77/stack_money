@@ -3,6 +3,7 @@ import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/widgets/tab_content.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
 import 'package:stack_money/features/configs/widgets/sign_out_button.dart';
+import 'package:stack_money/features/configs/widgets/system_preferences_card.dart';
 import 'package:stack_money/features/configs/widgets/user_badge_card.dart';
 
 class ConfigScreen extends StatelessWidget {
@@ -34,6 +35,9 @@ class ConfigScreen extends StatelessWidget {
               email: user.email ?? '',
               nameController: _nameController,
             ),
+            SizedBox(height: AppSizes.sizedBoxLarge),
+            SystemPreferencesCard(),
+            SizedBox(height: AppSizes.sizedBoxLarge * 2),
             SignOutButton(),
           ],
         ),
