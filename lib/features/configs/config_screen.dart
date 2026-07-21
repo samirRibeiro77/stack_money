@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/widgets/tab_content.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
+import 'package:stack_money/features/configs/widgets/export_data_card.dart';
 import 'package:stack_money/features/configs/widgets/sign_out_button.dart';
 import 'package:stack_money/features/configs/widgets/system_preferences_card.dart';
 import 'package:stack_money/features/configs/widgets/user_badge_card.dart';
@@ -37,6 +38,8 @@ class ConfigScreen extends StatelessWidget {
             ),
             SizedBox(height: AppSizes.sizedBoxLarge),
             SystemPreferencesCard(),
+            SizedBox(height: AppSizes.sizedBoxLarge),
+            ExportDataCard(),
             SizedBox(height: AppSizes.sizedBoxLarge * 2),
             SignOutButton(),
           ],
