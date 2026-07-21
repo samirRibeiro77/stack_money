@@ -767,6 +767,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start'**
   String get start;
+
+  /// Username label.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin name'**
+  String get adminName;
+
+  /// Email label.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin email'**
+  String get adminEmail;
+
+  /// Logout from the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
 }
 
 class _AppLocalizationsDelegate

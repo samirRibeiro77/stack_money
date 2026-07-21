@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
@@ -14,6 +15,7 @@ class SignOutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
@@ -22,7 +24,7 @@ class SignOutButton extends StatelessWidget {
         borderRadius: AppSizes.radiusSmall,
         containerHeight: AppSizes.x24,
         borderColor: _color,
-        borderWidth: 2,
+        borderWidth: AppSizes.min,
         child: InkWell(
           onTap: _authService.signOut,
           borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
@@ -35,7 +37,7 @@ class SignOutButton extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppSizes.x4),
                 child: Text(
-                  StackMoneyString.formatTitle('Logout'),
+                  StackMoneyString.formatTitle(l10n.logout),
                   style: textTheme.bodyMedium?.copyWith(
                     color: _color,
                     fontWeight: AppTypography.weightBold,

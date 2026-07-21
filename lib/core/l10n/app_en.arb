@@ -443,5 +443,17 @@
   "start": "Start",
   "@start": {
     "description": "SnackBar action to start the money sprint."
+  },
+  "adminName": "Admin name",
+  "@adminName": {
+    "description": "Username label."
+  },
+  "adminEmail": "Admin email",
+  "@adminEmail": {
+    "description": "Email label."
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout from the app."
   }
 }
