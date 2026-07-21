@@ -400,4 +400,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get cardExpandCode => 'PAINEL.CARDS_EXPANDIDOS';
+
+  @override
+  String get exportData => 'Exportar dados';
+
+  @override
+  String get exportDataMessage => 'Mensagem para extração de dados vai aqui';
+
+  @override
+  String get exportJsonData => 'Exportar dados JSON';
 }

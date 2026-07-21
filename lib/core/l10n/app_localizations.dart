@@ -827,6 +827,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'DASH.CARDS_EXPAND'**
   String get cardExpandCode;
+
+  /// Export data card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Export data'**
+  String get exportData;
+
+  /// Export data message.
+  ///
+  /// In en, this message translates to:
+  /// **'Message to export data goes here'**
+  String get exportDataMessage;
+
+  /// Export json data button label.
+  ///
+  /// In en, this message translates to:
+  /// **'Export JSON data'**
+  String get exportJsonData;
 }
 
 class _AppLocalizationsDelegate

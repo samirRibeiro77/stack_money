@@ -19,12 +19,12 @@ class ExportDataCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return SmCard(
-      title: 'Export data',
+      title: l10n.exportData,
       child: Column(
         children: [
-          Text('Message to export data goes here'),
+          Text(l10n.exportDataMessage),
           Text(
-            'We can add some data about the export here',
+            'Details about size, how many plans/bucket/history... Stuff like that!',
             style: textTheme.labelSmall,
           ),
           SizedBox(height: AppSizes.sizedBoxLarge),
@@ -50,7 +50,7 @@ class ExportDataCard extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: AppSizes.x4),
                     child: Text(
-                      StackMoneyString.formatTitle('Export json data'),
+                      StackMoneyString.formatTitle(l10n.exportJsonData),
                       style: textTheme.bodySmall?.copyWith(
                         color: _color,
                         fontWeight: AppTypography.weightBold,

@@ -400,4 +400,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cardExpandCode => 'DASH.CARDS_EXPAND';
+
+  @override
+  String get exportData => 'Export data';
+
+  @override
+  String get exportDataMessage => 'Message to export data goes here';
+
+  @override
+  String get exportJsonData => 'Export JSON data';
 }

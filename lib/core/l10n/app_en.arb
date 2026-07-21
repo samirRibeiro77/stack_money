@@ -483,5 +483,17 @@
   "cardExpandCode": "DASH.CARDS_EXPAND",
   "@cardExpandCode": {
     "description": "Card expand code."
+  },
+  "exportData": "Export data",
+  "@exportData": {
+    "description": "Export data card title."
+  },
+  "exportDataMessage": "Message to export data goes here",
+  "@exportDataMessage": {
+    "description": "Export data message."
+  },
+  "exportJsonData": "Export JSON data",
+  "@exportJsonData": {
+    "description": "Export json data button label."
   }
 }

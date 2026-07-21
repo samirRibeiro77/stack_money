@@ -121,5 +121,8 @@
   "securityModeTitle": "Iniciar no modo seguro",
   "securityModeCode": "SISTEMA.MODO_SEGURO",
   "cardExpandTitle": "Expandir cards por padrão",
-  "cardExpandCode": "PAINEL.CARDS_EXPANDIDOS"
+  "cardExpandCode": "PAINEL.CARDS_EXPANDIDOS",
+  "exportData": "Exportar dados",
+  "exportDataMessage": "Mensagem para extração de dados vai aqui",
+  "exportJsonData": "Exportar dados JSON"
 }
