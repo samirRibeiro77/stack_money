@@ -26,21 +26,37 @@ class UserIdBadgeCard extends StatelessWidget {
       clipBehavior: Clip.none,
       alignment: Alignment.topCenter,
       children: [
-        // Card Principal com compensação de espaço no topo
+        Positioned(
+          top: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.15),
+                  blurRadius: AppSizes.x10,
+                  spreadRadius: 5,
+                ),
+              ],
+            ),
+            child: CircleAvatar(radius: AppSizes.avatarRadius),
+          ),
+        ),
+
         Padding(
-          padding: const EdgeInsets.only(top: AppSizes.x16),
+          padding: const EdgeInsets.only(top: AppSizes.avatarRadius),
           child: SmCard(
             shadowColor: StackMoneyTheme.cyanNeon,
             child: Column(
               children: [
-                const SizedBox(height: AppSizes.avatarPadding),
+                const SizedBox(height: AppSizes.avatarPadding - 15),
                 TextFormField(
                   controller: nameController,
                   style: textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                   decoration: StackMoneyTheme.inputDecoration(
-                    'Name',
+                    'Admin Name',
                     boxHeight: AppSizes.x20,
                   ),
                 ),
@@ -51,7 +67,7 @@ class UserIdBadgeCard extends StatelessWidget {
                     controller: emailController,
                     style: textTheme.bodyMedium,
                     decoration: StackMoneyTheme.inputDecoration(
-                      'Email',
+                      'Admin Email',
                       readOnly: true,
                       boxHeight: AppSizes.x20,
                     ),
@@ -66,23 +82,10 @@ class UserIdBadgeCard extends StatelessWidget {
         Positioned(
           top: 0,
           child: GestureDetector(
-            onTap: () => SmLogger.info('Click to change profile image'),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: StackMoneyTheme.cyanNeon, width: 0.5),
-                boxShadow: [
-                  BoxShadow(
-                    color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.30),
-                    blurRadius: 20,
-                    spreadRadius: 5,
-                  ),
-                ],
-              ),
-              child: CircleAvatar(
-                radius: AppSizes.avatarRadius,
-                backgroundImage: NetworkImage(avatarUrl),
-              ),
+            onTap: () => SmLogger.info('Clicked to change profile image'),
+            child: CircleAvatar(
+              radius: AppSizes.avatarRadius,
+              backgroundImage: NetworkImage(avatarUrl),
             ),
           ),
         ),

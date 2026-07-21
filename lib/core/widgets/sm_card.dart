@@ -36,7 +36,7 @@ class SmCard extends StatelessWidget {
             ? [
                 BoxShadow(
                   color: shadowColor.withValues(alpha: 0.07),
-                  blurRadius: 20,
+                  blurRadius: AppSizes.x10,
                   spreadRadius: 3,
                   offset: const Offset(0, 6),
                 ),

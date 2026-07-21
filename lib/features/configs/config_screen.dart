@@ -20,13 +20,11 @@ class ConfigScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_rounded,
-              size: AppSizes.x12,
-            ),
-            onPressed: () => Navigator.pop(context)
-          ),
-          title: Text('Settings')
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: AppSizes.x12),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text('Settings'),
       ),
       body: TabContent(
         child: Column(
@@ -36,7 +34,7 @@ class ConfigScreen extends StatelessWidget {
               email: user.email ?? '',
               nameController: _nameController,
             ),
-            SignOutButton()
+            SignOutButton(),
           ],
         ),
       ),
