@@ -869,6 +869,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Export JSON data'**
   String get exportJsonData;
+
+  /// Dashboard default filter for allocation buckets.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard default filter'**
+  String get defaultDashboardFilter;
+
+  /// Remember the last dashboard filter for allocation buckets.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember last'**
+  String get rememberLast;
 }
 
 class _AppLocalizationsDelegate

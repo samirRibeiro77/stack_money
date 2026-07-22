@@ -28,7 +28,7 @@ class DashboardFilterCard extends StatelessWidget {
     ];
 
     return SmCard(
-      title: 'l10n.defaultDashboardFilter',
+      title: l10n.defaultDashboardFilter,
       shadowColor: StackMoneyTheme.magentaNeon,
       child: ValueListenableBuilder<DashboardSortFilter?>(
         valueListenable: _currentValue,
@@ -38,13 +38,11 @@ class DashboardFilterCard extends StatelessWidget {
             runSpacing: AppSizes.sizedBoxSmall,
             alignment: WrapAlignment.center,
             children: options.map((option) {
-              final isSelected = option == currentFilter;
-
-              final techColor = isSelected
+              final techColor = option == currentFilter
                   ? StackMoneyTheme.cyanNeon
                   : StackMoneyTheme.mutedGrey;
 
-              final label = option?.label(l10n) ?? 'l10n.rememberLastFilter';
+              final label = option?.label(l10n) ?? l10n.rememberLast;
               final icon = option?.icon ?? Icons.history_rounded;
 
               return SmChipButton(
@@ -53,7 +51,7 @@ class DashboardFilterCard extends StatelessWidget {
                 icon: icon,
                 onTap: () {
                   _currentValue.value = option;
-                  onChanged.call(option);
+                  onChanged(option);
                 },
               );
             }).toList(),

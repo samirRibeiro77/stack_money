@@ -429,4 +429,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get exportJsonData => 'Exportar dados JSON';
+
+  @override
+  String get defaultDashboardFilter => 'Filtro da tela inicial';
+
+  @override
+  String get rememberLast => 'Ultimo usado';
 }

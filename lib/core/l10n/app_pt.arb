@@ -128,5 +128,7 @@
   "exportDataHistory": "Histórico: {qty}",
   "exportDataBuckets": "Caixinhas: {qty}",
   "exportDataJsonSize": "Tamanho do JSON: {kb}kb",
-  "exportJsonData": "Exportar dados JSON"
+  "exportJsonData": "Exportar dados JSON",
+  "defaultDashboardFilter": "Filtro da tela inicial",
+  "rememberLast": "Ultimo usado"
 }

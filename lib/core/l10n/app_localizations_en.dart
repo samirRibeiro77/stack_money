@@ -429,4 +429,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportJsonData => 'Export JSON data';
+
+  @override
+  String get defaultDashboardFilter => 'Dashboard default filter';
+
+  @override
+  String get rememberLast => 'Remember last';
 }

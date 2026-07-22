@@ -511,5 +511,13 @@
   "exportJsonData": "Export JSON data",
   "@exportJsonData": {
     "description": "Export json data button label."
+  },
+  "defaultDashboardFilter": "Dashboard default filter",
+  "@defaultDashboardFilter": {
+    "description": "Dashboard default filter for allocation buckets."
+  },
+  "rememberLast": "Remember last",
+  "@rememberLast": {
+    "description": "Remember the last dashboard filter for allocation buckets."
   }
 }
