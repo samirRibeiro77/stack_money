@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/widgets/tab_content.dart';
-import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
 import 'package:stack_money/features/settings/widgets/dashboard_filter_card.dart';
 import 'package:stack_money/features/settings/widgets/export_data_card.dart';
@@ -44,7 +43,7 @@ class SettingsScreen extends StatelessWidget {
               SizedBox(height: AppSizes.sizedBoxLarge),
               SystemPreferencesCard(),
               SizedBox(height: AppSizes.sizedBoxLarge),
-              DashboardFilterCard(initialValue: DashboardSortFilter.position, onChanged: (value) {  },),
+              DashboardFilterCard(onChanged: (value) {  },),
               SizedBox(height: AppSizes.sizedBoxLarge),
               ExportDataCard(),
               SizedBox(height: AppSizes.sizedBoxLarge * 2),

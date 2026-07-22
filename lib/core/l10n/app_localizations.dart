@@ -873,7 +873,7 @@ abstract class AppLocalizations {
   /// Dashboard default filter for allocation buckets.
   ///
   /// In en, this message translates to:
-  /// **'Dashboard default filter'**
+  /// **'Default filter'**
   String get defaultDashboardFilter;
 
   /// Remember the last dashboard filter for allocation buckets.

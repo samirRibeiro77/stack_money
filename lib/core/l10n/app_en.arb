@@ -512,7 +512,7 @@
   "@exportJsonData": {
     "description": "Export json data button label."
   },
-  "defaultDashboardFilter": "Dashboard default filter",
+  "defaultDashboardFilter": "Default filter",
   "@defaultDashboardFilter": {
     "description": "Dashboard default filter for allocation buckets."
   },

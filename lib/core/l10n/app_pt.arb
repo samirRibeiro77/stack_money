@@ -129,6 +129,6 @@
   "exportDataBuckets": "Caixinhas: {qty}",
   "exportDataJsonSize": "Tamanho do JSON: {kb}kb",
   "exportJsonData": "Exportar dados JSON",
-  "defaultDashboardFilter": "Filtro da tela inicial",
+  "defaultDashboardFilter": "Filtro padrão",
   "rememberLast": "Ultimo usado"
 }
