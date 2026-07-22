@@ -370,4 +370,69 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get start => 'Start';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get adminName => 'Admin name';
+
+  @override
+  String get adminEmail => 'Admin email';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get systemPreferences => 'System Preferences';
+
+  @override
+  String get enabled => 'Enabled';
+
+  @override
+  String get disabled => 'Disabled';
+
+  @override
+  String get securityModeTitle => 'Boot under security mode';
+
+  @override
+  String get securityModeCode => 'SYS.SECURE_MODE';
+
+  @override
+  String get cardExpandTitle => 'Open with cards expanded';
+
+  @override
+  String get cardExpandCode => 'DASH.CARDS_EXPAND';
+
+  @override
+  String get exportData => 'Export data';
+
+  @override
+  String exportDataPlans(Object qty) {
+    return 'Plans: $qty';
+  }
+
+  @override
+  String exportDataHistory(Object qty) {
+    return 'History logs: $qty';
+  }
+
+  @override
+  String exportDataBuckets(Object qty) {
+    return 'Buckets: $qty';
+  }
+
+  @override
+  String exportDataJsonSize(Object kb) {
+    return 'JSON size: ${kb}kb';
+  }
+
+  @override
+  String get exportJsonData => 'Export JSON data';
+
+  @override
+  String get defaultDashboardFilter => 'Default filter';
+
+  @override
+  String get rememberLast => 'Remember last';
 }

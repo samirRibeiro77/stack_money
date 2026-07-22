@@ -767,6 +767,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start'**
   String get start;
+
+  /// Settings page title.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// Username label.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin name'**
+  String get adminName;
+
+  /// Email label.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin email'**
+  String get adminEmail;
+
+  /// Logout from the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// System preferences title.
+  ///
+  /// In en, this message translates to:
+  /// **'System Preferences'**
+  String get systemPreferences;
+
+  /// Enabled value.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get enabled;
+
+  /// Disabled value.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get disabled;
+
+  /// Boot the app under security mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Boot under security mode'**
+  String get securityModeTitle;
+
+  /// Security mode code.
+  ///
+  /// In en, this message translates to:
+  /// **'SYS.SECURE_MODE'**
+  String get securityModeCode;
+
+  /// Expand cards on initialization.
+  ///
+  /// In en, this message translates to:
+  /// **'Open with cards expanded'**
+  String get cardExpandTitle;
+
+  /// Card expand code.
+  ///
+  /// In en, this message translates to:
+  /// **'DASH.CARDS_EXPAND'**
+  String get cardExpandCode;
+
+  /// Export data card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Export data'**
+  String get exportData;
+
+  /// Pans quantity to export.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans: {qty}'**
+  String exportDataPlans(Object qty);
+
+  /// History quantity to export.
+  ///
+  /// In en, this message translates to:
+  /// **'History logs: {qty}'**
+  String exportDataHistory(Object qty);
+
+  /// Bucket quantity to export.
+  ///
+  /// In en, this message translates to:
+  /// **'Buckets: {qty}'**
+  String exportDataBuckets(Object qty);
+
+  /// Json size in kbs.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON size: {kb}kb'**
+  String exportDataJsonSize(Object kb);
+
+  /// Export json data button label.
+  ///
+  /// In en, this message translates to:
+  /// **'Export JSON data'**
+  String get exportJsonData;
+
+  /// Dashboard default filter for allocation buckets.
+  ///
+  /// In en, this message translates to:
+  /// **'Default filter'**
+  String get defaultDashboardFilter;
+
+  /// Remember the last dashboard filter for allocation buckets.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember last'**
+  String get rememberLast;
 }
 
 class _AppLocalizationsDelegate

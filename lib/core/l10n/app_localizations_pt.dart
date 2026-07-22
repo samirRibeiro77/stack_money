@@ -370,4 +370,69 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get start => 'Começar';
+
+  @override
+  String get settings => 'Configurações';
+
+  @override
+  String get adminName => 'Nome';
+
+  @override
+  String get adminEmail => 'Email';
+
+  @override
+  String get logout => 'Sair';
+
+  @override
+  String get systemPreferences => 'Preferências de sistema';
+
+  @override
+  String get enabled => 'Habilitado';
+
+  @override
+  String get disabled => 'Desabilitado';
+
+  @override
+  String get securityModeTitle => 'Iniciar no modo seguro';
+
+  @override
+  String get securityModeCode => 'SISTEMA.MODO_SEGURO';
+
+  @override
+  String get cardExpandTitle => 'Expandir cards por padrão';
+
+  @override
+  String get cardExpandCode => 'PAINEL.CARDS_EXPANDIDOS';
+
+  @override
+  String get exportData => 'Exportar dados';
+
+  @override
+  String exportDataPlans(Object qty) {
+    return 'Planos: $qty';
+  }
+
+  @override
+  String exportDataHistory(Object qty) {
+    return 'Histórico: $qty';
+  }
+
+  @override
+  String exportDataBuckets(Object qty) {
+    return 'Caixinhas: $qty';
+  }
+
+  @override
+  String exportDataJsonSize(Object kb) {
+    return 'Tamanho do JSON: ${kb}kb';
+  }
+
+  @override
+  String get exportJsonData => 'Exportar dados JSON';
+
+  @override
+  String get defaultDashboardFilter => 'Filtro padrão';
+
+  @override
+  String get rememberLast => 'Ultimo usado';
 }

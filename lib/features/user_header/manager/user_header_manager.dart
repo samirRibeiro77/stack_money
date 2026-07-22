@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/contribution_sprint/contribution_sprint_screen.dart';
+import 'package:stack_money/features/settings/settings_screen.dart';
 
 class UserHeaderManager {
   final _planService = PlanManagementService();
@@ -18,8 +20,14 @@ class UserHeaderManager {
 
   String? get photoUrl => _user?.photoURL;
 
-  void openConfigs() {
-    SmLogger.debug('Open configs clicked', payload: {});
+  void openConfigs(BuildContext context) {
+    final isSecure = SecurityProvider.isSecureOf(context);
+
+    if (!isSecure) {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => SettingsScreen()));
+    }
   }
 
   void startMoneySprint(BuildContext context) {

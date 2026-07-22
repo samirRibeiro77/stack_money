@@ -443,5 +443,81 @@
   "start": "Start",
   "@start": {
     "description": "SnackBar action to start the money sprint."
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings page title."
+  },
+  "adminName": "Admin name",
+  "@adminName": {
+    "description": "Username label."
+  },
+  "adminEmail": "Admin email",
+  "@adminEmail": {
+    "description": "Email label."
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout from the app."
+  },
+  "systemPreferences": "System Preferences",
+  "@systemPreferences": {
+    "description": "System preferences title."
+  },
+  "enabled": "Enabled",
+  "@enabled": {
+    "description": "Enabled value."
+  },
+  "disabled": "Disabled",
+  "@disabled": {
+    "description": "Disabled value."
+  },
+  "securityModeTitle": "Boot under security mode",
+  "@securityModeTitle": {
+    "description": "Boot the app under security mode."
+  },
+  "securityModeCode": "SYS.SECURE_MODE",
+  "@securityModeCode": {
+    "description": "Security mode code."
+  },
+  "cardExpandTitle": "Open with cards expanded",
+  "@cardExpandTitle": {
+    "description": "Expand cards on initialization."
+  },
+  "cardExpandCode": "DASH.CARDS_EXPAND",
+  "@cardExpandCode": {
+    "description": "Card expand code."
+  },
+  "exportData": "Export data",
+  "@exportData": {
+    "description": "Export data card title."
+  },
+  "exportDataPlans": "Plans: {qty}",
+  "@exportDataPlans": {
+    "description": "Pans quantity to export."
+  },
+  "exportDataHistory": "History logs: {qty}",
+  "@exportDataHistory": {
+    "description": "History quantity to export."
+  },
+  "exportDataBuckets": "Buckets: {qty}",
+  "@exportDataBuckets": {
+    "description": "Bucket quantity to export."
+  },
+  "exportDataJsonSize": "JSON size: {kb}kb",
+  "@exportDataJsonSize": {
+    "description": "Json size in kbs."
+  },
+  "exportJsonData": "Export JSON data",
+  "@exportJsonData": {
+    "description": "Export json data button label."
+  },
+  "defaultDashboardFilter": "Default filter",
+  "@defaultDashboardFilter": {
+    "description": "Dashboard default filter for allocation buckets."
+  },
+  "rememberLast": "Remember last",
+  "@rememberLast": {
+    "description": "Remember the last dashboard filter for allocation buckets."
   }
 }
