@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/features/auth/manager/login_manager.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,6 +17,18 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final LoginManager _loginManager = LoginManager();
+
+  void _login(BuildContext context) async {
+    try {
+      await _loginManager.loginWithGoogle();
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -51,25 +65,44 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
 
                 /// Login with Google button
-                return ElevatedButton.icon(
-                  style: StackMoneyTheme.googleLoginButtonStyle,
-                  onPressed: () async {
-                    try {
-                      await _loginManager.loginWithGoogle();
-                    } catch (e) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(e.toString())),
-                        );
-                      }
-                    }
-                  },
-                  icon: const Icon(
-                    Icons.g_mobiledata_rounded,
-                    color: StackMoneyTheme.magentaNeon,
-                    size: AppSizes.x20,
+                return SizedBox(
+                  width: AppSizes.loginButtonWidth,
+                  child: GlassmorphismEffect(
+                    borderRadius: AppSizes.navBarRadius,
+                    containerHeight: AppSizes.x26,
+                    borderColor: StackMoneyTheme.magentaNeon,
+                    borderWidth: AppSizes.x2,
+                    child: InkWell(
+                      onTap: () => _login(context),
+                      borderRadius: BorderRadius.circular(
+                        AppSizes.navBarRadius,
+                      ),
+                      highlightColor: StackMoneyTheme.cyanNeon.withValues(
+                        alpha: 0.1,
+                      ),
+                      splashColor: StackMoneyTheme.cyanNeon.withValues(
+                        alpha: 0.15,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.g_mobiledata_rounded,
+                            color: StackMoneyTheme.magentaNeon,
+                            size: AppSizes.x20,
+                          ),
+                          const SizedBox(width: AppSizes.sizedBoxMedium),
+                          Text(
+                            l10n.loginWithGoogle,
+                            style: textTheme.titleSmall?.copyWith(
+                              fontWeight: AppTypography.weightBold,
+                              color: StackMoneyTheme.cyanNeon,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  label: Text(l10n.loginWithGoogle),
                 );
               },
             ),
