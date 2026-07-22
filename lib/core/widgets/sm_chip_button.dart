@@ -8,7 +8,7 @@ class SmChipButton extends StatelessWidget {
   const SmChipButton(
     this.title, {
     this.color = StackMoneyTheme.cyanNeon,
-        this.icon,
+    this.icon,
     this.onTap,
     super.key,
   });
@@ -53,7 +53,7 @@ class SmChipButton extends StatelessWidget {
               style: textTheme.labelSmall?.copyWith(
                 fontSize: AppTypography.fontSmallest,
                 color: color,
-              )
+              ),
             ),
             Text(
               ' ]',
@@ -61,7 +61,7 @@ class SmChipButton extends StatelessWidget {
                 fontSize: AppTypography.fontSmallest,
                 color: color,
               ),
-            )
+            ),
           ],
         ),
       ),
