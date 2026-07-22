@@ -46,7 +46,7 @@ class UserModel {
     };
 
     if (keepPrefs) {
-      userMap[ModelKey.preferences] = preferences?.toJson();
+      userMap[ModelKey.preferences] = preferences.toJson();
     }
 
     return userMap;
