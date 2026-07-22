@@ -7,7 +7,7 @@ class UserModel {
   final String name;
   final String email;
   final String photoUrl;
-  final UserPreferencesModel preferences;
+  final UserPreferencesModel? preferences;
 
   const UserModel({
     required this.uid,
@@ -23,7 +23,7 @@ class UserModel {
       name: json?[ModelKey.name] as String? ?? '',
       email: json?[ModelKey.email] as String? ?? '',
       photoUrl: json?[ModelKey.photoUrl] as String? ?? '',
-      preferences: UserPreferencesModel.fromJson(json?[ModelKey.preferences] as Map<String, Object?>),
+      preferences: UserPreferencesModel.fromJson(json?[ModelKey.preferences] as Map<String, Object?>?),
     );
   }
 
@@ -37,14 +37,19 @@ class UserModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
+  Map<String, Object?> toJson({bool keepPrefs = false}) {
+    final userMap = <String, Object?>{
       ModelKey.uid: uid,
       ModelKey.name: name,
       ModelKey.email: email,
       ModelKey.photoUrl: photoUrl,
-      ModelKey.preferences: preferences.toJson(),
     };
+
+    if (keepPrefs) {
+      userMap[ModelKey.preferences] = preferences?.toJson();
+    }
+
+    return userMap;
   }
 
   UserModel copyWith({

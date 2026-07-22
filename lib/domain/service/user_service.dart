@@ -1,46 +1,59 @@
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:stack_money/core/exceptions/exception_scope.dart';
-import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/data/models/user_model.dart';
+import 'package:stack_money/data/models/user_preferences_model.dart';
+import 'package:stack_money/data/repository/firebase_user_repository.dart';
+import 'package:stack_money/data/repository/shared_preferences_repository.dart';
 
 class UserService {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final _localRepo = SharedPreferencesRepository();
+  final _remoteRepo = FirebaseUserRepository();
 
-  Stream<User?> Function() get authStateChanges =>
-      _firebaseAuth.authStateChanges;
+  Stream<User?> Function() get authStateChanges => _remoteRepo.authStateChanges;
 
-  User? get currentUser => _firebaseAuth.currentUser;
+  User? get currentUser => _remoteRepo.currentUser;
 
-  Future<User?> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null; // Operation aborted by the user
+  Future<UserModel> fetchUserData() async {
+    final remoteUser = await _remoteRepo.get();
+    final localPrefs = await _localRepo.get();
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      final UserCredential userCredential = await _firebaseAuth
-          .signInWithCredential(credential);
-      return userCredential.user;
-    } catch (e, stack) {
-      throw StackMoneyException(
-        message: 'Google authentication protocol failed',
-        scope: ExceptionScope.auth,
-        payload: {'exception': e},
-        stackTrace: stack,
-      );
+    if (localPrefs != null) {
+      return remoteUser.copyWith(preferences: localPrefs);
+    } else {
+      if (remoteUser.preferences != null) {
+        await _localRepo.save(remoteUser.preferences!);
+      }
+      return remoteUser;
     }
   }
 
-  /// Revokes active session tokens from both Google and Firebase environments.
+  Future<void> updatePreferences(
+    UserModel currentUserModel,
+    UserPreferencesModel newPreferences,
+  ) async {
+    final updatedUser = currentUserModel.copyWith(preferences: newPreferences);
+
+    await _localRepo.save(newPreferences);
+
+    unawaited(_remoteRepo.save(updatedUser, savePrefs: true));
+  }
+
+  Future<void> updateName(UserModel currentUserModel, String newName) async {
+    final updatedUser = currentUserModel.copyWith(name: newName);
+
+    unawaited(_remoteRepo.save(updatedUser, savePrefs: false));
+  }
+
+  Future<User?> signInWithGoogle() async {
+    final user = await _remoteRepo.signInWithGoogle();
+    if (user != null) {
+      await fetchUserData();
+    }
+    return user;
+  }
+
   Future<void> signOut() async {
-    await _googleSignIn.signOut();
-    await _firebaseAuth.signOut();
+    await _localRepo.clear();
+    await _remoteRepo.signOut();
   }
 }

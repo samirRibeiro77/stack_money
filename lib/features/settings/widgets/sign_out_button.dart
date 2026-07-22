@@ -8,7 +8,7 @@ import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/domain/service/user_service.dart';
 
 class SignOutButton extends StatelessWidget {
-  final _authService = UserService();
+  final _userService = UserService();
   static final _color = StackMoneyTheme.magentaNeon;
 
   SignOutButton({super.key});
@@ -24,7 +24,7 @@ class SignOutButton extends StatelessWidget {
       borderColor: _color,
       borderWidth: AppSizes.min,
       child: InkWell(
-        onTap: _authService.signOut,
+        onTap: _userService.signOut,
         borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
         highlightColor: _color.withValues(alpha: 0.1),
         splashColor: _color.withValues(alpha: 0.15),
