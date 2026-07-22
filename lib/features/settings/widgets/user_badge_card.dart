@@ -1,28 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/user_settings_scope.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
 
 class UserIdBadgeCard extends StatelessWidget {
-  final String avatarUrl;
-  final String email;
-  final TextEditingController nameController;
-
-  const UserIdBadgeCard({
-    super.key,
-    required this.avatarUrl,
-    required this.email,
-    required this.nameController,
-  });
+  const UserIdBadgeCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
-    final emailController = TextEditingController();
-    emailController.text = email;
+    final manager = UserSettingsScope.of(context);
 
     return Stack(
       clipBehavior: Clip.none,
@@ -53,7 +44,7 @@ class UserIdBadgeCard extends StatelessWidget {
               children: [
                 const SizedBox(height: AppSizes.avatarPadding - 15),
                 TextFormField(
-                  controller: nameController,
+                  controller: manager.nameController,
                   style: textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -66,7 +57,7 @@ class UserIdBadgeCard extends StatelessWidget {
                 IgnorePointer(
                   ignoring: true,
                   child: TextFormField(
-                    controller: emailController,
+                    controller: manager.emailController,
                     style: textTheme.bodyMedium,
                     decoration: StackMoneyTheme.inputDecoration(
                       l10n.adminEmail,
@@ -85,9 +76,14 @@ class UserIdBadgeCard extends StatelessWidget {
           top: 0,
           child: GestureDetector(
             onTap: () => SmLogger.info('Clicked to change profile image'),
-            child: CircleAvatar(
-              radius: AppSizes.avatarRadius,
-              backgroundImage: NetworkImage(avatarUrl),
+            child: ValueListenableBuilder(
+              valueListenable: manager.photoUrl,
+              builder: (_, photoUrl, _) {
+                return CircleAvatar(
+                  radius: AppSizes.avatarRadius,
+                  backgroundImage: NetworkImage(photoUrl),
+                );
+              },
             ),
           ),
         ),

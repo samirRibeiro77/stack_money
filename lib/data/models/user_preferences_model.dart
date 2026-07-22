@@ -7,8 +7,8 @@ class UserPreferencesModel {
   final DashboardSortFilter? defaultFilter;
 
   const UserPreferencesModel({
-    this.securityMode = false,
-    this.cardExpand = true,
+    this.securityMode = true,
+    this.cardExpand = false,
     this.defaultFilter,
   });
 
@@ -18,8 +18,8 @@ class UserPreferencesModel {
     }
 
     return UserPreferencesModel(
-      securityMode: json[ModelKey.securityMode] as bool? ?? false,
-      cardExpand: json[ModelKey.cardExpand] as bool? ?? true,
+      securityMode: json[ModelKey.securityMode] as bool? ?? true,
+      cardExpand: json[ModelKey.cardExpand] as bool? ?? false,
       defaultFilter: DashboardSortFilter.fromJson(
         json[ModelKey.defaultFilter] as String?,
       ),

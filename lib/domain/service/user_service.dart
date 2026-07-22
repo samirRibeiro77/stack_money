@@ -13,6 +13,10 @@ class UserService {
 
   User? get currentUser => _remoteRepo.currentUser;
 
+  Future<void> save(UserModel user) async {
+    _remoteRepo.save(user);
+  }
+
   Future<UserModel> fetchUserData() async {
     final remoteUser = await _remoteRepo.get();
     final localPrefs = await _localRepo.get();
@@ -20,9 +24,7 @@ class UserService {
     if (localPrefs != null) {
       return remoteUser.copyWith(preferences: localPrefs);
     } else {
-      if (remoteUser.preferences != null) {
-        await _localRepo.save(remoteUser.preferences!);
-      }
+      await _localRepo.save(remoteUser.preferences);
       return remoteUser;
     }
   }
@@ -36,12 +38,6 @@ class UserService {
     await _localRepo.save(newPreferences);
 
     unawaited(_remoteRepo.save(updatedUser, savePrefs: true));
-  }
-
-  Future<void> updateName(UserModel currentUserModel, String newName) async {
-    final updatedUser = currentUserModel.copyWith(name: newName);
-
-    unawaited(_remoteRepo.save(updatedUser, savePrefs: false));
   }
 
   Future<User?> signInWithGoogle() async {

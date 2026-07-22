@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/user_settings_scope.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
@@ -8,13 +9,12 @@ import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 
 class DashboardFilterCard extends StatelessWidget {
-  DashboardFilterCard({super.key});
-
-  final _currentValue = ValueNotifier<DashboardSortFilter?>(null);
+  const DashboardFilterCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final manager = UserSettingsScope.of(context);
 
     final options = <DashboardSortFilter?>[null, ...DashboardSortFilter.values];
 
@@ -22,7 +22,7 @@ class DashboardFilterCard extends StatelessWidget {
       title: l10n.defaultDashboardFilter,
       shadowColor: StackMoneyTheme.magentaNeon,
       child: ValueListenableBuilder<DashboardSortFilter?>(
-        valueListenable: _currentValue,
+        valueListenable: manager.defaultFilter,
         builder: (_, currentFilter, _) {
           return Wrap(
             spacing: AppSizes.sizedBoxSmall,
@@ -40,13 +40,7 @@ class DashboardFilterCard extends StatelessWidget {
                 label,
                 color: techColor,
                 icon: icon,
-                onTap: () {
-                  SmLogger.debug(
-                    'Default filter changed',
-                    payload: {'from': _currentValue.value, 'to': option},
-                  );
-                  _currentValue.value = option;
-                },
+                onTap: () => manager.updateDefaultFilter(option),
               );
             }).toList(),
           );

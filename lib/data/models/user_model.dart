@@ -7,7 +7,7 @@ class UserModel {
   final String name;
   final String email;
   final String photoUrl;
-  final UserPreferencesModel? preferences;
+  final UserPreferencesModel preferences;
 
   const UserModel({
     required this.uid,
