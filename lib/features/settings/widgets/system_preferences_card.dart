@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
-import 'package:stack_money/features/configs/widgets/settings_switch_tile.dart';
+import 'package:stack_money/features/settings/widgets/settings_switch_tile.dart';
 
 class SystemPreferencesCard extends StatelessWidget {
   SystemPreferencesCard({super.key});

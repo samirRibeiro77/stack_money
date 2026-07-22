@@ -6,8 +6,8 @@ import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/domain/service/auth_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
-import 'package:stack_money/features/configs/config_screen.dart';
 import 'package:stack_money/features/contribution_sprint/contribution_sprint_screen.dart';
+import 'package:stack_money/features/settings/settings_screen.dart';
 
 class UserHeaderManager {
   final _planService = PlanManagementService();
@@ -26,7 +26,7 @@ class UserHeaderManager {
     if (!isSecure) {
       Navigator.of(
         context,
-      ).push(MaterialPageRoute(builder: (_) => ConfigScreen()));
+      ).push(MaterialPageRoute(builder: (_) => SettingsScreen()));
     }
   }
 
