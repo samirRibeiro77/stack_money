@@ -17,15 +17,28 @@ class ExportDataCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
+    final detailsTextTheme = textTheme.bodyMedium?.copyWith(
+      decoration: TextDecoration.underline,
+    );
 
     return SmCard(
       title: l10n.exportData,
       child: Column(
         children: [
-          Text(l10n.exportDataMessage),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(l10n.exportDataPlans(4), style: detailsTextTheme),
+              Text(l10n.exportDataBuckets(11), style: detailsTextTheme),
+              Text(l10n.exportDataHistory(25), style: detailsTextTheme),
+            ],
+          ),
+          SizedBox(height: AppSizes.sizedBoxSmall),
           Text(
-            'Details about size, how many plans/bucket/history... Stuff like that!',
-            style: textTheme.labelSmall,
+            l10n.exportDataJsonSize(123),
+            style: textTheme.bodyMedium?.copyWith(
+              fontWeight: AppTypography.weightBold,
+            ),
           ),
           SizedBox(height: AppSizes.sizedBoxLarge),
           GlassmorphismEffect(

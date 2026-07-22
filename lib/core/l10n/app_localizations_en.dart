@@ -405,7 +405,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportData => 'Export data';
 
   @override
-  String get exportDataMessage => 'Message to export data goes here';
+  String exportDataPlans(Object qty) {
+    return 'Plans: $qty';
+  }
+
+  @override
+  String exportDataHistory(Object qty) {
+    return 'History logs: $qty';
+  }
+
+  @override
+  String exportDataBuckets(Object qty) {
+    return 'Buckets: $qty';
+  }
+
+  @override
+  String exportDataJsonSize(Object kb) {
+    return 'JSON size: ${kb}kb';
+  }
 
   @override
   String get exportJsonData => 'Export JSON data';

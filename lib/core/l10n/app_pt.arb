@@ -123,6 +123,9 @@
   "cardExpandTitle": "Expandir cards por padrão",
   "cardExpandCode": "PAINEL.CARDS_EXPANDIDOS",
   "exportData": "Exportar dados",
-  "exportDataMessage": "Mensagem para extração de dados vai aqui",
+  "exportDataPlans": "Planos: {qty}",
+  "exportDataHistory": "Histórico: {qty}",
+  "exportDataBuckets": "Caixinhas: {qty}",
+  "exportDataJsonSize": "Tamanho do JSON: {kb}kb",
   "exportJsonData": "Exportar dados JSON"
 }

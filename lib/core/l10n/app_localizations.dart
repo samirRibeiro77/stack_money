@@ -834,11 +834,29 @@ abstract class AppLocalizations {
   /// **'Export data'**
   String get exportData;
 
-  /// Export data message.
+  /// Pans quantity to export.
   ///
   /// In en, this message translates to:
-  /// **'Message to export data goes here'**
-  String get exportDataMessage;
+  /// **'Plans: {qty}'**
+  String exportDataPlans(Object qty);
+
+  /// History quantity to export.
+  ///
+  /// In en, this message translates to:
+  /// **'History logs: {qty}'**
+  String exportDataHistory(Object qty);
+
+  /// Bucket quantity to export.
+  ///
+  /// In en, this message translates to:
+  /// **'Buckets: {qty}'**
+  String exportDataBuckets(Object qty);
+
+  /// Json size in kbs.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON size: {kb}kb'**
+  String exportDataJsonSize(Object kb);
 
   /// Export json data button label.
   ///

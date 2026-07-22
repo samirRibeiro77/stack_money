@@ -28,21 +28,23 @@ class ConfigScreen extends StatelessWidget {
         ),
         title: Text('Settings'),
       ),
-      body: TabContent(
-        child: Column(
-          children: [
-            UserIdBadgeCard(
-              avatarUrl: user.photoURL ?? '',
-              email: user.email ?? '',
-              nameController: _nameController,
-            ),
-            SizedBox(height: AppSizes.sizedBoxLarge),
-            SystemPreferencesCard(),
-            SizedBox(height: AppSizes.sizedBoxLarge),
-            ExportDataCard(),
-            SizedBox(height: AppSizes.sizedBoxLarge * 2),
-            SignOutButton(),
-          ],
+      body: SingleChildScrollView(
+        child: TabContent(
+          child: Column(
+            children: [
+              UserIdBadgeCard(
+                avatarUrl: user.photoURL ?? '',
+                email: user.email ?? '',
+                nameController: _nameController,
+              ),
+              SizedBox(height: AppSizes.sizedBoxLarge),
+              SystemPreferencesCard(),
+              SizedBox(height: AppSizes.sizedBoxLarge),
+              ExportDataCard(),
+              SizedBox(height: AppSizes.sizedBoxLarge * 2),
+              SignOutButton(),
+            ],
+          ),
         ),
       ),
     );
