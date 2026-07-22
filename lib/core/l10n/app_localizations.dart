@@ -768,6 +768,12 @@ abstract class AppLocalizations {
   /// **'Start'**
   String get start;
 
+  /// Settings page title.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
   /// Username label.
   ///
   /// In en, this message translates to:

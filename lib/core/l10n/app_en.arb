@@ -444,6 +444,10 @@
   "@start": {
     "description": "SnackBar action to start the money sprint."
   },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings page title."
+  },
   "adminName": "Admin name",
   "@adminName": {
     "description": "Username label."

@@ -372,6 +372,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get start => 'Começar';
 
   @override
+  String get settings => 'Configurações';
+
+  @override
   String get adminName => 'Nome';
 
   @override

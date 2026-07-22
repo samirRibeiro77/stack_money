@@ -372,6 +372,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get start => 'Start';
 
   @override
+  String get settings => 'Settings';
+
+  @override
   String get adminName => 'Admin name';
 
   @override

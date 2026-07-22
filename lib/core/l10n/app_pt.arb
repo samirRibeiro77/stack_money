@@ -112,6 +112,7 @@
   "failDeleteBucketWithValue": "Caixinha tem 'VALOR_MINIMO' preenchido, não pode ser deletada",
   "planMoneySprintDay": "Dia planejado de atualizar seu dinheiro",
   "start": "Começar",
+  "settings": "Configurações",
   "adminName": "Nome",
   "adminEmail": "Email",
   "logout": "Sair",
