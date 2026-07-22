@@ -5,10 +5,10 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
-import 'package:stack_money/domain/service/auth_service.dart';
+import 'package:stack_money/domain/service/user_service.dart';
 
 class SignOutButton extends StatelessWidget {
-  final _authService = AuthService();
+  final _authService = UserService();
   static final _color = StackMoneyTheme.magentaNeon;
 
   SignOutButton({super.key});
