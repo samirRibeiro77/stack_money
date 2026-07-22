@@ -8,11 +8,13 @@ class SmChipButton extends StatelessWidget {
   const SmChipButton(
     this.title, {
     this.color = StackMoneyTheme.cyanNeon,
+        this.icon,
     this.onTap,
     super.key,
   });
 
   final String title;
+  final IconData? icon;
   final VoidCallback? onTap;
   final Color color;
 
@@ -32,12 +34,35 @@ class SmChipButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSizes.x2),
           border: Border.all(color: color, width: 0.5),
         ),
-        child: Text(
-          '[ ${StackMoneyString.formatTitle(title)} ]',
-          style: textTheme.labelSmall?.copyWith(
-            fontSize: AppTypography.fontSmallest,
-            color: color,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '[ ',
+              style: textTheme.labelSmall?.copyWith(
+                fontSize: AppTypography.fontSmallest,
+                color: color,
+              ),
+            ),
+            if (icon != null) ...[
+              Icon(icon, color: color, size: AppSizes.x6),
+              SizedBox(width: AppSizes.x3),
+            ],
+            Text(
+              StackMoneyString.formatTitle(title),
+              style: textTheme.labelSmall?.copyWith(
+                fontSize: AppTypography.fontSmallest,
+                color: color,
+              )
+            ),
+            Text(
+              ' ]',
+              style: textTheme.labelSmall?.copyWith(
+                fontSize: AppTypography.fontSmallest,
+                color: color,
+              ),
+            )
+          ],
         ),
       ),
     );

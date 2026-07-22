@@ -44,10 +44,12 @@ class SmCard extends StatelessWidget {
             : [],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (title != null) ...[
-            TitleText(title!),
+            Align(
+              alignment: Alignment.topLeft,
+              child: TitleText(title!),
+            ),
             const SizedBox(height: AppSizes.x8),
           ],
 
