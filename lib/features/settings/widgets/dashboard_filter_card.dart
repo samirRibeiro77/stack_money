@@ -2,30 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 
 class DashboardFilterCard extends StatelessWidget {
-  final DashboardSortFilter? initialValue;
-  final ValueChanged<DashboardSortFilter?> onChanged;
+  DashboardFilterCard({super.key});
 
-  DashboardFilterCard({
-    this.initialValue,
-    required this.onChanged,
-    super.key,
-  }) : _currentValue = ValueNotifier<DashboardSortFilter?>(initialValue);
-
-  final ValueNotifier<DashboardSortFilter?> _currentValue;
+  final _currentValue = ValueNotifier<DashboardSortFilter?>(null);
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    final options = <DashboardSortFilter?>[
-      null,
-      ...DashboardSortFilter.values,
-    ];
+    final options = <DashboardSortFilter?>[null, ...DashboardSortFilter.values];
 
     return SmCard(
       title: l10n.defaultDashboardFilter,
@@ -50,8 +41,11 @@ class DashboardFilterCard extends StatelessWidget {
                 color: techColor,
                 icon: icon,
                 onTap: () {
+                  SmLogger.debug(
+                    'Default filter changed',
+                    payload: {'from': _currentValue.value, 'to': option},
+                  );
                   _currentValue.value = option;
-                  onChanged(option);
                 },
               );
             }).toList(),

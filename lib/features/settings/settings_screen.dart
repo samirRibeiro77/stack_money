@@ -43,7 +43,7 @@ class SettingsScreen extends StatelessWidget {
               SizedBox(height: AppSizes.sizedBoxLarge),
               SystemPreferencesCard(),
               SizedBox(height: AppSizes.sizedBoxLarge),
-              DashboardFilterCard(onChanged: (value) {  },),
+              DashboardFilterCard(),
               SizedBox(height: AppSizes.sizedBoxLarge),
               ExportDataCard(),
               SizedBox(height: AppSizes.sizedBoxLarge * 2),
