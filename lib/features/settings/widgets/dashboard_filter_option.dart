@@ -37,7 +37,7 @@ class DashboardFilterOption extends StatelessWidget {
       containerHeight: AppSizes.x16,
       borderColor: techColor,
       backgroundColor: StackMoneyTheme.background,
-      borderWidth: AppSizes.min,
+      borderWidth: isSelected ? AppSizes.min : (AppSizes.min/2),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppSizes.radiusMedium),

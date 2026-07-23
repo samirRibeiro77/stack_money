@@ -504,7 +504,7 @@
   "@exportDataPlans": {
     "description": "Pans quantity to export."
   },
-  "exportDataHistory": "History logs: {qty}",
+  "exportDataHistory": "History: {qty}",
   "@exportDataHistory": {
     "description": "History quantity to export."
   },
@@ -512,9 +512,9 @@
   "@exportDataBuckets": {
     "description": "Bucket quantity to export."
   },
-  "exportDataJsonSize": "JSON size: {kb}kb",
+  "exportDataJsonSize": "JSON size: {size}",
   "@exportDataJsonSize": {
-    "description": "Json size in kbs."
+    "description": "Json size."
   },
   "exportJsonData": "Export JSON data",
   "@exportJsonData": {
