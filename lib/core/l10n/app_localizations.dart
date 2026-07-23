@@ -861,7 +861,7 @@ abstract class AppLocalizations {
   /// History quantity to export.
   ///
   /// In en, this message translates to:
-  /// **'History logs: {qty}'**
+  /// **'History: {qty}'**
   String exportDataHistory(Object qty);
 
   /// Bucket quantity to export.
@@ -870,11 +870,11 @@ abstract class AppLocalizations {
   /// **'Buckets: {qty}'**
   String exportDataBuckets(Object qty);
 
-  /// Json size in kbs.
+  /// Json size.
   ///
   /// In en, this message translates to:
-  /// **'JSON size: {kb}kb'**
-  String exportDataJsonSize(Object kb);
+  /// **'JSON size: {size}'**
+  String exportDataJsonSize(Object size);
 
   /// Export json data button label.
   ///

@@ -10,12 +10,15 @@ import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
+import 'package:stack_money/data/models/data_export_model.dart';
 import 'package:stack_money/data/models/user_model.dart';
 import 'package:stack_money/data/models/user_preferences_model.dart';
+import 'package:stack_money/domain/service/export_service.dart';
 import 'package:stack_money/domain/service/user_service.dart';
 
 class UserSettingsManager {
   final UserService _userService = UserService();
+  final _exportService = ExportService();
 
   late UserModel _initialUser;
   late UserModel _currentUser;
@@ -27,6 +30,7 @@ class UserSettingsManager {
   final _cardExpand = ValueNotifier<bool>(false);
   final _defaultFilter = ValueNotifier<DashboardSortFilter?>(null);
   final _photoUrl = ValueNotifier<String>('');
+  final _dataExport = ValueNotifier<DataExportModel>(DataExportModel.empty());
 
   ValueListenable<bool> get isSaving => _isSaving;
 
@@ -37,6 +41,8 @@ class UserSettingsManager {
   ValueListenable<DashboardSortFilter?> get defaultFilter => _defaultFilter;
 
   ValueListenable<String> get photoUrl => _photoUrl;
+
+  ValueListenable<DataExportModel> get dataExport => _dataExport;
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -158,11 +164,6 @@ class UserSettingsManager {
         note: diffNote(l10n),
         onConfirm: () async {
           final success = await _saveAllChanges(context);
-
-          if (!success && dialogContext.mounted) {
-            _failedSaveUser(context);
-          }
-
           if (dialogContext.mounted) {
             Navigator.of(dialogContext).pop(success);
           }
@@ -174,16 +175,26 @@ class UserSettingsManager {
     return shouldLeave ?? false;
   }
 
-  void _failedSaveUser(BuildContext context) {
+  Future<void> prepareDataToExport() async {
+    _dataExport.value =
+        await _exportService.prepareSharedJson() ?? DataExportModel.empty();
+  }
+
+  void shareData() {
+    _exportService.shareExportFile(_dataExport.value);
+  }
+
+  void _failedAction(
+    String message,
+    BuildContext context, {
+    SnackBarAction? action,
+  }) {
     final l10n = AppLocalizations.of(context)!;
 
     SmSnackBar(
       message: l10n.failedToSaveUser,
       type: SnackBarType.error,
-      action: SnackBarAction(
-        label: l10n.retry,
-        onPressed: () => _saveAllChanges(context),
-      ),
+      action: action,
     ).show(context);
   }
 
@@ -191,6 +202,8 @@ class UserSettingsManager {
     if (!isDirty) return true;
 
     _isSaving.value = true;
+
+    final l10n = AppLocalizations.of(context)!;
 
     final newPreferences = UserPreferencesModel(
       securityMode: _securityMode.value,
@@ -221,7 +234,14 @@ class UserSettingsManager {
       );
 
       if (context.mounted) {
-        _failedSaveUser(context);
+        _failedAction(
+          l10n.failedToSaveUser,
+          context,
+          action: SnackBarAction(
+            label: l10n.retry,
+            onPressed: () => _saveAllChanges(context),
+          ),
+        );
       }
 
       return false;
@@ -238,5 +258,6 @@ class UserSettingsManager {
     _cardExpand.dispose();
     _defaultFilter.dispose();
     _photoUrl.dispose();
+    _dataExport.dispose();
   }
 }

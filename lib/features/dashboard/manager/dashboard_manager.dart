@@ -3,7 +3,7 @@ import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
-import 'package:stack_money/data/enum/dashboard_sort_filter.dart'; // 🔥 Novo Enum
+import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
@@ -22,7 +22,6 @@ class DashboardManager {
   final ValueNotifier<List<History>> _realHistoryTimeline = ValueNotifier([]);
   final ValueNotifier<Set<String>> _expandedBucketIds = ValueNotifier({});
 
-  // 🔥 NOVO: Controle de estado da ordenação ativa do Dashboard (padrão: position)
   final ValueNotifier<DashboardSortFilter> _sortFilter = ValueNotifier(
     DashboardSortFilter.position,
   );

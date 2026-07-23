@@ -129,7 +129,7 @@
   "exportDataPlans": "Planos: {qty}",
   "exportDataHistory": "Histórico: {qty}",
   "exportDataBuckets": "Caixinhas: {qty}",
-  "exportDataJsonSize": "Tamanho do JSON: {kb}kb",
+  "exportDataJsonSize": "Tamanho do JSON: {size}",
   "exportJsonData": "Exportar dados JSON",
   "rememberLast": "Ultimo usado",
   "settingsChangedTitle": "Alterações",

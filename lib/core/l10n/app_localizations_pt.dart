@@ -429,8 +429,8 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String exportDataJsonSize(Object kb) {
-    return 'Tamanho do JSON: ${kb}kb';
+  String exportDataJsonSize(Object size) {
+    return 'Tamanho do JSON: $size';
   }
 
   @override

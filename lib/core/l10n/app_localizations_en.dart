@@ -420,7 +420,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String exportDataHistory(Object qty) {
-    return 'History logs: $qty';
+    return 'History: $qty';
   }
 
   @override
@@ -429,8 +429,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String exportDataJsonSize(Object kb) {
-    return 'JSON size: ${kb}kb';
+  String exportDataJsonSize(Object size) {
+    return 'JSON size: $size';
   }
 
   @override

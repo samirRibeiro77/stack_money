@@ -25,31 +25,36 @@ class GlassmorphismEffect extends StatelessWidget {
   final BorderRadiusGeometry? borderRadiusSpec;
   final BoxBorder? borderSpec;
 
+  static final _sigma = 7.0;
+
   @override
   Widget build(BuildContext context) {
     final borderColorFixed = borderColor ?? StackMoneyTheme.mutedGrey;
     final backgroundColorFixed = backgroundColor ?? StackMoneyTheme.carbonGrey;
 
-    return ClipRRect(
-      borderRadius: borderRadiusSpec ?? BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          height: containerHeight,
-          decoration: BoxDecoration(
-            color: backgroundColorFixed.withValues(alpha: 0.25),
-            borderRadius:
-                borderRadiusSpec ?? BorderRadius.circular(borderRadius),
-            border:
-                borderSpec ??
-                Border.all(
-                  color: borderColorFixed.withValues(alpha: 0.30),
-                  width: borderWidth,
-                ),
+    return Material(
+      color: Colors.transparent,
+      child: ClipRRect(
+        borderRadius: borderRadiusSpec ?? BorderRadius.circular(borderRadius),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: _sigma, sigmaY: _sigma),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            height: containerHeight,
+            decoration: BoxDecoration(
+              color: backgroundColorFixed.withValues(alpha: 0.25),
+              borderRadius:
+              borderRadiusSpec ?? BorderRadius.circular(borderRadius),
+              border:
+              borderSpec ??
+                  Border.all(
+                    color: borderColorFixed.withValues(alpha: 0.30),
+                    width: borderWidth,
+                  ),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: AppSizes.x4),
+            child: child,
           ),
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.x4),
-          child: child,
         ),
       ),
     );
