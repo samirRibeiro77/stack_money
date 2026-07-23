@@ -37,7 +37,7 @@ class UserPreferencesModel {
     return {
       ModelKey.securityMode: securityMode,
       ModelKey.cardExpand: cardExpand,
-      ModelKey.lastFilter: lastFilter,
+      ModelKey.lastFilter: lastFilter.name,
       ModelKey.defaultFilter: defaultFilter?.name,
     };
   }
