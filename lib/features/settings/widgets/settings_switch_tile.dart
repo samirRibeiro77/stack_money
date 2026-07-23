@@ -51,7 +51,7 @@ class SettingsSwitchTile extends StatelessWidget {
           ),
           Switch.adaptive(
             value: value,
-            activeTrackColor: StackMoneyTheme.magentaNeon,
+            activeTrackColor: StackMoneyTheme.cyanNeon.withValues(alpha: 0.75),
             activeThumbColor: StackMoneyTheme.surface,
             inactiveTrackColor: StackMoneyTheme.surface,
             onChanged: onChanged,
