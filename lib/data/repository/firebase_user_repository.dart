@@ -4,7 +4,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/user_model.dart';
+import 'package:stack_money/data/models/user_preferences_model.dart';
 import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
 class FirebaseUserRepository extends BaseFirebaseRepository {
@@ -27,6 +29,13 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
       return defaultUser;
     }
     return UserModel.fromJson(doc.data()!);
+  }
+
+  Future<UserPreferencesModel> getPreferences() async {
+    final doc = await getUserDoc().get();
+    return UserPreferencesModel.fromJson(
+      doc.data()?[ModelKey.preferences] as Map<String, Object?>?,
+    );
   }
 
   Future<User?> signInWithGoogle() async {
