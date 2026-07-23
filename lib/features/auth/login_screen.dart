@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       await _loginManager.loginWithGoogle();
-    } catch (e) {
+    } catch (_) {
       if (context.mounted) {
         SmSnackBar(
           message: l10n.failedToSignIn,
@@ -97,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: StackMoneyTheme.magentaNeon,
                             size: AppSizes.x20,
                           ),
-                          const SizedBox(width: AppSizes.sizedBoxMedium),
+                          const SizedBox(width: AppSizes.sizedBoxSmall),
                           Text(
                             l10n.loginWithGoogle,
                             style: textTheme.titleSmall?.copyWith(

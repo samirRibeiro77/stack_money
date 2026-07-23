@@ -2,17 +2,24 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/models/user_preferences_model.dart';
 
 class SharedPreferencesRepository {
   static const _userKeyPrefix = 'stack_money_preferences';
 
   Future<void> save(UserPreferencesModel preferences) async {
+    SmLogger.debug(
+      'Saving preferences',
+      payload: {'prefs': preferences.toJson()},
+    );
+
     try {
       final prefs = await SharedPreferences.getInstance();
       final jsonString = jsonEncode(preferences.toJson());
       await prefs.setString(_userKeyPrefix, jsonString);
-    } catch(e, stack) {
+      SmLogger.info('Preferences saved successfully');
+    } catch (e, stack) {
       StackMoneyException(
         message: 'Error saving values on Shared Preferences',
         scope: ExceptionScope.database,
