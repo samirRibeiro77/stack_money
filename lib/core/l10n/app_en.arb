@@ -448,11 +448,11 @@
   "@settings": {
     "description": "Settings page title."
   },
-  "adminName": "Admin name",
+  "adminName": "ADMIN_NAME",
   "@adminName": {
     "description": "Username label."
   },
-  "adminEmail": "Admin email",
+  "adminEmail": "ADMIN_EMAIL",
   "@adminEmail": {
     "description": "Email label."
   },
@@ -488,6 +488,10 @@
   "@cardExpandCode": {
     "description": "Card expand code."
   },
+  "defaultFilterCode": "DASH.DEFAULT_FILTER",
+  "@defaultFilterCode": {
+    "description": "Card expand code."
+  },
   "exportData": "Export data",
   "@exportData": {
     "description": "Export data card title."
@@ -512,12 +516,20 @@
   "@exportJsonData": {
     "description": "Export json data button label."
   },
-  "defaultDashboardFilter": "Default filter",
-  "@defaultDashboardFilter": {
-    "description": "Dashboard default filter for allocation buckets."
-  },
   "rememberLast": "Remember last",
   "@rememberLast": {
     "description": "Remember the last dashboard filter for allocation buckets."
+  },
+  "settingsChangedTitle": "Changes",
+  "@settingsChangedTitle": {
+    "description": "Settings changed dialog title."
+  },
+  "settingsChangedMessage": "Identified {qty} changes on your preferences:",
+  "@settingsChangedMessage": {
+    "description": "Settings changed dialog message."
+  },
+  "settingsChangedNote": "• {code}:\n   {old} ➔ {current}\n",
+  "@settingsChangedNote": {
+    "description": "Property changed diff note."
   }
 }

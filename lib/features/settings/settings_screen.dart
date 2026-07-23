@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/user_settings_scope.dart';
+import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/tab_content.dart';
 import 'package:stack_money/features/settings/manager/user_settings_manager.dart';
 import 'package:stack_money/features/settings/widgets/dashboard_filter_card.dart';
@@ -48,6 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 floating: true,
                 snap: true,
                 pinned: false,
+                backgroundColor: StackMoneyTheme.background,
                 leading: IconButton(
                   icon: Icon(
                     Icons.arrow_back_ios_new_rounded,

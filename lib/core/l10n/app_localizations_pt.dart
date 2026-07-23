@@ -405,6 +405,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get cardExpandCode => 'PAINEL.CARDS_EXPANDIDOS';
 
   @override
+  String get defaultFilterCode => 'PAINEL.FILTRO_PADRÃO';
+
+  @override
   String get exportData => 'Exportar dados';
 
   @override
@@ -431,8 +434,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String get exportJsonData => 'Exportar dados JSON';
 
   @override
-  String get defaultDashboardFilter => 'Filtro padrão';
+  String get rememberLast => 'Ultimo usado';
 
   @override
-  String get rememberLast => 'Ultimo usado';
+  String get settingsChangedTitle => 'Alterações';
+
+  @override
+  String settingsChangedMessage(Object qty) {
+    return 'Identificamos $qty modificações pendentes nas suas preferências:';
+  }
+
+  @override
+  String settingsChangedNote(Object code, Object current, Object old) {
+    return '• $code:\n   $old ➔ $current\n';
+  }
 }

@@ -123,12 +123,15 @@
   "securityModeCode": "SISTEMA.MODO_SEGURO",
   "cardExpandTitle": "Expandir cards por padrão",
   "cardExpandCode": "PAINEL.CARDS_EXPANDIDOS",
+  "defaultFilterCode": "PAINEL.FILTRO_PADRÃO",
   "exportData": "Exportar dados",
   "exportDataPlans": "Planos: {qty}",
   "exportDataHistory": "Histórico: {qty}",
   "exportDataBuckets": "Caixinhas: {qty}",
   "exportDataJsonSize": "Tamanho do JSON: {kb}kb",
   "exportJsonData": "Exportar dados JSON",
-  "defaultDashboardFilter": "Filtro padrão",
-  "rememberLast": "Ultimo usado"
+  "rememberLast": "Ultimo usado",
+  "settingsChangedTitle": "Alterações",
+  "settingsChangedMessage": "Identificamos {qty} modificações pendentes nas suas preferências:",
+  "settingsChangedNote": "• {code}:\n   {old} ➔ {current}\n"
 }

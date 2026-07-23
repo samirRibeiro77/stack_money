@@ -375,10 +375,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
-  String get adminName => 'Admin name';
+  String get adminName => 'ADMIN_NAME';
 
   @override
-  String get adminEmail => 'Admin email';
+  String get adminEmail => 'ADMIN_EMAIL';
 
   @override
   String get logout => 'Logout';
@@ -403,6 +403,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cardExpandCode => 'DASH.CARDS_EXPAND';
+
+  @override
+  String get defaultFilterCode => 'DASH.DEFAULT_FILTER';
 
   @override
   String get exportData => 'Export data';
@@ -431,8 +434,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportJsonData => 'Export JSON data';
 
   @override
-  String get defaultDashboardFilter => 'Default filter';
+  String get rememberLast => 'Remember last';
 
   @override
-  String get rememberLast => 'Remember last';
+  String get settingsChangedTitle => 'Changes';
+
+  @override
+  String settingsChangedMessage(Object qty) {
+    return 'Identified $qty changes on your preferences:';
+  }
+
+  @override
+  String settingsChangedNote(Object code, Object current, Object old) {
+    return '• $code:\n   $old ➔ $current\n';
+  }
 }

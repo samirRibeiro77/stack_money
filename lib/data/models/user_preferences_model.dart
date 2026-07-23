@@ -20,9 +20,11 @@ class UserPreferencesModel {
     return UserPreferencesModel(
       securityMode: json[ModelKey.securityMode] as bool? ?? true,
       cardExpand: json[ModelKey.cardExpand] as bool? ?? false,
-      defaultFilter: DashboardSortFilter.fromJson(
-        json[ModelKey.defaultFilter] as String?,
-      ),
+      defaultFilter: json[ModelKey.defaultFilter] == null
+          ? null
+          : DashboardSortFilter.fromJson(
+              json[ModelKey.defaultFilter] as String?,
+            ),
     );
   }
 

@@ -18,7 +18,7 @@ class DashboardFilterCard extends StatelessWidget {
     final options = <DashboardSortFilter?>[null, ...DashboardSortFilter.values];
 
     return SmCard(
-      title: l10n.defaultDashboardFilter,
+      title: l10n.defaultFilterCode,
       shadowColor: StackMoneyTheme.magentaNeon,
       child: ValueListenableBuilder<DashboardSortFilter?>(
         valueListenable: manager.defaultFilter,

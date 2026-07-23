@@ -70,33 +70,59 @@ class UserSettingsManager {
 
   /// Gera o relatório estilo Git Status/Diff (DE ➔ PARA)
   String diffNote(AppLocalizations l10n) {
+    SmLogger.debug(
+      'Updating users preferences',
+      payload: {
+        'initialUser': _initialUser.toJson(keepPrefs: true),
+        'name': nameController.text.trim(),
+        'security': _securityMode.value,
+        'card': _cardExpand.value,
+        'filter': _defaultFilter.value,
+      },
+    );
+
     final lines = <String>[];
 
     final currentName = nameController.text.trim();
-    if (currentName != _initialUser.name) {
-      lines.add('• Nome: ${_initialUser.name} ➔ $currentName');
+    if (currentName != _initialUser.name.trim()) {
+      lines.add(
+        l10n.settingsChangedNote(
+          l10n.adminName,
+          currentName,
+          _initialUser.name,
+        ),
+      );
     }
 
     if (_securityMode.value != _initialUser.preferences.securityMode) {
       final oldVal = _initialUser.preferences.securityMode
-          ? 'Ativado'
-          : 'Desativado';
-      final newVal = _securityMode.value ? 'Ativado' : 'Desativado';
-      lines.add('• Modo Segurança: $oldVal ➔ $newVal');
+          ? l10n.enabled
+          : l10n.disabled;
+      final newVal = _securityMode.value ? l10n.enabled : l10n.disabled;
+
+      lines.add(
+        l10n.settingsChangedNote(l10n.securityModeCode, newVal, oldVal),
+      );
     }
 
     if (_cardExpand.value != _initialUser.preferences.cardExpand) {
       final oldVal = _initialUser.preferences.cardExpand
-          ? 'Ativado'
-          : 'Desativado';
-      final newVal = _cardExpand.value ? 'Ativado' : 'Desativado';
-      lines.add('• Expandir Cards: $oldVal ➔ $newVal');
+          ? l10n.enabled
+          : l10n.disabled;
+      final newVal = _cardExpand.value ? l10n.enabled : l10n.disabled;
+
+      lines.add(l10n.settingsChangedNote(l10n.cardExpandCode, newVal, oldVal));
     }
 
     if (_defaultFilter.value != _initialUser.preferences.defaultFilter) {
-      final oldVal = _initialUser.preferences.defaultFilter?.name ?? 'Nenhum';
-      final newVal = _defaultFilter.value?.name ?? 'Nenhum';
-      lines.add('• Filtro Padrão: $oldVal ➔ $newVal');
+      final oldVal =
+          _initialUser.preferences.defaultFilter?.label(l10n) ??
+          l10n.rememberLast;
+      final newVal = _defaultFilter.value?.label(l10n) ?? l10n.rememberLast;
+
+      lines.add(
+        l10n.settingsChangedNote(l10n.defaultFilterCode, newVal, oldVal),
+      );
     }
 
     return lines.join('\n');
@@ -125,12 +151,10 @@ class UserSettingsManager {
 
     final shouldLeave = await showDialog<bool>(
       context: context,
-      barrierDismissible: false,
       builder: (dialogContext) => SmDialog(
         color: StackMoneyTheme.cyanNeon,
-        title: 'Alterações Pendentes',
-        message:
-            'Identificamos $pendingChangesCount modificações pendentes nas suas preferências.',
+        title: l10n.settingsChangedTitle,
+        message: l10n.settingsChangedMessage(pendingChangesCount),
         note: diffNote(l10n),
         onConfirm: () async {
           final success = await _saveAllChanges(context);
