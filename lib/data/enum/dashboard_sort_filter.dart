@@ -12,11 +12,9 @@ enum DashboardSortFilter {
 
   const DashboardSortFilter(this.icon);
 
-  static DashboardSortFilter fromJson(String? json) =>
-      DashboardSortFilter.values.firstWhere(
-        (e) => e.name == json,
-        orElse: () => DashboardSortFilter.position,
-      );
+  static DashboardSortFilter? fromJson(String? json) => DashboardSortFilter
+      .values
+      .firstWhere((e) => e.name == json, orElse: () => null as dynamic);
 
   String label(AppLocalizations l10n) {
     switch (this) {
