@@ -37,7 +37,7 @@ class UserService {
 
     await _localRepo.save(newPreferences);
 
-    unawaited(_remoteRepo.save(updatedUser, savePrefs: true));
+    _remoteRepo.save(updatedUser, savePrefs: true);
   }
 
   Future<User?> signInWithGoogle() async {

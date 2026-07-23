@@ -175,11 +175,13 @@ class UserSettingsManager {
   }
 
   void _failedSaveUser(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     SmSnackBar(
-      message: 'Failed to save user changes',
+      message: l10n.failedToSaveUser,
       type: SnackBarType.error,
       action: SnackBarAction(
-        label: 'Retry',
+        label: l10n.retry,
         onPressed: () => _saveAllChanges(context),
       ),
     ).show(context);

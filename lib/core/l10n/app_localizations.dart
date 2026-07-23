@@ -218,6 +218,12 @@ abstract class AppLocalizations {
   /// **'Retry Handshake'**
   String get retryHandshake;
 
+  /// Retry message
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
   /// Audit ledger logs title
   ///
   /// In en, this message translates to:
@@ -899,6 +905,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'• {code}:\n   {old} ➔ {current}\n'**
   String settingsChangedNote(Object code, Object current, Object old);
+
+  /// Failed message when trying to login.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to sign-in'**
+  String get failedToSignIn;
+
+  /// Failed message when saving user.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save user changes'**
+  String get failedToSaveUser;
 }
 
 class _AppLocalizationsDelegate

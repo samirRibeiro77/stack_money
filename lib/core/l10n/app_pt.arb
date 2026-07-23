@@ -20,6 +20,7 @@
   "noData": "Sem dados",
   "systemLinkFailed": "Falha ao carregar sistema",
   "retryHandshake": "Tentar novamente",
+  "retry": "Repetir",
   "auditLogs": "Auditoria",
   "securityBiometricReason": "Autentique-se para visualizar seus dados sensíveis e saldos.",
   "cancel": "Cancelar",
@@ -133,5 +134,7 @@
   "rememberLast": "Ultimo usado",
   "settingsChangedTitle": "Alterações",
   "settingsChangedMessage": "Identificamos {qty} modificações pendentes nas suas preferências:",
-  "settingsChangedNote": "• {code}:\n   {old} ➔ {current}\n"
+  "settingsChangedNote": "• {code}:\n   {old} ➔ {current}\n",
+  "failedToSignIn": "Falha ao fazer login",
+  "failedToSaveUser": "Falha ao salvar usuário"
 }

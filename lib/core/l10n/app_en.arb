@@ -80,6 +80,10 @@
   "@retryHandshake": {
     "description": "Retry message for data management"
   },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry message"
+  },
   "auditLogs": "Audit Logs",
   "@auditLogs": {
     "description": "Audit ledger logs title"
@@ -531,5 +535,13 @@
   "settingsChangedNote": "• {code}:\n   {old} ➔ {current}\n",
   "@settingsChangedNote": {
     "description": "Property changed diff note."
+  },
+  "failedToSignIn": "Failed to sign-in",
+  "@failedToSignIn": {
+    "description": "Failed message when trying to login."
+  },
+  "failedToSaveUser": "Failed to save user changes",
+  "@failedToSaveUser": {
+    "description": "Failed message when saving user."
   }
 }

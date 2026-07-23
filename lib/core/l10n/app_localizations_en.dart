@@ -71,6 +71,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get retryHandshake => 'Retry Handshake';
 
   @override
+  String get retry => 'Retry';
+
+  @override
   String get auditLogs => 'Audit Logs';
 
   @override
@@ -448,4 +451,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String settingsChangedNote(Object code, Object current, Object old) {
     return '• $code:\n   $old ➔ $current\n';
   }
+
+  @override
+  String get failedToSignIn => 'Failed to sign-in';
+
+  @override
+  String get failedToSaveUser => 'Failed to save user changes';
 }

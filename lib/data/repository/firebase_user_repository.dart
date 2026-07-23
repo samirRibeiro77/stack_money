@@ -67,13 +67,13 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
   Future<void> _syncUser(User? user) async {
     if (user == null) return;
 
-    final updateUser = UserModel.fromUser(user);
+    final updateUser = await get();
 
     SmLogger.debug(
       'Sync user',
       payload: {'auth': user, 'firebase': updateUser.toJson(keepPrefs: true)},
     );
 
-    await getUserDoc().set(updateUser.toJson(), SetOptions(merge: true));
+    await save(updateUser);
   }
 }
