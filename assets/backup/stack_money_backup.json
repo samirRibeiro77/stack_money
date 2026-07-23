@@ -1,681 +1,13 @@
 {
-  "buckets": [
-    {"category": "Debit", "where": "Nu", "minValue": 700.0, "isImmediateLiquidity": true, "position": 0},
-    {"category": "Emergency", "where": "Nu", "minValue": 1000.0, "isImmediateLiquidity": true, "position": 1},
-    {"category": "Cashback", "where": "Nu", "minValue": 0.0, "isImmediateLiquidity": false, "position": 2},
-    {"category": "Nomad", "where": "Nu", "minValue": -214.7, "isImmediateLiquidity": true, "position": 3},
-    {"category": "Safety", "where": "Nu", "minValue": 15000.0, "isImmediateLiquidity": false, "position": 4},
-    {"category": "Compass", "where": "Nu", "minValue": 4517.95, "isImmediateLiquidity": true, "position": 5},
-    {"category": "Trips", "where": "XP", "minValue": 32952.7, "isImmediateLiquidity": false, "position": 6},
-    {"category": "Stocks", "where": "Nu", "minValue": 493.24, "isImmediateLiquidity": false, "position": 7},
-    {"category": "Investment", "where": "XP", "minValue": 92044.75, "isImmediateLiquidity": false, "position": 8},
-    {"category": "Crypto", "where": "Ripio", "minValue": -4315.07, "isImmediateLiquidity": false, "position": 9},
-    {"category": "FGTS", "where": "Caixa", "minValue": 70242.02, "isImmediateLiquidity": false, "position": 10}
-  ],
-  "history": [
-    {
-      "date": 1672444800000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 449.18},
-        {"category": "Emergency", "where": "Nu", "value": 449.18},
-        {"category": "Nomad", "where": "Nu", "value": 4923.69},
-        {"category": "Safety", "where": "Nu", "value": 4923.69},
-        {"category": "Compass", "where": "Nu", "value": 4923.69},
-        {"category": "Cashback", "where": "Nu", "value": 105.3},
-        {"category": "Stocks", "where": "Nu", "value": 105.3},
-        {"category": "Trips", "where": "XP", "value": 18238.29},
-        {"category": "Investment", "where": "XP", "value": 18238.29},
-        {"category": "Crypto", "where": "Ripio", "value": 2485.83},
-        {"category": "FGTS", "where": "Caixa", "value": 0.0}
-      ],
-      "total": 54842.44,
-      "immediateLiquidityTotal": 5822.05
-    },
-    {
-      "date": 1703980800000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 750.0},
-        {"category": "Emergency", "where": "Nu", "value": 750.0},
-        {"category": "Nomad", "where": "Nu", "value": 7844.13},
-        {"category": "Safety", "where": "Nu", "value": 7844.13},
-        {"category": "Compass", "where": "Nu", "value": 7844.13},
-        {"category": "Cashback", "where": "Nu", "value": 277.67},
-        {"category": "Stocks", "where": "Nu", "value": 277.67},
-        {"category": "Trips", "where": "XP", "value": 28013.72},
-        {"category": "Investment", "where": "XP", "value": 28013.72},
-        {"category": "Crypto", "where": "Ripio", "value": 6525.4},
-        {"category": "FGTS", "where": "Caixa", "value": 31857.84}
-      ],
-      "total": 119998.41,
-      "immediateLiquidityTotal": 9344.13
-    },
-    {
-      "date": 1735603200000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 509.44},
-        {"category": "Emergency", "where": "Nu", "value": 509.44},
-        {"category": "Nomad", "where": "Nu", "value": 14959.61},
-        {"category": "Safety", "where": "Nu", "value": 14959.61},
-        {"category": "Compass", "where": "Nu", "value": 14959.61},
-        {"category": "Cashback", "where": "Nu", "value": 1593.39},
-        {"category": "Stocks", "where": "Nu", "value": 1593.39},
-        {"category": "Trips", "where": "XP", "value": 33055.25},
-        {"category": "Investment", "where": "XP", "value": 33055.25},
-        {"category": "Crypto", "where": "Ripio", "value": 1973.97},
-        {"category": "FGTS", "where": "Caixa", "value": 45594.31}
-      ],
-      "total": 162763.27,
-      "immediateLiquidityTotal": 15978.49
-    },
-    {
-      "date": 1759449600000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 66.87},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 931.9},
-        {"category": "Safety", "where": "Nu", "value": 6838.77},
-        {"category": "Compass", "where": "Nu", "value": 30458.28},
-        {"category": "Cashback", "where": "Nu", "value": 0.0},
-        {"category": "Stocks", "where": "Nu", "value": 818.4},
-        {"category": "Trips", "where": "XP", "value": 31412.51},
-        {"category": "Investment", "where": "XP", "value": 51805.38},
-        {"category": "Crypto", "where": "Ripio", "value": 2314.19},
-        {"category": "FGTS", "where": "Caixa", "value": 58000.06}
-      ],
-      "total": 183646.36,
-      "immediateLiquidityTotal": 1998.77
-    },
-    {
-      "date": 1760918400000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 500.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 1425.34},
-        {"category": "Safety", "where": "Nu", "value": 6884.17},
-        {"category": "Compass", "where": "Nu", "value": 33111.45},
-        {"category": "Cashback", "where": "Nu", "value": 60.95},
-        {"category": "Stocks", "where": "Nu", "value": 834.0},
-        {"category": "Trips", "where": "XP", "value": 31600.6},
-        {"category": "Investment", "where": "XP", "value": 51617.29},
-        {"category": "Crypto", "where": "Ripio", "value": 2314.19},
-        {"category": "FGTS", "where": "Caixa", "value": 58000.06}
-      ],
-      "total": 187348.05,
-      "immediateLiquidityTotal": 2925.34
-    },
-    {
-      "date": 1762300800000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 302.73},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 1434.0},
-        {"category": "Safety", "where": "Nu", "value": 6926.02},
-        {"category": "Compass", "where": "Nu", "value": 33331.19},
-        {"category": "Cashback", "where": "Nu", "value": 82.71},
-        {"category": "Stocks", "where": "Nu", "value": 858.0},
-        {"category": "Trips", "where": "XP", "value": 31803.21},
-        {"category": "Investment", "where": "XP", "value": 54506.45},
-        {"category": "Crypto", "where": "Ripio", "value": 1984.26},
-        {"category": "FGTS", "where": "Caixa", "value": 58000.06}
-      ],
-      "total": 190228.63,
-      "immediateLiquidityTotal": 2736.73
-    },
-    {
-      "date": 1763510400000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 500.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 1700.14},
-        {"category": "Safety", "where": "Nu", "value": 6964.3},
-        {"category": "Compass", "where": "Nu", "value": 36015.38},
-        {"category": "Cashback", "where": "Nu", "value": 104.02},
-        {"category": "Stocks", "where": "Nu", "value": 825.0},
-        {"category": "Trips", "where": "XP", "value": 31978.3},
-        {"category": "Investment", "where": "XP", "value": 55649.39},
-        {"category": "Crypto", "where": "Ripio", "value": 1785.87},
-        {"category": "FGTS", "where": "Caixa", "value": 58000.06}
-      ],
-      "total": 194522.46,
-      "immediateLiquidityTotal": 3200.14
-    },
-    {
-      "date": 1764201600000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 500.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 2204.84},
-        {"category": "Safety", "where": "Nu", "value": 8519.32},
-        {"category": "Compass", "where": "Nu", "value": 36114.78},
-        {"category": "Cashback", "where": "Nu", "value": 135.66},
-        {"category": "Stocks", "where": "Nu", "value": 940.8},
-        {"category": "Trips", "where": "XP", "value": 32063.93},
-        {"category": "Investment", "where": "XP", "value": 57259.0},
-        {"category": "Crypto", "where": "Ripio", "value": 1785.87},
-        {"category": "FGTS", "where": "Caixa", "value": 58000.06}
-      ],
-      "total": 198524.26,
-      "immediateLiquidityTotal": 3704.84
-    },
-    {
-      "date": 1764979200000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 500.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 8552.25},
-        {"category": "Compass", "where": "Nu", "value": 36254.2},
-        {"category": "Cashback", "where": "Nu", "value": 225.01},
-        {"category": "Stocks", "where": "Nu", "value": 916.2},
-        {"category": "Trips", "where": "XP", "value": 31846.26},
-        {"category": "Investment", "where": "XP", "value": 59730.9},
-        {"category": "Crypto", "where": "Ripio", "value": 1784.91},
-        {"category": "FGTS", "where": "Caixa", "value": 61438.38}
-      ],
-      "total": 202248.11,
-      "immediateLiquidityTotal": 1500.0
-    },
-    {
-      "date": 1766102400000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 500.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 8552.25},
-        {"category": "Compass", "where": "Nu", "value": 59947.65},
-        {"category": "Cashback", "where": "Nu", "value": 296.32},
-        {"category": "Stocks", "where": "Nu", "value": 905.4},
-        {"category": "Trips", "where": "XP", "value": 32023.8},
-        {"category": "Investment", "where": "XP", "value": 58205.55},
-        {"category": "Crypto", "where": "Ripio", "value": 1728.14},
-        {"category": "FGTS", "where": "Caixa", "value": 61438.38}
-      ],
-      "total": 224597.49,
-      "immediateLiquidityTotal": 1500.0
-    },
-    {
-      "date": 1767139200000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 766.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 8614.51},
-        {"category": "Compass", "where": "Nu", "value": 60212.53},
-        {"category": "Cashback", "where": "Nu", "value": 366.15},
-        {"category": "Stocks", "where": "Nu", "value": 928.8},
-        {"category": "Trips", "where": "XP", "value": 30161.93},
-        {"category": "Investment", "where": "XP", "value": 61427.79},
-        {"category": "Crypto", "where": "Ripio", "value": 1778.93},
-        {"category": "FGTS", "where": "Caixa", "value": 61438.38}
-      ],
-      "total": 226695.02,
-      "immediateLiquidityTotal": 1766.0
-    },
-    {
-      "date": 1767571200000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 253.46},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 8619.28},
-        {"category": "Compass", "where": "Nu", "value": 57688.22},
-        {"category": "Cashback", "where": "Nu", "value": 370.94},
-        {"category": "Stocks", "where": "Nu", "value": 924.6},
-        {"category": "Trips", "where": "XP", "value": 30178.37},
-        {"category": "Investment", "where": "XP", "value": 61496.42},
-        {"category": "Crypto", "where": "Ripio", "value": 1804.73},
-        {"category": "FGTS", "where": "Caixa", "value": 61686.07}
-      ],
-      "total": 224022.09,
-      "immediateLiquidityTotal": 1253.46
-    },
-    {
-      "date": 1768867200000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 500.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 9370.48},
-        {"category": "Compass", "where": "Nu", "value": 60039.72},
-        {"category": "Cashback", "where": "Nu", "value": 386.76},
-        {"category": "Stocks", "where": "Nu", "value": 885.0},
-        {"category": "Trips", "where": "XP", "value": 30363.82},
-        {"category": "Investment", "where": "XP", "value": 61346.45},
-        {"category": "Crypto", "where": "Ripio", "value": 1808.71},
-        {"category": "FGTS", "where": "Caixa", "value": 63379.6}
-      ],
-      "total": 229080.54,
-      "immediateLiquidityTotal": 1500.0
-    },
-    {
-      "date": 1770768000000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 495.14},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 9453.48},
-        {"category": "Compass", "where": "Nu", "value": 2018.52},
-        {"category": "Cashback", "where": "Nu", "value": 406.94},
-        {"category": "Stocks", "where": "Nu", "value": 919.2},
-        {"category": "Trips", "where": "XP", "value": 28501.32},
-        {"category": "Investment", "where": "XP", "value": 125074.83},
-        {"category": "Crypto", "where": "Ripio", "value": 1257.69},
-        {"category": "FGTS", "where": "Caixa", "value": 64620.7}
-      ],
-      "total": 233747.82,
-      "immediateLiquidityTotal": 1495.14
-    },
-    {
-      "date": 1771545600000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 500.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 10000.0},
-        {"category": "Compass", "where": "Nu", "value": 2024.34},
-        {"category": "Cashback", "where": "Nu", "value": 419.32},
-        {"category": "Stocks", "where": "Nu", "value": 904.8},
-        {"category": "Trips", "where": "XP", "value": 11091.5},
-        {"category": "Investment", "where": "XP", "value": 141613.0},
-        {"category": "Crypto", "where": "Ripio", "value": 1255.78},
-        {"category": "FGTS", "where": "Caixa", "value": 64620.7}
-      ],
-      "total": 233429.44,
-      "immediateLiquidityTotal": 1500.0
-    },
-    {
-      "date": 1772668800000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 500.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 1686.73},
-        {"category": "Safety", "where": "Nu", "value": 10549.73},
-        {"category": "Compass", "where": "Nu", "value": 2534.86},
-        {"category": "Cashback", "where": "Nu", "value": 430.81},
-        {"category": "Stocks", "where": "Nu", "value": 789.0},
-        {"category": "Trips", "where": "XP", "value": 11147.14},
-        {"category": "Investment", "where": "XP", "value": 141395.91},
-        {"category": "Crypto", "where": "Ripio", "value": 1344.43},
-        {"category": "FGTS", "where": "Caixa", "value": 64887.22}
-      ],
-      "total": 236265.83,
-      "immediateLiquidityTotal": 3186.73
-    },
-    {
-      "date": 1773964800000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 500.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 1996.29},
-        {"category": "Safety", "where": "Nu", "value": 10613.8},
-        {"category": "Compass", "where": "Nu", "value": 2550.81},
-        {"category": "Cashback", "where": "Nu", "value": 480.23},
-        {"category": "Stocks", "where": "Nu", "value": 747.0},
-        {"category": "Trips", "where": "XP", "value": 12214.82},
-        {"category": "Investment", "where": "XP", "value": 139016.63},
-        {"category": "Crypto", "where": "Ripio", "value": 1325.9},
-        {"category": "FGTS", "where": "Caixa", "value": 65955.06}
-      ],
-      "total": 236400.54,
-      "immediateLiquidityTotal": 3496.29
-    },
-    {
-      "date": 1775088000000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 503.62},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 2506.07},
-        {"category": "Safety", "where": "Nu", "value": 11165.74},
-        {"category": "Compass", "where": "Nu", "value": 3713.75},
-        {"category": "Cashback", "where": "Nu", "value": 499.8},
-        {"category": "Stocks", "where": "Nu", "value": 753.0},
-        {"category": "Trips", "where": "XP", "value": 15020.1},
-        {"category": "Investment", "where": "XP", "value": 137125.66},
-        {"category": "Crypto", "where": "Ripio", "value": 1264.33},
-        {"category": "FGTS", "where": "Caixa", "value": 66193.58}
-      ],
-      "total": 239745.65,
-      "immediateLiquidityTotal": 4009.69
-    },
-    {
-      "date": 1776643200000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 500.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 2864.01},
-        {"category": "Safety", "where": "Nu", "value": 11232.56},
-        {"category": "Compass", "where": "Nu", "value": 3736.52},
-        {"category": "Cashback", "where": "Nu", "value": 549.35},
-        {"category": "Stocks", "where": "Nu", "value": 777.0},
-        {"category": "Trips", "where": "XP", "value": 16586.0},
-        {"category": "Investment", "where": "XP", "value": 139159.31},
-        {"category": "Crypto", "where": "Ripio", "value": 1330.67},
-        {"category": "FGTS", "where": "Caixa", "value": 67261.42}
-      ],
-      "total": 244996.84,
-      "immediateLiquidityTotal": 4364.01
-    },
-    {
-      "date": 1777939200000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 479.14},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 2009.35},
-        {"category": "Safety", "where": "Nu", "value": 11662.36},
-        {"category": "Compass", "where": "Nu", "value": 3755.21},
-        {"category": "Cashback", "where": "Nu", "value": 568.18},
-        {"category": "Stocks", "where": "Nu", "value": 709.2},
-        {"category": "Trips", "where": "XP", "value": 15367.42},
-        {"category": "Investment", "where": "XP", "value": 137888.73},
-        {"category": "Crypto", "where": "Ripio", "value": 1398.21},
-        {"category": "FGTS", "where": "Caixa", "value": 67539.76}
-      ],
-      "total": 242377.56,
-      "immediateLiquidityTotal": 3488.49
-    },
-    {
-      "date": 1778716800000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 111.89},
-        {"category": "Emergency", "where": "Nu", "value": 0.0},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 0.0},
-        {"category": "Compass", "where": "Nu", "value": 2089.82},
-        {"category": "Cashback", "where": "Nu", "value": 656.53},
-        {"category": "Stocks", "where": "Nu", "value": 646.8},
-        {"category": "Trips", "where": "XP", "value": 0.0},
-        {"category": "Investment", "where": "XP", "value": 147433.77},
-        {"category": "Crypto", "where": "Ripio", "value": 1359.73},
-        {"category": "FGTS", "where": "Caixa", "value": 68607.6}
-      ],
-      "total": 220906.14,
-      "immediateLiquidityTotal": 111.89
-    },
-    {
-      "date": 1779408000000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 590.29},
-        {"category": "Emergency", "where": "Nu", "value": 0.0},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 0.0},
-        {"category": "Compass", "where": "Nu", "value": 2697.47},
-        {"category": "Cashback", "where": "Nu", "value": 663.28},
-        {"category": "Stocks", "where": "Nu", "value": 658.8},
-        {"category": "Trips", "where": "XP", "value": 32622.28},
-        {"category": "Investment", "where": "XP", "value": 115586.3},
-        {"category": "Crypto", "where": "Ripio", "value": 1319.03},
-        {"category": "FGTS", "where": "Caixa", "value": 68887.82}
-      ],
-      "total": 223025.27,
-      "immediateLiquidityTotal": 590.29
-    },
-    {
-      "date": 1780617600000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 500.0},
-        {"category": "Emergency", "where": "Nu", "value": 1000.0},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 0.0},
-        {"category": "Compass", "where": "Nu", "value": 3310.92},
-        {"category": "Cashback", "where": "Nu", "value": 688.24},
-        {"category": "Stocks", "where": "Nu", "value": 597.6},
-        {"category": "Trips", "where": "XP", "value": 33252.6},
-        {"category": "Investment", "where": "XP", "value": 111688.62},
-        {"category": "Crypto", "where": "Ripio", "value": 1126.97},
-        {"category": "FGTS", "where": "Caixa", "value": 68887.82}
-      ],
-      "total": 221052.77,
-      "immediateLiquidityTotal": 1500.0
-    },
-    {
-      "date": 1782000000000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 946.38},
-        {"category": "Emergency", "where": "Nu", "value": 1849.79},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 0.0},
-        {"category": "Compass", "where": "Nu", "value": 3929.13},
-        {"category": "Cashback", "where": "Nu", "value": 680.42},
-        {"category": "Stocks", "where": "Nu", "value": 662.4},
-        {"category": "Trips", "where": "XP", "value": 33964.96},
-        {"category": "Investment", "where": "XP", "value": 112774.35},
-        {"category": "Crypto", "where": "Ripio", "value": 1127.24},
-        {"category": "FGTS", "where": "Caixa", "value": 69955.66}
-      ],
-      "total": 225890.33,
-      "immediateLiquidityTotal": 2796.17
-    },
-    {
-      "date": 1782777600000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 1445.38},
-        {"category": "Emergency", "where": "Nu", "value": 1856.8},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 5000.0},
-        {"category": "Compass", "where": "Nu", "value": 4943.94},
-        {"category": "Cashback", "where": "Nu", "value": 699.26},
-        {"category": "Stocks", "where": "Nu", "value": 684.0},
-        {"category": "Trips", "where": "XP", "value": 34580.76},
-        {"category": "Investment", "where": "XP", "value": 113305.66},
-        {"category": "Crypto", "where": "Ripio", "value": 1092.83},
-        {"category": "FGTS", "where": "Caixa", "value": 70242.02}
-      ],
-      "total": 233850.65,
-      "immediateLiquidityTotal": 3302.18
-    },
-    {
-      "date": 1783036800000,
-      "transactions": [
-        {"category": "Debit", "where": "Nu", "value": 1052.11},
-        {"category": "Emergency", "where": "Nu", "value": 1860.31},
-        {"category": "Nomad", "where": "Nu", "value": 0.0},
-        {"category": "Safety", "where": "Nu", "value": 5007.88},
-        {"category": "Compass", "where": "Nu", "value": 5451.89},
-        {"category": "Cashback", "where": "Nu", "value": 699.58},
-        {"category": "Stocks", "where": "Nu", "value": 704.4},
-        {"category": "Trips", "where": "XP", "value": 34620.07},
-        {"category": "Investment", "where": "XP", "value": 113591.02},
-        {"category": "Crypto", "where": "Ripio", "value": 1164.79},
-        {"category": "FGTS", "where": "Caixa", "value": 70242.02}
-      ],
-      "total": 234394.07,
-      "immediateLiquidityTotal": 2912.42
-    }
-  ],
   "plans": [
     {
-      "isActive": true,
-      "inflows": [
-        {
-          "id": "3bd3cbb5-1bbf-4aa3-92e4-376dc3febcb3",
-          "type": "percentageBase",
-          "day": 5,
-          "value": 60.0
-        },
-        {
-          "id": "8c9aa77a-ec40-4f41-8277-d615db9b163d",
-          "type": "percentageBase",
-          "day": 20,
-          "value": 40.0
-        },
-        {
-          "id": "55858a42-5b3b-4b50-8547-a3c68a289ef2",
-          "type": "fixed",
-          "value": 150.0,
-          "day": 5
-        }
-      ],
+      "id": "05200f45-c91d-4e81-8b3e-bec83a691859",
+      "name": "Car on Feb/27",
       "baseSalary": 13348.0,
-      "isArchived": false,
-      "name": "CI&T untill Sep",
-      "createdAt": "2026-06-19T12:18:16.055399",
-      "outflows": [
-        {
-          "name": "Gympass",
-          "id": "988eac50-0f0a-41ab-8bea-1dc44e594c92",
-          "targetDay": 5,
-          "type": "fixed",
-          "value": 183.3
-        },
-        {
-          "name": "IR",
-          "targetDay": 5,
-          "id": "a28e14da-f891-4406-90db-cd23f9deea28",
-          "type": "percentageGross",
-          "value": 12.52598
-        },
-        {
-          "name": "INSS",
-          "targetDay": 5,
-          "id": "93d164de-0141-45db-aaa8-cde1bcba1487",
-          "type": "fixed",
-          "value": 988.07
-        },
-        {
-          "name": "IR",
-          "id": "82df5ee7-54d8-402a-84ed-3e259ba23aa5",
-          "targetDay": 20,
-          "type": "percentageGross",
-          "value": 27.5
-        }
-      ],
-      "id": "bc98320c-9876-4a08-b297-861ff7917ae7",
-      "position": 1,
-      "distributions": [
-        {
-          "subCategory": "Card",
-          "id": "f66241de-be13-4dcf-89e9-0b10aeaa70ed",
-          "targetDay": 5,
-          "category": "Credit",
-          "type": "percentageNet",
-          "value": 76.0
-        },
-        {
-          "subCategory": "Internet",
-          "id": "3c3ce753-900e-4c7a-af83-0391bfc101d6",
-          "targetDay": 5,
-          "category": "Bill",
-          "type": "fixed",
-          "value": 179.89
-        },
-        {
-          "subCategory": "Eletricity",
-          "id": "bf0d29b7-a1ba-46a1-8b30-1648315d9278",
-          "targetDay": 5,
-          "category": "Bill",
-          "type": "fixed",
-          "value": 450.0
-        },
-        {
-          "subCategory": "Fund",
-          "targetDay": 5,
-          "id": "40990c68-311d-4f6d-8f61-7b0bd49ff816",
-          "type": "fixed",
-          "category": "Car",
-          "value": 500.0
-        },
-        {
-          "subCategory": "RF",
-          "id": "15b6bf65-b7b6-4640-aca4-9515841b4ed4",
-          "targetDay": 5,
-          "category": "IR",
-          "type": "fixed",
-          "value": 209.04
-        },
-        {
-          "subCategory": "NuCaixa",
-          "id": "739d80a0-f5ff-46d4-9b3e-b5f1b221d851",
-          "targetDay": 20,
-          "category": "Safety",
-          "type": "fixed",
-          "value": 1500.0
-        },
-        {
-          "subCategory": "Consortium",
-          "targetDay": 20,
-          "id": "7f8ec222-4348-4996-83de-42f4e57ce782",
-          "type": "fixed",
-          "category": "Car",
-          "value": 1849.79
-        },
-        {
-          "subCategory": "Travel",
-          "id": "310aa17d-6a50-4b79-906e-b809a717f813",
-          "targetDay": 20,
-          "category": "Off",
-          "type": "percentageNet",
-          "value": 13.0
-        }
-      ]
-    },
-    {
-      "inflows": [
-        {
-          "id": null,
-          "type": "fixed",
-          "value": 3900.0,
-          "day": 4
-        },
-        {
-          "id": "dda5edef-2a94-4c43-afca-8e045dca4449",
-          "type": "fixed",
-          "day": 6,
-          "value": 6000.0
-        }
-      ],
-      "baseSalary": 0.0,
       "isActive": false,
       "isArchived": false,
-      "name": "PLR 13º 2026",
-      "createdAt": "2026-06-12T00:02:58.036293",
-      "outflows": [],
+      "createdAt": "2026-07-21T23:13:46.495427",
       "position": 1,
-      "id": "f626177e-f148-4732-9ddd-12ae7430d4f1",
-      "distributions": [
-        {
-          "subCategory": "Compass 4x4",
-          "targetDay": 4,
-          "id": "39d9b0f6-ca2a-49c8-b2e0-eb3fc3c63912",
-          "type": "percentageNet",
-          "category": "Car",
-          "value": 17.0
-        },
-        {
-          "subCategory": "USA",
-          "id": "d61c1917-feef-4309-aa1d-0f7c9c3e86ab",
-          "targetDay": 4,
-          "category": "Travel",
-          "type": "percentageNet",
-          "value": 70.0
-        },
-        {
-          "subCategory": "Nomad",
-          "id": "538674d3-ef3f-4afb-95b3-ddc7c0c44797",
-          "targetDay": 4,
-          "category": "Travel",
-          "type": "percentageNet",
-          "value": 13.0
-        },
-        {
-          "subCategory": "Nubank",
-          "id": "ded61c3f-f158-4bff-aa70-06ff1b49ad02",
-          "targetDay": 6,
-          "category": "Safety",
-          "type": "percentageNet",
-          "value": 82.0
-        },
-        {
-          "subCategory": "Compass 4x4",
-          "targetDay": 6,
-          "id": "c579baa9-58cb-48f5-9349-fe8b73646135",
-          "type": "percentageNet",
-          "category": "Car",
-          "value": 18.0
-        }
-      ]
-    },
-    {
-      "isActive": false,
       "inflows": [
         {
           "id": "3bd3cbb5-1bbf-4aa3-92e4-376dc3febcb3",
@@ -696,115 +28,125 @@
           "day": 5
         }
       ],
-      "baseSalary": 13348.0,
-      "isArchived": true,
-      "name": "CI&T 2027",
-      "createdAt": "2026-06-27T18:46:35.992500",
       "outflows": [
         {
-          "name": "Gympass",
           "id": "988eac50-0f0a-41ab-8bea-1dc44e594c92",
-          "targetDay": 5,
+          "name": "Gympass",
           "type": "fixed",
-          "value": 183.3
+          "value": 183.3,
+          "targetDay": 5
         },
         {
-          "name": "IR",
           "id": "a28e14da-f891-4406-90db-cd23f9deea28",
-          "targetDay": 5,
-          "type": "percentageGross",
-          "value": 12.52598
-        },
-        {
-          "name": "INSS",
-          "targetDay": 5,
-          "id": "93d164de-0141-45db-aaa8-cde1bcba1487",
-          "type": "fixed",
-          "value": 988.07
-        },
-        {
           "name": "IR",
-          "id": "82df5ee7-54d8-402a-84ed-3e259ba23aa5",
-          "targetDay": 20,
           "type": "percentageGross",
-          "value": 27.5
+          "value": 12.52598,
+          "targetDay": 5
+        },
+        {
+          "id": "93d164de-0141-45db-aaa8-cde1bcba1487",
+          "name": "INSS",
+          "type": "fixed",
+          "value": 988.07,
+          "targetDay": 5
+        },
+        {
+          "id": "82df5ee7-54d8-402a-84ed-3e259ba23aa5",
+          "name": "IR",
+          "type": "percentageGross",
+          "value": 27.5,
+          "targetDay": 20
         }
       ],
-      "id": "f959b251-a752-4e39-84d3-cdcce473076d",
-      "position": 3,
       "distributions": [
         {
-          "subCategory": "Card",
-          "targetDay": 5,
           "id": "f66241de-be13-4dcf-89e9-0b10aeaa70ed",
-          "type": "percentageNet",
           "category": "Credit",
-          "value": 75.0
-        },
-        {
-          "subCategory": "Internet",
-          "targetDay": 5,
-          "id": "3c3ce753-900e-4c7a-af83-0391bfc101d6",
-          "type": "fixed",
-          "category": "Bill",
-          "value": 159.85
-        },
-        {
-          "subCategory": "Eletricity",
-          "id": "bf0d29b7-a1ba-46a1-8b30-1648315d9278",
-          "targetDay": 5,
-          "category": "Bill",
-          "type": "fixed",
-          "value": 400.0
-        },
-        {
-          "subCategory": "Insurance",
-          "id": "f2dee83d-dc27-4608-9a4a-9b3e9731a7b0",
-          "type": "fixed",
-          "category": "Bill",
-          "value": 475.0
-        },
-        {
-          "subCategory": "Fund",
-          "id": "15b6bf65-b7b6-4640-aca4-9515841b4ed4",
-          "targetDay": 5,
-          "category": "Car",
-          "type": "fixed",
-          "value": 300.0
-        },
-        {
-          "subCategory": "XP",
-          "targetDay": 20,
-          "id": "739d80a0-f5ff-46d4-9b3e-b5f1b221d851",
-          "type": "percentageGross",
-          "category": "Investment",
-          "value": 8.5
-        },
-        {
-          "subCategory": "Consortium",
-          "id": "7f8ec222-4348-4996-83de-42f4e57ce782",
-          "targetDay": 20,
-          "category": "Car",
-          "value": 1513.64
-        },
-        {
-          "subCategory": "Travel",
-          "id": "310aa17d-6a50-4b79-906e-b809a717f813",
-          "targetDay": 20,
-          "category": "Off",
+          "subCategory": "Card",
           "type": "percentageNet",
-          "value": 26.0
+          "value": 76.0,
+          "targetDay": 5
+        },
+        {
+          "id": "3c3ce753-900e-4c7a-af83-0391bfc101d6",
+          "category": "Bill",
+          "subCategory": "Internet",
+          "type": "fixed",
+          "value": 179.89,
+          "targetDay": 5
+        },
+        {
+          "id": "bf0d29b7-a1ba-46a1-8b30-1648315d9278",
+          "category": "Bill",
+          "subCategory": "Eletricity",
+          "type": "fixed",
+          "value": 420.0,
+          "targetDay": 5
+        },
+        {
+          "id": "40990c68-311d-4f6d-8f61-7b0bd49ff816",
+          "category": "Travel",
+          "subCategory": "USA",
+          "type": "percentageNet",
+          "value": 10.0,
+          "targetDay": 5
+        },
+        {
+          "id": "15b6bf65-b7b6-4640-aca4-9515841b4ed4",
+          "category": "IR",
+          "subCategory": "RF",
+          "type": "fixed",
+          "value": 209.04,
+          "targetDay": 5
+        },
+        {
+          "id": "7f8ec222-4348-4996-83de-42f4e57ce782",
+          "category": "Car",
+          "subCategory": "Consortium",
+          "type": "fixed",
+          "value": 1790.67,
+          "targetDay": 20
+        },
+        {
+          "id": "089d3f3b-32bf-4297-aefd-970f96305ee6",
+          "category": "Car",
+          "subCategory": "Fund",
+          "type": "fixed",
+          "value": 300.0,
+          "targetDay": 20
+        },
+        {
+          "id": "b4b62638-01eb-4ce1-83b6-07a49924bc2b",
+          "category": "Invest",
+          "subCategory": "XP",
+          "type": "percentageGross",
+          "value": 7.0,
+          "targetDay": 20
+        },
+        {
+          "id": "0ce95ef2-1209-4c03-8802-a73051749486",
+          "category": "Safety",
+          "subCategory": "NuCaixa",
+          "type": "fixed",
+          "value": 600.0,
+          "targetDay": 20
         }
       ]
     },
     {
+      "id": "85189751-3d2f-4135-9c0d-bee709776292",
+      "name": "CI&T 2027",
       "baseSalary": 13348.0,
+      "isActive": false,
+      "isArchived": true,
+      "createdAt": "2026-06-27T15:46:35.992500",
+      "position": 3,
       "inflows": [
         {
           "id": "3bd3cbb5-1bbf-4aa3-92e4-376dc3febcb3",
           "type": "percentageBase",
-          "day": 5,
-          "value": 60.0
+          "value": 60.0,
+          "day": 5
         },
         {
           "id": "8c9aa77a-ec40-4f41-8277-d615db9b163d",
@@ -819,116 +161,2516 @@
           "day": 5
         }
       ],
-      "isActive": false,
-      "isArchived": false,
-      "name": "CI&T untill Dec",
-      "createdAt": "2026-06-27T18:35:09.621024",
       "outflows": [
         {
-          "name": "Gympass",
-          "targetDay": 5,
           "id": "988eac50-0f0a-41ab-8bea-1dc44e594c92",
+          "name": "Gympass",
           "type": "fixed",
-          "value": 183.3
+          "value": 183.3,
+          "targetDay": 5
         },
         {
-          "name": "IR",
           "id": "a28e14da-f891-4406-90db-cd23f9deea28",
-          "targetDay": 5,
-          "type": "percentageGross",
-          "value": 12.52598
-        },
-        {
-          "name": "INSS",
-          "targetDay": 5,
-          "id": "93d164de-0141-45db-aaa8-cde1bcba1487",
-          "type": "fixed",
-          "value": 988.07
-        },
-        {
           "name": "IR",
-          "id": "82df5ee7-54d8-402a-84ed-3e259ba23aa5",
-          "targetDay": 20,
           "type": "percentageGross",
-          "value": 27.5
+          "value": 12.52598,
+          "targetDay": 5
+        },
+        {
+          "id": "93d164de-0141-45db-aaa8-cde1bcba1487",
+          "name": "INSS",
+          "type": "fixed",
+          "value": 988.07,
+          "targetDay": 5
+        },
+        {
+          "id": "82df5ee7-54d8-402a-84ed-3e259ba23aa5",
+          "name": "IR",
+          "type": "percentageGross",
+          "value": 27.5,
+          "targetDay": 20
         }
       ],
-      "position": 2,
-      "id": "ff04dd3c-5edb-48f6-93ab-d7d47bdfb035",
       "distributions": [
         {
-          "subCategory": "Card",
           "id": "f66241de-be13-4dcf-89e9-0b10aeaa70ed",
-          "targetDay": 5,
           "category": "Credit",
+          "subCategory": "Card",
           "type": "percentageNet",
-          "value": 75.0
+          "value": 75.0,
+          "targetDay": 5
         },
         {
-          "subCategory": "Internet",
           "id": "3c3ce753-900e-4c7a-af83-0391bfc101d6",
-          "targetDay": 5,
           "category": "Bill",
+          "subCategory": "Internet",
           "type": "fixed",
-          "value": 159.85
+          "value": 159.85,
+          "targetDay": 5
         },
         {
-          "subCategory": "Eletricity",
-          "targetDay": 5,
           "id": "bf0d29b7-a1ba-46a1-8b30-1648315d9278",
-          "type": "fixed",
           "category": "Bill",
-          "value": 400.0
+          "subCategory": "Eletricity",
+          "type": "fixed",
+          "value": 400.0,
+          "targetDay": 5
         },
         {
-          "subCategory": "Insurance",
-          "targetDay": 5,
           "id": "f2dee83d-dc27-4608-9a4a-9b3e9731a7b0",
-          "type": "fixed",
           "category": "Bill",
-          "value": 475.0
+          "subCategory": "Insurance",
+          "type": "fixed",
+          "value": 475.0,
+          "targetDay": 0
         },
         {
-          "subCategory": "RF",
           "id": "15b6bf65-b7b6-4640-aca4-9515841b4ed4",
-          "targetDay": 5,
-          "category": "IR",
-          "type": "fixed",
-          "value": 209.04
-        },
-        {
-          "subCategory": "XP",
-          "id": "739d80a0-f5ff-46d4-9b3e-b5f1b221d851",
-          "targetDay": 20,
-          "category": "Investment",
-          "type": "percentageGross",
-          "value": 8.5
-        },
-        {
-          "subCategory": "Consortium",
-          "targetDay": 20,
-          "id": "7f8ec222-4348-4996-83de-42f4e57ce782",
-          "type": "fixed",
           "category": "Car",
-          "value": 1513.64
-        },
-        {
-          "subCategory": "Travel",
-          "targetDay": 20,
-          "id": "310aa17d-6a50-4b79-906e-b809a717f813",
-          "type": "percentageNet",
-          "category": "Off",
-          "value": 21.0
-        },
-        {
           "subCategory": "Fund",
-          "targetDay": 20,
-          "id": "829ee4c6-c3c6-4405-9c05-438a9eaaf88f",
           "type": "fixed",
+          "value": 300.0,
+          "targetDay": 5
+        },
+        {
+          "id": "739d80a0-f5ff-46d4-9b3e-b5f1b221d851",
+          "category": "Investment",
+          "subCategory": "XP",
+          "type": "percentageGross",
+          "value": 8.5,
+          "targetDay": 20
+        },
+        {
+          "id": "7f8ec222-4348-4996-83de-42f4e57ce782",
           "category": "Car",
-          "value": 300.0
+          "subCategory": "Consortium",
+          "type": "fixed",
+          "value": 1513.64,
+          "targetDay": 20
+        },
+        {
+          "id": "310aa17d-6a50-4b79-906e-b809a717f813",
+          "category": "Off",
+          "subCategory": "Travel",
+          "type": "percentageNet",
+          "value": 26.0,
+          "targetDay": 20
         }
       ]
+    },
+    {
+      "id": "0e741692-930b-4118-96e2-628e12374804",
+      "name": "CI&T untill Dec",
+      "baseSalary": 13348.0,
+      "isActive": false,
+      "isArchived": false,
+      "createdAt": "2026-06-27T15:35:09.621024",
+      "position": 2,
+      "inflows": [
+        {
+          "id": "3bd3cbb5-1bbf-4aa3-92e4-376dc3febcb3",
+          "type": "percentageBase",
+          "value": 60.0,
+          "day": 5
+        },
+        {
+          "id": "8c9aa77a-ec40-4f41-8277-d615db9b163d",
+          "type": "percentageBase",
+          "value": 40.0,
+          "day": 20
+        },
+        {
+          "id": "55858a42-5b3b-4b50-8547-a3c68a289ef2",
+          "type": "fixed",
+          "value": 150.0,
+          "day": 5
+        }
+      ],
+      "outflows": [
+        {
+          "id": "988eac50-0f0a-41ab-8bea-1dc44e594c92",
+          "name": "Gympass",
+          "type": "fixed",
+          "value": 183.3,
+          "targetDay": 5
+        },
+        {
+          "id": "a28e14da-f891-4406-90db-cd23f9deea28",
+          "name": "IR",
+          "type": "percentageGross",
+          "value": 12.52598,
+          "targetDay": 5
+        },
+        {
+          "id": "93d164de-0141-45db-aaa8-cde1bcba1487",
+          "name": "INSS",
+          "type": "fixed",
+          "value": 988.07,
+          "targetDay": 5
+        },
+        {
+          "id": "82df5ee7-54d8-402a-84ed-3e259ba23aa5",
+          "name": "IR",
+          "type": "percentageGross",
+          "value": 27.5,
+          "targetDay": 20
+        }
+      ],
+      "distributions": [
+        {
+          "id": "f66241de-be13-4dcf-89e9-0b10aeaa70ed",
+          "category": "Credit",
+          "subCategory": "Card",
+          "type": "percentageNet",
+          "value": 75.0,
+          "targetDay": 5
+        },
+        {
+          "id": "3c3ce753-900e-4c7a-af83-0391bfc101d6",
+          "category": "Bill",
+          "subCategory": "Internet",
+          "type": "fixed",
+          "value": 159.85,
+          "targetDay": 5
+        },
+        {
+          "id": "bf0d29b7-a1ba-46a1-8b30-1648315d9278",
+          "category": "Bill",
+          "subCategory": "Eletricity",
+          "type": "fixed",
+          "value": 400.0,
+          "targetDay": 5
+        },
+        {
+          "id": "f2dee83d-dc27-4608-9a4a-9b3e9731a7b0",
+          "category": "Bill",
+          "subCategory": "Insurance",
+          "type": "fixed",
+          "value": 475.0,
+          "targetDay": 5
+        },
+        {
+          "id": "15b6bf65-b7b6-4640-aca4-9515841b4ed4",
+          "category": "IR",
+          "subCategory": "RF",
+          "type": "fixed",
+          "value": 209.04,
+          "targetDay": 5
+        },
+        {
+          "id": "739d80a0-f5ff-46d4-9b3e-b5f1b221d851",
+          "category": "Investment",
+          "subCategory": "XP",
+          "type": "percentageGross",
+          "value": 8.5,
+          "targetDay": 20
+        },
+        {
+          "id": "7f8ec222-4348-4996-83de-42f4e57ce782",
+          "category": "Car",
+          "subCategory": "Consortium",
+          "type": "fixed",
+          "value": 1513.64,
+          "targetDay": 20
+        },
+        {
+          "id": "310aa17d-6a50-4b79-906e-b809a717f813",
+          "category": "Off",
+          "subCategory": "Travel",
+          "type": "percentageNet",
+          "value": 21.0,
+          "targetDay": 20
+        },
+        {
+          "id": "829ee4c6-c3c6-4405-9c05-438a9eaaf88f",
+          "category": "Car",
+          "subCategory": "Fund",
+          "type": "fixed",
+          "value": 300.0,
+          "targetDay": 20
+        }
+      ]
+    },
+    {
+      "id": "bd8d9d6f-a775-47ef-a6f0-36d735d14f51",
+      "name": "CI&T untill Sep",
+      "baseSalary": 13348.0,
+      "isActive": true,
+      "isArchived": false,
+      "createdAt": "2026-06-19T09:18:16.055399",
+      "position": 1,
+      "inflows": [
+        {
+          "id": "3bd3cbb5-1bbf-4aa3-92e4-376dc3febcb3",
+          "type": "percentageBase",
+          "value": 60.0,
+          "day": 5
+        },
+        {
+          "id": "8c9aa77a-ec40-4f41-8277-d615db9b163d",
+          "type": "percentageBase",
+          "value": 40.0,
+          "day": 20
+        },
+        {
+          "id": "55858a42-5b3b-4b50-8547-a3c68a289ef2",
+          "type": "fixed",
+          "value": 150.0,
+          "day": 5
+        }
+      ],
+      "outflows": [
+        {
+          "id": "988eac50-0f0a-41ab-8bea-1dc44e594c92",
+          "name": "Gympass",
+          "type": "fixed",
+          "value": 183.3,
+          "targetDay": 5
+        },
+        {
+          "id": "a28e14da-f891-4406-90db-cd23f9deea28",
+          "name": "IR",
+          "type": "percentageGross",
+          "value": 12.52598,
+          "targetDay": 5
+        },
+        {
+          "id": "93d164de-0141-45db-aaa8-cde1bcba1487",
+          "name": "INSS",
+          "type": "fixed",
+          "value": 988.07,
+          "targetDay": 5
+        },
+        {
+          "id": "82df5ee7-54d8-402a-84ed-3e259ba23aa5",
+          "name": "IR",
+          "type": "percentageGross",
+          "value": 27.5,
+          "targetDay": 20
+        }
+      ],
+      "distributions": [
+        {
+          "id": "f66241de-be13-4dcf-89e9-0b10aeaa70ed",
+          "category": "Credit",
+          "subCategory": "Card",
+          "type": "percentageNet",
+          "value": 76.0,
+          "targetDay": 5
+        },
+        {
+          "id": "3c3ce753-900e-4c7a-af83-0391bfc101d6",
+          "category": "Bill",
+          "subCategory": "Internet",
+          "type": "fixed",
+          "value": 179.89,
+          "targetDay": 5
+        },
+        {
+          "id": "bf0d29b7-a1ba-46a1-8b30-1648315d9278",
+          "category": "Bill",
+          "subCategory": "Eletricity",
+          "type": "fixed",
+          "value": 450.0,
+          "targetDay": 5
+        },
+        {
+          "id": "40990c68-311d-4f6d-8f61-7b0bd49ff816",
+          "category": "Car",
+          "subCategory": "Fund",
+          "type": "fixed",
+          "value": 500.0,
+          "targetDay": 5
+        },
+        {
+          "id": "15b6bf65-b7b6-4640-aca4-9515841b4ed4",
+          "category": "IR",
+          "subCategory": "RF",
+          "type": "fixed",
+          "value": 209.04,
+          "targetDay": 5
+        },
+        {
+          "id": "739d80a0-f5ff-46d4-9b3e-b5f1b221d851",
+          "category": "Safety",
+          "subCategory": "NuCaixa",
+          "type": "fixed",
+          "value": 1500.0,
+          "targetDay": 20
+        },
+        {
+          "id": "7f8ec222-4348-4996-83de-42f4e57ce782",
+          "category": "Car",
+          "subCategory": "Consortium",
+          "type": "fixed",
+          "value": 1790.67,
+          "targetDay": 20
+        },
+        {
+          "id": "310aa17d-6a50-4b79-906e-b809a717f813",
+          "category": "Off",
+          "subCategory": "Travel",
+          "type": "percentageNet",
+          "value": 13.0,
+          "targetDay": 20
+        }
+      ]
+    },
+    {
+      "id": "1f67d3af-5b84-4061-9649-0e1ebe2f1937",
+      "name": "PLR 13º 2026",
+      "baseSalary": 0.0,
+      "isActive": false,
+      "isArchived": false,
+      "createdAt": "2026-06-11T21:02:58.036293",
+      "position": 1,
+      "inflows": [
+        {
+          "id": "",
+          "type": "fixed",
+          "value": 3900.0,
+          "day": 4
+        },
+        {
+          "id": "dda5edef-2a94-4c43-afca-8e045dca4449",
+          "type": "fixed",
+          "value": 6000.0,
+          "day": 6
+        }
+      ],
+      "outflows": [],
+      "distributions": [
+        {
+          "id": "39d9b0f6-ca2a-49c8-b2e0-eb3fc3c63912",
+          "category": "Car",
+          "subCategory": "Compass 4x4",
+          "type": "percentageNet",
+          "value": 17.0,
+          "targetDay": 4
+        },
+        {
+          "id": "d61c1917-feef-4309-aa1d-0f7c9c3e86ab",
+          "category": "Travel",
+          "subCategory": "USA",
+          "type": "percentageNet",
+          "value": 70.0,
+          "targetDay": 4
+        },
+        {
+          "id": "538674d3-ef3f-4afb-95b3-ddc7c0c44797",
+          "category": "Travel",
+          "subCategory": "Nomad",
+          "type": "percentageNet",
+          "value": 13.0,
+          "targetDay": 4
+        },
+        {
+          "id": "ded61c3f-f158-4bff-aa70-06ff1b49ad02",
+          "category": "Safety",
+          "subCategory": "Nubank",
+          "type": "percentageNet",
+          "value": 82.0,
+          "targetDay": 6
+        },
+        {
+          "id": "c579baa9-58cb-48f5-9349-fe8b73646135",
+          "category": "Car",
+          "subCategory": "Compass 4x4",
+          "type": "percentageNet",
+          "value": 18.0,
+          "targetDay": 6
+        }
+      ]
+    }
+  ],
+  "buckets": [
+    {
+      "id": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+      "category": "Debit",
+      "where": "Nu",
+      "minValue": 700.0,
+      "isImmediateLiquidity": true,
+      "position": 1
+    },
+    {
+      "id": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+      "category": "Ultravioleta",
+      "where": "Nu",
+      "minValue": 1781.06,
+      "isImmediateLiquidity": true,
+      "position": 2
+    },
+    {
+      "id": "674a7007-5472-4b65-9172-0eb0ec09a026",
+      "category": "Trips",
+      "where": "XP",
+      "minValue": 33652.7,
+      "isImmediateLiquidity": false,
+      "position": 3
+    },
+    {
+      "id": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+      "category": "Nomad",
+      "where": "Nu",
+      "minValue": -214.7,
+      "isImmediateLiquidity": true,
+      "position": 4
+    },
+    {
+      "id": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+      "category": "Safety",
+      "where": "Nu",
+      "minValue": 15000.0,
+      "isImmediateLiquidity": false,
+      "position": 5
+    },
+    {
+      "id": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+      "category": "Compass",
+      "where": "Nu",
+      "minValue": 4517.95,
+      "isImmediateLiquidity": true,
+      "position": 6
+    },
+    {
+      "id": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+      "category": "Stocks",
+      "where": "Nu",
+      "minValue": 493.24,
+      "isImmediateLiquidity": false,
+      "position": 7
+    },
+    {
+      "id": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+      "category": "Cashback",
+      "where": "Nu",
+      "minValue": 0.0,
+      "isImmediateLiquidity": false,
+      "position": 8
+    },
+    {
+      "id": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+      "category": "Investment",
+      "where": "XP",
+      "minValue": 92044.75,
+      "isImmediateLiquidity": false,
+      "position": 9
+    },
+    {
+      "id": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+      "category": "Crypto",
+      "where": "Ripio",
+      "minValue": -4315.07,
+      "isImmediateLiquidity": false,
+      "position": 10
+    },
+    {
+      "id": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+      "category": "FGTS",
+      "where": "Caixa",
+      "minValue": 71843.78,
+      "isImmediateLiquidity": false,
+      "position": 11
+    }
+  ],
+  "history": [
+    {
+      "id": "a7a6188e-b313-4155-a730-f8dc4c3f6376",
+      "date": "2022-12-30T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 449.18
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 449.18
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 4923.69
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 4923.69
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 4923.69
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 105.3
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 105.3
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 18238.29
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 18238.29
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 2485.83
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 0.0
+        }
+      ],
+      "total": 54842.44,
+      "immediateLiquidityTotal": 5822.05
+    },
+    {
+      "id": "d7fedf0a-fee6-4bc0-9a06-881ba91781b2",
+      "date": "2023-12-30T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 750.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 750.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 7844.13
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 7844.13
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 7844.13
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 277.67
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 277.67
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 28013.72
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 28013.72
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 6525.4
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 31857.84
+        }
+      ],
+      "total": 119998.41,
+      "immediateLiquidityTotal": 9344.13
+    },
+    {
+      "id": "deecd756-81f0-4e94-b15c-f30798a888b6",
+      "date": "2024-12-30T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 509.44
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 509.44
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 14959.61
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 14959.61
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 14959.61
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 1593.39
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 1593.39
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 33055.25
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 33055.25
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1973.97
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 45594.31
+        }
+      ],
+      "total": 162763.27,
+      "immediateLiquidityTotal": 15978.49
+    },
+    {
+      "id": "aef52db8-d43f-4ebf-9ba2-c3e4733f9ec1",
+      "date": "2025-10-02T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 66.87
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 931.9
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 6838.77
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 30458.28
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 818.4
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 31412.51
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 51805.38
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 2314.19
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 58000.06
+        }
+      ],
+      "total": 183646.36,
+      "immediateLiquidityTotal": 1998.77
+    },
+    {
+      "id": "a9bd09ee-2a03-4189-b8c5-5ea42a8e2d29",
+      "date": "2025-10-19T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 500.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 1425.34
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 6884.17
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 33111.45
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 60.95
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 834.0
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 31600.6
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 51617.29
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 2314.19
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 58000.06
+        }
+      ],
+      "total": 187348.05,
+      "immediateLiquidityTotal": 2925.34
+    },
+    {
+      "id": "d241f212-dc3d-4039-b15e-ccab2bc299d2",
+      "date": "2025-11-04T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 302.73
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 1434.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 6926.02
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 33331.19
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 82.71
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 858.0
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 31803.21
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 54506.45
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1984.26
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 58000.06
+        }
+      ],
+      "total": 190228.63,
+      "immediateLiquidityTotal": 2736.73
+    },
+    {
+      "id": "d1b166ed-5947-4dbc-85fb-53a30e83b567",
+      "date": "2025-11-18T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 500.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 1700.14
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 6964.3
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 36015.38
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 104.02
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 825.0
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 31978.3
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 55649.39
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1785.87
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 58000.06
+        }
+      ],
+      "total": 194522.46,
+      "immediateLiquidityTotal": 3200.14
+    },
+    {
+      "id": "eaa5402f-4f81-4c08-9ea4-388748474ecc",
+      "date": "2025-11-26T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 500.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 2204.84
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 8519.32
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 36114.78
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 135.66
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 940.8
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 32063.93
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 57259.0
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1785.87
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 58000.06
+        }
+      ],
+      "total": 198524.26,
+      "immediateLiquidityTotal": 3704.84
+    },
+    {
+      "id": "3a84fbd8-c3e3-44dc-8694-234aa89a043f",
+      "date": "2025-12-05T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 500.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 8552.25
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 36254.2
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 225.01
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 916.2
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 31846.26
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 59730.9
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1784.91
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 61438.38
+        }
+      ],
+      "total": 202248.11,
+      "immediateLiquidityTotal": 1500.0
+    },
+    {
+      "id": "4ad8e99c-88ec-48f3-a5bb-f2a215377b9c",
+      "date": "2025-12-18T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 500.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 8552.25
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 59947.65
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 296.32
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 905.4
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 32023.8
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 58205.55
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1728.14
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 61438.38
+        }
+      ],
+      "total": 224597.49,
+      "immediateLiquidityTotal": 1500.0
+    },
+    {
+      "id": "828da8e7-d681-45be-b0f7-5b3583fb89b9",
+      "date": "2025-12-30T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 766.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 8614.51
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 60212.53
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 366.15
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 928.8
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 30161.93
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 61427.79
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1778.93
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 61438.38
+        }
+      ],
+      "total": 226695.02,
+      "immediateLiquidityTotal": 1766.0
+    },
+    {
+      "id": "a9a235d5-0911-4a26-aac7-0d8fc56fb13f",
+      "date": "2026-01-04T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 253.46
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 8619.28
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 57688.22
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 370.94
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 924.6
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 30178.37
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 61496.42
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1804.73
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 61686.07
+        }
+      ],
+      "total": 224022.09,
+      "immediateLiquidityTotal": 1253.46
+    },
+    {
+      "id": "4b6c364a-6aa1-4fc4-9535-f45d3d1789e6",
+      "date": "2026-01-19T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 500.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 9370.48
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 60039.72
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 386.76
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 885.0
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 30363.82
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 61346.45
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1808.71
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 63379.6
+        }
+      ],
+      "total": 229080.54,
+      "immediateLiquidityTotal": 1500.0
+    },
+    {
+      "id": "15d31ff6-0bb6-4056-8c2c-4ac0037d4689",
+      "date": "2026-02-10T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 495.14
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 9453.48
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 2018.52
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 406.94
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 919.2
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 28501.32
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 125074.83
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1257.69
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 64620.7
+        }
+      ],
+      "total": 233747.82,
+      "immediateLiquidityTotal": 1495.14
+    },
+    {
+      "id": "464e8c9d-9789-4f05-97d8-24f8a6f5a96f",
+      "date": "2026-02-19T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 500.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 10000.0
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 2024.34
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 419.32
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 904.8
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 11091.5
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 141613.0
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1255.78
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 64620.7
+        }
+      ],
+      "total": 233429.44,
+      "immediateLiquidityTotal": 1500.0
+    },
+    {
+      "id": "450e2bd0-c4fc-4d8c-aed5-b84f15fab378",
+      "date": "2026-03-04T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 500.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 1686.73
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 10549.73
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 2534.86
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 430.81
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 789.0
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 11147.14
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 141395.91
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1344.43
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 64887.22
+        }
+      ],
+      "total": 236265.83,
+      "immediateLiquidityTotal": 3186.73
+    },
+    {
+      "id": "64154713-27bc-48f7-8c45-15c92636d98c",
+      "date": "2026-03-19T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 500.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 1996.29
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 10613.8
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 2550.81
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 480.23
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 747.0
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 12214.82
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 139016.63
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1325.9
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 65955.06
+        }
+      ],
+      "total": 236400.54,
+      "immediateLiquidityTotal": 3496.29
+    },
+    {
+      "id": "f5c68328-d55c-4665-83c2-b576faad1c87",
+      "date": "2026-04-01T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 503.62
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 2506.07
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 11165.74
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 3713.75
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 499.8
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 753.0
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 15020.1
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 137125.66
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1264.33
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 66193.58
+        }
+      ],
+      "total": 239745.65,
+      "immediateLiquidityTotal": 4009.69
+    },
+    {
+      "id": "15f92d53-68fd-4e01-a2ea-73a45f639455",
+      "date": "2026-04-19T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 500.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 2864.01
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 11232.56
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 3736.52
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 549.35
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 777.0
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 16586.0
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 139159.31
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1330.67
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 67261.42
+        }
+      ],
+      "total": 244996.84,
+      "immediateLiquidityTotal": 4364.01
+    },
+    {
+      "id": "b9c9cb42-c639-482a-986e-90b8d74ac411",
+      "date": "2026-05-04T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 479.14
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 2009.35
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 11662.36
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 3755.21
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 568.18
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 709.2
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 15367.42
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 137888.73
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1398.21
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 67539.76
+        }
+      ],
+      "total": 242377.56,
+      "immediateLiquidityTotal": 3488.49
+    },
+    {
+      "id": "631c0e69-356f-41ce-8187-b2e098d51423",
+      "date": "2026-05-13T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 111.89
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 2089.82
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 656.53
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 646.8
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 0.0
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 147433.77
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1359.73
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 68607.6
+        }
+      ],
+      "total": 220906.14,
+      "immediateLiquidityTotal": 111.89
+    },
+    {
+      "id": "b2c95688-f4c4-47fc-bc3b-cdb18d6b86b3",
+      "date": "2026-05-21T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 590.29
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 2697.47
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 663.28
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 658.8
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 32622.28
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 115586.3
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1319.03
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 68887.82
+        }
+      ],
+      "total": 223025.27,
+      "immediateLiquidityTotal": 590.29
+    },
+    {
+      "id": "c8804b2d-912a-47df-a8c7-1d2647f5be5f",
+      "date": "2026-06-04T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 500.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1000.0
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 3310.92
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 688.24
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 597.6
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 33252.6
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 111688.62
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1126.97
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 68887.82
+        }
+      ],
+      "total": 221052.77,
+      "immediateLiquidityTotal": 1500.0
+    },
+    {
+      "id": "c5323d5b-a523-4a95-8d6d-cad1e44b7ee9",
+      "date": "2026-06-20T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 946.38
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1849.79
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 3929.13
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 680.42
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 662.4
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 33964.96
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 112774.35
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1127.24
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 69955.66
+        }
+      ],
+      "total": 225890.33,
+      "immediateLiquidityTotal": 2796.17
+    },
+    {
+      "id": "deaae1d0-6307-4fac-9294-db6c5f9e6ec1",
+      "date": "2026-06-29T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 1445.38
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1856.8
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 5000.0
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 4943.94
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 699.26
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 684.0
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 34580.76
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 113305.66
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1092.83
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 70242.02
+        }
+      ],
+      "total": 233850.65,
+      "immediateLiquidityTotal": 3302.18
+    },
+    {
+      "id": "c605f09a-061a-42e9-9ac7-cf4bade376d8",
+      "date": "2026-07-02T21:00:00.000",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 1052.11
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Emergency",
+          "where": "Nu",
+          "value": 1860.31
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 5007.88
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 5451.89
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 699.58
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 704.4
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 34620.07
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 113591.02
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1164.79
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 70242.02
+        }
+      ],
+      "total": 234394.07,
+      "immediateLiquidityTotal": 2912.42
+    },
+    {
+      "id": "2dc0358c-a6fe-4eb9-9444-65baa15e8463",
+      "date": "2026-07-20T16:04:59.392877",
+      "transactions": [
+        {
+          "bucketId": "4b1b6b69-2c79-4d3d-adc3-7970ed571434",
+          "category": "Debit",
+          "where": "Nu",
+          "value": 700.0
+        },
+        {
+          "bucketId": "bf4a901b-282e-4cfb-af9c-92091120cf53",
+          "category": "Ultravioleta",
+          "where": "Nu",
+          "value": 1791.69
+        },
+        {
+          "bucketId": "674a7007-5472-4b65-9172-0eb0ec09a026",
+          "category": "Trips",
+          "where": "XP",
+          "value": 35575.15
+        },
+        {
+          "bucketId": "01f3e6e1-3057-4c77-8adc-6150fa2b049c",
+          "category": "Nomad",
+          "where": "Nu",
+          "value": 0.0
+        },
+        {
+          "bucketId": "62abec6f-ba44-4f86-8c4a-cee95467c77d",
+          "category": "Safety",
+          "where": "Nu",
+          "value": 6781.88
+        },
+        {
+          "bucketId": "98c929a8-337a-48b0-a2a5-0524d7b26788",
+          "category": "Compass",
+          "where": "Nu",
+          "value": 5484.04
+        },
+        {
+          "bucketId": "35288a11-03b8-4cc9-82a0-4ff85e1ff173",
+          "category": "Stocks",
+          "where": "Nu",
+          "value": 693.0
+        },
+        {
+          "bucketId": "7a116df4-19ac-4c4c-986f-f1c9e040e07a",
+          "category": "Cashback",
+          "where": "Nu",
+          "value": 743.89
+        },
+        {
+          "bucketId": "f6b6dddf-babb-4d04-a7e0-aa3007274997",
+          "category": "Investment",
+          "where": "XP",
+          "value": 113014.22
+        },
+        {
+          "bucketId": "4c157ee3-b7a7-4933-a7e4-8d2424c06e43",
+          "category": "Crypto",
+          "where": "Ripio",
+          "value": 1193.19
+        },
+        {
+          "bucketId": "87a77fef-84ff-4f6d-8c96-e3e31935fb71",
+          "category": "FGTS",
+          "where": "Caixa",
+          "value": 71843.78
+        }
+      ],
+      "total": 237820.84,
+      "immediateLiquidityTotal": 7975.73
     }
   ]
 }

@@ -44,6 +44,7 @@ flutter:
     - assets/images/app_icon_nobackground.png
     - assets/images/app_icon_safe.png
     - assets/backup/stack_money_backup.json
+    - assets/backup/stack_money_backup_old.json
 
 flutter_launcher_icons:
   android: "launcher_icon"

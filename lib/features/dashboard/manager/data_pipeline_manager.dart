@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:flutter/services.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
@@ -18,13 +19,31 @@ class DataPipelineManager {
   final _bucketService = BucketManagementService();
   final _historyService = HistoryManagementService();
 
+  final _iso8601Regex = RegExp(
+    r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?$',
+  );
+
   Future<List<Object?>> _getFileData(DataJsonClass jsonClass) async {
     try {
       final String jsonString = await rootBundle.loadString(
         'assets/backup/stack_money_backup.json',
       );
 
-      return json.decode(jsonString)[jsonClass.name];
+      final dynamic decodedJson = json.decode(
+        jsonString,
+        reviver: (key, value) {
+          if (value is String && _iso8601Regex.hasMatch(value)) {
+            final dateTime = DateTime.tryParse(value);
+            if (dateTime != null) {
+              return Timestamp.fromDate(dateTime);
+            }
+          }
+          return value;
+        },
+      );
+
+      return (decodedJson as Map<String, Object?>)[jsonClass.name]
+          as List<Object?>;
     } catch (e, stack) {
       StackMoneyException(
         message: 'Error loading JSON file',
@@ -104,7 +123,7 @@ class DataPipelineManager {
           final bucketId = bucketIds[name];
 
           final newTransaction = Transaction.create(
-            bucketId!,
+            bucketId ?? '',
             transaction.actualValue,
             category: transaction.category,
             where: transaction.where,
@@ -143,7 +162,9 @@ class DataPipelineManager {
 
     for (final pJson in localData) {
       final localPlan = SalaryPlan.fromJson(pJson as Map<String, Object?>);
-      final firebasePlan = firebaseData.where((p) => p.name == localPlan.name).firstOrNull;
+      final firebasePlan = firebaseData
+          .where((p) => p.name == localPlan.name)
+          .firstOrNull;
 
       if (firebasePlan == null) {
         final createPlan = localPlan.copyWith(newId: true);
