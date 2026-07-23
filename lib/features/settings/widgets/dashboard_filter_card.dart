@@ -4,8 +4,8 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/user_settings_scope.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
-import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
+import 'package:stack_money/features/settings/widgets/dashboard_filter_option.dart';
 
 class DashboardFilterCard extends StatelessWidget {
   const DashboardFilterCard({super.key});
@@ -23,25 +23,26 @@ class DashboardFilterCard extends StatelessWidget {
       child: ValueListenableBuilder<DashboardSortFilter?>(
         valueListenable: manager.defaultFilter,
         builder: (_, currentFilter, _) {
-          return Wrap(
-            spacing: AppSizes.sizedBoxSmall,
-            runSpacing: AppSizes.sizedBoxSmall,
-            alignment: WrapAlignment.center,
-            children: options.map((option) {
-              final techColor = option == currentFilter
-                  ? StackMoneyTheme.cyanNeon
-                  : StackMoneyTheme.mutedGrey;
+          return GridView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: options.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: AppSizes.sizedBoxSmall,
+              mainAxisSpacing: AppSizes.sizedBoxSmall,
+              childAspectRatio: 5,
+            ),
+            itemBuilder: (context, index) {
+              final option = options[index];
 
-              final label = option?.label(l10n) ?? l10n.rememberLast;
-              final icon = option?.icon ?? Icons.history_rounded;
-
-              return SmChipButton(
-                label,
-                color: techColor,
-                icon: icon,
+              return DashboardFilterOption(
+                option: option,
+                isSelected: option == currentFilter,
                 onTap: () => manager.updateDefaultFilter(option),
               );
-            }).toList(),
+            },
           );
         },
       ),
