@@ -218,6 +218,12 @@ abstract class AppLocalizations {
   /// **'Retry Handshake'**
   String get retryHandshake;
 
+  /// Retry message
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
   /// Audit ledger logs title
   ///
   /// In en, this message translates to:
@@ -777,13 +783,13 @@ abstract class AppLocalizations {
   /// Username label.
   ///
   /// In en, this message translates to:
-  /// **'Admin name'**
+  /// **'ADMIN_NAME'**
   String get adminName;
 
   /// Email label.
   ///
   /// In en, this message translates to:
-  /// **'Admin email'**
+  /// **'ADMIN_EMAIL'**
   String get adminEmail;
 
   /// Logout from the app.
@@ -834,6 +840,12 @@ abstract class AppLocalizations {
   /// **'DASH.CARDS_EXPAND'**
   String get cardExpandCode;
 
+  /// Card expand code.
+  ///
+  /// In en, this message translates to:
+  /// **'DASH.DEFAULT_FILTER'**
+  String get defaultFilterCode;
+
   /// Export data card title.
   ///
   /// In en, this message translates to:
@@ -870,17 +882,41 @@ abstract class AppLocalizations {
   /// **'Export JSON data'**
   String get exportJsonData;
 
-  /// Dashboard default filter for allocation buckets.
-  ///
-  /// In en, this message translates to:
-  /// **'Default filter'**
-  String get defaultDashboardFilter;
-
   /// Remember the last dashboard filter for allocation buckets.
   ///
   /// In en, this message translates to:
   /// **'Remember last'**
   String get rememberLast;
+
+  /// Settings changed dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes'**
+  String get settingsChangedTitle;
+
+  /// Settings changed dialog message.
+  ///
+  /// In en, this message translates to:
+  /// **'Identified {qty} changes on your preferences:'**
+  String settingsChangedMessage(Object qty);
+
+  /// Property changed diff note.
+  ///
+  /// In en, this message translates to:
+  /// **'• {code}:\n   {old} ➔ {current}\n'**
+  String settingsChangedNote(Object code, Object current, Object old);
+
+  /// Failed message when trying to login.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to sign-in'**
+  String get failedToSignIn;
+
+  /// Failed message when saving user.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save user changes'**
+  String get failedToSaveUser;
 }
 
 class _AppLocalizationsDelegate

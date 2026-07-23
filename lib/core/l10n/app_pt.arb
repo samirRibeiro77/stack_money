@@ -20,6 +20,7 @@
   "noData": "Sem dados",
   "systemLinkFailed": "Falha ao carregar sistema",
   "retryHandshake": "Tentar novamente",
+  "retry": "Repetir",
   "auditLogs": "Auditoria",
   "securityBiometricReason": "Autentique-se para visualizar seus dados sensíveis e saldos.",
   "cancel": "Cancelar",
@@ -123,12 +124,17 @@
   "securityModeCode": "SISTEMA.MODO_SEGURO",
   "cardExpandTitle": "Expandir cards por padrão",
   "cardExpandCode": "PAINEL.CARDS_EXPANDIDOS",
+  "defaultFilterCode": "PAINEL.FILTRO_PADRÃO",
   "exportData": "Exportar dados",
   "exportDataPlans": "Planos: {qty}",
   "exportDataHistory": "Histórico: {qty}",
   "exportDataBuckets": "Caixinhas: {qty}",
   "exportDataJsonSize": "Tamanho do JSON: {kb}kb",
   "exportJsonData": "Exportar dados JSON",
-  "defaultDashboardFilter": "Filtro padrão",
-  "rememberLast": "Ultimo usado"
+  "rememberLast": "Ultimo usado",
+  "settingsChangedTitle": "Alterações",
+  "settingsChangedMessage": "Identificamos {qty} modificações pendentes nas suas preferências:",
+  "settingsChangedNote": "• {code}:\n   {old} ➔ {current}\n",
+  "failedToSignIn": "Falha ao fazer login",
+  "failedToSaveUser": "Falha ao salvar usuário"
 }

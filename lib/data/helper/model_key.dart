@@ -53,4 +53,5 @@ class ModelKey {
   static const securityMode = 'securityMode';
   static const cardExpand = 'cardExpand';
   static const defaultFilter = 'defaultFilter';
+  static const lastFilter = 'lastFilter';
 }

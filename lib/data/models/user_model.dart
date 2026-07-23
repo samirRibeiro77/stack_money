@@ -7,7 +7,7 @@ class UserModel {
   final String name;
   final String email;
   final String photoUrl;
-  final UserPreferencesModel? preferences;
+  final UserPreferencesModel preferences;
 
   const UserModel({
     required this.uid,
@@ -46,7 +46,7 @@ class UserModel {
     };
 
     if (keepPrefs) {
-      userMap[ModelKey.preferences] = preferences?.toJson();
+      userMap[ModelKey.preferences] = preferences.toJson();
     }
 
     return userMap;

@@ -14,7 +14,7 @@ class SharedPreferencesRepository {
       await prefs.setString(_userKeyPrefix, jsonString);
     } catch(e, stack) {
       StackMoneyException(
-        message: 'Error saving values from Shared Preferences',
+        message: 'Error saving values on Shared Preferences',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,

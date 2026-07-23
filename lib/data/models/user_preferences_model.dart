@@ -5,10 +5,12 @@ class UserPreferencesModel {
   final bool securityMode;
   final bool cardExpand;
   final DashboardSortFilter? defaultFilter;
+  final DashboardSortFilter lastFilter;
 
   const UserPreferencesModel({
-    this.securityMode = false,
-    this.cardExpand = true,
+    this.securityMode = true,
+    this.cardExpand = false,
+    this.lastFilter = DashboardSortFilter.position,
     this.defaultFilter,
   });
 
@@ -18,8 +20,13 @@ class UserPreferencesModel {
     }
 
     return UserPreferencesModel(
-      securityMode: json[ModelKey.securityMode] as bool? ?? false,
-      cardExpand: json[ModelKey.cardExpand] as bool? ?? true,
+      securityMode: json[ModelKey.securityMode] as bool? ?? true,
+      cardExpand: json[ModelKey.cardExpand] as bool? ?? false,
+      lastFilter:
+          DashboardSortFilter.fromJson(
+            json[ModelKey.lastFilter] as String?,
+          ) ??
+          DashboardSortFilter.position,
       defaultFilter: DashboardSortFilter.fromJson(
         json[ModelKey.defaultFilter] as String?,
       ),
@@ -30,6 +37,7 @@ class UserPreferencesModel {
     return {
       ModelKey.securityMode: securityMode,
       ModelKey.cardExpand: cardExpand,
+      ModelKey.lastFilter: lastFilter.name,
       ModelKey.defaultFilter: defaultFilter?.name,
     };
   }
@@ -37,11 +45,13 @@ class UserPreferencesModel {
   UserPreferencesModel copyWith({
     bool? securityMode,
     bool? cardExpand,
+    DashboardSortFilter? lastFilter,
     DashboardSortFilter? defaultFilter,
   }) {
     return UserPreferencesModel(
       securityMode: securityMode ?? this.securityMode,
       cardExpand: cardExpand ?? this.cardExpand,
+      lastFilter: lastFilter ?? this.lastFilter,
       defaultFilter: defaultFilter ?? this.defaultFilter,
     );
   }
