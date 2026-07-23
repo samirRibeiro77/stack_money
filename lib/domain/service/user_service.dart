@@ -29,6 +29,15 @@ class UserService {
     }
   }
 
+  Future<UserPreferencesModel> fetchPreferences() async {
+    final localPrefs = await _localRepo.get();
+    if (localPrefs != null) {
+      return localPrefs;
+    }
+
+    return await _remoteRepo.getPreferences();
+  }
+
   Future<void> updatePreferences(
     UserModel currentUserModel,
     UserPreferencesModel newPreferences,

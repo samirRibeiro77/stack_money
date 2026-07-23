@@ -7,12 +7,15 @@ import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
+import 'package:stack_money/data/models/user_preferences_model.dart';
 import 'package:stack_money/domain/service/history_service.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
+import 'package:stack_money/domain/service/user_service.dart';
 
 class DashboardManager {
   final _bucketService = BucketManagementService();
   final _historyService = HistoryManagementService();
+  final _userService = UserService();
 
   final ValueNotifier<bool> _isLoading = ValueNotifier(true);
   final ValueNotifier<bool> _hasError = ValueNotifier(false);
@@ -21,6 +24,10 @@ class DashboardManager {
   final ValueNotifier<List<Bucket>> _realParameters = ValueNotifier([]);
   final ValueNotifier<List<History>> _realHistoryTimeline = ValueNotifier([]);
   final ValueNotifier<Set<String>> _expandedBucketIds = ValueNotifier({});
+
+  final ValueNotifier<UserPreferencesModel> _preferences = ValueNotifier(
+    UserPreferencesModel(),
+  );
 
   final ValueNotifier<DashboardSortFilter> _sortFilter = ValueNotifier(
     DashboardSortFilter.position,
@@ -68,6 +75,8 @@ class DashboardManager {
       _realParameters.value = results[0] as List<Bucket>;
       _realHistoryTimeline.value = results[1] as List<History>;
 
+      await _loadUserPreferences();
+
       _isLoading.value = false;
     } catch (e, stack) {
       StackMoneyException(
@@ -81,9 +90,19 @@ class DashboardManager {
     }
   }
 
+  Future<void> _loadUserPreferences() async {
+    _preferences.value = await _userService.fetchPreferences();
+    final initialFilter =
+        _preferences.value.defaultFilter ?? _preferences.value.lastFilter;
+    updateSortFilter(initialFilter);
+  }
+
   /// 🔥 NOVO: Atualizador tático de ordenação
   void updateSortFilter(DashboardSortFilter newFilter) {
-    SmLogger.debug('Sorting filter', payload: {'filter': newFilter.name});
+    SmLogger.debug(
+      'Sorting filter',
+      payload: {'old': _sortFilter.value, 'new': newFilter},
+    );
     final latestHistory = _realHistoryTimeline.value.last;
 
     _realParameters.value.sort((a, b) {
