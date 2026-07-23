@@ -1,33 +1,39 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:stack_money/domain/service/auth_service.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/domain/service/user_service.dart';
 
-/// State and business logic coordinator for the Authentication feature.
-/// Uses ValueNotifier to expose lightweight reactive states to the UI.
 class LoginManager {
-  final _authService = AuthService();
-
-  /// Encapsulated state notifier to tracking async operations
+  final _userService = UserService();
   final ValueNotifier<bool> _isLoadingNotifier = ValueNotifier<bool>(false);
 
-  /// Public read-only view of the loading state for UI consumption.
   ValueListenable<bool> get isLoading => _isLoadingNotifier;
 
-  /// Dispatches the Google Sign-In pipeline and safely manages loading states.
   Future<User?> loginWithGoogle() async {
     try {
-      // Turn on the HUD loading indicator
       _isLoadingNotifier.value = true;
 
-      final User? user = await _authService.signInWithGoogle();
+      final User? user = await _userService.signInWithGoogle();
+      if (user == null) {
+        throw Exception('Something went wrong capturing the user logged');
+      }
+
       return user;
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to login',
+        scope: ExceptionScope.auth,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
     } finally {
-      // Guarantees the loader turns off even if an exception occurs
       _isLoadingNotifier.value = false;
     }
+
+    return null;
   }
 
-  /// Cleans up state listeners when the manager lifecycle ends.
   void dispose() {
     _isLoadingNotifier.dispose();
   }

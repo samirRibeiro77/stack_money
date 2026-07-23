@@ -28,6 +28,7 @@ dependencies:
   uuid: ^4.3.3
   local_auth: ^3.0.1
   currency_formatter: ^2.3.0
+  shared_preferences: ^2.5.5
 
 dev_dependencies:
   flutter_test:
