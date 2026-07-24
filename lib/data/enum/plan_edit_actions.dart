@@ -4,6 +4,7 @@ import 'package:stack_money/core/theme/theme.dart';
 
 enum PlanEditActions {
   copy,
+  share,
   archive,
   delete;
 
@@ -11,6 +12,8 @@ enum PlanEditActions {
     switch (this) {
       case copy:
         return l10n.copy;
+      case share:
+        return l10n.share;
       case archive:
         return l10n.archive;
       case delete:
@@ -22,6 +25,7 @@ enum PlanEditActions {
     switch (this) {
       case copy:
         return StackMoneyTheme.cyanNeon;
+      case share:
       case archive:
         return StackMoneyTheme.platinumSilver;
       case delete:
@@ -33,6 +37,8 @@ enum PlanEditActions {
     switch (this) {
       case copy:
         return Icons.copy_all_outlined;
+      case share:
+        return Icons.share_rounded;
       case archive:
         return Icons.archive_outlined;
       case delete:

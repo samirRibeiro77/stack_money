@@ -33,7 +33,7 @@ class ExportService {
       final history = results[2] as List<History>;
 
       final file = await _createExportFile(
-        _convertDataToString(
+        _convertDataToExport(
           jsonMap: _createJsonData(
             plans: plans,
             buckets: buckets,
@@ -60,13 +60,36 @@ class ExportService {
     return null;
   }
 
-  Future<ShareResult> shareExportFile(DataExportModel dataExport) async {
+  Future<ShareResult> exportData(List<Object?> data) async {
+    return await shareFile(await _createExportFile(_convertDataToExport(jsonList: data)));
+  }
+
+  Future<ShareResult> shareFile(File file) async {
     final XFile xFile = XFile(
-      dataExport.file!.path,
+      file.path,
       mimeType: 'application/json',
     );
 
     return await SharePlus.instance.share(ShareParams(files: [xFile]));
+  }
+
+  String _convertDataToExport({
+    Map<String, Object?>? jsonMap,
+    List<Object?>? jsonList,
+  }) {
+    if (jsonMap == null && jsonList == null) {
+      throw Exception('Must fill one of the two (jsonMap || jsonList');
+    }
+
+    return jsonEncode(
+      jsonMap ?? jsonList,
+      toEncodable: (nonEncodable) {
+        if (nonEncodable is Timestamp) {
+          return nonEncodable.toDate().toIso8601String();
+        }
+        return nonEncodable.toString();
+      },
+    );
   }
 
   Map<String, Object?> _createJsonData({
@@ -89,25 +112,6 @@ class ExportService {
     }
 
     return jsonData;
-  }
-
-  String _convertDataToString({
-    Map<String, Object?>? jsonMap,
-    List<Object?>? jsonList,
-  }) {
-    if (jsonMap == null && jsonList == null) {
-      throw Exception('Must fill one of the two (jsonMap || jsonList');
-    }
-
-    return jsonEncode(
-      jsonMap ?? jsonList,
-      toEncodable: (nonEncodable) {
-        if (nonEncodable is Timestamp) {
-          return nonEncodable.toDate().toIso8601String();
-        }
-        return nonEncodable.toString();
-      },
-    );
   }
 
   Future<File> _createExportFile(String jsonString) async {

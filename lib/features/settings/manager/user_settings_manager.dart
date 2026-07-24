@@ -181,7 +181,9 @@ class UserSettingsManager {
   }
 
   void shareData() {
-    _exportService.shareExportFile(_dataExport.value);
+    if (_dataExport.value.file != null) {
+      _exportService.shareFile(_dataExport.value.file!);
+    }
   }
 
   void _failedAction(

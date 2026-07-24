@@ -240,6 +240,14 @@
   "@percentGross": {
     "description": "% of the gross income"
   },
+  "copy": "Copy",
+  "@copy": {
+    "description": "Copy something"
+  },
+  "share": "Share",
+  "@share": {
+    "description": "Share something"
+  },
   "archive": "Archive",
   "@archive": {
     "description": "Archive something"
@@ -247,10 +255,6 @@
   "delete": "Delete",
   "@delete": {
     "description": "Delete something"
-  },
-  "copy": "Copy",
-  "@copy": {
-    "description": "Copy something"
   },
   "dayX": "D{d}",
   "@dayX": {

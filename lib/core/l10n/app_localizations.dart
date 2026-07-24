@@ -458,6 +458,18 @@ abstract class AppLocalizations {
   /// **'% gross'**
   String get percentGross;
 
+  /// Copy something
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
+
+  /// Share something
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
   /// Archive something
   ///
   /// In en, this message translates to:
@@ -469,12 +481,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get delete;
-
-  /// Copy something
-  ///
-  /// In en, this message translates to:
-  /// **'Copy'**
-  String get copy;
 
   /// Quantity of days (eg.: D5)
   ///
