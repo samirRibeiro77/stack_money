@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/data/helper/export_key.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/data_export_model.dart';
@@ -61,14 +62,27 @@ class ExportService {
   }
 
   Future<ShareResult> exportData(List<Object?> data) async {
-    return await shareFile(await _createExportFile(_convertDataToExport(jsonList: data)));
+    return await shareFile(
+      await _createExportFile(_convertDataToExport(jsonList: data)),
+    );
+  }
+
+  Future<String> extractDataToAI() async {
+    final results = await Future.wait([
+      PlanManagementService().fetchActivated(),
+      HistoryManagementService().fetchLatest(),
+    ]);
+
+    final jsonMap = {
+      ExportKey.currentPlan: (results[0] as SalaryPlan).toJson(),
+      ExportKey.latestHistory: (results[1] as History).toJson(),
+    };
+
+    return _convertDataToExport(jsonMap: jsonMap);
   }
 
   Future<ShareResult> shareFile(File file) async {
-    final XFile xFile = XFile(
-      file.path,
-      mimeType: 'application/json',
-    );
+    final XFile xFile = XFile(file.path, mimeType: ExportKey.mimeType);
 
     return await SharePlus.instance.share(ShareParams(files: [xFile]));
   }

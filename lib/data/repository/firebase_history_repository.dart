@@ -37,7 +37,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
     }
   }
 
-  Future<List<Transaction>> fetchLastSprintValues() async {
+  Future<History?> fetchLatest() async {
     try {
       final snapshot = await _collection
           .orderBy(ModelKey.date, descending: true)
@@ -45,14 +45,12 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
           .get();
 
       if (snapshot.docs.isNotEmpty) {
-        final history = History.fromJson(
+        return History.fromJson(
           snapshot.docs.first.data(),
           documentId: snapshot.docs.first.id,
         );
-
-        return history.transactions.toList();
       }
-      return [];
+      return null;
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error fetching last history snapshot',
