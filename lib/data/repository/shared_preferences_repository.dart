@@ -30,11 +30,14 @@ class SharedPreferencesRepository {
   }
 
   Future<UserPreferencesModel?> get() async {
+    SmLogger.debug('Getting preferences', payload: {});
+
     try {
       final prefs = await SharedPreferences.getInstance();
       final jsonString = prefs.getString(_userKeyPrefix);
       if (jsonString == null) throw Exception('Preference not found');
 
+      SmLogger.info('Preferences retrieved successfully');
       final json = jsonDecode(jsonString) as Map<String, dynamic>;
       return UserPreferencesModel.fromJson(json);
     } catch (e, stack) {
@@ -49,9 +52,12 @@ class SharedPreferencesRepository {
   }
 
   Future<void> clear() async {
+    SmLogger.debug('Clearing preferences', payload: {});
+
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_userKeyPrefix);
+      SmLogger.warning('Preferences cleared successfully');
     } catch (e, stack) {
       StackMoneyException(
         message: 'Error clearing values from Shared Preferences',

@@ -15,10 +15,16 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
       getUserDoc().collection(FirebaseKey.buckets);
 
   Future<List<Bucket>> fetch() async {
+    SmLogger.debug('Fetching buckets', payload: {});
+
     try {
       final snapshot = await _collection
           .orderBy(ModelKey.position, descending: false)
           .get();
+
+      if (snapshot.docs.isEmpty) {
+        throw Exception('No bucket found');
+      }
 
       SmLogger.info(
         'Fetch buckets completed with ${snapshot.docs.length} entries.',
@@ -37,7 +43,9 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     }
   }
 
-  Future<Bucket> fetchById(String id) async {
+  Future<Bucket> get(String id) async {
+    SmLogger.debug('Getting bucket', payload: {'id': id});
+
     try {
       final doc = await getUserDoc()
           .collection(FirebaseKey.buckets)
@@ -45,12 +53,10 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           .get();
 
       if (!doc.exists || doc.data() == null) {
-        throw StackMoneyException(
-          message: 'Bucket not found.',
-          payload: {'id': id},
-          scope: ExceptionScope.database,
-        );
+        throw Exception('Bucket not found.');
       }
+
+      SmLogger.info('Retrieved bucket with id $id.');
 
       return Bucket.fromJson(doc.data(), id: doc.id);
     } catch (e, stack) {
@@ -69,6 +75,16 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     required double totalNetWorth,
     required double totalLiquidity,
   }) async {
+    SmLogger.debug(
+      'Commiting sprint',
+      payload: {
+        'transactions': transactions.map((t) => t.toJson()).toList(),
+        'updatedBuckets': updatedBuckets.map((b) => b.toJson()).toList(),
+        'totalNetWorth': totalNetWorth,
+        'totalLiquidity': totalLiquidity,
+      },
+    );
+
     try {
       final batch = firestore.batch();
       final userDoc = getUserDoc();
@@ -101,6 +117,10 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         FirebaseKey.netWorth: netWorth.toJson(),
       }, SetOptions(merge: true));
 
+      SmLogger.info(
+        'Finished saving money sprint with historyId: ${history.id}.',
+      );
+
       await batch.commit();
     } catch (e, stack) {
       throw StackMoneyException(
@@ -113,9 +133,9 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
   }
 
   Future<void> save(Bucket bucket) async {
-    try {
-      SmLogger.debug('Initializing save', payload: bucket.toJson());
+    SmLogger.debug('Initializing save', payload: bucket.toJson());
 
+    try {
       _collection
           .doc(bucket.id)
           .set(bucket.toJson(), SetOptions(merge: true))
@@ -125,12 +145,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
             );
           })
           .catchError((e, stack) {
-            StackMoneyException(
-              message: 'Background sync failed',
-              scope: ExceptionScope.database,
-              payload: {'exception': e, 'bucket': bucket},
-              stackTrace: stack,
-            );
+            Exception('Background sync failed');
           });
     } catch (e, stack) {
       throw StackMoneyException(
@@ -143,28 +158,23 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
   }
 
   Future<void> delete(String id) async {
-    try {
-      SmLogger.debug('Evaluating purge authorization', payload: {'id': id});
+    SmLogger.debug('Purging bucket', payload: {'id': id});
 
+    try {
       final docSnap = await _collection.doc(id).get();
 
       if (docSnap.exists) {
         final currentBucket = Bucket.fromJson(docSnap.data(), id: docSnap.id);
 
         if (!currentBucket.isDeletable) {
-          throw StackMoneyException(
-            message:
-                'Bucket contains active allocation funds. Only buckets with zero (0) \'minValue\' can be deleted',
-            scope: ExceptionScope.database,
-            payload: {'bucket': currentBucket.toJson()},
+          throw Exception(
+            'Bucket contains active allocation funds. Only buckets with zero (0) \'minValue\' can be deleted',
           );
         }
       }
 
       SmLogger.warning('Executing permanent destruction on UUID: $id');
-
       await _collection.doc(id).delete();
-
       SmLogger.info('Document expurged from system core: $id');
     } catch (e, stack) {
       throw StackMoneyException(

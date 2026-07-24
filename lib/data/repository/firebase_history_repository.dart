@@ -5,7 +5,6 @@ import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/history.dart';
-import 'package:stack_money/data/models/transaction.dart';
 import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
 class FirebaseHistoryRepository extends BaseFirebaseRepository {
@@ -13,12 +12,16 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
       getUserDoc().collection(FirebaseKey.history);
 
   Future<List<History>> fetch() async {
-    try {
-      SmLogger.debug('Querying historical timeline ledger...', payload: {});
+    SmLogger.debug('Fetching history', payload: {});
 
+    try {
       final snapshot = await _collection
           .orderBy(ModelKey.date, descending: false)
           .get();
+
+      if (snapshot.docs.isEmpty) {
+        throw Exception('No history found');
+      }
 
       SmLogger.info(
         'Fetch history completed with ${snapshot.docs.length} entries.',
@@ -37,20 +40,25 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
     }
   }
 
-  Future<History?> fetchLatest() async {
+  Future<History> fetchLatest() async {
+    SmLogger.debug('Fetching latest history', payload: {});
+
     try {
       final snapshot = await _collection
           .orderBy(ModelKey.date, descending: true)
           .limit(1)
           .get();
 
-      if (snapshot.docs.isNotEmpty) {
-        return History.fromJson(
-          snapshot.docs.first.data(),
-          documentId: snapshot.docs.first.id,
-        );
+      if (snapshot.docs.isEmpty) {
+        throw Exception('No latest history found');
       }
-      return null;
+
+      SmLogger.info('Found ${snapshot.docs.first.id} as the latest history.');
+
+      return History.fromJson(
+        snapshot.docs.first.data(),
+        documentId: snapshot.docs.first.id,
+      );
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Error fetching last history snapshot',

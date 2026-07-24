@@ -11,17 +11,22 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   CollectionReference<Map<String, Object?>> get _collection =>
       getUserDoc().collection(FirebaseKey.salaryPlans);
 
-  Future<List<SalaryPlan>> fetchAllPlans() async {
-    SmLogger.debug('Fetching salary profiling roster...', payload: {});
+  Future<List<SalaryPlan>> fetch() async {
+    SmLogger.debug('Fetching salary plans', payload: {});
 
     try {
       final snapshot = await _collection
           .orderBy(ModelKey.createdAt, descending: true)
           .get();
 
+      if (snapshot.docs.isEmpty) {
+        throw Exception('No salary plan found');
+      }
+
       SmLogger.info(
         'Fetch plans completed with ${snapshot.docs.length} entries.',
       );
+
       return snapshot.docs
           .map((doc) => SalaryPlan.fromJson(doc.data()))
           .toList();
@@ -36,13 +41,17 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
   }
 
   Future<SalaryPlan?> fetchActivatedPlan() async {
-    SmLogger.debug('Fetching current activated salary plan...', payload: {});
+    SmLogger.debug('Fetching current activated salary plan', payload: {});
 
     try {
       final snapshot = await _collection
           .where(ModelKey.isActive, isEqualTo: true)
           .limit(1)
           .get();
+
+      if (snapshot.docs.isEmpty) {
+        throw Exception('No activated salary plan found');
+      }
 
       SmLogger.info('Found ${snapshot.docs.length} activated plan(s).');
 
@@ -60,11 +69,8 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     }
   }
 
-  Future<void> savePlan(SalaryPlan plan) async {
-    SmLogger.debug(
-      'Opening synchronization transaction',
-      payload: plan.toJson(),
-    );
+  Future<void> save(SalaryPlan plan) async {
+    SmLogger.debug('Saving salary plan', payload: plan.toJson());
 
     try {
       await _collection
@@ -102,8 +108,10 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
           batch.update(_collection.doc(doc.id), {ModelKey.isActive: false});
         }
       }
+      SmLogger.warning(
+        'Cascading unique profile allocation committed to core.',
+      );
       await batch.commit();
-      SmLogger.info('Cascading unique profile allocation committed to core.');
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Failed to batch activate plan',
@@ -155,15 +163,12 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     }
   }
 
-  Future<void> purgePlan(String id) async {
-    SmLogger.debug(
-      'Initializing terminal deletion sequence',
-      payload: {'id': id},
-    );
+  Future<void> delete(String id) async {
+    SmLogger.debug('Deleting salary plan', payload: {'id': id});
 
     try {
       await _collection.doc(id).delete();
-      SmLogger.warning('Document swept out from system infrastructure core.');
+      SmLogger.warning('Salary plan deleted.');
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Hard purge execution failed on core cluster',
