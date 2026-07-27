@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/domain/service/user_service.dart';
 import 'package:stack_money/features/auth/login_screen.dart';
+import 'package:stack_money/features/loading/loading_screen.dart';
 import 'package:stack_money/features/main_navigation/main_navigation_wrapper.dart';
 
 final UserService _authService = UserService();
@@ -25,7 +26,7 @@ final GoRouter appRouter = GoRouter(
 
     // Guard Rule B: If already logged in and tries to access Login, bounce to Home
     if (isLoggedIn && isGoingToLogin) {
-      return MainNavigationWrapper.route;
+      return LoadingScreen.route;
     }
 
     // No redirection needed, let the user proceed
@@ -40,6 +41,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: MainNavigationWrapper.route,
       builder: (_, state) => const MainNavigationWrapper(),
+    ),
+    GoRoute(
+      path: LoadingScreen.route,
+      builder: (_, state) => const LoadingScreen(),
     ),
   ],
 );

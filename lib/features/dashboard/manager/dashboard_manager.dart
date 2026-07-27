@@ -18,14 +18,6 @@ class DashboardManager {
     const ChartFilterState(filter: ChartFilter.threeMonths),
   );
 
-  DashboardManager() {
-    final sort = AppCoordinator.instance.user.value?.preferences.lastFilter ??
-        DashboardSortFilter.position;
-
-    updateSortFilter(sort);
-    _buckets.value = AppCoordinator.instance.buckets.value;
-  }
-
   ValueListenable<bool> get masterExpandState => _masterExpandState;
 
   ValueListenable<Set<String>> get expandedIdsNotifier => _expandedBucketIds;
@@ -44,6 +36,10 @@ class DashboardManager {
     SmLogger.debug('Adding buckets listener', payload: {});
     AppCoordinator.instance.buckets.addListener(() {
       _buckets.value = AppCoordinator.instance.buckets.value;
+      final sort =
+          AppCoordinator.instance.user.value?.preferences.currentFilter ??
+              DashboardSortFilter.position;
+      updateSortFilter(sort);
     });
   }
 
@@ -52,6 +48,7 @@ class DashboardManager {
       'Sorting filter',
       payload: {'old': _sortFilter.value, 'new': newFilter},
     );
+
     final latestHistory = AppCoordinator.instance.history.value.last;
 
     _buckets.value.sort((a, b) {

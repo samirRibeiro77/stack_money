@@ -45,13 +45,13 @@ class AppCoordinator {
   ValueListenable<bool> get isLoading => _isLoading;
 
   /// Init app
-  void initApp() {
-    // _loadAppData();
+  void initApp() async {
+    await _loadAppData();
     _activateAppListeners();
   }
 
   /// Load app data
-  void _loadAppData() async {
+  Future<void> _loadAppData() async {
     try {
       _isLoading.value = true;
 

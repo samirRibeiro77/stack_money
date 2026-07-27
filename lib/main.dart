@@ -12,8 +12,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  AppCoordinator.instance.initApp();
-
   runApp(const StackMoneyApp());
 }
 
