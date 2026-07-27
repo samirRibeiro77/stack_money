@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
-import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
@@ -9,7 +9,7 @@ import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/core/widgets/sm_gravity_swop_list.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/features/dashboard/manager/dashboard_manager.dart';
-import 'package:stack_money/features/dashboard/widgets/dashboard_sort_bottom_sheet.dart'; // 🔥 Novo Import
+import 'package:stack_money/features/dashboard/widgets/dashboard_sort_bottom_sheet.dart';
 import 'package:stack_money/features/dashboard/widgets/dashboard_bucket_card.dart';
 import 'package:stack_money/features/dashboard/widgets/patrimonial_hud.dart';
 import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart';
@@ -30,86 +30,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _manager.loadFirebaseDashboardData();
+    _manager.listenBuckets();
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final textTheme = Theme.of(context).textTheme;
 
-    return ValueListenableBuilder<bool>(
-      valueListenable: _manager.isLoading,
-      builder: (_, isLoading, _) {
-        if (isLoading) {
-          return _buildLoadingState();
-        }
-
-        return ValueListenableBuilder<bool>(
-          valueListenable: _manager.hasError,
-          builder: (_, hasError, _) {
-            if (hasError || _manager.historyTimeline.isEmpty) {
-              return _buildErrorState(l10n, textTheme);
-            }
-
-            return _buildBodyContent(l10n);
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildLoadingState() {
-    return const SizedBox(
-      height: 400,
-      child: Center(
-        child: CircularProgressIndicator(
-          color: StackMoneyTheme.cyanNeon,
-          backgroundColor: StackMoneyTheme.surface,
-          strokeWidth: 3,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildErrorState(AppLocalizations l10n, TextTheme textTheme) {
-    return SizedBox(
-      height: 300,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.gpp_maybe_outlined,
-              color: StackMoneyTheme.magentaNeon,
-              size: AppSizes.x24,
-            ),
-            const SizedBox(height: AppSizes.sizedBoxLarge),
-            Text(
-              StackMoneyString.formatTitle(l10n.systemLinkFailed),
-              style: textTheme.headlineMedium?.copyWith(
-                color: StackMoneyTheme.magentaNeon,
-              ),
-            ),
-            const SizedBox(height: AppSizes.sizedBoxSmall),
-            TextButton(
-              onPressed: _manager.loadFirebaseDashboardData,
-              child: Text(
-                StackMoneyString.formatTitle(l10n.retryHandshake),
-                style: textTheme.titleMedium?.copyWith(
-                  color: StackMoneyTheme.cyanNeon,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBodyContent(AppLocalizations l10n) {
     return ValueListenableBuilder(
-      valueListenable: _manager.historyTimelineNotifier,
+      valueListenable: AppCoordinator.instance.history,
       builder: (_, historyList, _) {
         final latestAudit = historyList.last;
 
@@ -186,13 +115,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               splashRadius: AppSizes.x6,
-                              // Opção 1: Morphing Cyber-Icon ativo
                               icon: Icon(
                                 activeSort.icon,
                                 color: StackMoneyTheme.cyanNeon,
                                 size: AppSizes.x10,
                               ),
-                              // 🔥 MODIFICADO: Invocação direta e desacoplada do novo widget externo
                               onPressed: () {
                                 showModalBottomSheet(
                                   context: context,
@@ -211,7 +138,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     const SizedBox(height: AppSizes.sizedBoxMedium),
                     ValueListenableBuilder(
-                      valueListenable: _manager.parametersNotifier,
+                      valueListenable: _manager.buckets,
                       builder: (_, bucketList, _) {
                         return ValueListenableBuilder(
                           valueListenable: _manager.expandedIdsNotifier,
