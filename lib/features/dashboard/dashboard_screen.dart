@@ -4,6 +4,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/core/widgets/sm_gravity_swop_list.dart';
@@ -28,14 +29,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final _manager = DashboardManager();
 
   @override
-  void initState() {
-    super.initState();
-    _manager.listenBuckets();
+  void dispose() {
+    _manager.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isSecureActive = SecurityProvider.isSecureOf(context);
 
     return ValueListenableBuilder(
       valueListenable: AppCoordinator.instance.history,
@@ -83,27 +85,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             const SizedBox(height: AppSizes.x12),
             ValueListenableBuilder(
-              valueListenable: _manager.sortFilterNotifier,
-              builder: (_, activeSort, _) {
-                final isSecureActive = SecurityProvider.isSecureOf(context);
+              valueListenable: AppCoordinator.instance.buckets,
+              builder: (_, buckets, _) {
+                return ValueListenableBuilder(
+                  valueListenable: AppCoordinator.instance.user,
+                  builder: (_, user, _) {
+                    final activeSort = user.preferences.currentFilter;
+                    _manager.updateSortFilter(buckets, activeSort);
 
-                return Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    return Column(
                       children: [
-                        Expanded(
-                          child: ExpandableHeader(
-                            title: l10n.allocationBuckets,
-                            toggle: _manager.toggleAllBuckets,
-                            validation: _manager.masterExpandState,
-                          ),
-                        ),
-                        if (!isSecureActive)
-                          AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            transitionBuilder:
-                                (Widget child, Animation<double> animation) {
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: ExpandableHeader(
+                                title: l10n.allocationBuckets,
+                                toggle: _manager.toggleAllBuckets,
+                                validation: _manager.masterExpandState,
+                              ),
+                            ),
+                            if (!isSecureActive)
+                              AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 300),
+                                transitionBuilder:
+                                    (Widget child, Animation<double> animation) {
                                   return ScaleTransition(
                                     scale: animation,
                                     child: RotationTransition(
@@ -112,45 +118,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     ),
                                   );
                                 },
-                            child: IconButton(
-                              key: ValueKey<DashboardSortFilter>(activeSort),
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              splashRadius: AppSizes.x6,
-                              icon: Icon(
-                                activeSort.icon,
-                                color: StackMoneyTheme.cyanNeon,
-                                size: AppSizes.x10,
-                              ),
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  useRootNavigator: true,
-                                  backgroundColor: Colors.transparent,
-                                  elevation: 1,
-                                  builder: (_) => DashboardSortBottomSheet(
-                                    currentSort: activeSort,
-                                    onFilterSelected: _manager.updateSortFilter,
+                                child: IconButton(
+                                  key: ValueKey<DashboardSortFilter>(activeSort),
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  splashRadius: AppSizes.x6,
+                                  icon: Icon(
+                                    activeSort.icon,
+                                    color: StackMoneyTheme.cyanNeon,
+                                    size: AppSizes.x10,
                                   ),
-                                );
-                              },
-                            ),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: AppSizes.sizedBoxMedium),
-                    ValueListenableBuilder(
-                      valueListenable: _manager.buckets,
-                      builder: (_, bucketList, _) {
-                        return ValueListenableBuilder(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      useRootNavigator: true,
+                                      backgroundColor: Colors.transparent,
+                                      elevation: 1,
+                                      builder: (_) => DashboardSortBottomSheet(
+                                        currentSort: activeSort,
+                                        onFilterSelected: (filter) => _manager.updateSortFilter(buckets, filter),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: AppSizes.sizedBoxMedium),
+                        ValueListenableBuilder(
                           valueListenable: _manager.expandedIdsNotifier,
                           builder: (_, expandedIds, _) {
                             return SmGravitySwopList(
                               sortKey: activeSort,
-                              children: List.generate(bucketList.length, (
-                                index,
-                              ) {
-                                final param = bucketList[index];
+                              children: List.generate(buckets.length, (
+                                  index,
+                                  ) {
+                                final param = buckets[index];
                                 final isCardExpanded = expandedIds.contains(
                                   param.id,
                                 );
@@ -166,10 +169,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               }),
                             );
                           },
-                        );
-                      },
-                    ),
-                  ],
+                        )
+                      ],
+                    );
+                  },
                 );
               },
             ),

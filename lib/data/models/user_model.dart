@@ -17,6 +17,10 @@ class UserModel {
     this.preferences = const UserPreferencesModel(),
   });
 
+  factory UserModel.empty() {
+    return UserModel(uid: '', name: '', email: '', photoUrl: '');
+  }
+
   factory UserModel.fromJson(Map<String, Object?>? json) {
     return UserModel(
       uid: json?[ModelKey.uid] as String? ?? '',

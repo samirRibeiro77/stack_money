@@ -12,7 +12,6 @@ class DashboardManager {
 
   final _masterExpandState = ValueNotifier(true);
   final _expandedBucketIds = ValueNotifier(<String>{});
-  final _buckets = ValueNotifier(<Bucket>[]);
   final _sortFilter = ValueNotifier(DashboardSortFilter.position);
   final _chartFilter = ValueNotifier(
     const ChartFilterState(filter: ChartFilter.threeMonths),
@@ -26,24 +25,11 @@ class DashboardManager {
 
   ValueListenable<DashboardSortFilter> get sortFilterNotifier => _sortFilter;
 
-  ValueListenable<List<Bucket>> get buckets => _buckets;
-
   ChartFilterState get chartFilter => _chartFilter.value;
 
   DashboardSortFilter get activeSort => _sortFilter.value;
 
-  void listenBuckets() {
-    SmLogger.debug('Adding buckets listener', payload: {});
-    AppCoordinator.instance.buckets.addListener(() {
-      _buckets.value = AppCoordinator.instance.buckets.value;
-      final sort =
-          AppCoordinator.instance.user.value?.preferences.currentFilter ??
-              DashboardSortFilter.position;
-      updateSortFilter(sort);
-    });
-  }
-
-  void updateSortFilter(DashboardSortFilter newFilter) {
+  void updateSortFilter(List<Bucket> buckets, DashboardSortFilter newFilter) {
     SmLogger.debug(
       'Sorting filter',
       payload: {'old': _sortFilter.value, 'new': newFilter},
@@ -51,7 +37,7 @@ class DashboardManager {
 
     final latestHistory = AppCoordinator.instance.history.value.last;
 
-    _buckets.value.sort((a, b) {
+    buckets.sort((a, b) {
       final double valA =
           latestHistory.transactions
               .where((t) => t.bucketId == a.id)
@@ -108,5 +94,12 @@ class DashboardManager {
       _expandedBucketIds.value = {};
     }
     _masterExpandState.value = !_masterExpandState.value;
+  }
+
+  void dispose() {
+    _masterExpandState.dispose();
+    _expandedBucketIds.dispose();
+    _sortFilter.dispose();
+    _chartFilter.dispose();
   }
 }

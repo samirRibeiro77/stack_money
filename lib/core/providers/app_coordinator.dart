@@ -20,8 +20,8 @@ class AppCoordinator {
   final _bucketService = BucketManagementService();
 
   /// Notifiers
-  final ValueNotifier<UserModel?> _user = ValueNotifier(null);
-  final ValueNotifier<List<History>> _history = ValueNotifier([]);
+  late final ValueNotifier<UserModel> _user = ValueNotifier(UserModel.empty());
+  late final ValueNotifier<List<History>> _history = ValueNotifier([]);
   final ValueNotifier<List<SalaryPlan>> _plans = ValueNotifier([]);
   final ValueNotifier<List<Bucket>> _buckets = ValueNotifier([]);
   final ValueNotifier<bool> _isLoading = ValueNotifier(false);
@@ -34,7 +34,7 @@ class AppCoordinator {
   static AppCoordinator get instance => _instance;
 
   /// Getters
-  ValueListenable<UserModel?> get user => _user;
+  ValueListenable<UserModel> get user => _user;
 
   ValueListenable<List<History>> get history => _history;
 
