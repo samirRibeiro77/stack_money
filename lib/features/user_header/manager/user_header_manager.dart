@@ -11,14 +11,8 @@ import 'package:stack_money/features/settings/settings_screen.dart';
 
 class UserHeaderManager {
   final _planService = PlanManagementService();
-  final User? _user = UserService().currentUser;
 
   bool _hasCheckedPlanInThisSession = false;
-
-  String displayName(String? defaultName) =>
-      _user?.displayName ?? defaultName ?? 'Not Found';
-
-  String? get photoUrl => _user?.photoURL;
 
   void openConfigs(BuildContext context) {
     final isSecure = SecurityProvider.isSecureOf(context);
