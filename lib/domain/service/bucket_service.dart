@@ -13,6 +13,10 @@ class BucketManagementService {
     return await _repository.get(id);
   }
 
+  Stream<List<Bucket>> watch() {
+    return _repository.watch();
+  }
+
   Future<void> executeContributionSprint({
     required List<Bucket> updatedBuckets,
     required List<Transaction> transactions,

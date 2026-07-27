@@ -86,7 +86,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
     })
         .handleError((e, stack) {
       throw StackMoneyException(
-        message: 'Error in history timeline stream',
+        message: 'Error in plan timeline stream',
         scope: ExceptionScope.database,
         payload: {'exception': e},
         stackTrace: stack,

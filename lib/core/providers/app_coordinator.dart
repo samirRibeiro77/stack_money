@@ -99,11 +99,22 @@ class AppCoordinator {
     );
 
     _planService.watch().listen(
-          (planList) {
+      (planList) {
         for (final plan in planList) {
           if (!_plans.value.contains(plan)) {
             _plans.value.add(plan);
           }
+        }
+      },
+      onError: (error) {
+        // TODO: Create error page
+      },
+    );
+
+    _bucketService.watch().listen(
+      (bucketList) {
+        for (final bucket in bucketList) {
+          _buckets.putIfAbsent(bucket.id, () => ValueNotifier(bucket));
         }
       },
       onError: (error) {
