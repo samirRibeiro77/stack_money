@@ -26,6 +26,11 @@ class AppCoordinator {
   final Map<String, ValueNotifier<Bucket>> _buckets = {};
   final ValueNotifier<bool> _isLoading = ValueNotifier(false);
 
+  /// Subscriptions
+  StreamSubscription<List<History>>? _historySubscription;
+  StreamSubscription<List<SalaryPlan>>? _planSubscription;
+  StreamSubscription<List<Bucket>>? _bucketSubscription;
+
   /// Constructors
   AppCoordinator._privateConstructor();
 
@@ -50,6 +55,7 @@ class AppCoordinator {
   /// Functions
   void initApp() {
     load();
+    listeners();
   }
 
   void load() async {
@@ -81,5 +87,20 @@ class AppCoordinator {
     } finally {
       _isLoading.value = false;
     }
+  }
+
+  void listeners() async {
+    _historySubscription = _historyService.watch().listen(
+      (historyList) {
+        for (final history in historyList) {
+          if (!_history.value.contains(history)) {
+            _history.value.add(history);
+          }
+        }
+      },
+      onError: (error) {
+        // TODO: Create error page
+      },
+    );
   }
 }

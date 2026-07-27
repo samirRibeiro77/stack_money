@@ -18,4 +18,8 @@ class HistoryManagementService {
     final history = await _repository.fetchLatest();
     return history.transactions;
   }
+
+  Stream<List<History>> watch() {
+    return _repository.watch();
+  }
 }
