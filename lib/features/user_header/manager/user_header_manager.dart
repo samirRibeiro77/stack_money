@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
-import 'package:stack_money/domain/service/user_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/contribution_sprint/contribution_sprint_screen.dart';
 import 'package:stack_money/features/settings/settings_screen.dart';

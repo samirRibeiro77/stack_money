@@ -20,8 +20,8 @@ class AppCoordinator {
   final _bucketService = BucketManagementService();
 
   /// Notifiers
-  late final ValueNotifier<UserModel> _user = ValueNotifier(UserModel.empty());
-  late final ValueNotifier<List<History>> _history = ValueNotifier([]);
+  final ValueNotifier<UserModel> _user = ValueNotifier(UserModel.empty());
+  final ValueNotifier<List<History>> _history = ValueNotifier([]);
   final ValueNotifier<List<SalaryPlan>> _plans = ValueNotifier([]);
   final ValueNotifier<List<Bucket>> _buckets = ValueNotifier([]);
   final ValueNotifier<bool> _isLoading = ValueNotifier(false);

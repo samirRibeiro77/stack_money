@@ -4,7 +4,6 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/core/widgets/sm_gravity_swop_list.dart';

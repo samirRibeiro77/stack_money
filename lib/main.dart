@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/routes/routes.dart';
 import 'package:stack_money/core/theme/theme.dart';
 

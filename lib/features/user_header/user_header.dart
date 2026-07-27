@@ -73,16 +73,8 @@ class _UserHeaderState extends State<UserHeader> {
                 return CircleAvatar(
                   radius: AppSizes.x9,
                   backgroundColor: StackMoneyTheme.surface,
-                  backgroundImage: user != null
-                      ? NetworkImage(user.photoUrl)
-                      : null,
-                  child: user == null
-                      ? const Icon(
-                          Icons.person,
-                          color: StackMoneyTheme.platinumSilver,
-                          size: AppSizes.x9,
-                        )
-                      : null,
+                  backgroundImage: NetworkImage(user.photoUrl),
+                  child: null,
                 );
               },
             ),
@@ -102,7 +94,7 @@ class _UserHeaderState extends State<UserHeader> {
         valueListenable: AppCoordinator.instance.user,
         builder: (_, user, _) {
           return Text(
-            user == null ? l10n.unknow : user.name,
+            user.name,
             style: textTheme.titleLarge?.copyWith(
               letterSpacing: AppTypography.spacingSmall,
             ),
