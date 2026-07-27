@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/routes/routes.dart';
 import 'package:stack_money/core/theme/theme.dart';
 
@@ -10,6 +11,8 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  AppCoordinator.instance.initApp();
 
   runApp(const StackMoneyApp());
 }
