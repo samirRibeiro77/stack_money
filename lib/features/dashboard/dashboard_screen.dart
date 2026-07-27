@@ -40,6 +40,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return ValueListenableBuilder(
       valueListenable: AppCoordinator.instance.history,
       builder: (_, historyList, _) {
+        historyList.sort((a, b) => a.date.compareTo(b.date));
+
         final latestAudit = historyList.last;
 
         return Column(

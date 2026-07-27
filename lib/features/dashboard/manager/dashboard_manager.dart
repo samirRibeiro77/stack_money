@@ -19,9 +19,10 @@ class DashboardManager {
   );
 
   DashboardManager() {
-    _sortFilter.value =
-        AppCoordinator.instance.user.value?.preferences.lastFilter ??
+    final sort = AppCoordinator.instance.user.value?.preferences.lastFilter ??
         DashboardSortFilter.position;
+
+    updateSortFilter(sort);
     _buckets.value = AppCoordinator.instance.buckets.value;
   }
 

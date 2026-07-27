@@ -46,7 +46,7 @@ class AppCoordinator {
 
   /// Init app
   void initApp() {
-    _loadAppData();
+    // _loadAppData();
     _activateAppListeners();
   }
 
