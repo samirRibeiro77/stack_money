@@ -22,8 +22,8 @@ class AppCoordinator {
   /// Notifiers
   final ValueNotifier<UserModel?> _user = ValueNotifier(null);
   final ValueNotifier<List<History>> _history = ValueNotifier([]);
-  final ValueNotifier<List<SalaryPlan>> _plans = ValueNotifier([]);
-  final Map<String, ValueNotifier<Bucket>> _buckets = {};
+  final ValueNotifier<Map<String, ValueNotifier<SalaryPlan>>> _plans = ValueNotifier({});
+  final ValueNotifier<Map<String, ValueNotifier<Bucket>>> _buckets = ValueNotifier({});
   final ValueNotifier<bool> _isLoading = ValueNotifier(false);
 
   /// Constructors
@@ -38,22 +38,20 @@ class AppCoordinator {
 
   ValueListenable<List<History>> get history => _history;
 
-  ValueListenable<List<SalaryPlan>> get plans => _plans;
+  ValueListenable<Map<String, ValueNotifier<SalaryPlan>>> get plans => _plans;
 
-  Map<String, ValueNotifier<Bucket>> get buckets => _buckets;
+  ValueListenable<Map<String, ValueNotifier<Bucket>>> get buckets => _buckets;
 
   ValueListenable<bool> get isLoading => _isLoading;
 
-  ValueListenable<Bucket> bucket(String id) =>
-      _buckets[id] ?? ValueNotifier(Bucket.empty());
-
-  /// Functions
+  /// Init app
   void initApp() {
-    load();
-    listeners();
+    _loadAppData();
+    _activateAppListeners();
   }
 
-  void load() async {
+  /// Load app data
+  void _loadAppData() async {
     try {
       _isLoading.value = true;
 
@@ -66,12 +64,8 @@ class AppCoordinator {
 
       _user.value = results[0] as UserModel;
       _history.value = results[1] as List<History>;
-      _plans.value = results[2] as List<SalaryPlan>;
-
-      final bucketList = results[3] as List<Bucket>;
-      for (var bucket in bucketList) {
-        _buckets.putIfAbsent(bucket.id, () => ValueNotifier(bucket));
-      }
+      _plans.value = _listToMap(results[2] as List<SalaryPlan>) as Map<String, ValueNotifier<SalaryPlan>>;
+      _buckets.value = _listToMap(results[3] as List<Bucket>) as Map<String, ValueNotifier<Bucket>>;
     } catch (e, stack) {
       StackMoneyException(
         message: 'Failed to load initial data',
@@ -84,51 +78,54 @@ class AppCoordinator {
     }
   }
 
-  void listeners() async {
+  /// Activate data listeners
+  void _activateAppListeners() async {
     _userService.watch().listen(
-      (user) {
-        _user.value = user;
-      },
+      (user) => _user.value = user,
       onError: (error) {
         // TODO: Create error page
       },
     );
 
     _historyService.watch().listen(
-      (historyList) {
-        for (final history in historyList) {
-          if (!_history.value.contains(history)) {
-            _history.value.add(history);
-          }
-        }
-      },
+      (historyList) => _history.value = List<History>.from(historyList),
       onError: (error) {
         // TODO: Create error page
       },
     );
 
     _planService.watch().listen(
-      (planList) {
-        for (final plan in planList) {
-          if (!_plans.value.contains(plan)) {
-            _plans.value.add(plan);
-          }
-        }
-      },
+      (planList) => _plans.value = _listToMap(planList) as Map<String, ValueNotifier<SalaryPlan>>,
       onError: (error) {
         // TODO: Create error page
       },
     );
 
     _bucketService.watch().listen(
-      (bucketList) {
-        for (final bucket in bucketList) {
-          _buckets.putIfAbsent(bucket.id, () => ValueNotifier(bucket));
-        }
-      },
+      (bucketList) => _buckets.value = _listToMap(bucketList) as Map<String, ValueNotifier<Bucket>>,
       onError: (error) {
         // TODO: Create error page
       },
     );
+  }
+
+  /// Helper functions
+  Map<String, ValueNotifier<Object>> _listToMap(List<Object> list) {
+    final map = <String, ValueNotifier<Object>>{};
+    for (final item in list) {
+      final itemId = _extractId(item);
+      map.putIfAbsent(itemId, () => ValueNotifier(item));
+    }
+    return map;
+  }
+
+  String _extractId(Object item) {
+    if (item is SalaryPlan) {
+      return item.id;
+    }
+    if (item is Bucket) {
+      return item.id;
+    }
+    return '';
   }
 }
