@@ -22,8 +22,8 @@ class AppCoordinator {
   /// Notifiers
   final ValueNotifier<UserModel?> _user = ValueNotifier(null);
   final ValueNotifier<List<History>> _history = ValueNotifier([]);
-  final ValueNotifier<Map<String, ValueNotifier<SalaryPlan>>> _plans = ValueNotifier({});
-  final ValueNotifier<Map<String, ValueNotifier<Bucket>>> _buckets = ValueNotifier({});
+  final ValueNotifier<List<SalaryPlan>> _plans = ValueNotifier([]);
+  final ValueNotifier<List<Bucket>> _buckets = ValueNotifier([]);
   final ValueNotifier<bool> _isLoading = ValueNotifier(false);
 
   /// Constructors
@@ -38,9 +38,9 @@ class AppCoordinator {
 
   ValueListenable<List<History>> get history => _history;
 
-  ValueListenable<Map<String, ValueNotifier<SalaryPlan>>> get plans => _plans;
+  ValueListenable<List<SalaryPlan>> get plans => _plans;
 
-  ValueListenable<Map<String, ValueNotifier<Bucket>>> get buckets => _buckets;
+  ValueListenable<List<Bucket>> get buckets => _buckets;
 
   ValueListenable<bool> get isLoading => _isLoading;
 
@@ -64,8 +64,8 @@ class AppCoordinator {
 
       _user.value = results[0] as UserModel;
       _history.value = results[1] as List<History>;
-      _plans.value = _listToMap(results[2] as List<SalaryPlan>) as Map<String, ValueNotifier<SalaryPlan>>;
-      _buckets.value = _listToMap(results[3] as List<Bucket>) as Map<String, ValueNotifier<Bucket>>;
+      _plans.value = results[2] as List<SalaryPlan>;
+      _buckets.value = results[3] as List<Bucket>;
     } catch (e, stack) {
       StackMoneyException(
         message: 'Failed to load initial data',
@@ -95,37 +95,17 @@ class AppCoordinator {
     );
 
     _planService.watch().listen(
-      (planList) => _plans.value = _listToMap(planList) as Map<String, ValueNotifier<SalaryPlan>>,
+      (planList) => _plans.value = List<SalaryPlan>.from(planList),
       onError: (error) {
         // TODO: Create error page
       },
     );
 
     _bucketService.watch().listen(
-      (bucketList) => _buckets.value = _listToMap(bucketList) as Map<String, ValueNotifier<Bucket>>,
+      (bucketList) => _buckets.value = List<Bucket>.from(bucketList),
       onError: (error) {
         // TODO: Create error page
       },
     );
-  }
-
-  /// Helper functions
-  Map<String, ValueNotifier<Object>> _listToMap(List<Object> list) {
-    final map = <String, ValueNotifier<Object>>{};
-    for (final item in list) {
-      final itemId = _extractId(item);
-      map.putIfAbsent(itemId, () => ValueNotifier(item));
-    }
-    return map;
-  }
-
-  String _extractId(Object item) {
-    if (item is SalaryPlan) {
-      return item.id;
-    }
-    if (item is Bucket) {
-      return item.id;
-    }
-    return '';
   }
 }
