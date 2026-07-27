@@ -17,10 +17,7 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
   Future<void> save(UserModel user, {bool savePrefs = false}) async {
     SmLogger.debug(
       'Saving user',
-      payload: {
-        'savePrefs': savePrefs,
-        'user': user.toJson(keepPrefs: true),
-      },
+      payload: {'savePrefs': savePrefs, 'user': user.toJson(keepPrefs: true)},
     );
 
     try {
@@ -83,6 +80,26 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
         stackTrace: stack,
       );
     }
+  }
+
+  Stream<UserModel> watch() {
+    SmLogger.debug('Watching user', payload: {});
+
+    return getUserDoc()
+        .snapshots()
+        .map((doc) {
+          SmLogger.info('Stream user ${doc.id} updated.');
+
+          return UserModel.fromJson(doc.data()!);
+        })
+        .handleError((e, stack) {
+          throw StackMoneyException(
+            message: 'Error in user timeline stream',
+            scope: ExceptionScope.database,
+            payload: {'exception': e},
+            stackTrace: stack,
+          );
+        });
   }
 
   Future<User?> signInWithGoogle() async {

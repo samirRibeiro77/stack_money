@@ -85,6 +85,15 @@ class AppCoordinator {
   }
 
   void listeners() async {
+    _userService.watch().listen(
+      (user) {
+        _user.value = user;
+      },
+      onError: (error) {
+        // TODO: Create error page
+      },
+    );
+
     _historyService.watch().listen(
       (historyList) {
         for (final history in historyList) {

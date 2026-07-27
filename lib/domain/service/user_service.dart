@@ -38,6 +38,10 @@ class UserService {
     return await _remoteRepo.getPreferences();
   }
 
+  Stream<UserModel> watch() {
+    return _remoteRepo.watch();
+  }
+
   Future<void> updatePreferences(
     UserModel currentUserModel,
     UserPreferencesModel newPreferences,
