@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
@@ -13,42 +14,17 @@ import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 class PlansManager {
   final PlanManagementService _planService = PlanManagementService();
 
-  final ValueNotifier<List<SalaryPlan>> _planDeck = ValueNotifier([]);
-  final ValueNotifier<bool> _isLoading = ValueNotifier(true);
   final ValueNotifier<bool> _showArchived = ValueNotifier(false);
-
-  ValueListenable<bool> get isLoading => _isLoading;
-
-  ValueListenable<List<SalaryPlan>> get planDeckNotifier => _planDeck;
 
   ValueListenable<bool> get showArchivedNotifier => _showArchived;
 
-  List<SalaryPlan> get plans => _planDeck.value;
 
   void navigateToPlanDetails(BuildContext context, SalaryPlan plan) {
     final isSecureActive = SecurityProvider.isSecureOf(context);
 
     if (!isSecureActive) {
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => PlanEditScreen(plan: plan)))
-          .then((_) => loadFirebasePlans());
-    }
-  }
-
-  Future<void> loadFirebasePlans() async {
-    try {
-      _isLoading.value = true;
-      final data = await _planService.fetch();
-      _planDeck.value = data;
-      _isLoading.value = false;
-    } catch (e, stack) {
-      StackMoneyException(
-        message: 'Failed to fetch plans',
-        scope: ExceptionScope.business,
-        payload: {'exception': e},
-        stackTrace: stack,
-      );
-      _isLoading.value = false;
+          .push(MaterialPageRoute(builder: (_) => PlanEditScreen(plan: plan)));
     }
   }
 
@@ -57,11 +33,7 @@ class PlansManager {
   }
 
   void initializeNewPlanSlot(BuildContext context) {
-    final newPlan = SalaryPlan.empty(isActive: _planDeck.value.isEmpty);
-
-    final updatedList = List<SalaryPlan>.from(_planDeck.value)
-      ..insert(0, newPlan);
-    _planDeck.value = updatedList;
+    final newPlan = SalaryPlan.empty(isActive: AppCoordinator.instance.plans.value.isEmpty);
 
     _planService.save(newPlan);
     navigateToPlanDetails(context, newPlan);
@@ -81,7 +53,7 @@ class PlansManager {
     final item = filteredList.removeAt(oldIndex);
     filteredList.insert(newIndex, item);
 
-    final fullList = List<SalaryPlan>.from(_planDeck.value);
+    final fullList = List<SalaryPlan>.from(AppCoordinator.instance.plans.value);
 
     // Remap positions
     for (int i = 0; i < filteredList.length; i++) {
@@ -94,8 +66,6 @@ class PlansManager {
       }
     }
 
-    _planDeck.value = fullList;
-
     // Save on Firebase
     for (final plan in filteredList) {
       _planService.save(plan); //TODO: Create a batch update
@@ -105,14 +75,13 @@ class PlansManager {
   Future<void> archivePlan(String id, bool currentIsArchived) async {
     final bool nextState = !currentIsArchived;
 
-    final updatedList = List<SalaryPlan>.from(_planDeck.value);
+    final updatedList = List<SalaryPlan>.from(AppCoordinator.instance.plans.value);
     final index = updatedList.indexWhere((p) => p.id == id);
     if (index != -1) {
       updatedList[index] = updatedList[index].copyWith(
         isArchived: nextState,
         isActive: nextState ? false : updatedList[index].isActive,
       );
-      _planDeck.value = updatedList;
     }
 
     try {
@@ -127,14 +96,12 @@ class PlansManager {
         },
         stackTrace: stack,
       );
-      loadFirebasePlans();
     }
   }
 
   Future<void> purgePlan(String id) async {
-    final updatedList = List<SalaryPlan>.from(_planDeck.value);
+    final updatedList = List<SalaryPlan>.from(AppCoordinator.instance.plans.value);
     updatedList.removeWhere((p) => p.id == id);
-    _planDeck.value = updatedList;
 
     try {
       await _planService.purge(id);
@@ -145,7 +112,6 @@ class PlansManager {
         payload: {'exception': e, 'planId': id},
         stackTrace: stack,
       );
-      loadFirebasePlans();
     }
   }
 

@@ -17,9 +17,9 @@ class PlanListCard extends StatelessWidget {
   const PlanListCard(this.plan, {required this.onTap, super.key});
 
   Color get shadowColor {
-    if (plan.isActive) return StackMoneyTheme.cyanNeon;
+    if (plan.isActive) return StackMoneyTheme.platinumSilver;
     if (plan.isArchived) return StackMoneyTheme.magentaNeon;
-    return Colors.white;
+    return StackMoneyTheme.cyanNeon;
   }
 
   @override
