@@ -1,10 +1,25 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/data/enum/nav_bar_tabs.dart';
+import 'package:stack_money/features/buckets/buckets_screen.dart';
+import 'package:stack_money/features/dashboard/dashboard_screen.dart';
+import 'package:stack_money/features/history/history_screen.dart';
+import 'package:stack_money/features/plans/plans_screen.dart';
 
 class MainNavigationManager {
   final _tabIndex = ValueNotifier<NavBarTabs>(NavBarTabs.hud);
   final _scrollController = ScrollController();
+
+  late final Map<NavBarTabs, Widget> _screensCache;
+
+  MainNavigationManager() {
+    _screensCache = {
+      NavBarTabs.hud: const DashboardScreen(),
+      NavBarTabs.plans: const PlansScreen(),
+      NavBarTabs.buckets: const BucketControlScreen(),
+      NavBarTabs.log: const HistoryScreen(),
+    };
+  }
 
   ValueListenable<NavBarTabs> get currentTab => _tabIndex;
 
@@ -18,4 +33,8 @@ class MainNavigationManager {
   void addTabListener(VoidCallback f) => _tabIndex.addListener(f);
 
   void changeTab(NavBarTabs tab) => _tabIndex.value = tab;
+
+  Widget activeSliverFragment(NavBarTabs index) {
+    return _screensCache[index] ?? const SizedBox.shrink();
+  }
 }
