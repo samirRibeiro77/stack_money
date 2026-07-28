@@ -15,6 +15,14 @@ class BucketsManager {
   final ValueNotifier<bool> _masterExpandState = ValueNotifier(true);
   final ValueNotifier<Set<String>> _expandedBucketIds = ValueNotifier({});
 
+  BucketsManager() {
+    final initialExpand =
+        !AppCoordinator.instance.user.value.preferences.cardExpand;
+    if (_masterExpandState.value != initialExpand) {
+      toggleAllBuckets();
+    }
+  }
+
   ValueListenable<bool> get expandState => _masterExpandState;
 
   ValueListenable<Set<String>> get expandedIdsNotifier => _expandedBucketIds;
@@ -94,9 +102,13 @@ class BucketsManager {
   Future<void> purgeBucket(String id) async {
     try {
       await _bucketService.delete(id);
-      final index = AppCoordinator.instance.buckets.value.indexWhere((b) => b.id == id);
+      final index = AppCoordinator.instance.buckets.value.indexWhere(
+        (b) => b.id == id,
+      );
       if (index != -1) {
-        final updatedList = List<Bucket>.from(AppCoordinator.instance.buckets.value);
+        final updatedList = List<Bucket>.from(
+          AppCoordinator.instance.buckets.value,
+        );
         updatedList.removeAt(index);
 
         final currentSet = Set<String>.from(_expandedBucketIds.value)
@@ -116,7 +128,9 @@ class BucketsManager {
 
   void toggleAllBuckets() {
     if (_masterExpandState.value) {
-      _expandedBucketIds.value = AppCoordinator.instance.buckets.value.map((b) => b.id).toSet();
+      _expandedBucketIds.value = AppCoordinator.instance.buckets.value
+          .map((b) => b.id)
+          .toSet();
     } else {
       _expandedBucketIds.value = {};
     }
@@ -143,7 +157,9 @@ class BucketsManager {
   }
 
   void removeBucketFromLocalList(String id) {
-    final index = AppCoordinator.instance.buckets.value.indexWhere((b) => b.id == id);
+    final index = AppCoordinator.instance.buckets.value.indexWhere(
+      (b) => b.id == id,
+    );
     if (index != -1) {
       final currentSet = Set<String>.from(_expandedBucketIds.value)..remove(id);
 

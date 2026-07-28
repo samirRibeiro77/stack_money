@@ -17,6 +17,14 @@ class DashboardManager {
     const ChartFilterState(filter: ChartFilter.threeMonths),
   );
 
+  DashboardManager() {
+    final initialExpand =
+        !AppCoordinator.instance.user.value.preferences.cardExpand;
+    if (_masterExpandState.value != initialExpand) {
+      toggleAllBuckets();
+    }
+  }
+
   ValueListenable<bool> get masterExpandState => _masterExpandState;
 
   ValueListenable<Set<String>> get expandedIdsNotifier => _expandedBucketIds;
@@ -35,17 +43,17 @@ class DashboardManager {
       payload: {'old': _sortFilter.value, 'new': newFilter},
     );
 
-    final latestHistory = AppCoordinator.instance.history.value.last;
+    final latestHistory = AppCoordinator.instance.history.value.lastOrNull;
 
     buckets.sort((a, b) {
       final double valA =
-          latestHistory.transactions
+          latestHistory?.transactions
               .where((t) => t.bucketId == a.id)
               .firstOrNull
               ?.actualValue ??
           0.0;
       final double valB =
-          latestHistory.transactions
+          latestHistory?.transactions
               .where((t) => t.bucketId == b.id)
               .firstOrNull
               ?.actualValue ??
@@ -61,8 +69,8 @@ class DashboardManager {
         case DashboardSortFilter.minValue:
           return a.minValue.compareTo(b.minValue);
         case DashboardSortFilter.allocation:
-          final double allocA = (valA / latestHistory.total) * 100;
-          final double allocB = (valB / latestHistory.total) * 100;
+          final double allocA = (valA / (latestHistory?.total ?? 1)) * 100;
+          final double allocB = (valB / (latestHistory?.total ?? 1)) * 100;
           return allocB.compareTo(allocA);
       }
     });
