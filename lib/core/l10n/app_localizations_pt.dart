@@ -460,4 +460,26 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get failedToSaveUser => 'Falha ao salvar usuário';
+
+  @override
+  String get systemCode => 'CORE.SIS';
+
+  @override
+  String get initializing => 'Carregando...';
+
+  @override
+  String get loadingUser =>
+      'AUTENTICANDO: Infiltrando redes e descriptografando perfil de usuário...';
+
+  @override
+  String get loadingPlan =>
+      'ALOCAÇÃO: Sincronizando matrizes de distribuição salarial...';
+
+  @override
+  String get loadingBucket =>
+      'COFRES: Consolidando montantes e sub-cofres digitais...';
+
+  @override
+  String get loadingHistory =>
+      'RASTROS: Reconstituindo logs e histórico de transações na rede...';
 }

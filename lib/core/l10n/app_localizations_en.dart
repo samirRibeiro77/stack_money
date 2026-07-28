@@ -460,4 +460,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedToSaveUser => 'Failed to save user changes';
+
+  @override
+  String get systemCode => 'Core.Sys';
+
+  @override
+  String get initializing => 'Loading...';
+
+  @override
+  String get loadingUser =>
+      'AUTH: Infiltrating networks and decrypting user profile...';
+
+  @override
+  String get loadingPlan =>
+      'ALLOCATION: Syncing salary distribution matrices...';
+
+  @override
+  String get loadingBucket =>
+      'VAULTS: Securing funds and digital sub-vaults...';
+
+  @override
+  String get loadingHistory =>
+      'TRAILS: Reconstituting transaction logs and ledger history...';
 }

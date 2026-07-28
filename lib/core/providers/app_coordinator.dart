@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/data/enum/loading_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
@@ -24,7 +26,7 @@ class AppCoordinator {
   final ValueNotifier<List<History>> _history = ValueNotifier([]);
   final ValueNotifier<List<SalaryPlan>> _plans = ValueNotifier([]);
   final ValueNotifier<List<Bucket>> _buckets = ValueNotifier([]);
-  final ValueNotifier<bool> _isLoading = ValueNotifier(false);
+  final ValueNotifier<LoadingType> _loading = ValueNotifier(LoadingType.none);
 
   /// Constructors
   AppCoordinator._privateConstructor();
@@ -42,7 +44,16 @@ class AppCoordinator {
 
   ValueListenable<List<Bucket>> get buckets => _buckets;
 
-  ValueListenable<bool> get isLoading => _isLoading;
+  ValueListenable<LoadingType> get loading => _loading;
+
+  /// Change loading status
+  set loading(LoadingType value) {
+    SmLogger.debug(
+      'Changing loading status',
+      payload: {'old': _loading.value, 'new': value},
+    );
+    _loading.value = value;
+  }
 
   /// Init app
   void initApp() async {
@@ -53,19 +64,17 @@ class AppCoordinator {
   /// Load app data
   Future<void> _loadAppData() async {
     try {
-      _isLoading.value = true;
+      loading = LoadingType.user;
+      _user.value = await _userService.fetchUserData();
 
-      final results = await Future.wait([
-        _userService.fetchUserData(),
-        _historyService.fetch(),
-        _planService.fetch(),
-        _bucketService.fetch(),
-      ]);
+      loading = LoadingType.bucket;
+      _buckets.value = await _bucketService.fetch();
 
-      _user.value = results[0] as UserModel;
-      _history.value = results[1] as List<History>;
-      _plans.value = results[2] as List<SalaryPlan>;
-      _buckets.value = results[3] as List<Bucket>;
+      loading = LoadingType.plan;
+      _plans.value = await _planService.fetch();
+
+      loading = LoadingType.history;
+      _history.value = await _historyService.fetch();
     } catch (e, stack) {
       StackMoneyException(
         message: 'Failed to load initial data',
@@ -74,7 +83,7 @@ class AppCoordinator {
         stackTrace: stack,
       );
     } finally {
-      _isLoading.value = false;
+      loading = LoadingType.done;
     }
   }
 

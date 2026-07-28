@@ -547,5 +547,29 @@
   "failedToSaveUser": "Failed to save user changes",
   "@failedToSaveUser": {
     "description": "Failed message when saving user."
+  },
+  "systemCode": "Core.Sys",
+  "@systemCode": {
+    "description": "Core system message."
+  },
+  "initializing": "Loading...",
+  "@initializing": {
+    "description": "Loading message."
+  },
+  "loadingUser": "AUTH: Infiltrating networks and decrypting user profile...",
+  "@loadingUser": {
+    "description": "Loading user data."
+  },
+  "loadingPlan": "ALLOCATION: Syncing salary distribution matrices...",
+  "@loadingPlan": {
+    "description": "Loading plan data."
+  },
+  "loadingBucket": "VAULTS: Securing funds and digital sub-vaults...",
+  "@loadingBucket": {
+    "description": "Loading bucket data."
+  },
+  "loadingHistory": "TRAILS: Reconstituting transaction logs and ledger history...",
+  "@loadingHistory": {
+    "description": "Loading history data."
   }
 }

@@ -30,7 +30,10 @@ class _LoginScreenState extends State<LoginScreen> {
         SmSnackBar(
           message: l10n.failedToSignIn,
           type: SnackBarType.error,
-          action: SnackBarAction(label: l10n.retry, onPressed: () => _login(context))
+          action: SnackBarAction(
+            label: l10n.retry,
+            onPressed: () => _login(context),
+          ),
         ).show(context);
       }
     }
@@ -65,8 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
               builder: (_, isLoading, _) {
                 /// Login progress indicator
                 if (isLoading) {
-                  return const CircularProgressIndicator(
-                    color: StackMoneyTheme.cyanNeon,
+                  return const CircularProgressIndicator.adaptive(
+                    backgroundColor: StackMoneyTheme.magentaNeon,
                   );
                 }
 

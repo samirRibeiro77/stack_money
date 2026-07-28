@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
-import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/card_initialize_slot.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
 import 'package:stack_money/core/widgets/sm_reorderable_list.dart';
