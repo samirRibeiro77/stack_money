@@ -28,6 +28,12 @@ class AppCoordinator {
   final ValueNotifier<List<Bucket>> _buckets = ValueNotifier([]);
   final ValueNotifier<LoadingType> _loading = ValueNotifier(LoadingType.none);
 
+  /// Subscriptions
+  late final StreamSubscription? _userSubscription;
+  late final StreamSubscription? _historySubscription;
+  late final StreamSubscription? _planSubscription;
+  late final StreamSubscription? _bucketSubscription;
+
   /// Constructors
   AppCoordinator._privateConstructor();
 
@@ -89,32 +95,49 @@ class AppCoordinator {
 
   /// Activate data listeners
   void _activateAppListeners() async {
-    _userService.watch().listen(
+    _userSubscription = _userService.watch().listen(
       (user) => _user.value = user,
       onError: (error) {
         // TODO: Create error page
       },
     );
 
-    _historyService.watch().listen(
+    _historySubscription = _historyService.watch().listen(
       (historyList) => _history.value = List<History>.from(historyList),
       onError: (error) {
         // TODO: Create error page
       },
     );
 
-    _planService.watch().listen(
+    _planSubscription = _planService.watch().listen(
       (planList) => _plans.value = List<SalaryPlan>.from(planList),
       onError: (error) {
         // TODO: Create error page
       },
     );
 
-    _bucketService.watch().listen(
+    _bucketSubscription = _bucketService.watch().listen(
       (bucketList) => _buckets.value = List<Bucket>.from(bucketList),
       onError: (error) {
         // TODO: Create error page
       },
     );
+  }
+
+  void clearAndCloseListeners() {
+    SmLogger.info(
+      'Closing all real-time streams and clearing coordinator memory...',
+    );
+
+    _userSubscription?.cancel();
+    _historySubscription?.cancel();
+    _planSubscription?.cancel();
+    _bucketSubscription?.cancel();
+
+    _user.value = UserModel.empty();
+    _history.value = [];
+    _plans.value = [];
+    _buckets.value = [];
+    _loading.value = LoadingType.none;
   }
 }

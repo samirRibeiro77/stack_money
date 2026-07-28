@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/data/models/user_model.dart';
 import 'package:stack_money/data/models/user_preferences_model.dart';
@@ -69,6 +70,8 @@ class UserService {
   }
 
   Future<void> signOut() async {
+    AppCoordinator.instance.clearAndCloseListeners();
+
     await _localRepo.clear();
     await _remoteRepo.signOut();
   }

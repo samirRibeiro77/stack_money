@@ -43,15 +43,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
       builder: (_, historyList, _) {
         historyList.sort((a, b) => a.date.compareTo(b.date));
 
-        final latestAudit = historyList.last;
+        final latestAudit = historyList.lastOrNull;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             PatrimonialHud(
-              totalAmount: latestAudit.total,
-              liquidityAmount: latestAudit.immediateLiquidityTotal,
+              totalAmount: latestAudit?.total ?? 0,
+              liquidityAmount: latestAudit?.immediateLiquidityTotal ?? 0,
             ),
             const SizedBox(height: AppSizes.x10),
             ValueListenableBuilder(
@@ -74,7 +74,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(height: AppSizes.sizedBoxMedium),
                       TelemetryFilterBar(
                         currentState: currentFilter,
-                        firstDate: historyList.first.date.toDate(),
+                        firstDate:
+                            historyList.firstOrNull?.date.toDate() ??
+                            DateTime.now(),
                         onFilterChanged: _manager.updateChartFilter,
                       ),
                     ],
@@ -108,17 +110,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               AnimatedSwitcher(
                                 duration: const Duration(milliseconds: 300),
                                 transitionBuilder:
-                                    (Widget child, Animation<double> animation) {
-                                  return ScaleTransition(
-                                    scale: animation,
-                                    child: RotationTransition(
-                                      turns: animation,
-                                      child: child,
-                                    ),
-                                  );
-                                },
+                                    (
+                                      Widget child,
+                                      Animation<double> animation,
+                                    ) {
+                                      return ScaleTransition(
+                                        scale: animation,
+                                        child: RotationTransition(
+                                          turns: animation,
+                                          child: child,
+                                        ),
+                                      );
+                                    },
                                 child: IconButton(
-                                  key: ValueKey<DashboardSortFilter>(activeSort),
+                                  key: ValueKey<DashboardSortFilter>(
+                                    activeSort,
+                                  ),
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   splashRadius: AppSizes.x6,
@@ -135,7 +142,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       elevation: 1,
                                       builder: (_) => DashboardSortBottomSheet(
                                         currentSort: activeSort,
-                                        onFilterSelected: (filter) => _manager.updateSortFilter(buckets, filter),
+                                        onFilterSelected: (filter) => _manager
+                                            .updateSortFilter(buckets, filter),
                                       ),
                                     );
                                   },
@@ -149,9 +157,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           builder: (_, expandedIds, _) {
                             return SmGravitySwopList(
                               sortKey: activeSort,
-                              children: List.generate(buckets.length, (
-                                  index,
-                                  ) {
+                              children: List.generate(buckets.length, (index) {
                                 final param = buckets[index];
                                 final isCardExpanded = expandedIds.contains(
                                   param.id,
@@ -168,7 +174,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               }),
                             );
                           },
-                        )
+                        ),
                       ],
                     );
                   },

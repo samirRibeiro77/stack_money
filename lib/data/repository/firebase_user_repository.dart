@@ -11,6 +11,7 @@ import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
 class FirebaseUserRepository extends BaseFirebaseRepository {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  bool _isSigningOut = false;
 
   Stream<User?> Function() get authStateChanges => auth.authStateChanges;
 
@@ -137,10 +138,33 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
   }
 
   Future<void> signOut() async {
-    SmLogger.debug('Signing out', payload: {});
-    await _googleSignIn.signOut();
-    await auth.signOut();
-    SmLogger.info('User signed out.');
+    if (_isSigningOut) {
+      SmLogger.warning(
+        'SignOut already in progress. Ignoring concurrent request.',
+      );
+      return;
+    }
+
+    try {
+      _isSigningOut = true;
+
+      SmLogger.info('Signing out from Google');
+      await _googleSignIn.signOut();
+
+      SmLogger.info('Signing out from Firebase');
+      await auth.signOut();
+
+      SmLogger.warning('User signed out.');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed during sign out',
+        scope: ExceptionScope.auth,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
+    } finally {
+      _isSigningOut = false;
+    }
   }
 
   Future<void> _syncUser(User? user) async {
