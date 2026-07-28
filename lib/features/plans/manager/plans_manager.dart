@@ -18,13 +18,21 @@ class PlansManager {
 
   ValueListenable<bool> get showArchivedNotifier => _showArchived;
 
+  PlansManager() {
+    final initialArchived =
+        AppCoordinator.instance.user.value.preferences.cardExpand;
+    if (_showArchived.value != initialArchived) {
+      toggleShowArchived();
+    }
+  }
 
   void navigateToPlanDetails(BuildContext context, SalaryPlan plan) {
     final isSecureActive = SecurityProvider.isSecureOf(context);
 
     if (!isSecureActive) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => PlanEditScreen(plan: plan)));
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => PlanEditScreen(plan: plan)));
     }
   }
 
@@ -33,7 +41,9 @@ class PlansManager {
   }
 
   void initializeNewPlanSlot(BuildContext context) {
-    final newPlan = SalaryPlan.empty(isActive: AppCoordinator.instance.plans.value.isEmpty);
+    final newPlan = SalaryPlan.empty(
+      isActive: AppCoordinator.instance.plans.value.isEmpty,
+    );
 
     _planService.save(newPlan);
     navigateToPlanDetails(context, newPlan);
@@ -75,7 +85,9 @@ class PlansManager {
   Future<void> archivePlan(String id, bool currentIsArchived) async {
     final bool nextState = !currentIsArchived;
 
-    final updatedList = List<SalaryPlan>.from(AppCoordinator.instance.plans.value);
+    final updatedList = List<SalaryPlan>.from(
+      AppCoordinator.instance.plans.value,
+    );
     final index = updatedList.indexWhere((p) => p.id == id);
     if (index != -1) {
       updatedList[index] = updatedList[index].copyWith(
@@ -100,7 +112,9 @@ class PlansManager {
   }
 
   Future<void> purgePlan(String id) async {
-    final updatedList = List<SalaryPlan>.from(AppCoordinator.instance.plans.value);
+    final updatedList = List<SalaryPlan>.from(
+      AppCoordinator.instance.plans.value,
+    );
     updatedList.removeWhere((p) => p.id == id);
 
     try {

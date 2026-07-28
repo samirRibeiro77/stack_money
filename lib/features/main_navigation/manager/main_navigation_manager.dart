@@ -1,10 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/data/enum/nav_bar_tabs.dart';
-import 'package:stack_money/features/buckets/buckets_screen.dart';
-import 'package:stack_money/features/dashboard/dashboard_screen.dart';
-import 'package:stack_money/features/history/history_screen.dart';
-import 'package:stack_money/features/plans/plans_screen.dart';
 
 class MainNavigationManager {
   final _tabIndex = ValueNotifier<NavBarTabs>(NavBarTabs.hud);
