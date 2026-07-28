@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/widgets/tab_content.dart';
+import 'package:stack_money/features/buckets/buckets_screen.dart';
+import 'package:stack_money/features/dashboard/dashboard_screen.dart';
+import 'package:stack_money/features/history/history_screen.dart';
+import 'package:stack_money/features/plans/plans_screen.dart';
 import 'package:stack_money/features/user_header/user_header.dart';
 import 'package:stack_money/data/enum/nav_bar_tabs.dart';
 import 'package:stack_money/features/main_navigation/manager/main_navigation_manager.dart';
@@ -63,19 +67,17 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
                   child: ValueListenableBuilder<NavBarTabs>(
                     valueListenable: _manager.currentTab,
                     builder: (_, activeIndex, _) {
-                      return AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        switchInCurve: Curves.easeInCubic,
-                        switchOutCurve: Curves.easeOutCubic,
-                        transitionBuilder:
-                            (Widget child, Animation<double> animation) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                        child: TabContent(
-                          child: _manager.activeSliverFragment(activeIndex),
+                      final index = NavBarTabs.values.indexOf(activeIndex);
+
+                      return TabContent(
+                        child: IndexedStack(
+                          index: index,
+                          children: [
+                            const DashboardScreen(),
+                            const PlansScreen(),
+                            const BucketControlScreen(),
+                            const HistoryScreen(),
+                          ],
                         ),
                       );
                     },

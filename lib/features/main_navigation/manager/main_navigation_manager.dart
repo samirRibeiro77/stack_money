@@ -22,17 +22,4 @@ class MainNavigationManager {
   void addTabListener(VoidCallback f) => _tabIndex.addListener(f);
 
   void changeTab(NavBarTabs tab) => _tabIndex.value = tab;
-
-  Widget activeSliverFragment(NavBarTabs index) {
-    switch (index) {
-      case NavBarTabs.hud:
-        return DashboardScreen();
-      case NavBarTabs.plans:
-        return PlansScreen();
-      case NavBarTabs.buckets:
-        return BucketControlScreen();
-      case NavBarTabs.log:
-        return HistoryScreen();
-    }
-  }
 }

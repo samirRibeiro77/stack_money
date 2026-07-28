@@ -30,14 +30,6 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
       builder: (_, buckets, _) {
         buckets.sort((a, b) => a.position.compareTo(b.position));
 
-        SmLogger.debug(
-          'Got buckets',
-          payload: {
-            'first': '${buckets.first.name} // ${buckets.first.position}',
-            'last': '${buckets.last.name} // ${buckets.last.position}',
-          },
-        );
-
         return SingleChildScrollView(
           child: Column(
             children: [
