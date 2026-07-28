@@ -73,25 +73,25 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
     SmLogger.debug('Watching buckets', payload: {});
 
     return _collection
-        .orderBy(ModelKey.position, descending: true)
+        .orderBy(ModelKey.position, descending: false)
         .snapshots()
         .map((snapshot) {
-      SmLogger.info(
-        'Stream bucket updated with ${snapshot.docs.length} entries.',
-      );
+          SmLogger.info(
+            'Stream bucket updated with ${snapshot.docs.length} entries.',
+          );
 
-      return snapshot.docs
-          .map((doc) => Bucket.fromJson(doc.data()))
-          .toList();
-    })
+          return snapshot.docs
+              .map((doc) => Bucket.fromJson(doc.data()))
+              .toList();
+        })
         .handleError((e, stack) {
-      throw StackMoneyException(
-        message: 'Error in bucket timeline stream',
-        scope: ExceptionScope.database,
-        payload: {'exception': e},
-        stackTrace: stack,
-      );
-    });
+          throw StackMoneyException(
+            message: 'Error in bucket timeline stream',
+            scope: ExceptionScope.database,
+            payload: {'exception': e},
+            stackTrace: stack,
+          );
+        });
   }
 
   Future<void> commitSprint({
