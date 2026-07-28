@@ -24,6 +24,11 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
   @override
   void initState() {
     super.initState();
+
+    final initialSecurity =
+        AppCoordinator.instance.user.value.preferences.securityMode;
+    _securityMode.value = initialSecurity;
+
     _manager.addTabListener(() {
       if (_manager.scrollController.hasClients) {
         _manager.scrollController.animateTo(
@@ -45,10 +50,6 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
   @override
   Widget build(BuildContext context) {
     final bool isKeyboardActive = MediaQuery.of(context).viewInsets.bottom > 0;
-
-    final initialSecurity =
-        AppCoordinator.instance.user.value.preferences.securityMode;
-    _securityMode.value = initialSecurity;
 
     return SecurityProvider(
       notifier: _securityMode,
