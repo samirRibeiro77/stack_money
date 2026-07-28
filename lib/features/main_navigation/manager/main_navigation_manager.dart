@@ -10,17 +10,6 @@ class MainNavigationManager {
   final _tabIndex = ValueNotifier<NavBarTabs>(NavBarTabs.hud);
   final _scrollController = ScrollController();
 
-  late final Map<NavBarTabs, Widget> _screensCache;
-
-  MainNavigationManager() {
-    _screensCache = {
-      NavBarTabs.hud: const DashboardScreen(),
-      NavBarTabs.plans: const PlansScreen(),
-      NavBarTabs.buckets: const BucketControlScreen(),
-      NavBarTabs.log: const HistoryScreen(),
-    };
-  }
-
   ValueListenable<NavBarTabs> get currentTab => _tabIndex;
 
   ScrollController get scrollController => _scrollController;
@@ -33,8 +22,4 @@ class MainNavigationManager {
   void addTabListener(VoidCallback f) => _tabIndex.addListener(f);
 
   void changeTab(NavBarTabs tab) => _tabIndex.value = tab;
-
-  Widget activeSliverFragment(NavBarTabs index) {
-    return _screensCache[index] ?? const SizedBox.shrink();
-  }
 }

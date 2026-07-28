@@ -3,6 +3,10 @@ import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/widgets/tab_content.dart';
+import 'package:stack_money/features/buckets/buckets_screen.dart';
+import 'package:stack_money/features/dashboard/dashboard_screen.dart';
+import 'package:stack_money/features/history/history_screen.dart';
+import 'package:stack_money/features/plans/plans_screen.dart';
 import 'package:stack_money/features/user_header/user_header.dart';
 import 'package:stack_money/data/enum/nav_bar_tabs.dart';
 import 'package:stack_money/features/main_navigation/manager/main_navigation_manager.dart';
@@ -68,20 +72,39 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
                   hasScrollBody: false,
                   child: ValueListenableBuilder<NavBarTabs>(
                     valueListenable: _manager.currentTab,
-                    builder: (_, activeIndex, _) {
-                      return AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        switchInCurve: Curves.easeInCubic,
-                        switchOutCurve: Curves.easeOutCubic,
-                        transitionBuilder:
-                            (Widget child, Animation<double> animation) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                        child: TabContent(
-                          child: _manager.activeSliverFragment(activeIndex),
+                    builder: (_, activeTab, _) {
+                      return TabContent(
+                        child: Stack(
+                          alignment: Alignment.topLeft,
+                          children: [
+                            /// Dashboard
+                            Visibility(
+                              visible: activeTab == NavBarTabs.hud,
+                              maintainState: true,
+                              child: const DashboardScreen(),
+                            ),
+
+                            /// Plans
+                            Visibility(
+                              visible: activeTab == NavBarTabs.plans,
+                              maintainState: true,
+                              child: const PlansScreen(),
+                            ),
+
+                            /// Buckets
+                            Visibility(
+                              visible: activeTab == NavBarTabs.buckets,
+                              maintainState: true,
+                              child: const BucketControlScreen(),
+                            ),
+
+                            /// History
+                            Visibility(
+                              visible: activeTab == NavBarTabs.log,
+                              maintainState: true,
+                              child: const HistoryScreen(),
+                            ),
+                          ],
                         ),
                       );
                     },
