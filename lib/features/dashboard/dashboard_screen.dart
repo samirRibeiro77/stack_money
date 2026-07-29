@@ -43,16 +43,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       builder: (_, historyList, _) {
         historyList.sort((a, b) => a.date.compareTo(b.date));
 
-        final latestAudit = historyList.lastOrNull;
-
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            PatrimonialHud(
-              totalAmount: latestAudit?.total ?? 0,
-              liquidityAmount: latestAudit?.immediateLiquidityTotal ?? 0,
-            ),
+            PatrimonialHud(),
             const SizedBox(height: AppSizes.x10),
             ValueListenableBuilder(
               valueListenable: _manager.chartFilterNotifier,

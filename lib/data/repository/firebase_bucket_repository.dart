@@ -133,7 +133,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           .doc(history.id);
       batch.set(historyDocRef, history.toJson());
 
-      final netWorth = NetWorth.create(
+      final netWorth = NetWorth(
         total: totalNetWorth,
         liquidity: totalLiquidity,
       );
