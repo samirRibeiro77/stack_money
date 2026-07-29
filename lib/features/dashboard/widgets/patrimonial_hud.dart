@@ -80,9 +80,6 @@ class _PatrimonialHudState extends State<PatrimonialHud>
     return ValueListenableBuilder(
       valueListenable: AppCoordinator.instance.user,
       builder: (_, user, _) {
-
-        SmLogger.debug('NetWorth data', payload: {'networth': user.netWorth.toJson()});
-
         // 3. GATILHO REATIVO: Atualiza os valores do Tween e roda a animação do zero
         _animateToNewValue(user.netWorth.total, isSecureActive);
 

@@ -54,12 +54,12 @@ class TelemetryLineChart extends StatelessWidget {
       return SizedBox(
         height: 200,
         child: Center(
-          child: Text(
+          child: !isSecureActive ? Text(
             l10n.noData,
             style: textTheme.titleLarge?.copyWith(
               color: StackMoneyTheme.magentaNeon,
             ),
-          ),
+          ) : SizedBox.shrink(),
         ),
       );
     }
