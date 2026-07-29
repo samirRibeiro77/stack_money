@@ -7,10 +7,12 @@ import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/loading_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/history.dart';
+import 'package:stack_money/data/models/net_worth.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/data/models/user_model.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
 import 'package:stack_money/domain/service/history_service.dart';
+import 'package:stack_money/domain/service/networth_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/domain/service/user_service.dart';
 
@@ -20,12 +22,14 @@ class AppCoordinator {
   final _historyService = HistoryManagementService();
   final _planService = PlanManagementService();
   final _bucketService = BucketManagementService();
+  final _netWorthService = NetWorthManagementService();
 
   /// Notifiers
   final ValueNotifier<UserModel> _user = ValueNotifier(UserModel.empty());
   final ValueNotifier<List<History>> _history = ValueNotifier([]);
   final ValueNotifier<List<SalaryPlan>> _plans = ValueNotifier([]);
   final ValueNotifier<List<Bucket>> _buckets = ValueNotifier([]);
+  final ValueNotifier<NetWorth> _netWorth = ValueNotifier(NetWorth.create());
   final ValueNotifier<LoadingType> _loading = ValueNotifier(LoadingType.none);
 
   /// Subscriptions
@@ -33,6 +37,7 @@ class AppCoordinator {
   late final StreamSubscription? _historySubscription;
   late final StreamSubscription? _planSubscription;
   late final StreamSubscription? _bucketSubscription;
+  late final StreamSubscription? _netWorthSubscription;
 
   /// Constructors
   AppCoordinator._privateConstructor();
@@ -49,6 +54,8 @@ class AppCoordinator {
   ValueListenable<List<SalaryPlan>> get plans => _plans;
 
   ValueListenable<List<Bucket>> get buckets => _buckets;
+
+  ValueListenable<NetWorth> get netWorth => _netWorth;
 
   ValueListenable<LoadingType> get loading => _loading;
 
@@ -78,6 +85,9 @@ class AppCoordinator {
 
       loading = LoadingType.plan;
       _plans.value = await _planService.fetch();
+
+      loading = LoadingType.plan;
+      _netWorth.value = await _netWorthService.get();
 
       loading = LoadingType.history;
       _history.value = await _historyService.fetch();
@@ -122,6 +132,13 @@ class AppCoordinator {
         // TODO: Create error page
       },
     );
+
+    _netWorthSubscription = _netWorthService.watch().listen(
+      (netWorth) => _netWorth.value = netWorth,
+      onError: (error) {
+        // TODO: Create error page
+      },
+    );
   }
 
   void clearAndCloseListeners() {
@@ -133,11 +150,13 @@ class AppCoordinator {
     _historySubscription?.cancel();
     _planSubscription?.cancel();
     _bucketSubscription?.cancel();
+    _netWorthSubscription?.cancel();
 
     _user.value = UserModel.empty();
     _history.value = [];
     _plans.value = [];
     _buckets.value = [];
+    _netWorth.value = NetWorth.create();
     _loading.value = LoadingType.none;
   }
 }

@@ -25,4 +25,24 @@ class FirebaseNetWorthRepository extends BaseFirebaseRepository {
       );
     }
   }
+
+  Stream<NetWorth> watch() {
+    SmLogger.debug('Watching Net Worth', payload: {});
+
+    return getUserDoc()
+        .snapshots()
+        .map((doc) {
+          SmLogger.info('Stream net worth ${doc.id} updated.');
+
+          return NetWorth.fromJson(doc.data()!);
+        })
+        .handleError((e, stack) {
+          throw StackMoneyException(
+            message: 'Error in net worth timeline stream',
+            scope: ExceptionScope.database,
+            payload: {'exception': e},
+            stackTrace: stack,
+          );
+        });
+  }
 }

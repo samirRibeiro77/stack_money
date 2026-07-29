@@ -7,4 +7,8 @@ class NetWorthManagementService {
   Future<NetWorth> get() async {
     return await _repository.get();
   }
+
+  Stream<NetWorth> watch() {
+    return _repository.watch();
+  }
 }
