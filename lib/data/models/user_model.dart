@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stack_money/data/helper/model_key.dart';
-import 'package:stack_money/data/models/net_worth.dart';
 import 'package:stack_money/data/models/user_preferences_model.dart';
 
 class UserModel {
@@ -8,7 +7,6 @@ class UserModel {
   final String name;
   final String email;
   final String photoUrl;
-  final NetWorth netWorth;
   final UserPreferencesModel preferences;
 
   UserModel({
@@ -16,7 +14,6 @@ class UserModel {
     required this.name,
     required this.email,
     required this.photoUrl,
-    this.netWorth = const NetWorth(),
     this.preferences = const UserPreferencesModel(),
   });
 
@@ -30,9 +27,6 @@ class UserModel {
       name: json?[ModelKey.name] as String? ?? '',
       email: json?[ModelKey.email] as String? ?? '',
       photoUrl: json?[ModelKey.photoUrl] as String? ?? '',
-      netWorth: NetWorth.fromJson(
-        json?[ModelKey.netWorth] as Map<String, Object?>?,
-      ),
       preferences: UserPreferencesModel.fromJson(
         json?[ModelKey.preferences] as Map<String, Object?>?,
       ),
@@ -53,7 +47,6 @@ class UserModel {
       ModelKey.uid: uid,
       ModelKey.name: name,
       ModelKey.email: email,
-      ModelKey.netWorth: netWorth.toJson(),
       ModelKey.photoUrl: photoUrl,
     };
 
@@ -69,7 +62,6 @@ class UserModel {
     String? name,
     String? email,
     String? photoUrl,
-    NetWorth? netWorth,
     UserPreferencesModel? preferences,
   }) {
     return UserModel(
@@ -77,7 +69,6 @@ class UserModel {
       name: name ?? this.name,
       email: email ?? this.email,
       photoUrl: photoUrl ?? this.photoUrl,
-      netWorth: netWorth ?? this.netWorth,
       preferences: preferences ?? this.preferences,
     );
   }

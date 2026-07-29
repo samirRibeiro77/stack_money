@@ -6,7 +6,6 @@ import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/history.dart';
-import 'package:stack_money/data/models/net_worth.dart';
 import 'package:stack_money/data/models/transaction.dart';
 import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
@@ -132,15 +131,6 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           .collection(FirebaseKey.history)
           .doc(history.id);
       batch.set(historyDocRef, history.toJson());
-
-      final netWorth = NetWorth(
-        total: totalNetWorth,
-        liquidity: totalLiquidity,
-      );
-
-      batch.set(userDoc, {
-        FirebaseKey.netWorth: netWorth.toJson(),
-      }, SetOptions(merge: true));
 
       SmLogger.info(
         'Finished saving money sprint with historyId: ${history.id}.',

@@ -6,7 +6,6 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/data/enum/security_type.dart';
@@ -70,7 +69,10 @@ class _PatrimonialHudState extends State<PatrimonialHud>
     final isSecureActive = SecurityProvider.isSecureOf(context);
 
     // Gerencia o fluxo da animação com base no destravamento biométrico básico
-    if (!isSecureActive && !_controller.isAnimating && _controller.value == 0.0 && _oldTotalAmount > 0.0) {
+    if (!isSecureActive &&
+        !_controller.isAnimating &&
+        _controller.value == 0.0 &&
+        _oldTotalAmount > 0.0) {
       _controller.forward(from: 0.0);
     } else if (isSecureActive && _controller.value > 0.0) {
       _controller.reset();
@@ -78,10 +80,13 @@ class _PatrimonialHudState extends State<PatrimonialHud>
 
     // 1. O ValueListenableBuilder entra aqui dentro para escutar o repositório
     return ValueListenableBuilder(
-      valueListenable: AppCoordinator.instance.user,
-      builder: (_, user, _) {
+      valueListenable: AppCoordinator.instance.latestHistory,
+      builder: (_, latestHistory, _) {
+        final total = latestHistory?.total ?? 0;
+        final liquidity = latestHistory?.immediateLiquidityTotal ?? 0;
+
         // 3. GATILHO REATIVO: Atualiza os valores do Tween e roda a animação do zero
-        _animateToNewValue(user.netWorth.total, isSecureActive);
+        _animateToNewValue(total, isSecureActive);
 
         return SmCard(
           title: l10n.netWorth,
@@ -93,7 +98,10 @@ class _PatrimonialHudState extends State<PatrimonialHud>
                   animation: _animation,
                   builder: (context, child) {
                     return Text(
-                      StackMoneyString.formatMoney(_animation.value, symbol: true),
+                      StackMoneyString.formatMoney(
+                        _animation.value,
+                        symbol: true,
+                      ),
                       style: textTheme.bodyLarge?.copyWith(
                         fontSize: AppTypography.fontDisplaySmall,
                         color: StackMoneyTheme.platinumSilver,
@@ -132,10 +140,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
                     ],
                   ),
                   SecurityText(
-                    StackMoneyString.formatMoney(
-                      user.netWorth.liquidity,
-                      symbol: true,
-                    ),
+                    StackMoneyString.formatMoney(liquidity, symbol: true),
                     type: SecurityType.mask,
                     style: textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold,

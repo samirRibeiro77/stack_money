@@ -24,7 +24,9 @@ class AppCoordinator {
   /// Notifiers
   final ValueNotifier<UserModel> _user = ValueNotifier(UserModel.empty());
   final ValueNotifier<List<History>> _history = ValueNotifier([]);
+  final ValueNotifier<History?> _latestHistory = ValueNotifier(null);
   final ValueNotifier<List<SalaryPlan>> _plans = ValueNotifier([]);
+  final ValueNotifier<SalaryPlan?> _currentPlan = ValueNotifier(null);
   final ValueNotifier<List<Bucket>> _buckets = ValueNotifier([]);
   final ValueNotifier<LoadingType> _loading = ValueNotifier(LoadingType.none);
 
@@ -46,7 +48,11 @@ class AppCoordinator {
 
   ValueListenable<List<History>> get history => _history;
 
+  ValueListenable<History?> get latestHistory => _latestHistory;
+
   ValueListenable<List<SalaryPlan>> get plans => _plans;
+
+  ValueListenable<SalaryPlan?> get currentPlan => _currentPlan;
 
   ValueListenable<List<Bucket>> get buckets => _buckets;
 
@@ -78,9 +84,11 @@ class AppCoordinator {
 
       loading = LoadingType.plan;
       _plans.value = await _planService.fetch();
+      _currentPlan.value = await _planService.fetchActivated();
 
       loading = LoadingType.history;
       _history.value = await _historyService.fetch();
+      _latestHistory.value = await _historyService.fetchLatest();
     } catch (e, stack) {
       StackMoneyException(
         message: 'Failed to load initial data',
@@ -103,21 +111,32 @@ class AppCoordinator {
     );
 
     _historySubscription = _historyService.watch().listen(
-      (historyList) => _history.value = List<History>.from(historyList),
+      (historyList) {
+        _history.value = historyList;
+        if (_latestHistory.value?.date == historyList.lastOrNull?.date) {
+          _latestHistory.value = historyList.last;
+        }
+      },
       onError: (error) {
         // TODO: Create error page
       },
     );
 
     _planSubscription = _planService.watch().listen(
-      (planList) => _plans.value = List<SalaryPlan>.from(planList),
+      (planList) {
+        _plans.value = planList;
+        final fbCurrentPlan = planList.where((p) => p.isActive).firstOrNull;
+        if (_currentPlan.value?.id != fbCurrentPlan?.id) {
+          _currentPlan.value = fbCurrentPlan;
+        }
+      },
       onError: (error) {
         // TODO: Create error page
       },
     );
 
     _bucketSubscription = _bucketService.watch().listen(
-      (bucketList) => _buckets.value = List<Bucket>.from(bucketList),
+      (bucketList) => _buckets.value = bucketList,
       onError: (error) {
         // TODO: Create error page
       },
