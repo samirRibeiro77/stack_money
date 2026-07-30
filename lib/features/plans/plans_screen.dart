@@ -45,84 +45,86 @@ class _PlansScreenState extends State<PlansScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return ValueListenableBuilder(valueListenable: AppCoordinator.instance.plans, builder: (_, plans, _) {
-      return ValueListenableBuilder<bool>(
-        valueListenable: _manager.showArchivedNotifier,
-        builder: (context, showArchived, child) {
-          final baseList = plans
-              .where((p) => showArchived ? true : !p.isArchived)
-              .toList();
+    return ValueListenableBuilder(
+      valueListenable: AppCoordinator.instance.plans,
+      builder: (_, plans, _) {
+        return ValueListenableBuilder<bool>(
+          valueListenable: _manager.showArchivedNotifier,
+          builder: (_, showArchived, _) {
+            final baseList = plans
+                .where((p) => showArchived ? true : !p.isArchived)
+                .toList();
 
-          final activePlan = baseList.where((p) => p.isActive).firstOrNull;
-          final inactivePlans = baseList.where((p) => !p.isActive).toList();
+            final activePlan = baseList.where((p) => p.isActive).firstOrNull;
+            final inactivePlans = baseList.where((p) => !p.isActive).toList();
 
-          inactivePlans.sort((a, b) {
-            if (a.position != b.position) {
-              return a.position.compareTo(b.position);
-            }
-            return b.createdAt.compareTo(a.createdAt);
-          });
+            inactivePlans.sort((a, b) {
+              if (a.position != b.position) {
+                return a.position.compareTo(b.position);
+              }
+              return b.createdAt.compareTo(a.createdAt);
+            });
 
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ExpandableHeader(
-                  title: l10n.plansConfig,
-                  validation: _manager.showArchivedNotifier,
-                  toggle: _manager.toggleShowArchived,
-                  activeIcon: Icons.archive_outlined,
-                  inactiveIcon: Icons.unarchive_outlined,
-                  activeColor: StackMoneyTheme.magentaNeon,
-                  inactiveColor: StackMoneyTheme.cyanNeon,
-                ),
-                const SizedBox(height: AppSizes.sizedBoxMedium),
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ExpandableHeader(
+                    title: l10n.plansConfig,
+                    validation: _manager.showArchivedNotifier,
+                    toggle: _manager.toggleShowArchived,
+                    activeIcon: Icons.archive_outlined,
+                    inactiveIcon: Icons.unarchive_outlined,
+                    activeColor: StackMoneyTheme.magentaNeon,
+                    inactiveColor: StackMoneyTheme.cyanNeon,
+                  ),
+                  const SizedBox(height: AppSizes.sizedBoxMedium),
 
-                CardInitializeSlot(
-                  l10n.newPlan,
-                  onTap: () => _manager.initializeNewPlanSlot(context),
-                ),
-                const SizedBox(height: AppSizes.sizedBoxSmall),
-
-                if (activePlan != null) ...[
-                  DismissiblePlanCard(
-                    activePlan,
-                    key: ValueKey(activePlan.id),
-                    onTap: () =>
-                        _manager.navigateToPlanDetails(context, activePlan),
-                    confirmDismiss: (direction) =>
-                        _confirmDismiss(direction, activePlan),
-                    onDismissed: (direction) =>
-                        _purgePlan(direction, activePlan.id),
+                  CardInitializeSlot(
+                    l10n.newPlan,
+                    onTap: () => _manager.initializeNewPlanSlot(context),
                   ),
                   const SizedBox(height: AppSizes.sizedBoxSmall),
-                ],
 
-                SmReorderableList<SalaryPlan>(
-                  items: inactivePlans,
-                  onReorder: (oldIdx, newIdx) => _manager.reorderFilteredPlans(
-                    inactivePlans,
-                    oldIdx,
-                    newIdx,
+                  if (activePlan != null) ...[
+                    DismissiblePlanCard(
+                      activePlan,
+                      key: ValueKey(activePlan.id),
+                      onTap: () =>
+                          _manager.navigateToPlanDetails(context, activePlan),
+                      confirmDismiss: (direction) =>
+                          _confirmDismiss(direction, activePlan),
+                      onDismissed: (direction) =>
+                          _purgePlan(direction, activePlan.id),
+                    ),
+                    const SizedBox(height: AppSizes.sizedBoxSmall),
+                  ],
+
+                  SmReorderableList<SalaryPlan>(
+                    items: inactivePlans,
+                    onReorder: (oldIdx, newIdx) => _manager
+                        .reorderFilteredPlans(inactivePlans, oldIdx, newIdx),
+                    itemBuilder: (context, plan, index) => DismissiblePlanCard(
+                      plan,
+                      key: ValueKey(plan.id),
+                      onTap: () =>
+                          _manager.navigateToPlanDetails(context, plan),
+                      confirmDismiss: (direction) =>
+                          _confirmDismiss(direction, plan),
+                      onDismissed: (direction) =>
+                          _purgePlan(direction, plan.id),
+                    ),
+                    feedbackChildBuilder: (_, plan, _) =>
+                        PlanListCard(plan, onTap: () {}),
+                    draggingChildBuilder: (_, plan, _) =>
+                        PlanListCard(plan, onTap: () {}),
                   ),
-                  itemBuilder: (context, plan, index) => DismissiblePlanCard(
-                    plan,
-                    key: ValueKey(plan.id),
-                    onTap: () => _manager.navigateToPlanDetails(context, plan),
-                    confirmDismiss: (direction) =>
-                        _confirmDismiss(direction, plan),
-                    onDismissed: (direction) => _purgePlan(direction, plan.id),
-                  ),
-                  feedbackChildBuilder: (_, plan, _) =>
-                      PlanListCard(plan, onTap: () {}),
-                  draggingChildBuilder: (_, plan, _) =>
-                      PlanListCard(plan, onTap: () {}),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    });
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }
