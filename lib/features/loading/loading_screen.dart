@@ -2,19 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
-import 'package:stack_money/core/exceptions/exception_scope.dart';
-import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/enum/loading_type.dart';
-import 'package:stack_money/features/error/error_screen.dart';
-import 'package:stack_money/features/error/error_screen_args.dart';
 import 'package:stack_money/features/main_navigation/main_navigation_wrapper.dart';
 
 class LoadingScreen extends StatefulWidget {
-  static const route = '/loading'; // Transformado em const
+  static const route = '/loading';
 
   const LoadingScreen({super.key});
 
@@ -42,24 +38,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (!mounted) return;
     final loading = AppCoordinator.instance.loading.value;
     if (loading == LoadingType.done) {
-      context.go(
-        ErrorScreen.route,
-        extra: ErrorScreenArgs(
-          exception: StackMoneyException(
-            message: 'Example of a error message goes here',
-            scope: ExceptionScope.business,
-            payload: {
-              'user': AppCoordinator.instance.user.value.toJson(),
-              'exception': Exception('Another kind of exception goes here'),
-            },
-            stackTrace: StackTrace.fromString(
-              'I have no idea how to create a new StackStrace =P',
-            ),
-          ),
-          retryFunction: () => context.go(MainNavigationWrapper.route)
-        ),
-      );
-      // context.go(MainNavigationWrapper.route);
+      context.go(MainNavigationWrapper.route);
     }
   }
 

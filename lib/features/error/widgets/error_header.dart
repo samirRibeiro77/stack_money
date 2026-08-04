@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/features/error/widgets/error_retry_button.dart';
 
 class ErrorHeader extends StatelessWidget {
   final IconData icon;
@@ -13,22 +14,23 @@ class ErrorHeader extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: StackMoneyTheme.magentaNeon.withAlpha(100),
-                blurRadius: 30,
-                spreadRadius: 30,
+                color: StackMoneyTheme.magentaNeon.withAlpha(150),
+                blurRadius: 50,
+                spreadRadius: 25,
               ),
             ],
           ),
           child: Icon(
             icon,
             size: AppSizes.errorIcon,
-            color: StackMoneyTheme.surface,
+            color: StackMoneyTheme.background,
           ),
         ),
         SizedBox(height: AppSizes.errorPadding),
@@ -37,6 +39,8 @@ class ErrorHeader extends StatelessWidget {
           style: textTheme.headlineMedium,
           textAlign: TextAlign.center,
         ),
+        SizedBox(height: AppSizes.errorPadding),
+        ErrorRetryButton(),
       ],
     );
   }

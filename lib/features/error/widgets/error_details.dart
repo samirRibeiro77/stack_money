@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
-import 'package:stack_money/core/helpers/stack_money_string.dart';
-import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
 
 class ErrorDetails extends StatelessWidget {

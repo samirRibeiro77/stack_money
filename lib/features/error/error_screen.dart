@@ -7,32 +7,25 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/features/error/error_screen_args.dart';
 import 'package:stack_money/features/error/widgets/error_details.dart';
 import 'package:stack_money/features/error/widgets/error_header.dart';
-import 'package:stack_money/features/error/widgets/error_retry_button.dart';
 
 class ErrorScreen extends StatelessWidget {
   static const route = '/error';
 
-  final ErrorScreenArgs args;
+  final StackMoneyException exception;
 
-  const ErrorScreen({required this.args, super.key});
+  const ErrorScreen({required this.exception, super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     final e = StackMoneyException(
-      message: 'Example of a error message goes here',
-      scope: ExceptionScope.business,
-      payload: {
-        'user': AppCoordinator.instance.user.value.toJson(),
-        'exception': Exception('Another kind of exception goes here'),
-      },
-      stackTrace: StackTrace.fromString(
-        AppCoordinator.instance.buckets.value.map((b) => b.toJson()).toString(),
-      ),
+      message: 'Error in plan timeline stream',
+      scope: ExceptionScope.network,
+      payload: AppCoordinator.instance.user.value.toJson(keepPrefs: true),
+      stackTrace: StackTrace.fromString(AppCoordinator.instance.buckets.value.map((b) => b.toJson()).toString())
     );
 
     return Scaffold(
@@ -53,9 +46,8 @@ class ErrorScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ErrorHeader(icon: e.scope.icon, message: e.message),
             Expanded(child: SizedBox.shrink()),
-            if (args.retryFunction != null) ...[ErrorRetryButton(retryFunction: args.retryFunction!)],
+            ErrorHeader(icon: e.scope.icon, message: e.message),
             Expanded(child: SizedBox.shrink()),
             if (e.payload != null) ...[
               ErrorDetails(

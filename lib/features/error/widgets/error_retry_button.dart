@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
+import 'package:stack_money/features/loading/loading_screen.dart';
 
 class ErrorRetryButton extends StatelessWidget {
   static final _color = StackMoneyTheme.cyanNeon;
-  final VoidCallback retryFunction;
 
-  const ErrorRetryButton({required this.retryFunction, super.key});
+  const ErrorRetryButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +26,14 @@ class ErrorRetryButton extends StatelessWidget {
         borderColor: _color,
         borderWidth: AppSizes.x2,
         child: InkWell(
-          onTap: retryFunction,
+          onTap: () => context.go(LoadingScreen.route),
           borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
           highlightColor: _color.withValues(alpha: 0.1),
           splashColor: _color.withValues(alpha: 0.15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.sync_rounded, color: _color, size: AppSizes.x10),
+              Icon(Icons.sync_rounded, color: _color, size: AppSizes.x12),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppSizes.x4),
                 child: Text(

@@ -30,6 +30,7 @@ class ExpandableHeader extends StatelessWidget {
     final isSecureActive = SecurityProvider.isSecureOf(context);
 
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: toggle,
       child: SizedBox(
         height: AppSizes.x10,
