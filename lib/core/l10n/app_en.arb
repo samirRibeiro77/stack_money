@@ -571,5 +571,17 @@
   "loadingHistory": "TRAILS: Reconstituting transaction logs and ledger history...",
   "@loadingHistory": {
     "description": "Loading history data."
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error."
+  },
+  "payload": "Payload",
+  "@payload": {
+    "description": "Payload title."
+  },
+  "stackTrace": "Stack Trace",
+  "@stackTrace": {
+    "description": "Stack Trace title."
   }
 }

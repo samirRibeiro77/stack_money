@@ -959,6 +959,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'TRAILS: Reconstituting transaction logs and ledger history...'**
   String get loadingHistory;
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// Payload title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payload'**
+  String get payload;
+
+  /// Stack Trace title.
+  ///
+  /// In en, this message translates to:
+  /// **'Stack Trace'**
+  String get stackTrace;
 }
 
 class _AppLocalizationsDelegate

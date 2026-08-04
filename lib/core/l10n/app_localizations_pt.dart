@@ -482,4 +482,13 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get loadingHistory =>
       'RASTROS: Reconstituindo logs e histórico de transações na rede...';
+
+  @override
+  String get error => 'Erro';
+
+  @override
+  String get payload => 'Payload';
+
+  @override
+  String get stackTrace => 'Stack Trace';
 }

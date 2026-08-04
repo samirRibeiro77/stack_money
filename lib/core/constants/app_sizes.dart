@@ -61,4 +61,8 @@ class AppSizes {
 
   /// --- Login button ---
   static const double loginButtonWidth = 280.0;
+
+  /// --- Error Screen ---
+  static const double errorPadding = 50.0;
+  static const double errorIcon = 100.0;
 }

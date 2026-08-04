@@ -482,4 +482,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get loadingHistory =>
       'TRAILS: Reconstituting transaction logs and ledger history...';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get payload => 'Payload';
+
+  @override
+  String get stackTrace => 'Stack Trace';
 }
