@@ -42,4 +42,16 @@ class ModelKey {
   /// Distribution
   static const distributions = 'distributions';
   static const subCategory = 'subCategory';
+
+  /// User
+  static const uid = 'uid';
+  static const email = 'email';
+  static const photoUrl = 'photoUrl';
+  static const preferences = 'preferences';
+
+  /// UserPreferences
+  static const securityMode = 'securityMode';
+  static const cardExpand = 'cardExpand';
+  static const defaultFilter = 'defaultFilter';
+  static const lastFilter = 'lastFilter';
 }

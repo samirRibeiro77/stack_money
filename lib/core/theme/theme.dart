@@ -64,20 +64,6 @@ class StackMoneyTheme {
     );
   }
 
-  static ButtonStyle get googleLoginButtonStyle => ElevatedButton.styleFrom(
-    backgroundColor: carbonGrey,
-    foregroundColor: cyanNeon,
-    elevation: 1,
-    padding: const EdgeInsets.symmetric(
-      horizontal: AppSizes.x10,
-      vertical: AppSizes.x4,
-    ),
-    shape: const StadiumBorder(),
-    textStyle: darkTheme.textTheme.titleSmall?.copyWith(
-      fontWeight: AppTypography.weightBold,
-    ),
-  );
-
   static final _baseTextTheme = GoogleFonts.orbitronTextTheme(
     ThemeData.dark().textTheme,
   ).apply(bodyColor: textPrimary, displayColor: textPrimary);

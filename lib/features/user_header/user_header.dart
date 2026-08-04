@@ -58,7 +58,7 @@ class _UserHeaderState extends State<UserHeader> {
         : [StackMoneyTheme.cyanNeon, StackMoneyTheme.background];
 
     return GestureDetector(
-      onTap: _manager.openConfigs,
+      onTap: () => _manager.openConfigs(context),
       child: Padding(
         padding: const EdgeInsets.only(left: AppSizes.x8),
         child: Center(
@@ -97,7 +97,7 @@ class _UserHeaderState extends State<UserHeader> {
     final textTheme = Theme.of(context).textTheme;
 
     return GestureDetector(
-      onTap: _manager.openConfigs,
+      onTap: () => _manager.openConfigs(context),
       child: Text(
         _manager.displayName(l10n.unknow),
         style: textTheme.titleLarge?.copyWith(

@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stack_money/domain/service/auth_service.dart';
+import 'package:stack_money/domain/service/user_service.dart';
 import 'package:stack_money/features/auth/login_screen.dart';
 import 'package:stack_money/features/main_navigation/main_navigation_wrapper.dart';
 
-final AuthService _authService = AuthService();
+final UserService _authService = UserService();
 
 final GoRouter appRouter = GoRouter(
   initialLocation: LoginScreen.route,

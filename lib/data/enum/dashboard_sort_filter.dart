@@ -12,6 +12,17 @@ enum DashboardSortFilter {
 
   const DashboardSortFilter(this.icon);
 
+  static DashboardSortFilter? fromJson(String? json) {
+    if (json == null) {
+      return null;
+    }
+
+    return DashboardSortFilter.values.firstWhere(
+      (e) => e.name == json,
+      orElse: () => DashboardSortFilter.position,
+    );
+  }
+
   String label(AppLocalizations l10n) {
     switch (this) {
       case position:

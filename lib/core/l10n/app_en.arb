@@ -80,6 +80,10 @@
   "@retryHandshake": {
     "description": "Retry message for data management"
   },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry message"
+  },
   "auditLogs": "Audit Logs",
   "@auditLogs": {
     "description": "Audit ledger logs title"
@@ -236,6 +240,14 @@
   "@percentGross": {
     "description": "% of the gross income"
   },
+  "copy": "Copy",
+  "@copy": {
+    "description": "Copy something"
+  },
+  "share": "Share",
+  "@share": {
+    "description": "Share something"
+  },
   "archive": "Archive",
   "@archive": {
     "description": "Archive something"
@@ -243,10 +255,6 @@
   "delete": "Delete",
   "@delete": {
     "description": "Delete something"
-  },
-  "copy": "Copy",
-  "@copy": {
-    "description": "Copy something"
   },
   "dayX": "D{d}",
   "@dayX": {
@@ -443,5 +451,101 @@
   "start": "Start",
   "@start": {
     "description": "SnackBar action to start the money sprint."
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings page title."
+  },
+  "adminName": "ADMIN_NAME",
+  "@adminName": {
+    "description": "Username label."
+  },
+  "adminEmail": "ADMIN_EMAIL",
+  "@adminEmail": {
+    "description": "Email label."
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout from the app."
+  },
+  "systemPreferences": "System Preferences",
+  "@systemPreferences": {
+    "description": "System preferences title."
+  },
+  "enabled": "Enabled",
+  "@enabled": {
+    "description": "Enabled value."
+  },
+  "disabled": "Disabled",
+  "@disabled": {
+    "description": "Disabled value."
+  },
+  "securityModeTitle": "Boot under security mode",
+  "@securityModeTitle": {
+    "description": "Boot the app under security mode."
+  },
+  "securityModeCode": "SYS.SECURE_MODE",
+  "@securityModeCode": {
+    "description": "Security mode code."
+  },
+  "cardExpandTitle": "Open with cards expanded",
+  "@cardExpandTitle": {
+    "description": "Expand cards on initialization."
+  },
+  "cardExpandCode": "DASH.CARDS_EXPAND",
+  "@cardExpandCode": {
+    "description": "Card expand code."
+  },
+  "defaultFilterCode": "DASH.DEFAULT_FILTER",
+  "@defaultFilterCode": {
+    "description": "Card expand code."
+  },
+  "exportData": "Export data",
+  "@exportData": {
+    "description": "Export data card title."
+  },
+  "exportDataPlans": "Plans: {qty}",
+  "@exportDataPlans": {
+    "description": "Pans quantity to export."
+  },
+  "exportDataHistory": "History: {qty}",
+  "@exportDataHistory": {
+    "description": "History quantity to export."
+  },
+  "exportDataBuckets": "Buckets: {qty}",
+  "@exportDataBuckets": {
+    "description": "Bucket quantity to export."
+  },
+  "exportDataJsonSize": "JSON size: {size}",
+  "@exportDataJsonSize": {
+    "description": "Json size."
+  },
+  "exportJsonData": "Export JSON data",
+  "@exportJsonData": {
+    "description": "Export json data button label."
+  },
+  "rememberLast": "Remember last",
+  "@rememberLast": {
+    "description": "Remember the last dashboard filter for allocation buckets."
+  },
+  "settingsChangedTitle": "Changes",
+  "@settingsChangedTitle": {
+    "description": "Settings changed dialog title."
+  },
+  "settingsChangedMessage": "Identified {qty} changes on your preferences:",
+  "@settingsChangedMessage": {
+    "description": "Settings changed dialog message."
+  },
+  "settingsChangedNote": "• {code}:\n   {old} ➔ {current}\n",
+  "@settingsChangedNote": {
+    "description": "Property changed diff note."
+  },
+  "failedToSignIn": "Failed to sign-in",
+  "@failedToSignIn": {
+    "description": "Failed message when trying to login."
+  },
+  "failedToSaveUser": "Failed to save user changes",
+  "@failedToSaveUser": {
+    "description": "Failed message when saving user."
   }
 }

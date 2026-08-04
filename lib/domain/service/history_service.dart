@@ -10,7 +10,12 @@ class HistoryManagementService {
     return historyList;
   }
 
+  Future<History> fetchLatest() async {
+    return await _repository.fetchLatest();
+  }
+
   Future<List<Transaction>> fetchLastSprintValues() async {
-    return await _repository.fetchLastSprintValues();
+    final history = await _repository.fetchLatest();
+    return history.transactions;
   }
 }

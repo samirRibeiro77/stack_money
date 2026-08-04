@@ -15,6 +15,7 @@ import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/data/models/inflow_row.dart';
 import 'package:stack_money/data/models/outflow_row.dart';
 import 'package:stack_money/data/models/distribution_row.dart';
+import 'package:stack_money/domain/service/export_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
@@ -82,6 +83,19 @@ class PlanEditManager {
     } catch (e, stack) {
       StackMoneyException(
         message: 'Failed to copy plan',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'plan': currentPlan.toJson()},
+        stackTrace: stack,
+      );
+    }
+  }
+
+  Future<void> sharePlan(BuildContext context) async {
+    try {
+      ExportService().exportData([currentPlan.toJson()]);
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to share plan',
         scope: ExceptionScope.business,
         payload: {'exception': e, 'plan': currentPlan.toJson()},
         stackTrace: stack,
