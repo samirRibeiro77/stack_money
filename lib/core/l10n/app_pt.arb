@@ -137,5 +137,11 @@
   "settingsChangedMessage": "Identificamos {qty} modificações pendentes nas suas preferências:",
   "settingsChangedNote": "• {code}:\n   {old} ➔ {current}\n",
   "failedToSignIn": "Falha ao fazer login",
-  "failedToSaveUser": "Falha ao salvar usuário"
+  "failedToSaveUser": "Falha ao salvar usuário",
+  "systemCode": "CORE.SIS",
+  "initializing": "Carregando...",
+  "loadingUser": "AUTENTICANDO: Infiltrando redes e descriptografando perfil de usuário...",
+  "loadingPlan": "ALOCAÇÃO: Sincronizando matrizes de distribuição salarial...",
+  "loadingBucket": "COFRES: Consolidando montantes e sub-cofres digitais...",
+  "loadingHistory": "RASTROS: Reconstituindo logs e histórico de transações na rede..."
 }

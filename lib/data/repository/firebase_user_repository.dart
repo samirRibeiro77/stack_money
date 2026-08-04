@@ -11,16 +11,14 @@ import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
 class FirebaseUserRepository extends BaseFirebaseRepository {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  bool _isSigningOut = false;
 
   Stream<User?> Function() get authStateChanges => auth.authStateChanges;
 
   Future<void> save(UserModel user, {bool savePrefs = false}) async {
     SmLogger.debug(
       'Saving user',
-      payload: {
-        'savePrefs': savePrefs,
-        'user': user.toJson(keepPrefs: true),
-      },
+      payload: {'savePrefs': savePrefs, 'user': user.toJson(keepPrefs: true)},
     );
 
     try {
@@ -85,6 +83,26 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
     }
   }
 
+  Stream<UserModel> watch() {
+    SmLogger.debug('Watching user', payload: {});
+
+    return getUserDoc()
+        .snapshots()
+        .map((doc) {
+          SmLogger.info('Stream user ${doc.id} updated.');
+
+          return UserModel.fromJson(doc.data()!);
+        })
+        .handleError((e, stack) {
+          throw StackMoneyException(
+            message: 'Error in user timeline stream',
+            scope: ExceptionScope.database,
+            payload: {'exception': e},
+            stackTrace: stack,
+          );
+        });
+  }
+
   Future<User?> signInWithGoogle() async {
     SmLogger.debug('Signing in with google account', payload: {});
 
@@ -120,10 +138,33 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
   }
 
   Future<void> signOut() async {
-    SmLogger.debug('Signing out', payload: {});
-    await _googleSignIn.signOut();
-    await auth.signOut();
-    SmLogger.info('User signed out.');
+    if (_isSigningOut) {
+      SmLogger.warning(
+        'SignOut already in progress. Ignoring concurrent request.',
+      );
+      return;
+    }
+
+    try {
+      _isSigningOut = true;
+
+      SmLogger.info('Signing out from Google');
+      await _googleSignIn.signOut();
+
+      SmLogger.info('Signing out from Firebase');
+      await auth.signOut();
+
+      SmLogger.warning('User signed out.');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed during sign out',
+        scope: ExceptionScope.auth,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
+    } finally {
+      _isSigningOut = false;
+    }
   }
 
   Future<void> _syncUser(User? user) async {

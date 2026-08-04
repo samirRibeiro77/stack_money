@@ -68,4 +68,29 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
       );
     }
   }
+
+  Stream<List<History>> watch() {
+    SmLogger.debug('Watching history', payload: {});
+
+    return _collection
+        .orderBy(ModelKey.date, descending: false)
+        .snapshots()
+        .map((snapshot) {
+          SmLogger.info(
+            'Stream history updated with ${snapshot.docs.length} entries.',
+          );
+
+          return snapshot.docs
+              .map((doc) => History.fromJson(doc.data()))
+              .toList();
+        })
+        .handleError((e, stack) {
+          throw StackMoneyException(
+            message: 'Error in history timeline stream',
+            scope: ExceptionScope.database,
+            payload: {'exception': e},
+            stackTrace: stack,
+          );
+        });
+  }
 }

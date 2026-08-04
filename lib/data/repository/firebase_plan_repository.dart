@@ -16,7 +16,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
 
     try {
       final snapshot = await _collection
-          .orderBy(ModelKey.createdAt, descending: true)
+          .orderBy(ModelKey.position, descending: true)
           .get();
 
       if (snapshot.docs.isEmpty) {
@@ -67,6 +67,31 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         stackTrace: stack,
       );
     }
+  }
+
+  Stream<List<SalaryPlan>> watch() {
+    SmLogger.debug('Watching plans', payload: {});
+
+    return _collection
+        .orderBy(ModelKey.position, descending: true)
+        .snapshots()
+        .map((snapshot) {
+      SmLogger.info(
+        'Stream plans updated with ${snapshot.docs.length} entries.',
+      );
+
+      return snapshot.docs
+          .map((doc) => SalaryPlan.fromJson(doc.data()))
+          .toList();
+    })
+        .handleError((e, stack) {
+      throw StackMoneyException(
+        message: 'Error in plan timeline stream',
+        scope: ExceptionScope.database,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
+    });
   }
 
   Future<void> save(SalaryPlan plan) async {

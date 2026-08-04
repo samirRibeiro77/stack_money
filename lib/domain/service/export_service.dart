@@ -5,13 +5,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/data/helper/export_key.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/data_export_model.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
-import 'package:stack_money/domain/service/bucket_service.dart';
 import 'package:stack_money/domain/service/history_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 
@@ -23,15 +23,9 @@ class ExportService {
 
   Future<DataExportModel?> createAppDataExport() async {
     try {
-      final results = await Future.wait([
-        PlanManagementService().fetch(),
-        BucketManagementService().fetch(),
-        HistoryManagementService().fetch(),
-      ]);
-
-      final plans = results[0] as List<SalaryPlan>;
-      final buckets = results[1] as List<Bucket>;
-      final history = results[2] as List<History>;
+      final plans = AppCoordinator.instance.plans.value;
+      final buckets = AppCoordinator.instance.buckets.value;
+      final history = AppCoordinator.instance.history.value;
 
       final file = await _createExportFile(
         _convertDataToExport(

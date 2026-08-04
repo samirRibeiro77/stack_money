@@ -1,52 +1,31 @@
 import 'package:flutter/foundation.dart';
-import 'package:stack_money/core/exceptions/exception_scope.dart';
-import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
-import 'package:stack_money/data/models/history.dart';
-import 'package:stack_money/data/models/user_preferences_model.dart';
-import 'package:stack_money/domain/service/history_service.dart';
-import 'package:stack_money/domain/service/bucket_service.dart';
 import 'package:stack_money/domain/service/user_service.dart';
 
 class DashboardManager {
-  final _bucketService = BucketManagementService();
-  final _historyService = HistoryManagementService();
   final _userService = UserService();
 
-  final ValueNotifier<bool> _isLoading = ValueNotifier(true);
-  final ValueNotifier<bool> _hasError = ValueNotifier(false);
-  final ValueNotifier<bool> _masterExpandState = ValueNotifier(true);
-
-  final ValueNotifier<List<Bucket>> _realParameters = ValueNotifier([]);
-  final ValueNotifier<List<History>> _realHistoryTimeline = ValueNotifier([]);
-  final ValueNotifier<Set<String>> _expandedBucketIds = ValueNotifier({});
-
-  final ValueNotifier<UserPreferencesModel> _preferences = ValueNotifier(
-    UserPreferencesModel(),
-  );
-
-  final ValueNotifier<DashboardSortFilter> _sortFilter = ValueNotifier(
-    DashboardSortFilter.position,
-  );
-
-  final ValueNotifier<ChartFilterState> _chartFilter = ValueNotifier(
+  final _masterExpandState = ValueNotifier(true);
+  final _expandedBucketIds = ValueNotifier(<String>{});
+  final _sortFilter = ValueNotifier(DashboardSortFilter.position);
+  final _chartFilter = ValueNotifier(
     const ChartFilterState(filter: ChartFilter.threeMonths),
   );
 
-  ValueListenable<bool> get isLoading => _isLoading;
-
-  ValueListenable<bool> get hasError => _hasError;
+  DashboardManager() {
+    final initialExpand =
+        !AppCoordinator.instance.user.value.preferences.cardExpand;
+    if (_masterExpandState.value != initialExpand) {
+      toggleAllBuckets();
+    }
+  }
 
   ValueListenable<bool> get masterExpandState => _masterExpandState;
-
-  ValueListenable<List<Bucket>> get parametersNotifier => _realParameters;
-
-  ValueListenable<List<History>> get historyTimelineNotifier =>
-      _realHistoryTimeline;
 
   ValueListenable<Set<String>> get expandedIdsNotifier => _expandedBucketIds;
 
@@ -54,66 +33,27 @@ class DashboardManager {
 
   ValueListenable<DashboardSortFilter> get sortFilterNotifier => _sortFilter;
 
-  List<Bucket> get parameters => _realParameters.value;
-
-  List<History> get historyTimeline => _realHistoryTimeline.value;
-
   ChartFilterState get chartFilter => _chartFilter.value;
 
   DashboardSortFilter get activeSort => _sortFilter.value;
 
-  Future<void> loadFirebaseDashboardData() async {
-    try {
-      _isLoading.value = true;
-      _hasError.value = false;
-
-      final results = await Future.wait([
-        _bucketService.fetch(),
-        _historyService.fetch(),
-      ]);
-
-      _realParameters.value = results[0] as List<Bucket>;
-      _realHistoryTimeline.value = results[1] as List<History>;
-
-      await _loadUserPreferences();
-
-      _isLoading.value = false;
-    } catch (e, stack) {
-      StackMoneyException(
-        message: 'Failed loading dashboard data',
-        scope: ExceptionScope.business,
-        payload: {'exception': e},
-        stackTrace: stack,
-      );
-      _isLoading.value = false;
-      _hasError.value = true;
-    }
-  }
-
-  Future<void> _loadUserPreferences() async {
-    _preferences.value = await _userService.fetchPreferences();
-    final initialFilter =
-        _preferences.value.defaultFilter ?? _preferences.value.lastFilter;
-    updateSortFilter(initialFilter);
-  }
-
-  /// 🔥 NOVO: Atualizador tático de ordenação
-  void updateSortFilter(DashboardSortFilter newFilter) {
+  void updateSortFilter(List<Bucket> buckets, DashboardSortFilter newFilter) {
     SmLogger.debug(
       'Sorting filter',
       payload: {'old': _sortFilter.value, 'new': newFilter},
     );
-    final latestHistory = _realHistoryTimeline.value.last;
 
-    _realParameters.value.sort((a, b) {
+    final latestHistory = AppCoordinator.instance.history.value.lastOrNull;
+
+    buckets.sort((a, b) {
       final double valA =
-          latestHistory.transactions
+          latestHistory?.transactions
               .where((t) => t.bucketId == a.id)
               .firstOrNull
               ?.actualValue ??
           0.0;
       final double valB =
-          latestHistory.transactions
+          latestHistory?.transactions
               .where((t) => t.bucketId == b.id)
               .firstOrNull
               ?.actualValue ??
@@ -129,12 +69,13 @@ class DashboardManager {
         case DashboardSortFilter.minValue:
           return a.minValue.compareTo(b.minValue);
         case DashboardSortFilter.allocation:
-          final double allocA = (valA / latestHistory.total) * 100;
-          final double allocB = (valB / latestHistory.total) * 100;
+          final double allocA = (valA / (latestHistory?.total ?? 1)) * 100;
+          final double allocB = (valB / (latestHistory?.total ?? 1)) * 100;
           return allocB.compareTo(allocA);
       }
     });
 
+    _userService.updateLastFilter(newFilter);
     _sortFilter.value = newFilter;
   }
 
@@ -154,10 +95,19 @@ class DashboardManager {
 
   void toggleAllBuckets() {
     if (_masterExpandState.value) {
-      _expandedBucketIds.value = _realParameters.value.map((b) => b.id).toSet();
+      _expandedBucketIds.value = AppCoordinator.instance.buckets.value
+          .map((b) => b.id)
+          .toSet();
     } else {
       _expandedBucketIds.value = {};
     }
     _masterExpandState.value = !_masterExpandState.value;
+  }
+
+  void dispose() {
+    _masterExpandState.dispose();
+    _expandedBucketIds.dispose();
+    _sortFilter.dispose();
+    _chartFilter.dispose();
   }
 }

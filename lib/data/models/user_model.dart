@@ -9,7 +9,7 @@ class UserModel {
   final String photoUrl;
   final UserPreferencesModel preferences;
 
-  const UserModel({
+  UserModel({
     required this.uid,
     required this.name,
     required this.email,
@@ -17,13 +17,19 @@ class UserModel {
     this.preferences = const UserPreferencesModel(),
   });
 
+  factory UserModel.empty() {
+    return UserModel(uid: '', name: '', email: '', photoUrl: '');
+  }
+
   factory UserModel.fromJson(Map<String, Object?>? json) {
     return UserModel(
       uid: json?[ModelKey.uid] as String? ?? '',
       name: json?[ModelKey.name] as String? ?? '',
       email: json?[ModelKey.email] as String? ?? '',
       photoUrl: json?[ModelKey.photoUrl] as String? ?? '',
-      preferences: UserPreferencesModel.fromJson(json?[ModelKey.preferences] as Map<String, Object?>?),
+      preferences: UserPreferencesModel.fromJson(
+        json?[ModelKey.preferences] as Map<String, Object?>?,
+      ),
     );
   }
 
@@ -33,7 +39,6 @@ class UserModel {
       name: user?.displayName ?? '',
       email: user?.email ?? '',
       photoUrl: user?.photoURL ?? '',
-      preferences: UserPreferencesModel(),
     );
   }
 

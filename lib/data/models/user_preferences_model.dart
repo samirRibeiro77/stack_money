@@ -33,6 +33,10 @@ class UserPreferencesModel {
     );
   }
 
+  DashboardSortFilter get currentFilter {
+    return defaultFilter ?? lastFilter;
+  }
+
   Map<String, Object?> toJson() {
     return {
       ModelKey.securityMode: securityMode,

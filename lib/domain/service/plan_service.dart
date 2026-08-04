@@ -14,6 +14,10 @@ class PlanManagementService {
     return await _repository.fetchActivatedPlan();
   }
 
+  Stream<List<SalaryPlan>> watch() {
+    return _repository.watch();
+  }
+
   Future<bool> isMoneySprintAvailableToday() async {
     try {
       final plan = await fetchActivated();

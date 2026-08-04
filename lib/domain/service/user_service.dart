@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
+import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/data/models/user_model.dart';
 import 'package:stack_money/data/models/user_preferences_model.dart';
 import 'package:stack_money/data/repository/firebase_user_repository.dart';
@@ -38,6 +40,16 @@ class UserService {
     return await _remoteRepo.getPreferences();
   }
 
+  Stream<UserModel> watch() {
+    return _remoteRepo.watch();
+  }
+
+  Future<void> updateLastFilter(DashboardSortFilter last) async {
+    final user = await fetchUserData();
+    final updatePrefs = user.preferences.copyWith(lastFilter: last);
+    updatePreferences(user, updatePrefs);
+  }
+
   Future<void> updatePreferences(
     UserModel currentUserModel,
     UserPreferencesModel newPreferences,
@@ -58,6 +70,8 @@ class UserService {
   }
 
   Future<void> signOut() async {
+    AppCoordinator.instance.clearAndCloseListeners();
+
     await _localRepo.clear();
     await _remoteRepo.signOut();
   }

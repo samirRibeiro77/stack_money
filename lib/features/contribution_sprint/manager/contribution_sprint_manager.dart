@@ -5,6 +5,7 @@ import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -45,13 +46,14 @@ class ContributionSprintManager {
     try {
       _isLoadingNotifier.value = true;
 
-      final loadedBuckets = await _bucketService.fetch();
+      final loadedBuckets = AppCoordinator.instance.buckets.value;
       final lastValues = await _historyService.fetchLastSprintValues();
       for (var t in lastValues) {
         _originalValues[t.bucketId] = t.actualValue;
         _lastKnownValues[t.bucketId] = t.actualValue;
       }
 
+      loadedBuckets.sort((a, b) => b.name.compareTo(a.name));
       _bucketsNotifier.value = loadedBuckets;
 
       if (loadedBuckets.isNotEmpty) {

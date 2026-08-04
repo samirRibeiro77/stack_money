@@ -923,6 +923,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to save user changes'**
   String get failedToSaveUser;
+
+  /// Core system message.
+  ///
+  /// In en, this message translates to:
+  /// **'Core.Sys'**
+  String get systemCode;
+
+  /// Loading message.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get initializing;
+
+  /// Loading user data.
+  ///
+  /// In en, this message translates to:
+  /// **'AUTH: Infiltrating networks and decrypting user profile...'**
+  String get loadingUser;
+
+  /// Loading plan data.
+  ///
+  /// In en, this message translates to:
+  /// **'ALLOCATION: Syncing salary distribution matrices...'**
+  String get loadingPlan;
+
+  /// Loading bucket data.
+  ///
+  /// In en, this message translates to:
+  /// **'VAULTS: Securing funds and digital sub-vaults...'**
+  String get loadingBucket;
+
+  /// Loading history data.
+  ///
+  /// In en, this message translates to:
+  /// **'TRAILS: Reconstituting transaction logs and ledger history...'**
+  String get loadingHistory;
 }
 
 class _AppLocalizationsDelegate

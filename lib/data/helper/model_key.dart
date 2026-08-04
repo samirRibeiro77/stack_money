@@ -47,6 +47,7 @@ class ModelKey {
   static const uid = 'uid';
   static const email = 'email';
   static const photoUrl = 'photoUrl';
+  static const netWorth = 'netWorth';
   static const preferences = 'preferences';
 
   /// UserPreferences

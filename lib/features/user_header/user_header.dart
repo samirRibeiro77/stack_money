@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/features/user_header/manager/user_header_manager.dart';
@@ -14,13 +15,7 @@ class UserHeader extends StatefulWidget {
 }
 
 class _UserHeaderState extends State<UserHeader> {
-  late final UserHeaderManager _manager;
-
-  @override
-  void initState() {
-    super.initState();
-    _manager = UserHeaderManager();
-  }
+  final UserHeaderManager _manager = UserHeaderManager();
 
   @override
   void didChangeDependencies() {
@@ -72,19 +67,16 @@ class _UserHeaderState extends State<UserHeader> {
                 end: Alignment.bottomRight,
               ),
             ),
-            child: CircleAvatar(
-              radius: AppSizes.x9,
-              backgroundColor: StackMoneyTheme.surface,
-              backgroundImage: _manager.photoUrl != null
-                  ? NetworkImage(_manager.photoUrl!)
-                  : null,
-              child: _manager.photoUrl == null
-                  ? const Icon(
-                      Icons.person,
-                      color: StackMoneyTheme.platinumSilver,
-                      size: AppSizes.x9,
-                    )
-                  : null,
+            child: ValueListenableBuilder(
+              valueListenable: AppCoordinator.instance.user,
+              builder: (_, user, _) {
+                return CircleAvatar(
+                  radius: AppSizes.x9,
+                  backgroundColor: StackMoneyTheme.surface,
+                  backgroundImage: NetworkImage(user.photoUrl),
+                  child: null,
+                );
+              },
             ),
           ),
         ),
@@ -98,11 +90,16 @@ class _UserHeaderState extends State<UserHeader> {
 
     return GestureDetector(
       onTap: () => _manager.openConfigs(context),
-      child: Text(
-        _manager.displayName(l10n.unknow),
-        style: textTheme.titleLarge?.copyWith(
-          letterSpacing: AppTypography.spacingSmall,
-        ),
+      child: ValueListenableBuilder(
+        valueListenable: AppCoordinator.instance.user,
+        builder: (_, user, _) {
+          return Text(
+            user.name,
+            style: textTheme.titleLarge?.copyWith(
+              letterSpacing: AppTypography.spacingSmall,
+            ),
+          );
+        },
       ),
     );
   }
