@@ -5,6 +5,7 @@ import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/domain/service/user_service.dart';
 import 'package:stack_money/features/auth/login_screen.dart';
 import 'package:stack_money/features/error/error_screen.dart';
+import 'package:stack_money/features/error/error_screen_args.dart';
 import 'package:stack_money/features/loading/loading_screen.dart';
 import 'package:stack_money/features/main_navigation/main_navigation_wrapper.dart';
 
@@ -50,7 +51,7 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: ErrorScreen.route,
-      builder: (_, state) => ErrorScreen(state.extra as StackMoneyException),
+      builder: (_, state) => ErrorScreen(args: state.extra as ErrorScreenArgs),
     ),
   ],
 );
