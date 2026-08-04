@@ -7,7 +7,7 @@ class PlanManagementService {
   final FirebasePlanRepository _repository = FirebasePlanRepository();
 
   Future<List<SalaryPlan>> fetch() async {
-    return await _repository.fetchAllPlans();
+    return await _repository.fetch();
   }
 
   Future<SalaryPlan?> fetchActivated() async {
@@ -31,7 +31,7 @@ class PlanManagementService {
   }
 
   Future<void> save(SalaryPlan plan) async {
-    await _repository.savePlan(plan);
+    await _repository.save(plan);
   }
 
   Future<void> toggleArchive(String id, bool nextStatus) async {
@@ -39,7 +39,7 @@ class PlanManagementService {
   }
 
   Future<void> purge(String id) async {
-    await _repository.purgePlan(id);
+    await _repository.delete(id);
   }
 
   Future<void> toggleActiveStatus(String targetPlanId, bool isActive) async {

@@ -10,7 +10,7 @@ class BucketManagementService {
   }
 
   Future<Bucket> fetchById(String id) async {
-    return await _repository.fetchById(id);
+    return await _repository.get(id);
   }
 
   Future<void> executeContributionSprint({

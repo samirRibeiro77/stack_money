@@ -177,11 +177,13 @@ class UserSettingsManager {
 
   Future<void> prepareDataToExport() async {
     _dataExport.value =
-        await _exportService.prepareSharedJson() ?? DataExportModel.empty();
+        await _exportService.createAppDataExport() ?? DataExportModel.empty();
   }
 
   void shareData() {
-    _exportService.shareExportFile(_dataExport.value);
+    if (_dataExport.value.file != null) {
+      _exportService.shareFile(_dataExport.value.file!);
+    }
   }
 
   void _failedAction(

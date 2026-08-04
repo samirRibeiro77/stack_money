@@ -15,30 +15,79 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
   Stream<User?> Function() get authStateChanges => auth.authStateChanges;
 
   Future<void> save(UserModel user, {bool savePrefs = false}) async {
-    await getUserDoc().set(
-      user.toJson(keepPrefs: savePrefs),
-      SetOptions(merge: true),
+    SmLogger.debug(
+      'Saving user',
+      payload: {
+        'savePrefs': savePrefs,
+        'user': user.toJson(keepPrefs: true),
+      },
     );
+
+    try {
+      await getUserDoc().set(
+        user.toJson(keepPrefs: savePrefs),
+        SetOptions(merge: true),
+      );
+      SmLogger.info('User ${user.uid} saved.');
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Failed to save user',
+        scope: ExceptionScope.database,
+        payload: {'user': user.toJson(keepPrefs: true), 'exception': e},
+        stackTrace: stack,
+      );
+    }
+
+    SmLogger.info('User ${user.uid} saved.');
   }
 
   Future<UserModel> get() async {
-    final doc = await getUserDoc().get();
-    if (!doc.exists || doc.data() == null) {
-      final defaultUser = UserModel.fromUser(currentUser);
-      await save(defaultUser, savePrefs: true);
-      return defaultUser;
+    SmLogger.debug('Getting current user data', payload: {});
+
+    try {
+      final doc = await getUserDoc().get();
+      if (!doc.exists || doc.data() == null) {
+        SmLogger.warning('User does not exists, creating one');
+        final defaultUser = UserModel.fromUser(currentUser);
+        await save(defaultUser, savePrefs: true);
+        SmLogger.warning('User ${defaultUser.uid} created');
+        return defaultUser;
+      }
+
+      SmLogger.info('Got user ${doc.id}.');
+
+      return UserModel.fromJson(doc.data()!);
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Failed to get user',
+        scope: ExceptionScope.database,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
     }
-    return UserModel.fromJson(doc.data()!);
   }
 
   Future<UserPreferencesModel> getPreferences() async {
-    final doc = await getUserDoc().get();
-    return UserPreferencesModel.fromJson(
-      doc.data()?[ModelKey.preferences] as Map<String, Object?>?,
-    );
+    SmLogger.debug('Getting user preferences', payload: {});
+
+    try {
+      final doc = await getUserDoc().get();
+      return UserPreferencesModel.fromJson(
+        doc.data()?[ModelKey.preferences] as Map<String, Object?>?,
+      );
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Failed to get user',
+        scope: ExceptionScope.database,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
+    }
   }
 
   Future<User?> signInWithGoogle() async {
+    SmLogger.debug('Signing in with google account', payload: {});
+
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return null;
@@ -57,6 +106,8 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
 
       await _syncUser(userCredential.user);
 
+      SmLogger.info('User ${userCredential.user?.uid} authenticated.');
+
       return userCredential.user;
     } catch (e, stack) {
       throw StackMoneyException(
@@ -69,8 +120,10 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
   }
 
   Future<void> signOut() async {
+    SmLogger.debug('Signing out', payload: {});
     await _googleSignIn.signOut();
     await auth.signOut();
+    SmLogger.info('User signed out.');
   }
 
   Future<void> _syncUser(User? user) async {

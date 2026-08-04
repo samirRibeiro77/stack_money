@@ -5,6 +5,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/data/helper/export_key.dart';
+import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/data_export_model.dart';
 import 'package:stack_money/data/models/history.dart';
@@ -15,14 +17,11 @@ import 'package:stack_money/domain/service/plan_service.dart';
 
 class ExportService {
   static final _filePath =
-      '{prefix}/stack_money/stack_money_p{p}_b{b}_h{h}_{timestamp}.json';
+      '{prefix}/stack_money_backup/stack_money_{timestamp}.json';
   static final _prefix = '{prefix}';
-  static final _plans = '{p}';
-  static final _buckets = '{b}';
-  static final _history = '{h}';
   static final _timestamp = '{timestamp}';
 
-  Future<DataExportModel?> prepareSharedJson() async {
+  Future<DataExportModel?> createAppDataExport() async {
     try {
       final results = await Future.wait([
         PlanManagementService().fetch(),
@@ -34,7 +33,22 @@ class ExportService {
       final buckets = results[1] as List<Bucket>;
       final history = results[2] as List<History>;
 
-      return await _createExportFile(plans, buckets, history);
+      final file = await _createExportFile(
+        _convertDataToExport(
+          jsonMap: _createJsonData(
+            plans: plans,
+            buckets: buckets,
+            history: history,
+          ),
+        ),
+      );
+
+      return DataExportModel(
+        planQty: plans.length,
+        bucketQty: buckets.length,
+        historyQty: history.length,
+        file: file,
+      );
     } catch (e, stack) {
       StackMoneyException(
         message: 'Error retrieving data to share',
@@ -47,19 +61,42 @@ class ExportService {
     return null;
   }
 
-  Future<DataExportModel> _createExportFile(
-    List<SalaryPlan> plans,
-    List<Bucket> buckets,
-    List<History> history,
-  ) async {
-    final Map<String, Object?> jsonMap = {
-      'plans': plans.map((p) => p.toJson()).toList(),
-      'buckets': buckets.map((b) => b.toJson()).toList(),
-      'history': history.map((h) => h.toJson()).toList(),
+  Future<ShareResult> exportData(List<Object?> data) async {
+    return await shareFile(
+      await _createExportFile(_convertDataToExport(jsonList: data)),
+    );
+  }
+
+  Future<String> extractDataToAI() async {
+    final results = await Future.wait([
+      PlanManagementService().fetchActivated(),
+      HistoryManagementService().fetchLatest(),
+    ]);
+
+    final jsonMap = {
+      ExportKey.currentPlan: (results[0] as SalaryPlan).toJson(),
+      ExportKey.latestHistory: (results[1] as History).toJson(),
     };
 
-    final String jsonString = jsonEncode(
-      jsonMap,
+    return _convertDataToExport(jsonMap: jsonMap);
+  }
+
+  Future<ShareResult> shareFile(File file) async {
+    final XFile xFile = XFile(file.path, mimeType: ExportKey.mimeType);
+
+    return await SharePlus.instance.share(ShareParams(files: [xFile]));
+  }
+
+  String _convertDataToExport({
+    Map<String, Object?>? jsonMap,
+    List<Object?>? jsonList,
+  }) {
+    if (jsonMap == null && jsonList == null) {
+      throw Exception('Must fill one of the two (jsonMap || jsonList');
+    }
+
+    return jsonEncode(
+      jsonMap ?? jsonList,
       toEncodable: (nonEncodable) {
         if (nonEncodable is Timestamp) {
           return nonEncodable.toDate().toIso8601String();
@@ -67,35 +104,40 @@ class ExportService {
         return nonEncodable.toString();
       },
     );
+  }
 
+  Map<String, Object?> _createJsonData({
+    List<SalaryPlan> plans = const [],
+    List<Bucket> buckets = const [],
+    List<History> history = const [],
+  }) {
+    final jsonData = <String, Object?>{};
+
+    if (plans.isNotEmpty) {
+      jsonData[FirebaseKey.salaryPlans] = plans.map((p) => p.toJson()).toList();
+    }
+
+    if (buckets.isNotEmpty) {
+      jsonData[FirebaseKey.buckets] = buckets.map((b) => b.toJson()).toList();
+    }
+
+    if (history.isNotEmpty) {
+      jsonData[FirebaseKey.history] = history.map((h) => h.toJson()).toList();
+    }
+
+    return jsonData;
+  }
+
+  Future<File> _createExportFile(String jsonString) async {
     final Directory tempDir = await getTemporaryDirectory();
     final filePath = _filePath
         .replaceAll(_prefix, tempDir.path)
-        .replaceAll(_plans, plans.length.toString())
-        .replaceAll(_buckets, buckets.length.toString())
-        .replaceAll(_history, history.length.toString())
         .replaceAll(
           _timestamp,
           Timestamp.now().millisecondsSinceEpoch.toString(),
         );
 
     final file = await File(filePath).create(recursive: true);
-    final writtenFile = await file.writeAsString(jsonString);
-
-    return DataExportModel(
-      planQty: plans.length,
-      bucketQty: buckets.length,
-      historyQty: history.length,
-      file: writtenFile,
-    );
-  }
-
-  Future<ShareResult> shareExportFile(DataExportModel dataExport) async {
-    final XFile xFile = XFile(
-      dataExport.file!.path,
-      mimeType: 'application/json',
-    );
-
-    return await SharePlus.instance.share(ShareParams(files: [xFile]));
+    return await file.writeAsString(jsonString);
   }
 }

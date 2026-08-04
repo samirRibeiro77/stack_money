@@ -10,11 +10,11 @@ class DataExportModel {
     required this.planQty,
     required this.bucketQty,
     required this.historyQty,
-    required this.file,
+    this.file,
   });
 
   factory DataExportModel.empty() {
-    return DataExportModel(planQty: 0, bucketQty: 0, historyQty: 0, file: null);
+    return DataExportModel(planQty: 0, bucketQty: 0, historyQty: 0);
   }
 
   String get fileSize {

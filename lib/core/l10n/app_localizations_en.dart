@@ -204,13 +204,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get percentGross => '% gross';
 
   @override
+  String get copy => 'Copy';
+
+  @override
+  String get share => 'Share';
+
+  @override
   String get archive => 'Archive';
 
   @override
   String get delete => 'Delete';
-
-  @override
-  String get copy => 'Copy';
 
   @override
   String dayX(Object d) {
