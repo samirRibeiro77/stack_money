@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
@@ -61,10 +63,11 @@ class UserHeaderManager {
         })
         .catchError((e, stack) {
           _hasCheckedPlanInThisSession = false;
-          SmLogger.error(
-            'Error checking for available sprint',
-            error: e,
-            stackTrace: stack,
+          StackMoneyException(
+            message: 'Error checking for available sprint',
+            scope: ExceptionScope.business,
+            exception: e,
+            stackTrace: stack
           );
         });
   }
