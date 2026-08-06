@@ -46,6 +46,13 @@ class ErrorScreen extends StatelessWidget {
                 color: StackMoneyTheme.cyanNeon,
               ),
             ],
+            if (exception.exception != null) ...[
+              ErrorDetails(
+                title: l10n.exception,
+                detail: exception.exception,
+                color: StackMoneyTheme.magentaNeon,
+              ),
+            ],
             if (exception.stackTrace != null) ...[
               ErrorDetails(
                 title: l10n.stackTrace,
