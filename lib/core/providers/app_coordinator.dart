@@ -100,10 +100,12 @@ class AppCoordinator {
       _history.value = await _historyService.fetch();
       _latestHistory.value = await _historyService.fetchLatest();
     } on StackMoneyException catch (e) {
+      loading = LoadingType.error;
       if (context.mounted) {
-        context.goNamed(ErrorScreen.route, extra: e);
+        context.go(ErrorScreen.route, extra: e);
       }
     } catch (e, stack) {
+      loading = LoadingType.error;
       if (context.mounted) {
         context.go(
           ErrorScreen.route,
@@ -116,7 +118,9 @@ class AppCoordinator {
         );
       }
     } finally {
-      loading = LoadingType.done;
+      if (_loading.value != LoadingType.error) {
+        loading = LoadingType.done;
+      }
     }
   }
 
