@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 enum ExceptionScope {
   database,
+  service,
   auth,
   business,
   network;
@@ -10,6 +11,8 @@ enum ExceptionScope {
     switch (this) {
       case ExceptionScope.database:
         return Icons.dns_rounded;
+      case ExceptionScope.service:
+        return Icons.electrical_services_rounded;
       case ExceptionScope.auth:
         return Icons.no_accounts_rounded;
       case ExceptionScope.business:
