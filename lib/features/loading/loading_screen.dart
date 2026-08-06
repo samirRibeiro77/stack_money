@@ -23,7 +23,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      AppCoordinator.instance.initApp();
+      AppCoordinator.instance.initApp(context);
       AppCoordinator.instance.loading.addListener(_navigateHome);
     });
   }
@@ -56,16 +56,16 @@ class _LoadingScreenState extends State<LoadingScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Header do Sistema Estilizado
+                /// Header
                 Text(
                   '[  ${StackMoneyString.formatTitle(l10n.systemCode)}  //  ${StackMoneyString.formatTitle(l10n.appName)}  ]',
                   style: textTheme.labelLarge,
                 ),
                 const SizedBox(height: AppSizes.sizedBoxSmall),
 
-                // Título Principal com cor Prata/Branca
+                /// Title
                 Text(
-                  'INITIALIZING...',
+                  l10n.initializing,
                   style: textTheme.headlineLarge?.copyWith(
                     fontWeight: AppTypography.weightBold,
                   ),
@@ -74,7 +74,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
                 const SizedBox(height: AppSizes.sizedBoxLarge),
 
-                // Barra de Progresso Cyberpunk Customizada (Ciano -> Magenta)
+                /// Progress bar
                 ClipRRect(
                   borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
                   child: Container(
@@ -102,7 +102,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
                 const SizedBox(height: AppSizes.sizedBoxLarge),
 
-                // Mensagem Dinâmica do Enum
+                /// Enum message
                 ValueListenableBuilder(
                   valueListenable: AppCoordinator.instance.loading,
                   builder: (_, loading, _) {

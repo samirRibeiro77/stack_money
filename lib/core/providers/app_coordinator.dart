@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/utils/result.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/loading_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -13,6 +16,7 @@ import 'package:stack_money/domain/service/bucket_service.dart';
 import 'package:stack_money/domain/service/history_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/domain/service/user_service.dart';
+import 'package:stack_money/features/error/error_screen.dart';
 
 class AppCoordinator {
   /// Services
@@ -68,19 +72,25 @@ class AppCoordinator {
   }
 
   /// Init app
-  void initApp() async {
-    await _loadAppData();
+  void initApp(BuildContext context) async {
+    await _loadAppData(context);
     _activateAppListeners();
   }
 
   /// Load app data
-  Future<void> _loadAppData() async {
+  Future<void> _loadAppData(BuildContext context) async {
     try {
       loading = LoadingType.user;
       _user.value = await _userService.fetchUserData();
 
       loading = LoadingType.bucket;
-      _buckets.value = await _bucketService.fetch();
+      final bucketResult = await _bucketService.fetch();
+      switch (bucketResult) {
+        case Success(data: final bucketList):
+          _buckets.value = bucketList;
+        case Failure(exception: final error):
+          throw error;
+      }
 
       loading = LoadingType.plan;
       _plans.value = await _planService.fetch();
@@ -89,13 +99,22 @@ class AppCoordinator {
       loading = LoadingType.history;
       _history.value = await _historyService.fetch();
       _latestHistory.value = await _historyService.fetchLatest();
+    } on StackMoneyException catch (e) {
+      if (context.mounted) {
+        context.goNamed(ErrorScreen.route, extra: e);
+      }
     } catch (e, stack) {
-      StackMoneyException(
-        message: 'Failed to load initial data',
-        scope: ExceptionScope.business,
-        payload: {'exception': e},
-        stackTrace: stack,
-      );
+      if (context.mounted) {
+        context.go(
+          ErrorScreen.route,
+          extra: StackMoneyException(
+            message: 'Error loading initial data',
+            scope: ExceptionScope.business,
+            exception: e as Exception,
+            stackTrace: stack,
+          ),
+        );
+      }
     } finally {
       loading = LoadingType.done;
     }
