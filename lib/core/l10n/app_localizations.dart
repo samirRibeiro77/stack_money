@@ -977,6 +977,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stack Trace'**
   String get stackTrace;
+
+  /// Data might be lost error message.
+  ///
+  /// In en, this message translates to:
+  /// **'Some data may have been lost or corrupted...'**
+  String get dataMightBeLost;
 }
 
 class _AppLocalizationsDelegate

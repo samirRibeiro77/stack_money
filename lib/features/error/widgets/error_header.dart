@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/features/error/widgets/error_retry_button.dart';
 
@@ -11,10 +12,12 @@ class ErrorHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           decoration: BoxDecoration(
@@ -37,6 +40,14 @@ class ErrorHeader extends StatelessWidget {
         Text(
           message,
           style: textTheme.headlineMedium,
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: AppSizes.sizedBoxMedium),
+        Text(
+          l10n.dataMightBeLost,
+          style: textTheme.bodyMedium?.copyWith(
+            color: StackMoneyTheme.magentaNeon.withAlpha(125),
+          ),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: AppSizes.errorPadding),

@@ -144,5 +144,6 @@
   "loadingPlan": "ALOCAÇÃO: Sincronizando matrizes de distribuição salarial...",
   "loadingBucket": "COFRES: Consolidando montantes e sub-cofres digitais...",
   "loadingHistory": "RASTROS: Reconstituindo logs e histórico de transações na rede...",
-  "error": "Erro"
+  "error": "Erro",
+  "dataMightBeLost": "Alguns dados podem ter sido perdidos ou corrompidos..."
 }

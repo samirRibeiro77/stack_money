@@ -583,5 +583,9 @@
   "stackTrace": "Stack Trace",
   "@stackTrace": {
     "description": "Stack Trace title."
+  },
+  "dataMightBeLost": "Some data may have been lost or corrupted...",
+  "@dataMightBeLost": {
+    "description": "Data might be lost error message."
   }
 }
