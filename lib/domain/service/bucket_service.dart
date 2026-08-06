@@ -10,7 +10,7 @@ class BucketManagementService {
   }
 
   Future<Bucket> fetchById(String id) async {
-    return await _repository.get(id);
+    return await _repository.get(id) ?? Bucket.empty();
   }
 
   Stream<List<Bucket>> watch() {

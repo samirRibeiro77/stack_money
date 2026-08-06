@@ -13,18 +13,18 @@ class HistoryManagementService {
   }
 
   Future<History> fetchLatest() async {
-    return await _repository.fetchLatest();
+    return await _repository.fetchLatest() ?? History.withValues();
   }
 
   Future<List<Transaction>> fetchLastSprintValues() async {
     try {
       final history = await _repository.fetchLatest();
-      return history.transactions;
+      return history?.transactions ?? [];
     } catch (e, stack) {
       StackMoneyException(
         message: 'Error fetching last sprint values',
         scope: ExceptionScope.business,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
 

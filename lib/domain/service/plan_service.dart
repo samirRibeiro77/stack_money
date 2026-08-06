@@ -28,7 +28,7 @@ class PlanManagementService {
       throw StackMoneyException(
         message: 'Error defining if there\'s an available sprint today',
         scope: ExceptionScope.business,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
