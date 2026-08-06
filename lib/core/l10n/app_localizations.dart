@@ -966,6 +966,12 @@ abstract class AppLocalizations {
   /// **'Error'**
   String get error;
 
+  /// Reload app.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload App'**
+  String get reload;
+
   /// Payload title.
   ///
   /// In en, this message translates to:

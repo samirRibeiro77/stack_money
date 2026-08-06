@@ -37,7 +37,7 @@ class ErrorRetryButton extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppSizes.x4),
                 child: Text(
-                  StackMoneyString.formatTitle(l10n.retry),
+                  StackMoneyString.formatTitle(l10n.reload),
                   style: textTheme.bodyMedium?.copyWith(
                     color: _color,
                     fontWeight: AppTypography.weightBold,

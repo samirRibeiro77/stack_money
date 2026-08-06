@@ -487,6 +487,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error => 'Error';
 
   @override
+  String get reload => 'Reload App';
+
+  @override
   String get payload => 'Payload';
 
   @override

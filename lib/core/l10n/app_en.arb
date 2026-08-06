@@ -576,6 +576,10 @@
   "@error": {
     "description": "Error."
   },
+  "reload": "Reload App",
+  "@reload": {
+    "description": "Reload app."
+  },
   "payload": "Payload",
   "@payload": {
     "description": "Payload title."

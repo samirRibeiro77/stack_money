@@ -487,10 +487,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get error => 'Erro';
 
   @override
-  String get payload => 'Payload';
+  String get reload => 'Recarregar o app';
 
   @override
-  String get stackTrace => 'Stack Trace';
+  String get payload => 'Dados';
+
+  @override
+  String get stackTrace => 'Pilha';
 
   @override
   String get dataMightBeLost =>

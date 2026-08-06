@@ -145,5 +145,8 @@
   "loadingBucket": "COFRES: Consolidando montantes e sub-cofres digitais...",
   "loadingHistory": "RASTROS: Reconstituindo logs e histórico de transações na rede...",
   "error": "Erro",
+  "reload": "Recarregar o app",
+  "payload": "Dados",
+  "stackTrace": "Pilha",
   "dataMightBeLost": "Alguns dados podem ter sido perdidos ou corrompidos..."
 }
