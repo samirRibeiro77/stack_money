@@ -25,7 +25,9 @@ class ErrorScreen extends StatelessWidget {
       message: 'Error in plan timeline stream',
       scope: ExceptionScope.network,
       payload: AppCoordinator.instance.user.value.toJson(keepPrefs: true),
-      stackTrace: StackTrace.fromString(AppCoordinator.instance.buckets.value.map((b) => b.toJson()).toString())
+      stackTrace: StackTrace.fromString(
+        AppCoordinator.instance.buckets.value.map((b) => b.toJson()).toString(),
+      ),
     );
 
     return Scaffold(
@@ -46,7 +48,6 @@ class ErrorScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: SizedBox.shrink()),
             ErrorHeader(icon: e.scope.icon, message: e.message),
             Expanded(child: SizedBox.shrink()),
             if (e.payload != null) ...[
