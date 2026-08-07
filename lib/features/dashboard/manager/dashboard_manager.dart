@@ -1,8 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
+import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/domain/service/user_service.dart';
@@ -37,7 +41,11 @@ class DashboardManager {
 
   DashboardSortFilter get activeSort => _sortFilter.value;
 
-  void updateSortFilter(List<Bucket> buckets, DashboardSortFilter newFilter) {
+  void updateSortFilter(
+    BuildContext context,
+    List<Bucket> buckets,
+    DashboardSortFilter newFilter,
+  ) {
     SmLogger.debug(
       'Sorting filter',
       payload: {'old': _sortFilter.value, 'new': newFilter},
@@ -75,8 +83,22 @@ class DashboardManager {
       }
     });
 
-    _userService.updateLastFilter(newFilter);
-    _sortFilter.value = newFilter;
+    _userService.updateLastFilter(newFilter).then((result) {
+      result.fold(
+        onSuccess: (_) {
+          _sortFilter.value = newFilter;
+        },
+        onFailure: (e) {
+          if (context.mounted) {
+            final l10n = AppLocalizations.of(context)!;
+            SmSnackBar(
+              message: l10n.failedUpdateLastFilter,
+              type: SnackBarType.error,
+            ).show(context);
+          }
+        },
+      );
+    });
   }
 
   void updateChartFilter(ChartFilterState newState) {

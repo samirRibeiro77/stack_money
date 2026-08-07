@@ -58,7 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 220,
+                        height: AppSizes.containerMedium,
                         child: TelemetryLineChart(
                           rawHistoryData: historyList,
                           filterState: currentFilter,
@@ -87,7 +87,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   valueListenable: AppCoordinator.instance.user,
                   builder: (_, user, _) {
                     final activeSort = user.preferences.currentFilter;
-                    _manager.updateSortFilter(buckets, activeSort);
+                    _manager.updateSortFilter(context, buckets, activeSort);
 
                     return Column(
                       children: [
@@ -137,8 +137,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       elevation: 1,
                                       builder: (_) => DashboardSortBottomSheet(
                                         currentSort: activeSort,
-                                        onFilterSelected: (filter) => _manager
-                                            .updateSortFilter(buckets, filter),
+                                        onFilterSelected: (filter) =>
+                                            _manager.updateSortFilter(
+                                              context,
+                                              buckets,
+                                              filter,
+                                            ),
                                       ),
                                     );
                                   },

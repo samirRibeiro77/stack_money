@@ -503,4 +503,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedSave => 'Failed to save data...';
+
+  @override
+  String get failedUpdateLastFilter => 'Failed updating last filter...';
 }

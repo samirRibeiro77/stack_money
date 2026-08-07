@@ -1001,6 +1001,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to save data...'**
   String get failedSave;
+
+  /// Error message when update last filter on dashboard fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed updating last filter...'**
+  String get failedUpdateLastFilter;
 }
 
 class _AppLocalizationsDelegate

@@ -504,4 +504,8 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get failedSave => 'Erro ao salvar...';
+
+  @override
+  String get failedUpdateLastFilter =>
+      'Erro ao atualizar ultimo filtro utilizado...';
 }

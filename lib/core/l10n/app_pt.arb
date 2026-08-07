@@ -150,5 +150,6 @@
   "stackTrace": "Pilha",
   "exception": "Exceção",
   "dataMightBeLost": "Alguns dados podem ter sido perdidos ou corrompidos...",
-  "failedSave": "Erro ao salvar..."
+  "failedSave": "Erro ao salvar...",
+  "failedUpdateLastFilter": "Erro ao atualizar ultimo filtro utilizado..."
 }

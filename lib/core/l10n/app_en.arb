@@ -599,5 +599,9 @@
   "failedSave": "Failed to save data...",
   "@failedSave": {
     "description": "Error message when saving data fail."
+  },
+  "failedUpdateLastFilter": "Failed updating last filter...",
+  "@failedUpdateLastFilter": {
+    "description": "Error message when update last filter on dashboard fail."
   }
 }
