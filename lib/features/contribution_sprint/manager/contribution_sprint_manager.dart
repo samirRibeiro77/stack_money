@@ -250,28 +250,25 @@ class ContributionSprintManager {
     double total,
     double liquidity,
   ) async {
-    final navigatorContext = Navigator.of(context);
-    try {
-      _isLoadingNotifier.value = true;
-      await _bucketService.executeContributionSprint(
-        updatedBuckets: buckets,
-        transactions: transactions,
-        totalNetWorth: total,
-        totalLiquidity: liquidity,
-      );
-    } catch (e, stack) {
-      StackMoneyException(
-        message: 'Sprint commit failed',
-        scope: ExceptionScope.business,
-        payload: {'exception': e, 'transactionsQty': transactions.length},
-        stackTrace: stack,
-      );
-    } finally {
-      _isLoadingNotifier.value = false;
-      if (navigatorContext.mounted) {
-        navigatorContext.pop();
-      }
-    }
+    _isLoadingNotifier.value = true;
+    final result = await _bucketService.executeContributionSprint(
+      updatedBuckets: buckets,
+      transactions: transactions,
+      totalNetWorth: total,
+      totalLiquidity: liquidity,
+    );
+
+    result.fold(
+      onSuccess: (_) {
+        _isLoadingNotifier.value = false;
+        if (context.mounted) {
+          context.pop();
+        }
+      },
+      onFailure: (e) {
+        context.go(ErrorScreen.route, extra: e);
+      },
+    );
   }
 
   void dispose() {
