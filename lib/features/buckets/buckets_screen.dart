@@ -18,7 +18,13 @@ class BucketControlScreen extends StatefulWidget {
 }
 
 class _BucketControlScreenState extends State<BucketControlScreen> {
-  final _manager = BucketsManager();
+  late final BucketsManager _manager;
+
+  @override
+  void initState() {
+    super.initState();
+    _manager = BucketsManager(context);
+  }
 
   @override
   Widget build(BuildContext context) {
