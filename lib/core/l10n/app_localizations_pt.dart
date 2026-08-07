@@ -511,4 +511,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get failedInitializingNewSlot => 'Erro ao inicializar um novo slot...';
+
+  @override
+  String get failedArchivePlan => 'Erro ao arquivar plano...';
+
+  @override
+  String get failedPurgePlan => 'Erro ao excluir plano...';
 }

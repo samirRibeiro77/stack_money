@@ -607,5 +607,13 @@
   "failedInitializingNewSlot": "Failed to initialize a new slot...",
   "@failedInitializingNewSlot": {
     "description": "Error message when initialize a new slot fail."
+  },
+  "failedArchivePlan": "Failed to archive plan...",
+  "@failedArchivePlan": {
+    "description": "Error message when archive a plan fail."
+  },
+  "failedPurgePlan": "Failed to purge plan...",
+  "@failedPurgePlan": {
+    "description": "Error message when purge a plan fail."
   }
 }

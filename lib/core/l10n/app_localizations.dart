@@ -1013,6 +1013,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to initialize a new slot...'**
   String get failedInitializingNewSlot;
+
+  /// Error message when archive a plan fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to archive plan...'**
+  String get failedArchivePlan;
+
+  /// Error message when purge a plan fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to purge plan...'**
+  String get failedPurgePlan;
 }
 
 class _AppLocalizationsDelegate

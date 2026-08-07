@@ -21,14 +21,14 @@ class PlansScreen extends StatefulWidget {
 }
 
 class _PlansScreenState extends State<PlansScreen> {
-  final _manager = PlansManager();
+  late final PlansManager _manager;
 
   Future<bool?> _confirmDismiss(
     DismissDirection direction,
     SalaryPlan plan,
   ) async {
     if (direction == DismissDirection.endToStart) {
-      return await _manager.showTerminalConfirmDialog(plan.name, context);
+      return await _manager.showTerminalConfirmDialog(plan.name);
     } else {
       _manager.archivePlan(plan.id, plan.isArchived);
       return false;
@@ -39,6 +39,12 @@ class _PlansScreenState extends State<PlansScreen> {
     if (direction == DismissDirection.endToStart) {
       _manager.purgePlan(id);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _manager = PlansManager(context);
   }
 
   @override
@@ -82,7 +88,7 @@ class _PlansScreenState extends State<PlansScreen> {
 
                   CardInitializeSlot(
                     l10n.newPlan,
-                    onTap: () => _manager.initializeNewPlanSlot(context),
+                    onTap: () => _manager.initializeNewPlanSlot(),
                   ),
                   const SizedBox(height: AppSizes.sizedBoxSmall),
 
@@ -90,8 +96,7 @@ class _PlansScreenState extends State<PlansScreen> {
                     DismissiblePlanCard(
                       activePlan,
                       key: ValueKey(activePlan.id),
-                      onTap: () =>
-                          _manager.navigateToPlanDetails(context, activePlan),
+                      onTap: () => _manager.navigateToPlanDetails(activePlan),
                       confirmDismiss: (direction) =>
                           _confirmDismiss(direction, activePlan),
                       onDismissed: (direction) =>
@@ -112,8 +117,7 @@ class _PlansScreenState extends State<PlansScreen> {
                     itemBuilder: (context, plan, index) => DismissiblePlanCard(
                       plan,
                       key: ValueKey(plan.id),
-                      onTap: () =>
-                          _manager.navigateToPlanDetails(context, plan),
+                      onTap: () => _manager.navigateToPlanDetails(plan),
                       confirmDismiss: (direction) =>
                           _confirmDismiss(direction, plan),
                       onDismissed: (direction) =>

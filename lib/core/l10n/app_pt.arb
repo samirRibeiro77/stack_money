@@ -152,5 +152,7 @@
   "dataMightBeLost": "Alguns dados podem ter sido perdidos ou corrompidos...",
   "failedSave": "Erro ao salvar...",
   "failedUpdateLastFilter": "Erro ao atualizar ultimo filtro utilizado...",
-  "failedInitializingNewSlot": "Erro ao inicializar um novo slot..."
+  "failedInitializingNewSlot": "Erro ao inicializar um novo slot...",
+  "failedArchivePlan": "Erro ao arquivar plano...",
+  "failedPurgePlan": "Erro ao excluir plano..."
 }

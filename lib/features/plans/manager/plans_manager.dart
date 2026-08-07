@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stack_money/core/exceptions/exception_scope.dart';
-import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
@@ -17,12 +15,13 @@ import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
 class PlansManager {
   final PlanManagementService _planService = PlanManagementService();
+  final BuildContext _context;
 
   final ValueNotifier<bool> _showArchived = ValueNotifier(false);
 
   ValueListenable<bool> get showArchivedNotifier => _showArchived;
 
-  PlansManager() {
+  PlansManager(this._context) {
     final initialArchived =
         AppCoordinator.instance.user.value.preferences.cardExpand;
     if (_showArchived.value != initialArchived) {
@@ -30,12 +29,12 @@ class PlansManager {
     }
   }
 
-  void navigateToPlanDetails(BuildContext context, SalaryPlan plan) {
-    final isSecureActive = SecurityProvider.isSecureOf(context);
+  void navigateToPlanDetails(SalaryPlan plan) {
+    final isSecureActive = SecurityProvider.isSecureOf(_context);
 
     if (!isSecureActive) {
       Navigator.of(
-        context,
+        _context,
       ).push(MaterialPageRoute(builder: (_) => PlanEditScreen(plan: plan)));
     }
   }
@@ -44,21 +43,21 @@ class PlansManager {
     _showArchived.value = !_showArchived.value;
   }
 
-  void initializeNewPlanSlot(BuildContext context) {
+  void initializeNewPlanSlot() {
     final newPlan = SalaryPlan.empty();
 
     _planService
         .save(newPlan)
         .then(
           (result) => result.fold(
-            onSuccess: (_) => navigateToPlanDetails(context, newPlan),
+            onSuccess: (_) => navigateToPlanDetails(newPlan),
             onFailure: (e) {
-              if (context.mounted) {
-                final l10n = AppLocalizations.of(context)!;
+              if (_context.mounted) {
+                final l10n = AppLocalizations.of(_context)!;
                 SmSnackBar(
                   message: l10n.failedInitializingNewSlot,
                   type: SnackBarType.error,
-                ).show(context);
+                ).show(_context);
               }
             },
           ),
@@ -66,7 +65,7 @@ class PlansManager {
   }
 
   void reorderFilteredPlans(
-    BuildContext context,
+    BuildContext _context,
     List<SalaryPlan> filteredList,
     int oldIndex,
     int newIndex,
@@ -99,7 +98,11 @@ class PlansManager {
         .then(
           (result) => result.fold(
             onSuccess: (_) {},
-            onFailure: (e) => context.go(ErrorScreen.route, extra: e),
+            onFailure: (e) {
+              if (_context.mounted) {
+                _context.go(ErrorScreen.route, extra: e);
+              }
+            },
           ),
         );
   }
@@ -118,19 +121,22 @@ class PlansManager {
       );
     }
 
-    try {
-      await _planService.toggleArchive(id, nextState);
-    } catch (e, stack) {
-      StackMoneyException(
-        message: 'Failed to archive plan',
-        scope: ExceptionScope.business,
-        payload: {
-          'exception': e,
-          'plan': {'id': id, 'nextState': nextState},
-        },
-        stackTrace: stack,
-      );
-    }
+    _planService
+        .toggleArchive(id, nextState)
+        .then(
+          (result) => result.fold(
+            onSuccess: (_) {},
+            onFailure: (e) {
+              if (_context.mounted) {
+                final l10n = AppLocalizations.of(_context)!;
+                SmSnackBar(
+                  message: l10n.failedArchivePlan,
+                  type: SnackBarType.error,
+                ).show(_context);
+              }
+            },
+          ),
+        );
   }
 
   Future<void> purgePlan(String id) async {
@@ -139,26 +145,29 @@ class PlansManager {
     );
     updatedList.removeWhere((p) => p.id == id);
 
-    try {
-      await _planService.purge(id);
-    } catch (e, stack) {
-      StackMoneyException(
-        message: 'Failed to delete plans',
-        scope: ExceptionScope.business,
-        payload: {'exception': e, 'planId': id},
-        stackTrace: stack,
-      );
-    }
+    _planService
+        .purge(id)
+        .then(
+          (result) => result.fold(
+            onSuccess: (_) {},
+            onFailure: (e) {
+              if (_context.mounted) {
+                final l10n = AppLocalizations.of(_context)!;
+                SmSnackBar(
+                  message: l10n.failedPurgePlan,
+                  type: SnackBarType.error,
+                ).show(_context);
+              }
+            },
+          ),
+        );
   }
 
-  Future<bool?> showTerminalConfirmDialog(
-    String planName,
-    BuildContext context,
-  ) {
-    final l10n = AppLocalizations.of(context)!;
+  Future<bool?> showTerminalConfirmDialog(String planName) {
+    final l10n = AppLocalizations.of(_context)!;
 
     return showDialog<bool>(
-      context: context,
+      context: _context,
       barrierDismissible: false,
       builder: (context) => SmDialog(
         message: l10n.deletePlanMessage,

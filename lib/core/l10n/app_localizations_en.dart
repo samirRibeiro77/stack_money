@@ -509,4 +509,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedInitializingNewSlot => 'Failed to initialize a new slot...';
+
+  @override
+  String get failedArchivePlan => 'Failed to archive plan...';
+
+  @override
+  String get failedPurgePlan => 'Failed to purge plan...';
 }
