@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
-import 'package:stack_money/core/utils/result.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/loading_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -82,61 +81,25 @@ class AppCoordinator {
     try {
       /// User
       loading = LoadingType.user;
-      final userResult = await _userService.fetchUserData();
-      switch (userResult) {
-        case Success(data: final user):
-          _user.value = user;
-        case Failure(exception: final error):
-          throw error;
-      }
+      _user.value = (await _userService.fetchUserData()).getOrThrow();
 
       /// Buckets
       loading = LoadingType.bucket;
-      final bucketResult = await _bucketService.fetch();
-      switch (bucketResult) {
-        case Success(data: final bucketList):
-          _buckets.value = bucketList;
-        case Failure(exception: final error):
-          throw error;
-      }
+      _buckets.value = (await _bucketService.fetch()).getOrThrow();
 
       /// Plan
       loading = LoadingType.plan;
-      final planResult = await _planService.fetch();
-      switch (planResult) {
-        case Success(data: final planList):
-          _plans.value = planList;
-        case Failure(exception: final error):
-          throw error;
-      }
+      _plans.value = (await _planService.fetch()).getOrThrow();
 
       /// Activated Plan
-      final activatedPlanResult = await _planService.fetchActivated();
-      switch (activatedPlanResult) {
-        case Success(data: final salaryPlan):
-          _currentPlan.value = salaryPlan;
-        case Failure(exception: final error):
-          throw error;
-      }
+      _currentPlan.value = (await _planService.fetchActivated()).getOrThrow();
 
       /// History
       loading = LoadingType.history;
-      final historyResult = await _historyService.fetch();
-      switch (historyResult) {
-        case Success(data: final historyList):
-          _history.value = historyList;
-        case Failure(exception: final error):
-          throw error;
-      }
+      _history.value = (await _historyService.fetch()).getOrThrow();
 
       /// Latest History
-      final latestHistoryResult = await _historyService.fetchLatest();
-      switch (latestHistoryResult) {
-        case Success(data: final latestHistory):
-          _latestHistory.value = latestHistory;
-        case Failure(exception: final error):
-          throw error;
-      }
+      _latestHistory.value = (await _historyService.fetchLatest()).getOrThrow();
     } on StackMoneyException catch (e) {
       loading = LoadingType.error;
       if (context.mounted) {
