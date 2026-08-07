@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
@@ -11,6 +12,7 @@ import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
+import 'package:stack_money/features/error/error_screen.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
 class PlansManager {
@@ -64,6 +66,7 @@ class PlansManager {
   }
 
   void reorderFilteredPlans(
+    BuildContext context,
     List<SalaryPlan> filteredList,
     int oldIndex,
     int newIndex,
@@ -91,9 +94,14 @@ class PlansManager {
     }
 
     // Save on Firebase
-    for (final plan in filteredList) {
-      _planService.save(plan); //TODO: Create a batch update
-    }
+    _planService
+        .saveBatch(filteredList)
+        .then(
+          (result) => result.fold(
+            onSuccess: (_) {},
+            onFailure: (e) => context.go(ErrorScreen.route, extra: e),
+          ),
+        );
   }
 
   Future<void> archivePlan(String id, bool currentIsArchived) async {

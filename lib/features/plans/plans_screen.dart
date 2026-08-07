@@ -102,8 +102,13 @@ class _PlansScreenState extends State<PlansScreen> {
 
                   SmReorderableList<SalaryPlan>(
                     items: inactivePlans,
-                    onReorder: (oldIdx, newIdx) => _manager
-                        .reorderFilteredPlans(inactivePlans, oldIdx, newIdx),
+                    onReorder: (oldIdx, newIdx) =>
+                        _manager.reorderFilteredPlans(
+                          context,
+                          inactivePlans,
+                          oldIdx,
+                          newIdx,
+                        ),
                     itemBuilder: (context, plan, index) => DismissiblePlanCard(
                       plan,
                       key: ValueKey(plan.id),

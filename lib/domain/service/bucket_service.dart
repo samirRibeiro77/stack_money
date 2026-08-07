@@ -121,7 +121,7 @@ class BucketManagementService {
     } catch (e, stack) {
       return Failure(
         StackMoneyException(
-          message: 'Error saving bucket',
+          message: 'Error saving bucket list',
           scope: ExceptionScope.service,
           exception: e as Exception,
           payload: {'buckets': buckets.map((b) => b.toJson()).toList()},
