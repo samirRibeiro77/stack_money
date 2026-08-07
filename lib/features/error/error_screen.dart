@@ -29,39 +29,37 @@ class ErrorScreen extends StatelessWidget {
           StackMoneyString.formatTitle('${exception.scope.name} ${l10n.error}'),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: AppSizes.errorPadding,
-          horizontal: AppSizes.x5,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ErrorHeader(icon: exception.scope.icon, message: exception.message),
-            Expanded(child: SizedBox.shrink()),
-            if (exception.payload != null) ...[
-              ErrorDetails(
-                title: l10n.payload,
-                detail: exception.payload,
-                color: StackMoneyTheme.cyanNeon,
-              ),
-            ],
-            if (exception.exception != null) ...[
-              ErrorDetails(
-                title: l10n.exception,
-                detail: exception.exception,
-                color: StackMoneyTheme.magentaNeon,
-              ),
-            ],
-            if (exception.stackTrace != null) ...[
-              ErrorDetails(
-                title: l10n.stackTrace,
-                detail: exception.stackTrace,
-                color: StackMoneyTheme.magentaNeon,
-              ),
-            ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: AppSizes.errorPadding),
+          ErrorHeader(icon: exception.scope.icon, message: exception.message),
+          Expanded(child: SizedBox.shrink()),
+          if (exception.payload != null) ...[
+            ErrorDetails(
+              title: l10n.payload,
+              detail: exception.payload,
+              color: StackMoneyTheme.cyanNeon,
+              boxHeight: AppSizes.containerSmall,
+            ),
           ],
-        ),
+          if (exception.exception != null) ...[
+            ErrorDetails(
+              title: l10n.exception,
+              detail: exception.exception,
+              color: StackMoneyTheme.magentaNeon,
+              boxHeight: AppSizes.containerTiny,
+            ),
+          ],
+          if (exception.stackTrace != null) ...[
+            ErrorDetails(
+              title: l10n.stackTrace,
+              detail: exception.stackTrace,
+              color: StackMoneyTheme.magentaNeon,
+            ),
+          ],
+          SizedBox(height: AppSizes.sizedBoxLarge),
+        ],
       ),
     );
   }
