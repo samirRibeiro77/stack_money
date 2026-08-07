@@ -25,7 +25,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
   @override
   void initState() {
     super.initState();
-    _manager.initializeSprint();
+    _manager.initializeSprint(context);
   }
 
   @override

@@ -6,12 +6,14 @@ enum LoadingType {
   plan,
   bucket,
   history,
-  done;
+  done,
+  error;
 
   String message(AppLocalizations l10n) {
     switch (this) {
       case none:
       case done:
+      case error:
         return '';
       case user:
         return l10n.loadingUser;

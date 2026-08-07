@@ -588,6 +588,10 @@
   "@stackTrace": {
     "description": "Stack Trace title."
   },
+  "exception": "Exception",
+  "@exception": {
+    "description": "Exception title."
+  },
   "dataMightBeLost": "Some data may have been lost or corrupted...",
   "@dataMightBeLost": {
     "description": "Data might be lost error message."

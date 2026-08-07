@@ -23,7 +23,7 @@ class SharedPreferencesRepository {
       StackMoneyException(
         message: 'Error saving values on Shared Preferences',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
@@ -44,7 +44,7 @@ class SharedPreferencesRepository {
       StackMoneyException(
         message: 'Error getting values from Shared Preferences',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
       return null;
@@ -62,7 +62,7 @@ class SharedPreferencesRepository {
       StackMoneyException(
         message: 'Error clearing values from Shared Preferences',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }

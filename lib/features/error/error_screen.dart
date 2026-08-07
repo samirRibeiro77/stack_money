@@ -30,13 +30,11 @@ class ErrorScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: AppSizes.errorPadding,
-          horizontal: AppSizes.x5,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.x5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: AppSizes.errorPadding),
             ErrorHeader(icon: exception.scope.icon, message: exception.message),
             Expanded(child: SizedBox.shrink()),
             if (exception.payload != null) ...[
@@ -44,6 +42,15 @@ class ErrorScreen extends StatelessWidget {
                 title: l10n.payload,
                 detail: exception.payload,
                 color: StackMoneyTheme.cyanNeon,
+                boxHeight: AppSizes.containerSmall,
+              ),
+            ],
+            if (exception.exception != null) ...[
+              ErrorDetails(
+                title: l10n.exception,
+                detail: exception.exception,
+                color: StackMoneyTheme.magentaNeon,
+                boxHeight: AppSizes.containerTiny,
               ),
             ],
             if (exception.stackTrace != null) ...[
@@ -53,6 +60,7 @@ class ErrorScreen extends StatelessWidget {
                 color: StackMoneyTheme.magentaNeon,
               ),
             ],
+            SizedBox(height: AppSizes.sizedBoxLarge),
           ],
         ),
       ),

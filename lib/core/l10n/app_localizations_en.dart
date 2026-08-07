@@ -496,5 +496,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stackTrace => 'Stack Trace';
 
   @override
+  String get exception => 'Exception';
+
+  @override
   String get dataMightBeLost => 'Some data may have been lost or corrupted...';
 }

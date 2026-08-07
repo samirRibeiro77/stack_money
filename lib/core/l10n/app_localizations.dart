@@ -984,6 +984,12 @@ abstract class AppLocalizations {
   /// **'Stack Trace'**
   String get stackTrace;
 
+  /// Exception title.
+  ///
+  /// In en, this message translates to:
+  /// **'Exception'**
+  String get exception;
+
   /// Data might be lost error message.
   ///
   /// In en, this message translates to:
