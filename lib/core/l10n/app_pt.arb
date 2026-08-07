@@ -151,5 +151,6 @@
   "exception": "Exceção",
   "dataMightBeLost": "Alguns dados podem ter sido perdidos ou corrompidos...",
   "failedSave": "Erro ao salvar...",
-  "failedUpdateLastFilter": "Erro ao atualizar ultimo filtro utilizado..."
+  "failedUpdateLastFilter": "Erro ao atualizar ultimo filtro utilizado...",
+  "failedInitializingNewSlot": "Erro ao inicializar um novo slot..."
 }

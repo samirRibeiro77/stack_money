@@ -1007,6 +1007,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed updating last filter...'**
   String get failedUpdateLastFilter;
+
+  /// Error message when initialize a new slot fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to initialize a new slot...'**
+  String get failedInitializingNewSlot;
 }
 
 class _AppLocalizationsDelegate

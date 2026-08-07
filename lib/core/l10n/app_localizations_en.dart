@@ -506,4 +506,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedUpdateLastFilter => 'Failed updating last filter...';
+
+  @override
+  String get failedInitializingNewSlot => 'Failed to initialize a new slot...';
 }

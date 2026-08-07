@@ -508,4 +508,7 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get failedUpdateLastFilter =>
       'Erro ao atualizar ultimo filtro utilizado...';
+
+  @override
+  String get failedInitializingNewSlot => 'Erro ao inicializar um novo slot...';
 }

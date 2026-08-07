@@ -603,5 +603,9 @@
   "failedUpdateLastFilter": "Failed updating last filter...",
   "@failedUpdateLastFilter": {
     "description": "Error message when update last filter on dashboard fail."
+  },
+  "failedInitializingNewSlot": "Failed to initialize a new slot...",
+  "@failedInitializingNewSlot": {
+    "description": "Error message when initialize a new slot fail."
   }
 }

@@ -7,6 +7,8 @@ import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
+import 'package:stack_money/core/widgets/sm_snack_bar.dart';
+import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
@@ -41,12 +43,24 @@ class PlansManager {
   }
 
   void initializeNewPlanSlot(BuildContext context) {
-    final newPlan = SalaryPlan.empty(
-      isActive: AppCoordinator.instance.plans.value.isEmpty,
-    );
+    final newPlan = SalaryPlan.empty();
 
-    _planService.save(newPlan);
-    navigateToPlanDetails(context, newPlan);
+    _planService
+        .save(newPlan)
+        .then(
+          (result) => result.fold(
+            onSuccess: (_) => navigateToPlanDetails(context, newPlan),
+            onFailure: (e) {
+              if (context.mounted) {
+                final l10n = AppLocalizations.of(context)!;
+                SmSnackBar(
+                  message: l10n.failedInitializingNewSlot,
+                  type: SnackBarType.error,
+                ).show(context);
+              }
+            },
+          ),
+        );
   }
 
   void reorderFilteredPlans(
