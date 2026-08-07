@@ -9,6 +9,16 @@ sealed class Result<T> {
       Failure(exception: final error) => throw error,
     };
   }
+
+  R fold<R>({
+    required R Function(T data) onSuccess,
+    required R Function(StackMoneyException exception) onFailure,
+  }) {
+    return switch (this) {
+      Success(data: final value) => onSuccess(value),
+      Failure(exception: final error) => onFailure(error),
+    };
+  }
 }
 
 class Success<T> extends Result<T> {
