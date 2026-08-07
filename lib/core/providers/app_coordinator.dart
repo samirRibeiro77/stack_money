@@ -83,6 +83,7 @@ class AppCoordinator {
       loading = LoadingType.user;
       _user.value = await _userService.fetchUserData();
 
+      /// Buckets
       loading = LoadingType.bucket;
       final bucketResult = await _bucketService.fetch();
       switch (bucketResult) {
@@ -96,9 +97,23 @@ class AppCoordinator {
       _plans.value = await _planService.fetch();
       _currentPlan.value = await _planService.fetchActivated();
 
+      /// History
       loading = LoadingType.history;
-      _history.value = await _historyService.fetch();
-      _latestHistory.value = await _historyService.fetchLatest();
+      final historyResult = await _historyService.fetch();
+      switch (historyResult) {
+        case Success(data: final historyList):
+        _history.value = historyList;
+        case Failure(exception: final error):
+          throw error;
+      }
+      /// Latest History
+      final latestHistoryResult = await _historyService.fetchLatest();
+      switch (latestHistoryResult) {
+        case Success(data: final latestHistory):
+          _latestHistory.value = latestHistory;
+        case Failure(exception: final error):
+          throw error;
+      }
     } on StackMoneyException catch (e) {
       loading = LoadingType.error;
       if (context.mounted) {
