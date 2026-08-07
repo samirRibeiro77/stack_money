@@ -21,6 +21,7 @@ class ErrorScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: Icon(Icons.close_rounded, size: AppSizes.x12),
           onPressed: () => SystemNavigator.pop(),
@@ -34,7 +35,7 @@ class ErrorScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: AppSizes.errorPadding),
+            SizedBox(height: AppSizes.sizedBoxMedium),
             ErrorHeader(icon: exception.scope.icon, message: exception.message),
             Expanded(child: SizedBox.shrink()),
             if (exception.payload != null) ...[
@@ -60,7 +61,7 @@ class ErrorScreen extends StatelessWidget {
                 color: StackMoneyTheme.magentaNeon,
               ),
             ],
-            SizedBox(height: AppSizes.sizedBoxLarge),
+            SizedBox(height: AppSizes.sizedBoxMedium),
           ],
         ),
       ),
