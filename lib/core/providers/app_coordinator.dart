@@ -80,8 +80,15 @@ class AppCoordinator {
   /// Load app data
   Future<void> _loadAppData(BuildContext context) async {
     try {
+      /// User
       loading = LoadingType.user;
-      _user.value = await _userService.fetchUserData();
+      final userResult = await _userService.fetchUserData();
+      switch (userResult) {
+        case Success(data: final user):
+          _user.value = user;
+        case Failure(exception: final error):
+          throw error;
+      }
 
       /// Buckets
       loading = LoadingType.bucket;
