@@ -140,11 +140,6 @@ class PlansManager {
   }
 
   Future<void> purgePlan(String id) async {
-    final updatedList = List<SalaryPlan>.from(
-      AppCoordinator.instance.plans.value,
-    );
-    updatedList.removeWhere((p) => p.id == id);
-
     _planService
         .purge(id)
         .then(

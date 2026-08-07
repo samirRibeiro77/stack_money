@@ -28,16 +28,14 @@ class _PlansScreenState extends State<PlansScreen> {
     SalaryPlan plan,
   ) async {
     if (direction == DismissDirection.endToStart) {
-      return await _manager.showTerminalConfirmDialog(plan.name);
+      final result = await _manager.showTerminalConfirmDialog(plan.name);
+      if (result == true) {
+        await _manager.purgePlan(plan.id);
+      }
+      return result;
     } else {
       _manager.archivePlan(plan.id, plan.isArchived);
       return false;
-    }
-  }
-
-  void _purgePlan(DismissDirection direction, String id) async {
-    if (direction == DismissDirection.endToStart) {
-      _manager.purgePlan(id);
     }
   }
 
@@ -99,8 +97,6 @@ class _PlansScreenState extends State<PlansScreen> {
                       onTap: () => _manager.navigateToPlanDetails(activePlan),
                       confirmDismiss: (direction) =>
                           _confirmDismiss(direction, activePlan),
-                      onDismissed: (direction) =>
-                          _purgePlan(direction, activePlan.id),
                     ),
                     const SizedBox(height: AppSizes.sizedBoxSmall),
                   ],
@@ -120,8 +116,6 @@ class _PlansScreenState extends State<PlansScreen> {
                       onTap: () => _manager.navigateToPlanDetails(plan),
                       confirmDismiss: (direction) =>
                           _confirmDismiss(direction, plan),
-                      onDismissed: (direction) =>
-                          _purgePlan(direction, plan.id),
                     ),
                     feedbackChildBuilder: (_, plan, _) =>
                         PlanListCard(plan, onTap: () {}),
