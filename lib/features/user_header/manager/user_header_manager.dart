@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stack_money/core/exceptions/exception_scope.dart';
-import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
+import 'package:stack_money/core/utils/result.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
@@ -30,7 +29,7 @@ class UserHeaderManager {
     ).push(MaterialPageRoute(builder: (_) => const ContributionSprintScreen()));
   }
 
-  void checkCurrentPlan(BuildContext context, bool isSecure) {
+  void checkCurrentPlan(BuildContext context, bool isSecure) async {
     if (isSecure || _hasCheckedPlanInThisSession || !context.mounted) {
       SmLogger.debug(
         'Will not search for current plan to show the banner',
@@ -45,30 +44,24 @@ class UserHeaderManager {
 
     _hasCheckedPlanInThisSession = true;
 
-    _planService
-        .isMoneySprintAvailableToday()
-        .then((result) {
-          if (context.mounted && result) {
-            final l10n = AppLocalizations.of(context)!;
+    final sprintAvailableResult = await _planService
+        .isMoneySprintAvailableToday();
+    switch (sprintAvailableResult) {
+      case Success(data: final result):
+        if (context.mounted && result) {
+          final l10n = AppLocalizations.of(context)!;
 
-            SmSnackBar(
-              message: l10n.planMoneySprintDay,
-              duration: 10,
-              action: SnackBarAction(
-                label: l10n.start,
-                onPressed: () => startMoneySprint(context),
-              ),
-            ).show(context);
-          }
-        })
-        .catchError((e, stack) {
-          _hasCheckedPlanInThisSession = false;
-          StackMoneyException(
-            message: 'Error checking for available sprint',
-            scope: ExceptionScope.business,
-            exception: e,
-            stackTrace: stack
-          );
-        });
+          SmSnackBar(
+            message: l10n.planMoneySprintDay,
+            duration: 10,
+            action: SnackBarAction(
+              label: l10n.start,
+              onPressed: () => startMoneySprint(context),
+            ),
+          ).show(context);
+        }
+      case Failure(exception: _):
+        _hasCheckedPlanInThisSession = false;
+    }
   }
 }

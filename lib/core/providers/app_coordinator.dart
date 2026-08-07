@@ -93,19 +93,35 @@ class AppCoordinator {
           throw error;
       }
 
+      /// Plan
       loading = LoadingType.plan;
-      _plans.value = await _planService.fetch();
-      _currentPlan.value = await _planService.fetchActivated();
+      final planResult = await _planService.fetch();
+      switch (planResult) {
+        case Success(data: final planList):
+          _plans.value = planList;
+        case Failure(exception: final error):
+          throw error;
+      }
+
+      /// Activated Plan
+      final activatedPlanResult = await _planService.fetchActivated();
+      switch (activatedPlanResult) {
+        case Success(data: final salaryPlan):
+          _currentPlan.value = salaryPlan;
+        case Failure(exception: final error):
+          throw error;
+      }
 
       /// History
       loading = LoadingType.history;
       final historyResult = await _historyService.fetch();
       switch (historyResult) {
         case Success(data: final historyList):
-        _history.value = historyList;
+          _history.value = historyList;
         case Failure(exception: final error):
           throw error;
       }
+
       /// Latest History
       final latestHistoryResult = await _historyService.fetchLatest();
       switch (latestHistoryResult) {
