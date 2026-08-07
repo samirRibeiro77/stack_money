@@ -149,5 +149,6 @@
   "payload": "Dados",
   "stackTrace": "Pilha",
   "exception": "Exceção",
-  "dataMightBeLost": "Alguns dados podem ter sido perdidos ou corrompidos..."
+  "dataMightBeLost": "Alguns dados podem ter sido perdidos ou corrompidos...",
+  "failedSave": "Erro ao salvar..."
 }

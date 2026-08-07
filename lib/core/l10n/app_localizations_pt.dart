@@ -501,4 +501,7 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get dataMightBeLost =>
       'Alguns dados podem ter sido perdidos ou corrompidos...';
+
+  @override
+  String get failedSave => 'Erro ao salvar...';
 }

@@ -17,7 +17,7 @@ class StackMoneyException implements Exception {
     this.payload,
   }) {
     _errorMessage = SmLogger.error(
-      '[${scope.name}] $message',
+      '[${scope.name.toUpperCase()}] $message',
       payload: payload,
       exception: exception,
       stackTrace: stackTrace,

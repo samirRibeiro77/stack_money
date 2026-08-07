@@ -34,7 +34,7 @@ class _BucketCardState extends State<BucketCard> {
   @override
   void initState() {
     super.initState();
-    _cardManager = BucketCardManager(widget.bucket);
+    _cardManager = BucketCardManager(widget.bucket, context);
   }
 
   @override
@@ -54,7 +54,7 @@ class _BucketCardState extends State<BucketCard> {
         direction: isSecureActive
             ? DismissDirection.none
             : DismissDirection.endToStart,
-        confirmDismiss: (_) => _cardManager.confirmPurge(context),
+        confirmDismiss: (_) => _cardManager.confirmPurge(),
         onDismissed: (_) async {
           await _cardManager.purgeSelf();
           if (widget.onDismissed != null) widget.onDismissed!();

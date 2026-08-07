@@ -500,4 +500,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataMightBeLost => 'Some data may have been lost or corrupted...';
+
+  @override
+  String get failedSave => 'Failed to save data...';
 }

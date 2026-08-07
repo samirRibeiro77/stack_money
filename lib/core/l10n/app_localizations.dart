@@ -995,6 +995,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Some data may have been lost or corrupted...'**
   String get dataMightBeLost;
+
+  /// Error message when saving data fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save data...'**
+  String get failedSave;
 }
 
 class _AppLocalizationsDelegate

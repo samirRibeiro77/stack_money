@@ -595,5 +595,9 @@
   "dataMightBeLost": "Some data may have been lost or corrupted...",
   "@dataMightBeLost": {
     "description": "Data might be lost error message."
+  },
+  "failedSave": "Failed to save data...",
+  "@failedSave": {
+    "description": "Error message when saving data fail."
   }
 }
