@@ -13,7 +13,7 @@ class ErrorDetails extends StatelessWidget {
     required this.title,
     required this.detail,
     required this.color,
-    this.boxHeight = AppSizes.containerMedium,
+    this.boxHeight = AppSizes.containerSmall,
     super.key,
   });
 
