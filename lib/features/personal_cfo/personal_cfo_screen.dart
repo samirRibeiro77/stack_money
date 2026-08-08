@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/helper/ai_key.dart';
@@ -23,6 +24,10 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
         automaticallyImplyLeading: false,
         title: Text('Personal CFO'),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          icon: Icon(Icons.arrow_back_ios_rounded),
+        ),
       ),
       body: LlmChatView(
         suggestions: AiConfig.suggestions,
@@ -38,9 +43,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
           model: GenerativeModel(
             model: AiConfig.geminiModel,
             apiKey: AiKey.key,
-            systemInstruction: Content.system(
-              AiConfig.systemInstruction,
-            ),
+            systemInstruction: Content.system(AiConfig.systemInstruction),
           ),
         ),
         welcomeMessage: AiConfig.welcomeMessage,

@@ -5,7 +5,7 @@ import 'package:stack_money/features/personal_cfo/personal_cfo_screen.dart';
 class AiChatManager {
   void initializeNewBucketSlot(BuildContext context) {
     if (context.mounted) {
-      context.go(PersonalCfoScreen.route);
+      context.push(PersonalCfoScreen.route);
     }
   }
 }
