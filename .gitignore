@@ -101,3 +101,6 @@ firebase-export-*/
 functions/node_modules/
 functions/lib/
 functions/npm-debug.log*
+
+# Keys
+ai_key.dart
