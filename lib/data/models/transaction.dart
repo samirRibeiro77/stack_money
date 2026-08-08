@@ -1,38 +1,45 @@
+import 'package:stack_money/data/helper/model_key.dart';
+
 class Transaction {
-  final String id; // Gerado automaticamente: "Category_Where"
+  final String bucketId;
   final String category;
   final String where;
   final double actualValue;
 
-  Transaction({
-    required this.category,
-    required this.where,
-    required this.actualValue,
-  }) : id = '${category.replaceAll(' ', '')}_${where.replaceAll(' ', '')}';
-
-  /// Construtor privado para reconstruir o modelo quando o ID já vem do banco
-  const Transaction._withId({
-    required this.id,
+  Transaction._({
+    required this.bucketId,
     required this.category,
     required this.where,
     required this.actualValue,
   });
 
-  factory Transaction.fromJson(Map<String, dynamic> json) {
-    return Transaction._withId(
-      id: json['id'] ?? '${json['category']}_${json['where']}',
-      category: json['category'] ?? '',
-      where: json['where'] ?? '',
-      actualValue: (json['actualValue'] as num).toDouble(),
+  factory Transaction.create(
+    String bucketId,
+    double actualValue, {
+    String? category,
+    String? where,
+  }) {
+    return Transaction._(
+      bucketId: bucketId,
+      category: category ?? '',
+      where: where ?? '',
+      actualValue: actualValue,
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'category': category,
-      'where': where,
-      'actualValue': actualValue,
-    };
+  factory Transaction.fromJson(Map<String, Object?>? json) {
+    return Transaction._(
+      bucketId: json?[ModelKey.bucketId] as String? ?? '',
+      category: json?[ModelKey.category] as String? ?? '',
+      where: json?[ModelKey.where] as String? ?? '',
+      actualValue: (json?[ModelKey.value] as num?)?.toDouble() ?? 0,
+    );
   }
+
+  Map<String, Object?> toJson() => {
+    ModelKey.bucketId: bucketId,
+    ModelKey.category: category,
+    ModelKey.where: where,
+    ModelKey.value: actualValue,
+  };
 }

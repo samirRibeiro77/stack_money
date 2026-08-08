@@ -20,6 +20,7 @@ class StackMoneyTheme {
     Color color = StackMoneyTheme.cyanNeon,
     bool useUnderline = true,
     bool readOnly = false,
+    double boxHeight = AppSizes.x16,
   }) {
     return InputDecoration(
       labelText: StackMoneyString.formatTitle(
@@ -36,10 +37,7 @@ class StackMoneyTheme {
         horizontal: AppSizes.x4,
         vertical: AppSizes.x5,
       ),
-      constraints: const BoxConstraints(
-        minHeight: AppSizes.x16,
-        maxHeight: AppSizes.x16,
-      ),
+      constraints: BoxConstraints(minHeight: boxHeight, maxHeight: boxHeight),
       suffixIcon: readOnly
           ? Icon(
               Icons.lock_outline_rounded,
@@ -48,7 +46,7 @@ class StackMoneyTheme {
             )
           : null,
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppSizes.x3),
+        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         borderSide: BorderSide(
           color: readOnly
               ? color.withValues(alpha: 0.30)
@@ -57,7 +55,7 @@ class StackMoneyTheme {
         ),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppSizes.x3),
+        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         borderSide: BorderSide(
           color: readOnly ? color.withValues(alpha: 0.30) : color,
           width: 1,
@@ -65,20 +63,6 @@ class StackMoneyTheme {
       ),
     );
   }
-
-  static ButtonStyle get googleLoginButtonStyle => ElevatedButton.styleFrom(
-    backgroundColor: carbonGrey,
-    foregroundColor: cyanNeon,
-    elevation: 1,
-    padding: const EdgeInsets.symmetric(
-      horizontal: AppSizes.x10,
-      vertical: AppSizes.x4,
-    ),
-    shape: const StadiumBorder(),
-    textStyle: darkTheme.textTheme.titleSmall?.copyWith(
-      fontWeight: AppTypography.weightBold,
-    ),
-  );
 
   static final _baseTextTheme = GoogleFonts.orbitronTextTheme(
     ThemeData.dark().textTheme,
@@ -98,11 +82,11 @@ class StackMoneyTheme {
       inputDecorationTheme: darkTheme.inputDecorationTheme.copyWith(
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: cyanNeon.withValues(alpha: 0.3)),
-          borderRadius: BorderRadius.circular(AppSizes.x2),
+          borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: cyanNeon, width: 1.5),
-          borderRadius: BorderRadius.circular(AppSizes.x2),
+          borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         ),
         labelStyle: darkTheme.textTheme.bodySmall?.copyWith(
           color: cyanNeon,
@@ -282,15 +266,15 @@ class StackMoneyTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: magentaNeon, width: 1.5),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: mutedGrey, width: 1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
         ),
         errorBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: cyanNeon, width: 1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
         ),
       ),
 
@@ -306,6 +290,28 @@ class StackMoneyTheme {
 
       /// Divider
       dividerTheme: const DividerThemeData(color: carbonGrey),
+
+      /// SnackBar
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.fixed,
+        elevation: 4,
+        backgroundColor: StackMoneyTheme.surface.withValues(alpha: 0.85),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(AppSizes.radiusSmall),
+          ),
+          side: BorderSide(
+            color: StackMoneyTheme.mutedGrey.withValues(alpha: 0.25),
+            width: 1,
+          ),
+        ),
+        contentTextStyle: GoogleFonts.orbitron(
+          fontSize: AppTypography.fontLabelMedium,
+          fontWeight: AppTypography.weightNormal,
+          color: textPrimary,
+          letterSpacing: AppTypography.spacingSmall,
+        ),
+      ),
     );
   }
 }

@@ -35,18 +35,21 @@ class SmCard extends StatelessWidget {
         boxShadow: !isSecureActive
             ? [
                 BoxShadow(
-                  color: shadowColor.withValues(alpha: 0.06),
-                  blurRadius: 20,
+                  color: shadowColor.withValues(alpha: 0.07),
+                  blurRadius: AppSizes.x10,
+                  spreadRadius: 3,
                   offset: const Offset(0, 6),
                 ),
               ]
             : [],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (title != null) ...[
-            TitleText(title!),
+            Align(
+              alignment: Alignment.topLeft,
+              child: TitleText(title!),
+            ),
             const SizedBox(height: AppSizes.x8),
           ],
 

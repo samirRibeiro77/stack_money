@@ -30,6 +30,7 @@ class AppSizes {
   static const double sizedBoxLarge = 16.0;
 
   /// --- Border Radius ---
+  static const double radiusTiny = 4.0;
   static const double radiusSmall = 8.0;
   static const double radiusMedium = 12.0;
   static const double radiusLarge = 16.0;
@@ -49,4 +50,15 @@ class AppSizes {
   static const double stickyHudMinExtentMultiplier = 20;
   static const double stickyHudMaxExtent = 80;
   static const double stickyHudMaxExtentMultiplier = 30;
+
+  /// --- SnackBar ---
+  static const double snackBarTopPadding = 130;
+  static const double snackBarBottomPadding = 15;
+
+  /// --- Config ---
+  static const double avatarRadius = 50.0;
+  static const double avatarPadding = avatarRadius + x2;
+
+  /// --- Login button ---
+  static const double loginButtonWidth = 280.0;
 }

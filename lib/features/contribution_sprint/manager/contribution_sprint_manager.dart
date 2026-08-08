@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_number.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/transaction.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
+import 'package:stack_money/domain/service/history_service.dart';
 
 class ContributionSprintManager {
-  final BucketManagementService _service = BucketManagementService();
+  final _bucketService = BucketManagementService();
+  final _historyService = HistoryManagementService();
 
   final ValueNotifier<List<Bucket>> _bucketsNotifier = ValueNotifier([]);
   final ValueNotifier<int> _currentIndexNotifier = ValueNotifier(0);
@@ -41,21 +46,27 @@ class ContributionSprintManager {
     try {
       _isLoadingNotifier.value = true;
 
-      final loadedBuckets = await _service.fetch();
-      final lastValues = await _service.fetchLastSprintValues();
+      final loadedBuckets = AppCoordinator.instance.buckets.value;
+      final lastValues = await _historyService.fetchLastSprintValues();
       for (var t in lastValues) {
-        _originalValues[t.id] = t.actualValue;
-        _lastKnownValues[t.id] = t.actualValue;
+        _originalValues[t.bucketId] = t.actualValue;
+        _lastKnownValues[t.bucketId] = t.actualValue;
       }
 
+      loadedBuckets.sort((a, b) => b.name.compareTo(a.name));
       _bucketsNotifier.value = loadedBuckets;
 
       if (loadedBuckets.isNotEmpty) {
         _populateFieldsForIndex(0);
       }
       _isLoadingNotifier.value = false;
-    } catch (e) {
-      debugPrint('❌ [SPRINT_INITIALIZE_FAIL] -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to initialize a new sprint',
+        scope: ExceptionScope.business,
+        payload: {'exception': e},
+        stackTrace: stack,
+      );
       _isLoadingNotifier.value = false;
     }
   }
@@ -68,7 +79,7 @@ class ContributionSprintManager {
     if (index >= 0 && index < buckets.length) {
       final bucket = buckets[index];
 
-      nameController.text = bucket.category;
+      nameController.text = bucket.category ?? '';
       whereController.text = bucket.where;
       minValueController.text = '';
       actualValueController.text = '';
@@ -136,13 +147,11 @@ class ContributionSprintManager {
       verifiedMinValue = -verifiedMinValue;
     }
 
-    buckets[currentIndex] = Bucket(
-      id: bucket.id,
-      category: nameController.text.trim(),
-      where: whereController.text.trim(),
+    buckets[currentIndex] = bucket.copyWith(
+      category: nameController.text,
+      where: whereController.text,
       minValue: bucket.minValue + verifiedMinValue,
       isImmediateLiquidity: _isLiquid.value,
-      position: bucket.position,
     );
 
     _lastKnownValues[bucket.id] = verifiedActualValue;
@@ -162,10 +171,11 @@ class ContributionSprintManager {
       final double oldValue = _originalValues[bucket.id] ?? 0.0;
 
       compiledTransactions.add(
-        Transaction(
+        Transaction.create(
+          bucket.id,
+          finalValue,
           category: bucket.category,
           where: bucket.where,
-          actualValue: finalValue,
         ),
       );
 
@@ -227,14 +237,19 @@ class ContributionSprintManager {
     final navigatorContext = Navigator.of(context);
     try {
       _isLoadingNotifier.value = true;
-      await _service.executeContributionSprint(
+      await _bucketService.executeContributionSprint(
         updatedBuckets: buckets,
         transactions: transactions,
         totalNetWorth: total,
         totalLiquidity: liquidity,
       );
-    } catch (e) {
-      debugPrint('❌ [SPRINT_COMMIT_FAIL] -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Sprint commit failed',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'transactionsQty': transactions.length},
+        stackTrace: stack,
+      );
     } finally {
       _isLoadingNotifier.value = false;
       if (navigatorContext.mounted) {

@@ -4,6 +4,7 @@ import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
@@ -12,13 +13,11 @@ import 'package:stack_money/data/models/history.dart';
 class TelemetryLineChart extends StatelessWidget {
   final List<History> rawHistoryData;
   final ChartFilterState filterState;
-  final bool isSystemVisible; // Se estiver em SYSTEM_LOCKED, apaga o gráfico
 
   const TelemetryLineChart({
     super.key,
     required this.rawHistoryData,
     required this.filterState,
-    required this.isSystemVisible,
   });
 
   // Filtra os dados reais baseado no botão clicado
@@ -30,8 +29,8 @@ class TelemetryLineChart extends StatelessWidget {
       return rawHistoryData
           .where(
             (h) =>
-                h.date.isAfter(filterState.start!) &&
-                h.date.isBefore(filterState.end!),
+                h.date.toDate().isAfter(filterState.start!) &&
+                h.date.toDate().isBefore(filterState.end!),
           )
           .toList();
     }
@@ -39,7 +38,7 @@ class TelemetryLineChart extends StatelessWidget {
     return rawHistoryData
         .where(
           (h) =>
-              latestDate.difference(h.date).inDays <= filterState.filter.days,
+              latestDate.toDate().difference(h.date.toDate()).inDays <= filterState.filter.days,
         )
         .toList();
   }
@@ -48,18 +47,19 @@ class TelemetryLineChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
+    final isSecureActive = SecurityProvider.isSecureOf(context);
 
     final data = _filteredData;
     if (data.isEmpty) {
       return SizedBox(
         height: 200,
         child: Center(
-          child: Text(
+          child: !isSecureActive ? Text(
             l10n.noData,
             style: textTheme.titleLarge?.copyWith(
               color: StackMoneyTheme.magentaNeon,
             ),
-          ),
+          ) : SizedBox.shrink(),
         ),
       );
     }
@@ -94,7 +94,7 @@ class TelemetryLineChart extends StatelessWidget {
 
           // 🕹️ COMPORTAMENTO DE TOQUE (MIRA MAGENTA + TOOLTIP CHANFRADO)
           lineTouchData: LineTouchData(
-            enabled: isSystemVisible, // Desativa toque se estiver encriptado
+            enabled: !isSecureActive, // Desativa toque se estiver encriptado
             touchTooltipData: LineTouchTooltipData(
               getTooltipColor: (spot) =>
                   StackMoneyTheme.surface.withValues(alpha: 0.95),
@@ -114,7 +114,7 @@ class TelemetryLineChart extends StatelessWidget {
                   final historyItem = data[spot.x.toInt()];
 
                   return LineTooltipItem(
-                    '${StackMoneyString.formatDate(historyItem.date, showYear: true)}\n${StackMoneyString.formatMoney(spot.y)}',
+                    '${StackMoneyString.formatDate(historyItem.date.toDate(), showYear: true)}\n${StackMoneyString.formatMoney(spot.y)}',
                     textTheme.labelMedium!.copyWith(
                       color: StackMoneyTheme.platinumSilver,
                     ),
@@ -182,7 +182,7 @@ class TelemetryLineChart extends StatelessWidget {
             // Legendas Laterais (Valores reduzidos compactos)
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
-                showTitles: isSystemVisible,
+                showTitles: !isSecureActive,
                 reservedSize: 42,
                 getTitlesWidget: (value, meta) {
                   if (value == meta.min || value == meta.max) {
@@ -198,7 +198,7 @@ class TelemetryLineChart extends StatelessWidget {
             // Legendas Inferiores (Datas formatadas curtas)
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
-                showTitles: isSystemVisible,
+                showTitles: !isSecureActive,
                 reservedSize: 22,
                 interval: (spots.length / 4).clamp(1, double.infinity),
                 getTitlesWidget: (value, meta) {
@@ -207,7 +207,7 @@ class TelemetryLineChart extends StatelessWidget {
                     return Padding(
                       padding: EdgeInsets.only(top: AppSizes.x3),
                       child: Text(
-                        StackMoneyString.formatDate(data[idx].date),
+                        StackMoneyString.formatDate(data[idx].date.toDate()),
                         style: textTheme.bodySmall?.copyWith(fontSize: AppTypography.fontSmallest),
                       ),
                     );
@@ -222,19 +222,19 @@ class TelemetryLineChart extends StatelessWidget {
           // 🚀 VETOR DE RENDIMENTO EM CIANO NEON + GRADIENTE DE NÉVOA
           lineBarsData: [
             LineChartBarData(
-              spots: isSystemVisible
+              spots: !isSecureActive
                   ? spots
                   : spots.map((s) => FlSpot(s.x, minValue)).toList(),
               // Achata o gráfico se oculto
               isCurved: true,
               preventCurveOverShooting: true,
-              color: isSystemVisible
+              color: !isSecureActive
                   ? StackMoneyTheme.cyanNeon
                   : StackMoneyTheme.cyanNeon.withValues(alpha: 0.05),
               barWidth: AppSizes.min,
               // Mini-quadrados nos pontos de auditoria
               dotData: FlDotData(
-                show: isSystemVisible,
+                show: !isSecureActive,
                 getDotPainter: (spot, percent, barData, index) =>
                     FlDotSquarePainter(
                       size: 5,
@@ -249,7 +249,7 @@ class TelemetryLineChart extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     StackMoneyTheme.cyanNeon.withValues(
-                      alpha: isSystemVisible ? 0.12 : 0.0,
+                      alpha: !isSecureActive ? 0.12 : 0.0,
                     ),
                     StackMoneyTheme.cyanNeon.withValues(alpha: 0.0),
                   ],

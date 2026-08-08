@@ -71,6 +71,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get retryHandshake => 'Retry Handshake';
 
   @override
+  String get retry => 'Retry';
+
+  @override
   String get auditLogs => 'Audit Logs';
 
   @override
@@ -201,13 +204,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get percentGross => '% gross';
 
   @override
+  String get copy => 'Copy';
+
+  @override
+  String get share => 'Share';
+
+  @override
   String get archive => 'Archive';
 
   @override
   String get delete => 'Delete';
-
-  @override
-  String get copy => 'Copy';
 
   @override
   String dayX(Object d) {
@@ -342,4 +348,138 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get arrowDown => '▼';
+
+  @override
+  String get reorderBuckets => 'Reorder buckets';
+
+  @override
+  String get filterByPosition => 'Bucket position';
+
+  @override
+  String get filterByName => 'Bucket name';
+
+  @override
+  String get filterByActual => 'Higher actual value';
+
+  @override
+  String get filterByMin => 'Lower min value';
+
+  @override
+  String get filterByAlloc => 'Wallet allocation';
+
+  @override
+  String get failDeleteBucketWithValue =>
+      'Bucket has \'MIN_VALUE\' filled, can\'t be deleted';
+
+  @override
+  String get planMoneySprintDay => 'Planned day to update your money';
+
+  @override
+  String get start => 'Start';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get adminName => 'ADMIN_NAME';
+
+  @override
+  String get adminEmail => 'ADMIN_EMAIL';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get systemPreferences => 'System Preferences';
+
+  @override
+  String get enabled => 'Enabled';
+
+  @override
+  String get disabled => 'Disabled';
+
+  @override
+  String get securityModeTitle => 'Boot under security mode';
+
+  @override
+  String get securityModeCode => 'SYS.SECURE_MODE';
+
+  @override
+  String get cardExpandTitle => 'Open with cards expanded';
+
+  @override
+  String get cardExpandCode => 'DASH.CARDS_EXPAND';
+
+  @override
+  String get defaultFilterCode => 'DASH.DEFAULT_FILTER';
+
+  @override
+  String get exportData => 'Export data';
+
+  @override
+  String exportDataPlans(Object qty) {
+    return 'Plans: $qty';
+  }
+
+  @override
+  String exportDataHistory(Object qty) {
+    return 'History: $qty';
+  }
+
+  @override
+  String exportDataBuckets(Object qty) {
+    return 'Buckets: $qty';
+  }
+
+  @override
+  String exportDataJsonSize(Object size) {
+    return 'JSON size: $size';
+  }
+
+  @override
+  String get exportJsonData => 'Export JSON data';
+
+  @override
+  String get rememberLast => 'Remember last';
+
+  @override
+  String get settingsChangedTitle => 'Changes';
+
+  @override
+  String settingsChangedMessage(Object qty) {
+    return 'Identified $qty changes on your preferences:';
+  }
+
+  @override
+  String settingsChangedNote(Object code, Object current, Object old) {
+    return '• $code:\n   $old ➔ $current\n';
+  }
+
+  @override
+  String get failedToSignIn => 'Failed to sign-in';
+
+  @override
+  String get failedToSaveUser => 'Failed to save user changes';
+
+  @override
+  String get systemCode => 'Core.Sys';
+
+  @override
+  String get initializing => 'Loading...';
+
+  @override
+  String get loadingUser =>
+      'AUTH: Infiltrating networks and decrypting user profile...';
+
+  @override
+  String get loadingPlan =>
+      'ALLOCATION: Syncing salary distribution matrices...';
+
+  @override
+  String get loadingBucket =>
+      'VAULTS: Securing funds and digital sub-vaults...';
+
+  @override
+  String get loadingHistory =>
+      'TRAILS: Reconstituting transaction logs and ledger history...';
 }

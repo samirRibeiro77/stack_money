@@ -45,7 +45,11 @@ class StackMoneyString {
   }) {
     value = value ?? 0.00;
     String formatted = value.toStringAsFixed(decimal);
-    String operatorValue = !operator ? '' : value > 0 ? '+' : '';
+    String operatorValue = !operator
+        ? ''
+        : value > 0
+        ? '+'
+        : '';
     String symbolValue = symbol ? _percentSymbol : '';
 
     if (formatted.contains('.')) {

@@ -5,5 +5,6 @@ enum ChartFilter {
   custom(0);
 
   final int days;
+
   const ChartFilter(this.days);
 }

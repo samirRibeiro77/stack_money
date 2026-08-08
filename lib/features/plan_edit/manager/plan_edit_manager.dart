@@ -1,23 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
-import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
+import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
+import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/data/models/inflow_row.dart';
 import 'package:stack_money/data/models/outflow_row.dart';
 import 'package:stack_money/data/models/distribution_row.dart';
+import 'package:stack_money/domain/service/export_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
-import 'package:uuid/uuid.dart';
 
 class PlanEditManager {
-  final PlanManagementService _service = PlanManagementService();
+  final PlanManagementService _planService = PlanManagementService();
   late final ValueNotifier<SalaryPlan> planNotifier;
 
   final _inflowExpandState = ValueNotifier(false);
@@ -25,11 +28,16 @@ class PlanEditManager {
   final _scrollController = ScrollController();
 
   ScrollController get scrollController => _scrollController;
+
   ValueListenable<bool> get inflowExpandState => _inflowExpandState;
+
   ValueListenable<bool> get outflowExpandState => _outflowExpandState;
 
-  void toggleInflowExpand() => _inflowExpandState.value = !_inflowExpandState.value;
-  void toggleOutflowExpand() => _outflowExpandState.value = !_outflowExpandState.value;
+  void toggleInflowExpand() =>
+      _inflowExpandState.value = !_inflowExpandState.value;
+
+  void toggleOutflowExpand() =>
+      _outflowExpandState.value = !_outflowExpandState.value;
 
   PlanEditManager(SalaryPlan initialPlan) {
     planNotifier = ValueNotifier(initialPlan);
@@ -57,33 +65,55 @@ class PlanEditManager {
 
   Future<void> copyPlan(BuildContext context) async {
     try {
-      final String newId = const Uuid().v4();
       final copiedPlan = currentPlan.copyWith(
-        id: newId,
+        newId: true,
         name: 'Copy of ${currentPlan.name}',
         isActive: false,
         isArchived: false,
-        createdAt: DateTime.now(),
+        createdAt: Timestamp.now(),
       );
 
-      await _service.saveSalaryPlan(copiedPlan);
+      await _planService.save(copiedPlan);
 
       if (context.mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => PlanEditScreen(plan: copiedPlan)),
         );
       }
-    } catch (e) {
-      debugPrint('❌ [COPY_PLAN_FAIL] -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to copy plan',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'plan': currentPlan.toJson()},
+        stackTrace: stack,
+      );
+    }
+  }
+
+  Future<void> sharePlan(BuildContext context) async {
+    try {
+      ExportService().exportData([currentPlan.toJson()]);
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to share plan',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'plan': currentPlan.toJson()},
+        stackTrace: stack,
+      );
     }
   }
 
   Future<void> archivePlan(BuildContext context) async {
     try {
-      await _service.toggleArchiveSalaryPlan(currentPlan.id, true);
+      await _planService.toggleArchive(currentPlan.id, true);
       if (context.mounted) Navigator.of(context).pop();
-    } catch (e) {
-      debugPrint('❌ [ARCHIVE_FAIL] -> $e');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to archive plan',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'plan': currentPlan.toJson()},
+        stackTrace: stack,
+      );
     }
   }
 
@@ -104,10 +134,15 @@ class PlanEditManager {
 
     if (confirm == true) {
       try {
-        await _service.purgeSalaryPlan(currentPlan.id);
+        await _planService.purge(currentPlan.id);
         if (context.mounted) Navigator.of(context).pop();
-      } catch (e) {
-        debugPrint('❌ [MENU_PURGE_FAIL] -> $e');
+      } catch (e, stack) {
+        StackMoneyException(
+          message: 'Failed to delete plan',
+          scope: ExceptionScope.business,
+          payload: {'exception': e, 'plan': currentPlan.toJson()},
+          stackTrace: stack,
+        );
       }
     }
   }
@@ -115,14 +150,7 @@ class PlanEditManager {
   void _ensureEmptyInflowRow() {
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (list.isEmpty || list.last.value > 0) {
-      list.add(
-        InflowRow(
-          id: const Uuid().v4(),
-          type: InflowType.percentageBase,
-          value: 0.0,
-          day: 5,
-        ),
-      );
+      list.add(InflowRow.empty());
       planNotifier.value = currentPlan.copyWith(inflows: list);
     }
   }
@@ -130,12 +158,10 @@ class PlanEditManager {
   void updateInflow(int index, {InflowType? type, double? value, int? day}) {
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (index >= 0 && index < list.length) {
-      list[index] = InflowRow(
-        id: list[index].id,
-        type: type ?? list[index].type,
-        value: value ?? list[index].value,
-        day: day ?? list[index].day,
-      );
+      final inflow = list[index];
+
+      list[index] = inflow.copyWith(type: type, value: value, day: day);
+
       planNotifier.value = currentPlan.copyWith(inflows: list);
       if (index == list.length - 1 && (value ?? 0) > 0) _ensureEmptyInflowRow();
       _autoSave();
@@ -182,35 +208,29 @@ class PlanEditManager {
       final int defaultDay = currentPlan.inflows.isNotEmpty
           ? currentPlan.inflows.first.day
           : 5;
-      list.add(
-        OutflowRow(
-          id: const Uuid().v4(),
-          name: '',
-          type: DeductionType.fixed,
-          value: 0.0,
-          targetDay: defaultDay,
-        ),
-      );
+      list.add(OutflowRow.empty(defaultDay: defaultDay));
       planNotifier.value = currentPlan.copyWith(outflows: list);
     }
   }
 
   void updateOutflow(
-      int index, {
-        String? name,
-        DeductionType? type,
-        double? value,
-        int? targetDay,
-      }) {
+    int index, {
+    String? name,
+    DeductionType? type,
+    double? value,
+    int? targetDay,
+  }) {
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (index >= 0 && index < list.length) {
-      list[index] = OutflowRow(
-        id: list[index].id,
-        name: name ?? list[index].name,
-        type: type ?? list[index].type,
-        value: value ?? list[index].value,
-        targetDay: targetDay ?? list[index].targetDay,
+      final outflow = list[index];
+
+      list[index] = outflow.copyWith(
+        name: name,
+        type: type,
+        value: value,
+        targetDay: targetDay,
       );
+
       planNotifier.value = currentPlan.copyWith(outflows: list);
       if (index == list.length - 1 &&
           ((value ?? 0) > 0 || (name ?? '').isNotEmpty)) {
@@ -265,32 +285,34 @@ class PlanEditManager {
   }
 
   void updateDistribution(
-      int index, {
-        String? cat,
-        String? sub,
-        AllocationType? type,
-        double? value,
-        int? targetDay,
-      }) {
+    int index, {
+    String? cat,
+    String? sub,
+    AllocationType? type,
+    double? value,
+    int? targetDay,
+  }) {
     final list = List<DistributionRow>.from(currentPlan.distributions);
     if (index >= 0 && index < list.length) {
-      list[index] = DistributionRow(
-        id: list[index].id,
-        category: cat ?? list[index].category,
-        subCategory: sub ?? list[index].subCategory,
-        type: type ?? list[index].type,
-        value: value ?? list[index].value,
-        targetDay: targetDay ?? list[index].targetDay,
+      final distribution = list[index];
+
+      list[index] = distribution.copyWith(
+        category: cat,
+        subCategory: sub,
+        type: type,
+        value: value,
+        targetDay: targetDay,
       );
+
       planNotifier.value = currentPlan.copyWith(distributions: list);
       _autoSave();
     }
   }
 
   Future<bool?> removeDistributionConfirmation(
-      String distributionName,
-      BuildContext context,
-      ) {
+    String distributionName,
+    BuildContext context,
+  ) {
     final l10n = AppLocalizations.of(context)!;
 
     return showDialog<bool>(
@@ -322,41 +344,24 @@ class PlanEditManager {
     final bool newActiveState = !currentPlan.isActive;
     planNotifier.value = currentPlan.copyWith(isActive: newActiveState);
 
-    await _service.updateActiveStatusInBatch(currentPlan.id, newActiveState);
+    await _planService.toggleActiveStatus(currentPlan.id, newActiveState);
   }
 
   void _triggerUndoSnackBar(
-      BuildContext context,
-      String message,
-      SalaryPlan backup,
-      ) {
+    BuildContext context,
+    String message,
+    SalaryPlan backup,
+  ) {
     final l10n = AppLocalizations.of(context)!;
-    final textTheme = Theme.of(context).textTheme;
 
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: StackMoneyTheme.carbonGrey,
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(AppSizes.x6),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSizes.x4),
-        ),
-        content: Text(
-          StackMoneyString.formatTitle(message),
-          style: textTheme.bodySmall,
-        ),
-        action: SnackBarAction(
-          label: '[${StackMoneyString.formatTitle(l10n.undo)}]',
-          textColor: StackMoneyTheme.cyanNeon,
-          onPressed: () {
-            planNotifier.value = backup;
-            _autoSave();
-          },
-        ),
-        duration: const Duration(seconds: 4),
-      ),
-    );
+    SmSnackBar(
+        message: message,
+        type: SnackBarType.error,
+        action: SnackBarAction(label: l10n.undo, onPressed: () {
+          planNotifier.value = backup;
+          _autoSave();
+        })
+    ).show(context);
   }
 
   void _autoSave() {
@@ -369,8 +374,13 @@ class PlanEditManager {
       outflows: cleanOutflows,
     );
 
-    _service.saveSalaryPlan(cleanPlan).catchError((err) {
-      debugPrint('❌ [AUTOSAVE_FAIL] -> Sync error: $err');
+    _planService.save(cleanPlan).catchError((e, stack) {
+      StackMoneyException(
+        message: 'Failed to save plan',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'plan': cleanPlan.toJson()},
+        stackTrace: stack,
+      );
     });
   }
 

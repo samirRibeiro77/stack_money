@@ -218,6 +218,12 @@ abstract class AppLocalizations {
   /// **'Retry Handshake'**
   String get retryHandshake;
 
+  /// Retry message
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
   /// Audit ledger logs title
   ///
   /// In en, this message translates to:
@@ -452,6 +458,18 @@ abstract class AppLocalizations {
   /// **'% gross'**
   String get percentGross;
 
+  /// Copy something
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
+
+  /// Share something
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
   /// Archive something
   ///
   /// In en, this message translates to:
@@ -463,12 +481,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get delete;
-
-  /// Copy something
-  ///
-  /// In en, this message translates to:
-  /// **'Copy'**
-  String get copy;
 
   /// Quantity of days (eg.: D5)
   ///
@@ -713,6 +725,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'▼'**
   String get arrowDown;
+
+  /// Title to use on sort bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder buckets'**
+  String get reorderBuckets;
+
+  /// Sort by bucket position on bucket screen
+  ///
+  /// In en, this message translates to:
+  /// **'Bucket position'**
+  String get filterByPosition;
+
+  /// Sort by bucket name (A-Z)
+  ///
+  /// In en, this message translates to:
+  /// **'Bucket name'**
+  String get filterByName;
+
+  /// Sort by higher amount of money
+  ///
+  /// In en, this message translates to:
+  /// **'Higher actual value'**
+  String get filterByActual;
+
+  /// Sort by lower min value
+  ///
+  /// In en, this message translates to:
+  /// **'Lower min value'**
+  String get filterByMin;
+
+  /// Sort by higher wallet allocation
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet allocation'**
+  String get filterByAlloc;
+
+  /// SnackBar message when failed to delete bucket with MIN_VALUE filled.
+  ///
+  /// In en, this message translates to:
+  /// **'Bucket has \'MIN_VALUE\' filled, can\'t be deleted'**
+  String get failDeleteBucketWithValue;
+
+  /// SnackBar message when is the day selected by the user to update it's money values.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned day to update your money'**
+  String get planMoneySprintDay;
+
+  /// SnackBar action to start the money sprint.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get start;
+
+  /// Settings page title.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// Username label.
+  ///
+  /// In en, this message translates to:
+  /// **'ADMIN_NAME'**
+  String get adminName;
+
+  /// Email label.
+  ///
+  /// In en, this message translates to:
+  /// **'ADMIN_EMAIL'**
+  String get adminEmail;
+
+  /// Logout from the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// System preferences title.
+  ///
+  /// In en, this message translates to:
+  /// **'System Preferences'**
+  String get systemPreferences;
+
+  /// Enabled value.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get enabled;
+
+  /// Disabled value.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get disabled;
+
+  /// Boot the app under security mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Boot under security mode'**
+  String get securityModeTitle;
+
+  /// Security mode code.
+  ///
+  /// In en, this message translates to:
+  /// **'SYS.SECURE_MODE'**
+  String get securityModeCode;
+
+  /// Expand cards on initialization.
+  ///
+  /// In en, this message translates to:
+  /// **'Open with cards expanded'**
+  String get cardExpandTitle;
+
+  /// Card expand code.
+  ///
+  /// In en, this message translates to:
+  /// **'DASH.CARDS_EXPAND'**
+  String get cardExpandCode;
+
+  /// Card expand code.
+  ///
+  /// In en, this message translates to:
+  /// **'DASH.DEFAULT_FILTER'**
+  String get defaultFilterCode;
+
+  /// Export data card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Export data'**
+  String get exportData;
+
+  /// Pans quantity to export.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans: {qty}'**
+  String exportDataPlans(Object qty);
+
+  /// History quantity to export.
+  ///
+  /// In en, this message translates to:
+  /// **'History: {qty}'**
+  String exportDataHistory(Object qty);
+
+  /// Bucket quantity to export.
+  ///
+  /// In en, this message translates to:
+  /// **'Buckets: {qty}'**
+  String exportDataBuckets(Object qty);
+
+  /// Json size.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON size: {size}'**
+  String exportDataJsonSize(Object size);
+
+  /// Export json data button label.
+  ///
+  /// In en, this message translates to:
+  /// **'Export JSON data'**
+  String get exportJsonData;
+
+  /// Remember the last dashboard filter for allocation buckets.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember last'**
+  String get rememberLast;
+
+  /// Settings changed dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes'**
+  String get settingsChangedTitle;
+
+  /// Settings changed dialog message.
+  ///
+  /// In en, this message translates to:
+  /// **'Identified {qty} changes on your preferences:'**
+  String settingsChangedMessage(Object qty);
+
+  /// Property changed diff note.
+  ///
+  /// In en, this message translates to:
+  /// **'• {code}:\n   {old} ➔ {current}\n'**
+  String settingsChangedNote(Object code, Object current, Object old);
+
+  /// Failed message when trying to login.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to sign-in'**
+  String get failedToSignIn;
+
+  /// Failed message when saving user.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save user changes'**
+  String get failedToSaveUser;
+
+  /// Core system message.
+  ///
+  /// In en, this message translates to:
+  /// **'Core.Sys'**
+  String get systemCode;
+
+  /// Loading message.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get initializing;
+
+  /// Loading user data.
+  ///
+  /// In en, this message translates to:
+  /// **'AUTH: Infiltrating networks and decrypting user profile...'**
+  String get loadingUser;
+
+  /// Loading plan data.
+  ///
+  /// In en, this message translates to:
+  /// **'ALLOCATION: Syncing salary distribution matrices...'**
+  String get loadingPlan;
+
+  /// Loading bucket data.
+  ///
+  /// In en, this message translates to:
+  /// **'VAULTS: Securing funds and digital sub-vaults...'**
+  String get loadingBucket;
+
+  /// Loading history data.
+  ///
+  /// In en, this message translates to:
+  /// **'TRAILS: Reconstituting transaction logs and ledger history...'**
+  String get loadingHistory;
 }
 
 class _AppLocalizationsDelegate

@@ -59,7 +59,7 @@ class OutflowSectionCard extends StatelessWidget {
       padding: const EdgeInsets.all(AppSizes.x4),
       decoration: BoxDecoration(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(AppSizes.x3),
+        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         border: Border.all(color: StackMoneyTheme.carbonGrey),
       ),
       child: Column(
@@ -177,7 +177,7 @@ class OutflowSectionCard extends StatelessWidget {
                 ),
                 style: textTheme.labelSmall,
               ),
-            )
+            ),
         ],
       ),
     );

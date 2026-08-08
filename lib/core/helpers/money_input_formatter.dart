@@ -3,7 +3,9 @@ import 'package:intl/intl.dart';
 
 class MoneyInputFormatter extends TextInputFormatter {
   static double format(String value) {
-    String cleanValue = value.replaceAll('.', '').replaceAll(RegExp(r'[^0-9.]'), '');
+    String cleanValue = value
+        .replaceAll('.', '')
+        .replaceAll(RegExp(r'[^0-9.]'), '');
     if (cleanValue.isEmpty || cleanValue == '.') {
       cleanValue = '0.0';
     }
@@ -15,10 +17,12 @@ class MoneyInputFormatter extends TextInputFormatter {
   }
 
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     if (newValue.text.isEmpty) return newValue;
 
-    // Remove tudo que não for dígito numérico puro
     String digits = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
     if (digits.isEmpty) digits = '0';
 

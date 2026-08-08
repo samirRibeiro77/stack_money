@@ -29,7 +29,7 @@ class HistoryLog extends StatelessWidget {
           children: [
             Text(
               StackMoneyString.formatDate(
-                history.date,
+                history.date.toDate(),
                 showYear: true,
                 hideSameYear: false,
                 fullYear: true,
@@ -46,9 +46,9 @@ class HistoryLog extends StatelessWidget {
           ],
         ),
         const Divider(),
-        ...history.transactions.values.map((tx) {
-          final prevTx = previousHistory?.transactions.values
-              .where((pt) => pt.id == tx.id)
+        ...history.transactions.map((tx) {
+          final prevTx = previousHistory?.transactions
+              .where((pt) => pt.bucketId == tx.bucketId)
               .firstOrNull;
 
           return DayLog(transaction: tx, previousTransaction: prevTx);

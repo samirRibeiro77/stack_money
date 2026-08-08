@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
-import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
-import 'package:stack_money/data/models/bucket.dart';
-import 'package:stack_money/data/models/chart_filter_state.dart';
-import 'package:stack_money/data/models/history.dart';
+import 'package:stack_money/core/widgets/sm_gravity_swop_list.dart';
+import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/features/dashboard/manager/dashboard_manager.dart';
+import 'package:stack_money/features/dashboard/widgets/dashboard_sort_bottom_sheet.dart';
 import 'package:stack_money/features/dashboard/widgets/dashboard_bucket_card.dart';
 import 'package:stack_money/features/dashboard/widgets/patrimonial_hud.dart';
 import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart';
@@ -28,187 +28,157 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final _manager = DashboardManager();
 
   @override
-  void initState() {
-    super.initState();
-    _manager.loadFirebaseDashboardData();
+  void dispose() {
+    _manager.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final textTheme = Theme.of(context).textTheme;
+    final isSecureActive = SecurityProvider.isSecureOf(context);
 
-    return ValueListenableBuilder<bool>(
-      valueListenable: _manager.isLoading,
-      builder: (_, isLoading, _) {
-        if (isLoading) {
-          return const SizedBox(
-            height: 400,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: StackMoneyTheme.cyanNeon,
-                backgroundColor: StackMoneyTheme.surface,
-                strokeWidth: 3,
-              ),
+    return ValueListenableBuilder(
+      valueListenable: AppCoordinator.instance.history,
+      builder: (_, historyList, _) {
+        historyList.sort((a, b) => a.date.compareTo(b.date));
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PatrimonialHud(),
+            const SizedBox(height: AppSizes.x10),
+            ValueListenableBuilder(
+              valueListenable: _manager.chartFilterNotifier,
+              builder: (_, currentFilter, _) {
+                return SmCard(
+                  title: l10n.telemetryStream,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 220,
+                        child: TelemetryLineChart(
+                          rawHistoryData: historyList,
+                          filterState: currentFilter,
+                        ),
+                      ),
+                      const SizedBox(height: AppSizes.sizedBoxMedium),
+                      const Divider(height: 1),
+                      const SizedBox(height: AppSizes.sizedBoxMedium),
+                      TelemetryFilterBar(
+                        currentState: currentFilter,
+                        firstDate:
+                            historyList.firstOrNull?.date.toDate() ??
+                            DateTime.now(),
+                        onFilterChanged: _manager.updateChartFilter,
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        }
+            const SizedBox(height: AppSizes.x12),
+            ValueListenableBuilder(
+              valueListenable: AppCoordinator.instance.buckets,
+              builder: (_, buckets, _) {
+                return ValueListenableBuilder(
+                  valueListenable: AppCoordinator.instance.user,
+                  builder: (_, user, _) {
+                    final activeSort = user.preferences.currentFilter;
+                    _manager.updateSortFilter(buckets, activeSort);
 
-        return ValueListenableBuilder<bool>(
-          valueListenable: _manager.hasError,
-          builder: (_, hasError, _) {
-            if (hasError || _manager.historyTimeline.isEmpty) {
-              return _buildErrorState(l10n, textTheme);
-            }
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: ExpandableHeader(
+                                title: l10n.allocationBuckets,
+                                toggle: _manager.toggleAllBuckets,
+                                validation: _manager.masterExpandState,
+                              ),
+                            ),
+                            if (!isSecureActive)
+                              AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 300),
+                                transitionBuilder:
+                                    (
+                                      Widget child,
+                                      Animation<double> animation,
+                                    ) {
+                                      return ScaleTransition(
+                                        scale: animation,
+                                        child: RotationTransition(
+                                          turns: animation,
+                                          child: child,
+                                        ),
+                                      );
+                                    },
+                                child: IconButton(
+                                  key: ValueKey<DashboardSortFilter>(
+                                    activeSort,
+                                  ),
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  splashRadius: AppSizes.x6,
+                                  icon: Icon(
+                                    activeSort.icon,
+                                    color: StackMoneyTheme.cyanNeon,
+                                    size: AppSizes.x10,
+                                  ),
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      useRootNavigator: true,
+                                      backgroundColor: Colors.transparent,
+                                      elevation: 1,
+                                      builder: (_) => DashboardSortBottomSheet(
+                                        currentSort: activeSort,
+                                        onFilterSelected: (filter) => _manager
+                                            .updateSortFilter(buckets, filter),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: AppSizes.sizedBoxMedium),
+                        ValueListenableBuilder(
+                          valueListenable: _manager.expandedIdsNotifier,
+                          builder: (_, expandedIds, _) {
+                            return SmGravitySwopList(
+                              sortKey: activeSort,
+                              children: List.generate(buckets.length, (index) {
+                                final param = buckets[index];
+                                final isCardExpanded = expandedIds.contains(
+                                  param.id,
+                                );
 
-            // Injeta a fiação reativa tripla para reconstruir o painel sob demanda
-            return ValueListenableBuilder<List<Bucket>>(
-              valueListenable: _manager.parametersNotifier,
-              builder: (context, paramList, child) {
-                paramList.sort((a, b) => a.position.compareTo(b.position));
-
-                return ValueListenableBuilder<List<History>>(
-                  valueListenable: _manager.historyTimelineNotifier,
-                  builder: (context, historyList, child) {
-                    return ValueListenableBuilder<Set<String>>(
-                      valueListenable: _manager.expandedIdsNotifier,
-                      builder: (context, expandedIds, child) {
-                        return ValueListenableBuilder<ChartFilterState>(
-                          valueListenable: _manager.chartFilterNotifier,
-                          builder: (context, currentFilter, _) {
-                            return _buildBodyContent(
-                              l10n,
-                              textTheme,
-                              paramList,
-                              historyList,
-                              expandedIds,
-                              currentFilter,
+                                return DashboardBucketCard(
+                                  key: ValueKey(param.id),
+                                  parameter: param,
+                                  historyList: historyList,
+                                  isExpanded: isCardExpanded,
+                                  onHeaderTap: () =>
+                                      _manager.toggleBucketExpansion(param.id),
+                                );
+                              }),
                             );
                           },
-                        );
-                      },
+                        ),
+                      ],
                     );
                   },
                 );
               },
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildErrorState(AppLocalizations l10n, TextTheme textTheme) {
-    return SizedBox(
-      height: 300,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.gpp_maybe_outlined,
-              color: StackMoneyTheme.magentaNeon,
-              size: AppSizes.x24,
-            ),
-            const SizedBox(height: AppSizes.sizedBoxLarge),
-            Text(
-              StackMoneyString.formatTitle(l10n.systemLinkFailed),
-              style: textTheme.headlineMedium?.copyWith(
-                color: StackMoneyTheme.magentaNeon,
-              ),
-            ),
-            const SizedBox(height: AppSizes.sizedBoxSmall),
-            TextButton(
-              onPressed: _manager.loadFirebaseDashboardData,
-              child: Text(
-                StackMoneyString.formatTitle(l10n.retryHandshake),
-                style: textTheme.titleMedium?.copyWith(
-                  color: StackMoneyTheme.cyanNeon,
-                ),
-              ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBodyContent(
-    AppLocalizations l10n,
-    TextTheme textTheme,
-    List<Bucket> paramList,
-    List<History> historyList,
-    Set<String> expandedIds,
-    ChartFilterState currentFilter,
-  ) {
-    final isSecureActive = SecurityProvider.isSecureOf(context);
-    final isVisible =
-        !isSecureActive; // Lógica inversa unificada: visível se segurança biométrica estiver aberta
-
-    final latestAudit = historyList.last;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        PatrimonialHud(
-          totalAmount: latestAudit.total,
-          liquidityAmount: latestAudit.immediateLiquidityTotal,
-        ),
-
-        const SizedBox(height: AppSizes.x10),
-
-        // Painel Telemetria com Gráfico Principal
-        SmCard(
-          title: l10n.telemetryStream,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 220,
-                child: TelemetryLineChart(
-                  rawHistoryData: historyList,
-                  filterState: currentFilter,
-                  isSystemVisible: isVisible,
-                ),
-              ),
-              const SizedBox(height: AppSizes.sizedBoxMedium),
-              const Divider(height: 1),
-              const SizedBox(height: AppSizes.sizedBoxMedium),
-              TelemetryFilterBar(
-                currentState: currentFilter,
-                isEnabled: isVisible,
-                firstDate: historyList.first.date,
-                onFilterChanged: _manager.updateChartFilter,
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: AppSizes.x12),
-
-        // Cabeçalho da listagem de alocação de Potes
-        ExpandableHeader(
-          title: l10n.allocationBuckets,
-          toggle: _manager.toggleAllBuckets,
-          validation: _manager.masterExpandState,
-        ),
-        const SizedBox(height: AppSizes.sizedBoxMedium),
-
-        // Listagem dos Potes Convertidos em Componentes Dedicados do Dashboard
-        ...List.generate(paramList.length, (index) {
-          final param = paramList[index];
-          final isCardExpanded = expandedIds.contains(param.id);
-
-          return DashboardBucketCard(
-            key: ValueKey(param.id),
-            parameter: param,
-            historyList: historyList,
-            isExpanded: isCardExpanded,
-            onHeaderTap: () => _manager.toggleBucketExpansion(param.id),
-          );
-        }),
-      ],
+        );
+      },
     );
   }
 }

@@ -83,14 +83,17 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                 color: StackMoneyTheme.carbonGrey,
                 onSelected: (value) {
                   switch (value) {
+                    case PlanEditActions.copy:
+                      _manager.copyPlan(context);
+                      break;
+                    case PlanEditActions.share:
+                      _manager.sharePlan(context);
+                      break;
                     case PlanEditActions.archive:
                       _manager.archivePlan(context);
                       break;
                     case PlanEditActions.delete:
                       _manager.deletePlan(context);
-                      break;
-                    case PlanEditActions.copy:
-                      _manager.copyPlan(context);
                       break;
                   }
                 },

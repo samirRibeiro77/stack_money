@@ -1,55 +1,82 @@
 import 'package:flutter/foundation.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/chart_filter.dart';
+import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
-import 'package:stack_money/data/models/history.dart';
-import 'package:stack_money/domain/service/history_service.dart';
-import 'package:stack_money/domain/service/bucket_service.dart';
+import 'package:stack_money/domain/service/user_service.dart';
 
 class DashboardManager {
-  final ValueNotifier<bool> _isLoading = ValueNotifier(true);
-  final ValueNotifier<bool> _hasError = ValueNotifier(false);
-  final ValueNotifier<bool> _masterExpandState = ValueNotifier(true);
+  final _userService = UserService();
 
-  final ValueNotifier<List<Bucket>> _realParameters = ValueNotifier([]);
-  final ValueNotifier<List<History>> _realHistoryTimeline = ValueNotifier([]);
-  final ValueNotifier<Set<String>> _expandedBucketIds = ValueNotifier({});
-  final ValueNotifier<ChartFilterState> _chartFilter = ValueNotifier(
+  final _masterExpandState = ValueNotifier(true);
+  final _expandedBucketIds = ValueNotifier(<String>{});
+  final _sortFilter = ValueNotifier(DashboardSortFilter.position);
+  final _chartFilter = ValueNotifier(
     const ChartFilterState(filter: ChartFilter.threeMonths),
   );
 
-  ValueListenable<bool> get isLoading => _isLoading;
-  ValueListenable<bool> get hasError => _hasError;
+  DashboardManager() {
+    final initialExpand =
+        !AppCoordinator.instance.user.value.preferences.cardExpand;
+    if (_masterExpandState.value != initialExpand) {
+      toggleAllBuckets();
+    }
+  }
+
   ValueListenable<bool> get masterExpandState => _masterExpandState;
 
-  ValueListenable<List<Bucket>> get parametersNotifier => _realParameters;
-  ValueListenable<List<History>> get historyTimelineNotifier => _realHistoryTimeline;
   ValueListenable<Set<String>> get expandedIdsNotifier => _expandedBucketIds;
+
   ValueListenable<ChartFilterState> get chartFilterNotifier => _chartFilter;
 
-  List<Bucket> get parameters => _realParameters.value;
-  List<History> get historyTimeline => _realHistoryTimeline.value;
+  ValueListenable<DashboardSortFilter> get sortFilterNotifier => _sortFilter;
+
   ChartFilterState get chartFilter => _chartFilter.value;
 
-  Future<void> loadFirebaseDashboardData() async {
-    try {
-      _isLoading.value = true;
-      _hasError.value = false;
+  DashboardSortFilter get activeSort => _sortFilter.value;
 
-      final results = await Future.wait([
-        BucketManagementService().fetch(),
-        HistoryManagementService().fetch(),
-      ]);
+  void updateSortFilter(List<Bucket> buckets, DashboardSortFilter newFilter) {
+    SmLogger.debug(
+      'Sorting filter',
+      payload: {'old': _sortFilter.value, 'new': newFilter},
+    );
 
-      _realParameters.value = results[0] as List<Bucket>;
-      _realHistoryTimeline.value = results[1] as List<History>;
+    final latestHistory = AppCoordinator.instance.history.value.lastOrNull;
 
-      _isLoading.value = false;
-    } catch (e) {
-      print('DEBUG_SYSTEM [DashboardManager]: Critical fail -> $e');
-      _isLoading.value = false;
-      _hasError.value = true;
-    }
+    buckets.sort((a, b) {
+      final double valA =
+          latestHistory?.transactions
+              .where((t) => t.bucketId == a.id)
+              .firstOrNull
+              ?.actualValue ??
+          0.0;
+      final double valB =
+          latestHistory?.transactions
+              .where((t) => t.bucketId == b.id)
+              .firstOrNull
+              ?.actualValue ??
+          0.0;
+
+      switch (newFilter) {
+        case DashboardSortFilter.position:
+          return a.position.compareTo(b.position);
+        case DashboardSortFilter.name:
+          return a.name.compareTo(b.name);
+        case DashboardSortFilter.currentValue:
+          return valB.compareTo(valA);
+        case DashboardSortFilter.minValue:
+          return a.minValue.compareTo(b.minValue);
+        case DashboardSortFilter.allocation:
+          final double allocA = (valA / (latestHistory?.total ?? 1)) * 100;
+          final double allocB = (valB / (latestHistory?.total ?? 1)) * 100;
+          return allocB.compareTo(allocA);
+      }
+    });
+
+    _userService.updateLastFilter(newFilter);
+    _sortFilter.value = newFilter;
   }
 
   void updateChartFilter(ChartFilterState newState) {
@@ -68,10 +95,19 @@ class DashboardManager {
 
   void toggleAllBuckets() {
     if (_masterExpandState.value) {
-      _expandedBucketIds.value = _realParameters.value.map((b) => b.id).toSet();
+      _expandedBucketIds.value = AppCoordinator.instance.buckets.value
+          .map((b) => b.id)
+          .toSet();
     } else {
       _expandedBucketIds.value = {};
     }
     _masterExpandState.value = !_masterExpandState.value;
+  }
+
+  void dispose() {
+    _masterExpandState.dispose();
+    _expandedBucketIds.dispose();
+    _sortFilter.dispose();
+    _chartFilter.dispose();
   }
 }
