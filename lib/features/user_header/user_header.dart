@@ -85,7 +85,6 @@ class _UserHeaderState extends State<UserHeader> {
   }
 
   Widget _buildName(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
     return GestureDetector(

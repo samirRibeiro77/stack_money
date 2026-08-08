@@ -14,6 +14,9 @@ enum NavBarTabs {
 
   Color get color {
     switch (this) {
+      case hud:
+      case log:
+        return StackMoneyTheme.platinumSilver;
       case ai:
         return StackMoneyTheme.magentaNeon;
       default:
