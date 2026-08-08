@@ -5,4 +5,5 @@ class FirebaseKey {
   static const buckets = 'buckets';
   static const salaryPlans = 'salaryPlans';
   static const netWorth = 'netWorth';
+  static const aiChats = 'aiChats';
 }
