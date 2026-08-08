@@ -1,11 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/data/enum/nav_bar_tabs.dart';
-import 'package:stack_money/features/ai_chats/ai_chats_screen.dart';
-import 'package:stack_money/features/buckets/buckets_screen.dart';
-import 'package:stack_money/features/dashboard/dashboard_screen.dart';
-import 'package:stack_money/features/history/history_screen.dart';
-import 'package:stack_money/features/plans/plans_screen.dart';
 
 class MainNavigationManager {
   final _tabIndex = ValueNotifier<NavBarTabs>(NavBarTabs.hud);
@@ -26,22 +21,5 @@ class MainNavigationManager {
 
   void addTabListener(VoidCallback f) => _tabIndex.addListener(f);
 
-  void switchSecurityMode() => _securityMode.value = !_securityMode.value;
-
   void changeTab(NavBarTabs tab) => _tabIndex.value = tab;
-
-  Widget activeSliverFragment(NavBarTabs index) {
-    switch (index) {
-      case NavBarTabs.hud:
-        return DashboardScreen();
-      case NavBarTabs.plans:
-        return PlansScreen();
-      case NavBarTabs.ai:
-        return AiChatsScreen();
-      case NavBarTabs.buckets:
-        return BucketControlScreen();
-      case NavBarTabs.log:
-        return HistoryScreen();
-    }
-  }
 }

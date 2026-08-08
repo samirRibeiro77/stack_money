@@ -5,6 +5,7 @@ import 'package:stack_money/domain/service/user_service.dart';
 import 'package:stack_money/features/auth/login_screen.dart';
 import 'package:stack_money/features/loading/loading_screen.dart';
 import 'package:stack_money/features/main_navigation/main_navigation_wrapper.dart';
+import 'package:stack_money/features/personal_cfo/personal_cfo_screen.dart';
 
 final UserService _authService = UserService();
 
@@ -45,6 +46,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: LoadingScreen.route,
       builder: (_, state) => const LoadingScreen(),
+    ),
+    GoRoute(
+      path: PersonalCfoScreen.route,
+      builder: (_, state) => const PersonalCfoScreen(),
     ),
   ],
 );
