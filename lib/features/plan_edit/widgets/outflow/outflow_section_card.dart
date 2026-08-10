@@ -36,7 +36,7 @@ class OutflowSectionCard extends StatelessWidget {
     int? targetDay,
   })
   onUpdate;
-  final Function(int index, BuildContext ctx) onRemove;
+  final Function(int index) onRemove;
 
   void onChanged(String value) {
     double valueToSave;
@@ -112,7 +112,7 @@ class OutflowSectionCard extends StatelessWidget {
                       color: StackMoneyTheme.mutedGrey,
                       size: AppSizes.x10,
                     ),
-                    onPressed: () => onRemove(index, context),
+                    onPressed: () => onRemove(index),
                   ),
                 ),
             ],

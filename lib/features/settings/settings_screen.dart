@@ -22,6 +22,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final _manager = UserSettingsManager();
 
   @override
+  void initState() {
+    super.initState();
+    _manager.loadData(context);
+  }
+
+  @override
   void dispose() {
     _manager.dispose();
     super.dispose();

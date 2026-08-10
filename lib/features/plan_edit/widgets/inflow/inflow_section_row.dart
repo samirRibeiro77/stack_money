@@ -31,7 +31,7 @@ class InflowSectionRow extends StatelessWidget {
   final double absVal;
   final Function(int index, {InflowType? type, double? value, int? day})
   onUpdate;
-  final Function(int index, BuildContext ctx) onRemove;
+  final Function(int index) onRemove;
 
   void onChanged(String value) {
     double valueToSave;
@@ -134,7 +134,7 @@ class InflowSectionRow extends StatelessWidget {
                       color: StackMoneyTheme.mutedGrey,
                       size: AppSizes.x10,
                     ),
-                    onPressed: () => onRemove(index, context),
+                    onPressed: () => onRemove(index),
                   ),
                 ),
               ],

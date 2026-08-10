@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/user_service.dart';
 import 'package:stack_money/features/auth/login_screen.dart';
+import 'package:stack_money/features/error/error_screen.dart';
 import 'package:stack_money/features/loading/loading_screen.dart';
 import 'package:stack_money/features/main_navigation/main_navigation_wrapper.dart';
+import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 import 'package:stack_money/features/personal_cfo/personal_cfo_screen.dart';
 
 final UserService _authService = UserService();
@@ -46,6 +50,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: LoadingScreen.route,
       builder: (_, state) => const LoadingScreen(),
+    ),
+    GoRoute(
+      path: ErrorScreen.route,
+      builder: (_, state) => ErrorScreen(exception: state.extra as StackMoneyException),
+    ),
+    GoRoute(
+      path: PlanEditScreen.route,
+      builder: (_, state) => PlanEditScreen(plan: state.extra as SalaryPlan),
     ),
     GoRoute(
       path: PersonalCfoScreen.route,

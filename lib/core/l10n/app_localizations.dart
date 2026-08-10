@@ -897,7 +897,7 @@ abstract class AppLocalizations {
   /// Settings changed dialog title.
   ///
   /// In en, this message translates to:
-  /// **'Changes'**
+  /// **'Settings changes'**
   String get settingsChangedTitle;
 
   /// Settings changed dialog message.
@@ -959,6 +959,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'TRAILS: Reconstituting transaction logs and ledger history...'**
   String get loadingHistory;
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// Reload app.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload App'**
+  String get reload;
+
+  /// Payload title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payload'**
+  String get payload;
+
+  /// Stack Trace title.
+  ///
+  /// In en, this message translates to:
+  /// **'Stack Trace'**
+  String get stackTrace;
+
+  /// Exception title.
+  ///
+  /// In en, this message translates to:
+  /// **'Exception'**
+  String get exception;
+
+  /// Data might be lost error message.
+  ///
+  /// In en, this message translates to:
+  /// **'Some data may have been lost or corrupted...'**
+  String get dataMightBeLost;
+
+  /// Error message when saving data fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save data...'**
+  String get failedSave;
+
+  /// Error message when update last filter on dashboard fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed updating last filter...'**
+  String get failedUpdateLastFilter;
+
+  /// Error message when initialize a new slot fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to initialize a new slot...'**
+  String get failedInitializingNewSlot;
+
+  /// Error message when archive a plan fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to archive plan...'**
+  String get failedArchivePlan;
+
+  /// Error message when purge a plan fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to purge plan...'**
+  String get failedPurgePlan;
+
+  /// Settings changed dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan changes'**
+  String get planChangedTitle;
+
+  /// Plan changed dialog message.
+  ///
+  /// In en, this message translates to:
+  /// **'Identified {qty} changes on plan:'**
+  String planChangedMessage(Object qty);
+
+  /// Plan name changed diff note.
+  ///
+  /// In en, this message translates to:
+  /// **'• Name:\n   {old} ➔ {current}\n'**
+  String planChangedName(Object current, Object old);
+
+  /// Plan base salary changed diff note.
+  ///
+  /// In en, this message translates to:
+  /// **'• Base Salary:\n   {old} ➔ {current}\n'**
+  String planChangedBaseSalary(Object current, Object old);
+
+  /// Plan item changed diff note.
+  ///
+  /// In en, this message translates to:
+  /// **'• {code}:\n   {old} items ➔ {current} items\n'**
+  String planChangedItem(Object code, Object current, Object old);
+
+  /// Plan incoming code.
+  ///
+  /// In en, this message translates to:
+  /// **'Incoming'**
+  String get planChangedIncoming;
+
+  /// Plan deduction code.
+  ///
+  /// In en, this message translates to:
+  /// **'Deduction'**
+  String get planChangedOutcoming;
+
+  /// Plan distribution code.
+  ///
+  /// In en, this message translates to:
+  /// **'Distribution'**
+  String get planChangedDistribution;
+
+  /// No changes found in current plan.
+  ///
+  /// In en, this message translates to:
+  /// **'No changes detected...'**
+  String get planChangedNoChanges;
+
+  /// Found changes only on details.
+  ///
+  /// In en, this message translates to:
+  /// **'Some details has changed'**
+  String get planChangedValueDetails;
 }
 
 class _AppLocalizationsDelegate

@@ -31,7 +31,8 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Failed to save user',
         scope: ExceptionScope.database,
-        payload: {'user': user.toJson(keepPrefs: true), 'exception': e},
+        exception: e as Exception,
+        payload: {'user': user.toJson(keepPrefs: true)},
         stackTrace: stack,
       );
     }
@@ -59,7 +60,7 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Failed to get user',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
@@ -77,7 +78,7 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Failed to get user',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
@@ -97,7 +98,7 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
           throw StackMoneyException(
             message: 'Error in user timeline stream',
             scope: ExceptionScope.database,
-            payload: {'exception': e},
+            exception: e as Exception,
             stackTrace: stack,
           );
         });
@@ -131,7 +132,7 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Google authentication protocol failed',
         scope: ExceptionScope.auth,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
@@ -159,7 +160,7 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
       StackMoneyException(
         message: 'Failed during sign out',
         scope: ExceptionScope.auth,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     } finally {

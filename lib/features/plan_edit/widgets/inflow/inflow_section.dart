@@ -20,7 +20,7 @@ class InflowSection extends StatelessWidget {
   final Function(double val) onBaseUpdate;
   final Function(int index, {InflowType? type, double? value, int? day})
   onUpdate;
-  final Function(int index, BuildContext ctx) onRemove;
+  final Function(int index) onRemove;
 
   const InflowSection({
     required this.plan,

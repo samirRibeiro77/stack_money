@@ -443,7 +443,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get rememberLast => 'Ultimo usado';
 
   @override
-  String get settingsChangedTitle => 'Alterações';
+  String get settingsChangedTitle => 'Alterações nas config';
 
   @override
   String settingsChangedMessage(Object qty) {
@@ -482,4 +482,77 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get loadingHistory =>
       'RASTROS: Reconstituindo logs e histórico de transações na rede...';
+
+  @override
+  String get error => 'Erro';
+
+  @override
+  String get reload => 'Recarregar o app';
+
+  @override
+  String get payload => 'Dados';
+
+  @override
+  String get stackTrace => 'Pilha';
+
+  @override
+  String get exception => 'Exceção';
+
+  @override
+  String get dataMightBeLost =>
+      'Alguns dados podem ter sido perdidos ou corrompidos...';
+
+  @override
+  String get failedSave => 'Erro ao salvar...';
+
+  @override
+  String get failedUpdateLastFilter =>
+      'Erro ao atualizar ultimo filtro utilizado...';
+
+  @override
+  String get failedInitializingNewSlot => 'Erro ao inicializar um novo slot...';
+
+  @override
+  String get failedArchivePlan => 'Erro ao arquivar plano...';
+
+  @override
+  String get failedPurgePlan => 'Erro ao excluir plano...';
+
+  @override
+  String get planChangedTitle => 'Alterações no plano';
+
+  @override
+  String planChangedMessage(Object qty) {
+    return 'Identificamos $qty alterações no plano:';
+  }
+
+  @override
+  String planChangedName(Object current, Object old) {
+    return '• Nome:\n   $old ➔ $current\n';
+  }
+
+  @override
+  String planChangedBaseSalary(Object current, Object old) {
+    return '• Salário base:\n   R\\\$$old ➔ R\\\$$current\n';
+  }
+
+  @override
+  String planChangedItem(Object code, Object current, Object old) {
+    return '• $code:\n   $old itens ➔ $current itens\n';
+  }
+
+  @override
+  String get planChangedIncoming => 'Entradas';
+
+  @override
+  String get planChangedOutcoming => 'Saídas';
+
+  @override
+  String get planChangedDistribution => 'Distribuições';
+
+  @override
+  String get planChangedNoChanges => 'Nenhuma alteração detectada...';
+
+  @override
+  String get planChangedValueDetails => 'Alguns detalhes foram alterados';
 }

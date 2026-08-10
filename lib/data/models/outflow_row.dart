@@ -62,4 +62,18 @@ class OutflowRow {
   }
 
   String get id => _id;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OutflowRow &&
+          runtimeType == other.runtimeType &&
+          _id == other._id &&
+          name == other.name &&
+          type == other.type &&
+          value == other.value &&
+          targetDay == other.targetDay;
+
+  @override
+  int get hashCode => Object.hash(_id, name, type, value, targetDay);
 }

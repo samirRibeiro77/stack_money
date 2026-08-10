@@ -9,14 +9,14 @@ class DismissiblePlanCard extends StatelessWidget {
   const DismissiblePlanCard(
     this.plan, {
     required this.confirmDismiss,
-    required this.onDismissed,
     required this.onTap,
+    this.onDismissed,
     super.key,
   });
 
   final SalaryPlan plan;
   final ConfirmDismissCallback confirmDismiss;
-  final DismissDirectionCallback onDismissed;
+  final DismissDirectionCallback? onDismissed;
   final VoidCallback onTap;
 
   @override

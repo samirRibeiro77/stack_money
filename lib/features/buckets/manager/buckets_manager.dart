@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
@@ -8,14 +9,16 @@ import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
+import 'package:stack_money/features/error/error_screen.dart';
 
 class BucketsManager {
   final _bucketService = BucketManagementService();
+  late final BuildContext _context;
 
   final ValueNotifier<bool> _masterExpandState = ValueNotifier(true);
   final ValueNotifier<Set<String>> _expandedBucketIds = ValueNotifier({});
 
-  BucketsManager() {
+  BucketsManager(this._context) {
     final initialExpand =
         !AppCoordinator.instance.user.value.preferences.cardExpand;
     if (_masterExpandState.value != initialExpand) {
@@ -63,16 +66,25 @@ class BucketsManager {
       }
     }
 
-    for (final bucket in filteredList) {
-      _bucketService.save(bucket).catchError((e, stack) {
-        StackMoneyException(
-          message: 'Failed to save reordered buckets',
-          scope: ExceptionScope.business,
-          payload: {'exception': e, 'buckets': bucket},
-          stackTrace: stack,
-        );
-      });
-    }
+    _bucketService.saveBatch(filteredList).then((result) {
+      result.fold(
+        onSuccess: (_) {},
+        onFailure: (e) {
+          if (_context.mounted) {
+            _context.go(
+              ErrorScreen.route,
+              extra: StackMoneyException(
+                message: 'Failed reordering buckets...',
+                scope: ExceptionScope.business,
+                payload: e.payload,
+                exception: e.exception,
+                stackTrace: e.stackTrace,
+              ),
+            );
+          }
+        },
+      );
+    });
   }
 
   Future<void> saveBucketToFirebase(Bucket updatedBucket) async {

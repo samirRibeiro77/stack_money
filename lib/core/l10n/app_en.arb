@@ -528,7 +528,7 @@
   "@rememberLast": {
     "description": "Remember the last dashboard filter for allocation buckets."
   },
-  "settingsChangedTitle": "Changes",
+  "settingsChangedTitle": "Settings changes",
   "@settingsChangedTitle": {
     "description": "Settings changed dialog title."
   },
@@ -571,5 +571,89 @@
   "loadingHistory": "TRAILS: Reconstituting transaction logs and ledger history...",
   "@loadingHistory": {
     "description": "Loading history data."
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error."
+  },
+  "reload": "Reload App",
+  "@reload": {
+    "description": "Reload app."
+  },
+  "payload": "Payload",
+  "@payload": {
+    "description": "Payload title."
+  },
+  "stackTrace": "Stack Trace",
+  "@stackTrace": {
+    "description": "Stack Trace title."
+  },
+  "exception": "Exception",
+  "@exception": {
+    "description": "Exception title."
+  },
+  "dataMightBeLost": "Some data may have been lost or corrupted...",
+  "@dataMightBeLost": {
+    "description": "Data might be lost error message."
+  },
+  "failedSave": "Failed to save data...",
+  "@failedSave": {
+    "description": "Error message when saving data fail."
+  },
+  "failedUpdateLastFilter": "Failed updating last filter...",
+  "@failedUpdateLastFilter": {
+    "description": "Error message when update last filter on dashboard fail."
+  },
+  "failedInitializingNewSlot": "Failed to initialize a new slot...",
+  "@failedInitializingNewSlot": {
+    "description": "Error message when initialize a new slot fail."
+  },
+  "failedArchivePlan": "Failed to archive plan...",
+  "@failedArchivePlan": {
+    "description": "Error message when archive a plan fail."
+  },
+  "failedPurgePlan": "Failed to purge plan...",
+  "@failedPurgePlan": {
+    "description": "Error message when purge a plan fail."
+  },
+  "planChangedTitle": "Plan changes",
+  "@planChangedTitle": {
+    "description": "Settings changed dialog title."
+  },
+  "planChangedMessage": "Identified {qty} changes on plan:",
+  "@planChangedMessage": {
+    "description": "Plan changed dialog message."
+  },
+  "planChangedName": "• Name:\n   {old} ➔ {current}\n",
+  "@planChangedName": {
+    "description": "Plan name changed diff note."
+  },
+  "planChangedBaseSalary": "• Base Salary:\n   {old} ➔ {current}\n",
+  "@planChangedBaseSalary": {
+    "description": "Plan base salary changed diff note."
+  },
+  "planChangedItem": "• {code}:\n   {old} items ➔ {current} items\n",
+  "@planChangedItem": {
+    "description": "Plan item changed diff note."
+  },
+  "planChangedIncoming": "Incoming",
+  "@planChangedIncoming": {
+    "description": "Plan incoming code."
+  },
+  "planChangedOutcoming": "Deduction",
+  "@planChangedOutcoming": {
+    "description": "Plan deduction code."
+  },
+  "planChangedDistribution": "Distribution",
+  "@planChangedDistribution": {
+    "description": "Plan distribution code."
+  },
+  "planChangedNoChanges": "No changes detected...",
+  "@planChangedNoChanges": {
+    "description": "No changes found in current plan."
+  },
+  "planChangedValueDetails": "Some details has changed",
+  "@planChangedValueDetails": {
+    "description": "Found changes only on details."
   }
 }
