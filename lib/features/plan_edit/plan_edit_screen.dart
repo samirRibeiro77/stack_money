@@ -54,6 +54,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
     final diffNote = _manager.getDiffNote(l10n);
     final shouldLeave = await showDialog<bool>(
       context: context,
+      barrierDismissible: false,
       builder: (dialogContext) => SmDialog(
         title: l10n.planChangedTitle,
         message: l10n.planChangedMessage(qty),
@@ -67,6 +68,9 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
           }
         },
         onCancel: () {
+          dialogContext.pop(false);
+        },
+        onDeny: () {
           dialogContext.pop(true);
         },
       ),
