@@ -65,7 +65,6 @@ class PlansManager {
   }
 
   void reorderFilteredPlans(
-    BuildContext _context,
     List<SalaryPlan> filteredList,
     int oldIndex,
     int newIndex,

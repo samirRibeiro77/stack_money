@@ -133,16 +133,16 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                   onSelected: (value) {
                     switch (value) {
                       case PlanEditActions.copy:
-                        _manager.copyPlan;
+                        _manager.copyPlan();
                         break;
                       case PlanEditActions.share:
-                        _manager.sharePlan;
+                        _manager.sharePlan();
                         break;
                       case PlanEditActions.archive:
-                        _manager.archivePlan;
+                        _manager.archivePlan();
                         break;
                       case PlanEditActions.delete:
-                        _manager.deletePlan;
+                        _manager.deletePlan();
                         break;
                     }
                   },
