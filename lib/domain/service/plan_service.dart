@@ -65,7 +65,7 @@ class PlanManagementService {
       return Failure(
         StackMoneyException(
           message: 'Error defining if there\'s an available sprint today',
-          scope: ExceptionScope.business,
+          scope: ExceptionScope.service,
           exception: e as Exception,
           stackTrace: stack,
         ),
@@ -83,7 +83,7 @@ class PlanManagementService {
       return Failure(
         StackMoneyException(
           message: 'Error saving salary plan',
-          scope: ExceptionScope.business,
+          scope: ExceptionScope.service,
           payload: plan.toJson(),
           exception: e as Exception,
           stackTrace: stack,
@@ -121,7 +121,7 @@ class PlanManagementService {
       return Failure(
         StackMoneyException(
           message: 'Error toggling plan to active',
-          scope: ExceptionScope.business,
+          scope: ExceptionScope.service,
           payload: {'id': id, 'nextStatus': nextStatus},
           exception: e as Exception,
           stackTrace: stack,
@@ -140,7 +140,7 @@ class PlanManagementService {
       return Failure(
         StackMoneyException(
           message: 'Error deleting plan',
-          scope: ExceptionScope.business,
+          scope: ExceptionScope.service,
           payload: {'id': id},
           exception: e as Exception,
           stackTrace: stack,
@@ -167,7 +167,7 @@ class PlanManagementService {
       return Failure(
         StackMoneyException(
           message: 'Error deleting plan',
-          scope: ExceptionScope.business,
+          scope: ExceptionScope.service,
           payload: {'id': targetPlanId, 'isActive': isActive},
           exception: e as Exception,
           stackTrace: stack,

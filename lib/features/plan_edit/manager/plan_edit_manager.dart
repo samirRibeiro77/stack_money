@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
@@ -17,13 +19,15 @@ import 'package:stack_money/data/models/outflow_row.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/export_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
+import 'package:stack_money/features/error/error_screen.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
 class PlanEditManager {
   final PlanManagementService _planService = PlanManagementService();
 
   late final SalaryPlan _initialPlan;
-  late final ValueNotifier<SalaryPlan> planNotifier;
+  late final ValueNotifier<SalaryPlan> _planNotifier;
+  late final BuildContext _context;
 
   final _inflowExpandState = ValueNotifier(false);
   final _outflowExpandState = ValueNotifier(false);
@@ -35,20 +39,22 @@ class PlanEditManager {
 
   ValueListenable<bool> get outflowExpandState => _outflowExpandState;
 
+  ValueListenable<SalaryPlan> get planNotifier => _planNotifier;
+
   void toggleInflowExpand() =>
       _inflowExpandState.value = !_inflowExpandState.value;
 
   void toggleOutflowExpand() =>
       _outflowExpandState.value = !_outflowExpandState.value;
 
-  PlanEditManager(SalaryPlan initialPlan) {
+  PlanEditManager(SalaryPlan initialPlan, this._context) {
     _initialPlan = initialPlan;
-    planNotifier = ValueNotifier(initialPlan);
+    _planNotifier = ValueNotifier(initialPlan);
     _ensureEmptyInflowRow();
     _ensureEmptyOutflowRow();
   }
 
-  SalaryPlan get currentPlan => planNotifier.value;
+  SalaryPlan get currentPlan => _planNotifier.value;
 
   /// Retorna o plano limpo (sem as linhas vazias de placeholders do form)
   SalaryPlan _cleanPlan(SalaryPlan plan) {
@@ -134,21 +140,24 @@ class PlanEditManager {
 
   /// Salva todas as alterações pendentes no Firebase
   Future<bool> savePlan() async {
-    if (!isDirty) return true;
-
-    try {
-      final cleanPlanToSave = _cleanPlan(currentPlan);
-      await _planService.save(cleanPlanToSave);
+    if (!isDirty) {
+      final l10n = AppLocalizations.of(_context)!;
+      SmSnackBar(message: l10n.planChangedNoChanges).show(_context);
       return true;
-    } catch (e, stack) {
-      StackMoneyException(
-        message: 'Failed to save plan',
-        scope: ExceptionScope.business,
-        payload: {'exception': e, 'plan': currentPlan.toJson()},
-        stackTrace: stack,
-      );
-      return false;
     }
+
+    final cleanPlanToSave = _cleanPlan(currentPlan);
+    final result = await _planService.save(cleanPlanToSave);
+
+    result.fold(
+      onSuccess: (_) {
+        return true;
+      },
+      onFailure: (e) {
+        _context.push(ErrorScreen.route, extra: e);
+        return false;
+      },
+    );
   }
 
   void dispose() {
@@ -158,72 +167,82 @@ class PlanEditManager {
   }
 
   void updatePlanName(String newName) {
-    planNotifier.value = currentPlan.copyWith(name: newName);
+    _planNotifier.value = currentPlan.copyWith(name: newName);
   }
 
   void updateBaseSalary(double value) {
-    planNotifier.value = currentPlan.copyWith(baseSalary: value);
+    _planNotifier.value = currentPlan.copyWith(baseSalary: value);
   }
 
-  Future<void> copyPlan(BuildContext context) async {
-    try {
-      final copiedPlan = currentPlan.copyWith(
-        newId: true,
-        name: 'Copy of ${currentPlan.name}',
-        isActive: false,
-        isArchived: false,
-        createdAt: Timestamp.now(),
-      );
+  Future<void> copyPlan() async {
+    final copiedPlan = currentPlan.copyWith(
+      newId: true,
+      name: 'Copy of ${currentPlan.name}',
+      isActive: false,
+      isArchived: false,
+      createdAt: Timestamp.now(),
+    );
 
-      await _planService.save(copiedPlan);
+    final result = await _planService.save(copiedPlan);
 
-      if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => PlanEditScreen(plan: copiedPlan)),
+    result.fold(
+      onSuccess: (_) {
+        if (_context.mounted) {
+          _context.go(PlanEditScreen.route, extra: copiedPlan);
+        }
+      },
+      onFailure: (e) {
+        _context.push(
+          ErrorScreen.route,
+          extra: StackMoneyException(
+            message: 'Failed to copy current plan',
+            scope: ExceptionScope.business,
+            payload: copiedPlan.toJson(),
+            exception: e.exception,
+            stackTrace: e.stackTrace
+          ),
         );
-      }
-    } catch (e, stack) {
-      StackMoneyException(
-        message: 'Failed to copy plan',
-        scope: ExceptionScope.business,
-        payload: {'exception': e, 'plan': currentPlan.toJson()},
-        stackTrace: stack,
-      );
-    }
+      },
+    );
   }
 
-  Future<void> sharePlan(BuildContext context) async {
+  Future<void> sharePlan() async {
     try {
       ExportService().exportData([currentPlan.toJson()]);
     } catch (e, stack) {
       StackMoneyException(
         message: 'Failed to share plan',
         scope: ExceptionScope.business,
-        payload: {'exception': e, 'plan': currentPlan.toJson()},
+        payload: currentPlan.toJson(),
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
   }
 
-  Future<void> archivePlan(BuildContext context) async {
-    try {
-      await _planService.toggleArchive(currentPlan.id, true);
-      if (context.mounted) Navigator.of(context).pop();
-    } catch (e, stack) {
-      StackMoneyException(
-        message: 'Failed to archive plan',
-        scope: ExceptionScope.business,
-        payload: {'exception': e, 'plan': currentPlan.toJson()},
-        stackTrace: stack,
-      );
-    }
+  Future<void> archivePlan() async {
+    final result = await _planService.toggleArchive(currentPlan.id, true);
+
+    result.fold(
+      onSuccess: (_) {
+        if (_context.mounted) {
+          _context.pop();
+        }
+      },
+      onFailure: (e) {
+        _context.push(
+          ErrorScreen.route,
+          extra: e,
+        );
+      },
+    );
   }
 
-  Future<void> deletePlan(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
+  Future<void> deletePlan() async {
+    final l10n = AppLocalizations.of(_context)!;
 
     final confirm = await showDialog<bool>(
-      context: context,
+      context: _context,
       barrierDismissible: false,
       builder: (context) => SmDialog(
         message: l10n.deletePlanMessage,
@@ -235,17 +254,21 @@ class PlanEditManager {
     );
 
     if (confirm == true) {
-      try {
-        await _planService.purge(currentPlan.id);
-        if (context.mounted) Navigator.of(context).pop();
-      } catch (e, stack) {
-        StackMoneyException(
-          message: 'Failed to delete plan',
-          scope: ExceptionScope.business,
-          payload: {'exception': e, 'plan': currentPlan.toJson()},
-          stackTrace: stack,
-        );
-      }
+      final result = await _planService.purge(currentPlan.id);
+
+      result.fold(
+        onSuccess: (_) {
+          if (_context.mounted) {
+            _context.pop();
+          }
+        },
+        onFailure: (e) {
+          _context.push(
+            ErrorScreen.route,
+            extra: e,
+          );
+        },
+      );
     }
   }
 
@@ -253,7 +276,7 @@ class PlanEditManager {
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (list.isEmpty || list.last.value > 0) {
       list.add(InflowRow.empty());
-      planNotifier.value = currentPlan.copyWith(inflows: list);
+      _planNotifier.value = currentPlan.copyWith(inflows: list);
     }
   }
 
@@ -264,13 +287,13 @@ class PlanEditManager {
 
       list[index] = inflow.copyWith(type: type, value: value, day: day);
 
-      planNotifier.value = currentPlan.copyWith(inflows: list);
+      _planNotifier.value = currentPlan.copyWith(inflows: list);
       if (index == list.length - 1 && (value ?? 0) > 0) _ensureEmptyInflowRow();
     }
   }
 
-  void removeInflow(int index, BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
+  void removeInflow(int index) async {
+    final l10n = AppLocalizations.of(_context)!;
 
     final list = List<InflowRow>.from(currentPlan.inflows);
     if (list.length > 1) {
@@ -281,7 +304,7 @@ class PlanEditManager {
           : StackMoneyString.formatMoney(inflow.value, symbol: true);
 
       final confirm = await showDialog<bool>(
-        context: context,
+        context: _context,
         barrierDismissible: false,
         builder: (context) => SmDialog(
           message: l10n.deleteInflowMessage,
@@ -294,10 +317,10 @@ class PlanEditManager {
 
       if (confirm == true) {
         list.removeAt(index);
-        planNotifier.value = currentPlan.copyWith(inflows: list);
+        _planNotifier.value = currentPlan.copyWith(inflows: list);
         _ensureEmptyInflowRow();
 
-        _triggerUndoSnackBar(context, l10n.deletedInflow, backupState);
+        _triggerUndoSnackBar(l10n.deletedInflow, backupState);
       }
     }
   }
@@ -309,7 +332,7 @@ class PlanEditManager {
           ? currentPlan.inflows.first.day
           : 5;
       list.add(OutflowRow.empty(defaultDay: defaultDay));
-      planNotifier.value = currentPlan.copyWith(outflows: list);
+      _planNotifier.value = currentPlan.copyWith(outflows: list);
     }
   }
 
@@ -331,7 +354,7 @@ class PlanEditManager {
         targetDay: targetDay,
       );
 
-      planNotifier.value = currentPlan.copyWith(outflows: list);
+      _planNotifier.value = currentPlan.copyWith(outflows: list);
       if (index == list.length - 1 &&
           ((value ?? 0) > 0 || (name ?? '').isNotEmpty)) {
         _ensureEmptyOutflowRow();
@@ -339,8 +362,8 @@ class PlanEditManager {
     }
   }
 
-  void removeOutflow(int index, BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
+  void removeOutflow(int index) async {
+    final l10n = AppLocalizations.of(_context)!;
 
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (list.length > 1) {
@@ -348,7 +371,7 @@ class PlanEditManager {
       final outflow = list[index];
 
       final confirm = await showDialog<bool>(
-        context: context,
+        context: _context,
         barrierDismissible: false,
         builder: (context) => SmDialog(
           message: l10n.deleteOutflowMessage,
@@ -361,10 +384,10 @@ class PlanEditManager {
 
       if (confirm == true) {
         list.removeAt(index);
-        planNotifier.value = currentPlan.copyWith(outflows: list);
+        _planNotifier.value = currentPlan.copyWith(outflows: list);
         _ensureEmptyOutflowRow();
 
-        _triggerUndoSnackBar(context, l10n.deletedOutflow, backupState);
+        _triggerUndoSnackBar(l10n.deletedOutflow, backupState);
       }
     }
   }
@@ -377,7 +400,7 @@ class PlanEditManager {
 
     list.add(DistributionRow.empty(defaultDay: defaultDay));
 
-    planNotifier.value = currentPlan.copyWith(distributions: list);
+    _planNotifier.value = currentPlan.copyWith(distributions: list);
     _scrollToBottom();
   }
 
@@ -401,18 +424,17 @@ class PlanEditManager {
         targetDay: targetDay,
       );
 
-      planNotifier.value = currentPlan.copyWith(distributions: list);
+      _planNotifier.value = currentPlan.copyWith(distributions: list);
     }
   }
 
   Future<bool?> removeDistributionConfirmation(
     String distributionName,
-    BuildContext context,
   ) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(_context)!;
 
     return showDialog<bool>(
-      context: context,
+      context: _context,
       barrierDismissible: false,
       builder: (context) => SmDialog(
         message: l10n.deleteDistributionMessage,
@@ -424,41 +446,39 @@ class PlanEditManager {
     );
   }
 
-  void removeDistribution(String id, BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
+  void removeDistribution(String id) async {
+    final l10n = AppLocalizations.of(_context)!;
     final backupState = currentPlan;
 
     final list = List<DistributionRow>.from(currentPlan.distributions);
     list.removeWhere((e) => e.id == id);
-    planNotifier.value = currentPlan.copyWith(distributions: list);
+    _planNotifier.value = currentPlan.copyWith(distributions: list);
 
-    _triggerUndoSnackBar(context, l10n.deletedDistribution, backupState);
+    _triggerUndoSnackBar(l10n.deletedDistribution, backupState);
   }
 
   Future<void> togglePlanActivation() async {
     final bool newActiveState = !currentPlan.isActive;
-    planNotifier.value = currentPlan.copyWith(isActive: newActiveState);
+    _planNotifier.value = currentPlan.copyWith(isActive: newActiveState);
 
     await _planService.toggleActiveStatus(currentPlan.id, newActiveState);
   }
 
-  void _triggerUndoSnackBar(
-    BuildContext context,
-    String message,
-    SalaryPlan backup,
-  ) {
-    final l10n = AppLocalizations.of(context)!;
+  void _triggerUndoSnackBar(String message, SalaryPlan backup) {
+    final l10n = AppLocalizations.of(_context)!;
 
-    SmSnackBar(
-      message: message,
-      type: SnackBarType.error,
-      action: SnackBarAction(
-        label: l10n.undo,
-        onPressed: () {
-          planNotifier.value = backup;
-        },
-      ),
-    ).show(context);
+    if (_context.mounted) {
+      SmSnackBar(
+        message: message,
+        type: SnackBarType.error,
+        action: SnackBarAction(
+          label: l10n.undo,
+          onPressed: () {
+            _planNotifier.value = backup;
+          },
+        ),
+      ).show(_context);
+    }
   }
 
   void _scrollToBottom() {
