@@ -162,5 +162,6 @@
   "planChangedItem": "• {code}:\n   {old} itens ➔ {current} itens\n",
   "planChangedIncoming": "Entradas",
   "planChangedOutcoming": "Saídas",
-  "planChangedDistribution": "Distribuições"
+  "planChangedDistribution": "Distribuições",
+  "planChangedNoChanges": "Nenhuma alteração detectada..."
 }

@@ -1073,6 +1073,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Distribution'**
   String get planChangedDistribution;
+
+  /// No changes found in current plan.
+  ///
+  /// In en, this message translates to:
+  /// **'No changes detected...'**
+  String get planChangedNoChanges;
 }
 
 class _AppLocalizationsDelegate

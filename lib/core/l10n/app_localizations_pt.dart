@@ -549,4 +549,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get planChangedDistribution => 'Distribuições';
+
+  @override
+  String get planChangedNoChanges => 'Nenhuma alteração detectada...';
 }

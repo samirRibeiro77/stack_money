@@ -647,5 +647,9 @@
   "planChangedDistribution": "Distribution",
   "@planChangedDistribution": {
     "description": "Plan distribution code."
+  },
+  "planChangedNoChanges": "No changes detected...",
+  "@planChangedNoChanges": {
+    "description": "No changes found in current plan."
   }
 }
