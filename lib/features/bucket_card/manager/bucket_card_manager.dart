@@ -19,6 +19,7 @@ class BucketCardManager {
   final _bucketService = BucketManagementService();
 
   late Bucket _bucket;
+  late final BuildContext _context;
 
   Bucket get bucket => _bucket;
 
@@ -45,8 +46,10 @@ class BucketCardManager {
 
   Timer? _debounceTimer;
 
-  BucketCardManager(Bucket initialBucket) {
+  BucketCardManager(Bucket initialBucket, BuildContext context) {
     _bucket = initialBucket;
+    _context = context;
+
     _isImmediateLiquidity.value = _bucket.isImmediateLiquidity;
     _minValueSign.value = ValueSign.define(_bucket.minValue);
     _techColor.value = _bucket.minValue >= 0
@@ -123,37 +126,36 @@ class BucketCardManager {
     _bucket = updated;
     _isSaving.value = true;
 
-    await _bucketService
-        .save(updated)
-        .then((_) {
-          SmLogger.info('Auto-save executed on Database: ${updated.id}');
-        })
-        .catchError((e, stack) {
-          StackMoneyException(
-            message: 'Failed to auto-save bucket dynamically',
-            scope: ExceptionScope.business,
-            payload: {'exception': e, 'bucket': updated.toJson()},
-            stackTrace: stack,
-          );
-        });
+    final saveResult = await _bucketService.save(updated);
+    if (!saveResult.isSuccess) {
+      if (_context.mounted) {
+        final l10n = AppLocalizations.of(_context)!;
+        SmSnackBar(
+          message: l10n.failedSave,
+          type: SnackBarType.error,
+        ).show(_context);
+      }
+      _isSaving.value = false;
+      return;
+    }
 
     await Future.delayed(const Duration(milliseconds: 500));
     _isSaving.value = false;
   }
 
-  Future<bool> confirmPurge(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
+  Future<bool> confirmPurge() async {
+    final l10n = AppLocalizations.of(_context)!;
 
     if (!_bucket.isDeletable) {
       SmSnackBar(
         message: l10n.failDeleteBucketWithValue,
         type: SnackBarType.error,
-      ).show(context);
+      ).show(_context);
       return false;
     }
 
     final result = await showDialog(
-      context: context,
+      context: _context,
       barrierDismissible: false,
       builder: (dialogContext) => SmDialog(
         message: l10n.deleteBucketMessage,

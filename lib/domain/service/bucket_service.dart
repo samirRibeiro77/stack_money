@@ -112,6 +112,25 @@ class BucketManagementService {
     }
   }
 
+  Future<Result<void>> saveBatch(List<Bucket> buckets) async {
+    try {
+      await _repository.saveBatch(buckets);
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error saving bucket list',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: {'buckets': buckets.map((b) => b.toJson()).toList()},
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
+
   Future<Result<void>> delete(String id) async {
     try {
       await _repository.delete(id);

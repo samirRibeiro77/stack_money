@@ -500,4 +500,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataMightBeLost => 'Some data may have been lost or corrupted...';
+
+  @override
+  String get failedSave => 'Failed to save data...';
+
+  @override
+  String get failedUpdateLastFilter => 'Failed updating last filter...';
+
+  @override
+  String get failedInitializingNewSlot => 'Failed to initialize a new slot...';
+
+  @override
+  String get failedArchivePlan => 'Failed to archive plan...';
+
+  @override
+  String get failedPurgePlan => 'Failed to purge plan...';
 }

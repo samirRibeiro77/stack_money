@@ -146,18 +146,46 @@ class UserService {
     }
   }
 
-  Future<User?> signInWithGoogle() async {
-    final user = await _remoteRepo.signInWithGoogle();
-    if (user != null) {
-      await fetchUserData();
+  Future<Result<User?>> signInWithGoogle() async {
+    try {
+      final user = await _remoteRepo.signInWithGoogle();
+      if (user != null) {
+        await fetchUserData();
+      }
+      return Success(user);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error signing in with Google',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          stackTrace: stack,
+        ),
+      );
     }
-    return user;
   }
 
-  Future<void> signOut() async {
-    AppCoordinator.instance.clearAndCloseListeners();
+  Future<Result<void>> signOut() async {
+    try {
+      AppCoordinator.instance.clearAndCloseListeners();
 
-    await _localRepo.clear();
-    await _remoteRepo.signOut();
+      await _localRepo.clear();
+      await _remoteRepo.signOut();
+
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error signing in with Google',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          stackTrace: stack,
+        ),
+      );
+    }
   }
 }

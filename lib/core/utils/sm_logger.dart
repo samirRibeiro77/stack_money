@@ -98,7 +98,7 @@ class SmLogger {
       final exceptionLines = exception.toString().split('\n');
       for (var line in exceptionLines) {
         if (line.trim().isNotEmpty) {
-          buffer.writeln('     ⚠️ ${line.trim()}');
+          buffer.writeln('     ☣️ ${line.trim()}');
         }
       }
     }

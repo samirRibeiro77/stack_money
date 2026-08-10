@@ -501,4 +501,20 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get dataMightBeLost =>
       'Alguns dados podem ter sido perdidos ou corrompidos...';
+
+  @override
+  String get failedSave => 'Erro ao salvar...';
+
+  @override
+  String get failedUpdateLastFilter =>
+      'Erro ao atualizar ultimo filtro utilizado...';
+
+  @override
+  String get failedInitializingNewSlot => 'Erro ao inicializar um novo slot...';
+
+  @override
+  String get failedArchivePlan => 'Erro ao arquivar plano...';
+
+  @override
+  String get failedPurgePlan => 'Erro ao excluir plano...';
 }

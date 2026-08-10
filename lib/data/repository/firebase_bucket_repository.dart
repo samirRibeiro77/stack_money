@@ -169,6 +169,29 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         });
   }
 
+  Future<void> saveBatch(List<Bucket> buckets) async{
+    SmLogger.debug('Initializing batch save', payload: {'qty': buckets.length});
+
+    try {
+      final batch = firestore.batch();
+      for (final bucket in buckets) {
+        batch.set(
+          _collection.doc(bucket.id),
+          bucket.toJson(),
+          SetOptions(merge: true),
+        );
+      }
+      await batch.commit();
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Failed to submit buckets change list',
+        scope: ExceptionScope.database,
+        exception: e as Exception,
+        stackTrace: stack,
+      );
+    }
+  }
+
   Future<void> delete(String id) async {
     SmLogger.debug('Purging bucket', payload: {'id': id});
 

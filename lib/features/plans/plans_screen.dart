@@ -21,24 +21,28 @@ class PlansScreen extends StatefulWidget {
 }
 
 class _PlansScreenState extends State<PlansScreen> {
-  final _manager = PlansManager();
+  late final PlansManager _manager;
 
   Future<bool?> _confirmDismiss(
     DismissDirection direction,
     SalaryPlan plan,
   ) async {
     if (direction == DismissDirection.endToStart) {
-      return await _manager.showTerminalConfirmDialog(plan.name, context);
+      final result = await _manager.showTerminalConfirmDialog(plan.name);
+      if (result == true) {
+        await _manager.purgePlan(plan.id);
+      }
+      return result;
     } else {
       _manager.archivePlan(plan.id, plan.isArchived);
       return false;
     }
   }
 
-  void _purgePlan(DismissDirection direction, String id) async {
-    if (direction == DismissDirection.endToStart) {
-      _manager.purgePlan(id);
-    }
+  @override
+  void initState() {
+    super.initState();
+    _manager = PlansManager(context);
   }
 
   @override
@@ -82,7 +86,7 @@ class _PlansScreenState extends State<PlansScreen> {
 
                   CardInitializeSlot(
                     l10n.newPlan,
-                    onTap: () => _manager.initializeNewPlanSlot(context),
+                    onTap: () => _manager.initializeNewPlanSlot(),
                   ),
                   const SizedBox(height: AppSizes.sizedBoxSmall),
 
@@ -90,29 +94,28 @@ class _PlansScreenState extends State<PlansScreen> {
                     DismissiblePlanCard(
                       activePlan,
                       key: ValueKey(activePlan.id),
-                      onTap: () =>
-                          _manager.navigateToPlanDetails(context, activePlan),
+                      onTap: () => _manager.navigateToPlanDetails(activePlan),
                       confirmDismiss: (direction) =>
                           _confirmDismiss(direction, activePlan),
-                      onDismissed: (direction) =>
-                          _purgePlan(direction, activePlan.id),
                     ),
                     const SizedBox(height: AppSizes.sizedBoxSmall),
                   ],
 
                   SmReorderableList<SalaryPlan>(
                     items: inactivePlans,
-                    onReorder: (oldIdx, newIdx) => _manager
-                        .reorderFilteredPlans(inactivePlans, oldIdx, newIdx),
+                    onReorder: (oldIdx, newIdx) =>
+                        _manager.reorderFilteredPlans(
+                          context,
+                          inactivePlans,
+                          oldIdx,
+                          newIdx,
+                        ),
                     itemBuilder: (context, plan, index) => DismissiblePlanCard(
                       plan,
                       key: ValueKey(plan.id),
-                      onTap: () =>
-                          _manager.navigateToPlanDetails(context, plan),
+                      onTap: () => _manager.navigateToPlanDetails(plan),
                       confirmDismiss: (direction) =>
                           _confirmDismiss(direction, plan),
-                      onDismissed: (direction) =>
-                          _purgePlan(direction, plan.id),
                     ),
                     feedbackChildBuilder: (_, plan, _) =>
                         PlanListCard(plan, onTap: () {}),

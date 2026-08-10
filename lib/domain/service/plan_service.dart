@@ -92,6 +92,25 @@ class PlanManagementService {
     }
   }
 
+  Future<Result<void>> saveBatch(List<SalaryPlan> salaryList) async {
+    try {
+      await _repository.saveBatch(salaryList);
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error saving salary plan list',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: {'salaryList': salaryList.map((s) => s.toJson()).toList()},
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
+
   Future<Result<void>> toggleArchive(String id, bool nextStatus) async {
     try {
       await _repository.updateArchiveStatus(id, nextStatus);
