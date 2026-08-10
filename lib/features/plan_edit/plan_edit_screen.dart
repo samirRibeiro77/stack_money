@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -32,7 +33,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
   @override
   void initState() {
     super.initState();
-    _manager = PlanEditManager(widget.plan);
+    _manager = PlanEditManager(widget.plan, context);
   }
 
   @override
@@ -60,11 +61,11 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
         onConfirm: () async {
           final success = await _manager.savePlan();
           if (dialogContext.mounted) {
-            Navigator.of(dialogContext).pop(success);
+            dialogContext.pop(success);
           }
         },
         onCancel: () {
-          Navigator.of(dialogContext).pop(true);
+          dialogContext.pop(true);
         },
       ),
     );
@@ -84,12 +85,12 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
 
         final shouldPop = await _showUnsavedChangesDialog(context);
         if (shouldPop && context.mounted) {
-          Navigator.of(context).pop();
+          context.pop();
         }
       },
       child: ValueListenableBuilder<SalaryPlan>(
         valueListenable: _manager.planNotifier,
-        builder: (context, currentPlan, _) {
+        builder: (_, currentPlan, _) {
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
@@ -100,7 +101,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                 onPressed: () async {
                   final canLeave = await _showUnsavedChangesDialog(context);
                   if (canLeave && context.mounted) {
-                    Navigator.of(context).pop();
+                    context.pop();
                   }
                 },
               ),
@@ -132,16 +133,16 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                   onSelected: (value) {
                     switch (value) {
                       case PlanEditActions.copy:
-                        _manager.copyPlan(context);
+                        _manager.copyPlan;
                         break;
                       case PlanEditActions.share:
-                        _manager.sharePlan(context);
+                        _manager.sharePlan;
                         break;
                       case PlanEditActions.archive:
-                        _manager.archivePlan(context);
+                        _manager.archivePlan;
                         break;
                       case PlanEditActions.delete:
-                        _manager.deletePlan(context);
+                        _manager.deletePlan;
                         break;
                     }
                   },

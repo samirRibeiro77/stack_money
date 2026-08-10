@@ -21,7 +21,7 @@ class OutflowSection extends StatelessWidget {
     int? targetDay,
   })
   onUpdate;
-  final Function(int index, BuildContext ctx) onRemove;
+  final Function(int index) onRemove;
 
   const OutflowSection({
     required this.plan,

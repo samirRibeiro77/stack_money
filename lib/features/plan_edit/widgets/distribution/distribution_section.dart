@@ -19,8 +19,8 @@ class DistributionSection extends StatelessWidget {
     int? targetDay,
   })
   onUpdate;
-  final Function(String id, BuildContext ctx) onRemove;
-  final Function(String name, BuildContext ctx) confirmDismiss;
+  final Function(String id) onRemove;
+  final Function(String name) confirmDismiss;
 
   const DistributionSection({
     required this.plan,

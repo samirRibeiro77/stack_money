@@ -40,8 +40,8 @@ class DistributionCard extends StatelessWidget {
     int? targetDay,
   })
   onUpdate;
-  final Function(String id, BuildContext ctx) onRemove;
-  final Function(String name, BuildContext ctx) confirmDismiss;
+  final Function(String id) onRemove;
+  final Function(String name) confirmDismiss;
 
   void onChanged(String value) {
     double valueToSave;
@@ -62,8 +62,8 @@ class DistributionCard extends StatelessWidget {
     return Dismissible(
       key: Key('rule_${row.id}'),
       direction: DismissDirection.endToStart,
-      confirmDismiss: (_) => confirmDismiss(row.name, context),
-      onDismissed: (_) => onRemove(row.id, context),
+      confirmDismiss: (_) => confirmDismiss(row.name),
+      onDismissed: (_) => onRemove(row.id),
       background: Container(
         margin: const EdgeInsets.symmetric(vertical: AppSizes.x2),
         padding: const EdgeInsets.only(right: AppSizes.x10),
