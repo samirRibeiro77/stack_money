@@ -22,7 +22,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           .get();
 
       if (snapshot.docs.isEmpty) {
-        throw Exception('No bucket found');
+        return [];
       }
 
       SmLogger.info(
@@ -36,13 +36,13 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Error fetching buckets',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
   }
 
-  Future<Bucket> get(String id) async {
+  Future<Bucket?> get(String id) async {
     SmLogger.debug('Getting bucket', payload: {'id': id});
 
     try {
@@ -52,7 +52,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           .get();
 
       if (!doc.exists || doc.data() == null) {
-        throw Exception('Bucket not found.');
+        return null;
       }
 
       SmLogger.info('Retrieved bucket with id $id.');
@@ -62,7 +62,8 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Error fetching bucket by ID',
         scope: ExceptionScope.database,
-        payload: {'id': id, 'exception': e},
+        payload: {'id': id},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
@@ -87,7 +88,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
           throw StackMoneyException(
             message: 'Error in bucket timeline stream',
             scope: ExceptionScope.database,
-            payload: {'exception': e},
+            exception: e as Exception,
             stackTrace: stack,
           );
         });
@@ -141,7 +142,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Failed to execute atomic sprint batch',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
@@ -150,23 +151,42 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
   Future<void> save(Bucket bucket) async {
     SmLogger.debug('Initializing save', payload: bucket.toJson());
 
+    _collection
+        .doc(bucket.id)
+        .set(bucket.toJson(), SetOptions(merge: true))
+        .then((_) {
+          SmLogger.info(
+            'Document synced in background: ${bucket.id} (${bucket.name})',
+          );
+        })
+        .catchError((e, stack) {
+          throw StackMoneyException(
+            message: 'Background sync failed',
+            scope: ExceptionScope.database,
+            exception: e as Exception,
+            stackTrace: stack,
+          );
+        });
+  }
+
+  Future<void> saveBatch(List<Bucket> buckets) async{
+    SmLogger.debug('Initializing batch save', payload: {'qty': buckets.length});
+
     try {
-      _collection
-          .doc(bucket.id)
-          .set(bucket.toJson(), SetOptions(merge: true))
-          .then((_) {
-            SmLogger.info(
-              'Document synced in background: ${bucket.id} (${bucket.name})',
-            );
-          })
-          .catchError((e, stack) {
-            Exception('Background sync failed');
-          });
+      final batch = firestore.batch();
+      for (final bucket in buckets) {
+        batch.set(
+          _collection.doc(bucket.id),
+          bucket.toJson(),
+          SetOptions(merge: true),
+        );
+      }
+      await batch.commit();
     } catch (e, stack) {
       throw StackMoneyException(
-        message: 'Critical error pre-saving',
+        message: 'Failed to submit buckets change list',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
@@ -195,7 +215,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Error executing purge protocol',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }

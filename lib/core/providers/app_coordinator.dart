@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
@@ -13,6 +15,7 @@ import 'package:stack_money/domain/service/bucket_service.dart';
 import 'package:stack_money/domain/service/history_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/domain/service/user_service.dart';
+import 'package:stack_money/features/error/error_screen.dart';
 
 class AppCoordinator {
   /// Services
@@ -68,36 +71,57 @@ class AppCoordinator {
   }
 
   /// Init app
-  void initApp() async {
-    await _loadAppData();
+  void initApp(BuildContext context) async {
+    await _loadAppData(context);
     _activateAppListeners();
   }
 
   /// Load app data
-  Future<void> _loadAppData() async {
+  Future<void> _loadAppData(BuildContext context) async {
     try {
+      /// User
       loading = LoadingType.user;
-      _user.value = await _userService.fetchUserData();
+      _user.value = (await _userService.fetchUserData()).getOrThrow();
 
+      /// Buckets
       loading = LoadingType.bucket;
-      _buckets.value = await _bucketService.fetch();
+      _buckets.value = (await _bucketService.fetch()).getOrThrow();
 
+      /// Plan
       loading = LoadingType.plan;
-      _plans.value = await _planService.fetch();
-      _currentPlan.value = await _planService.fetchActivated();
+      _plans.value = (await _planService.fetch()).getOrThrow();
 
+      /// Activated Plan
+      _currentPlan.value = (await _planService.fetchActivated()).getOrThrow();
+
+      /// History
       loading = LoadingType.history;
-      _history.value = await _historyService.fetch();
-      _latestHistory.value = await _historyService.fetchLatest();
+      _history.value = (await _historyService.fetch()).getOrThrow();
+
+      /// Latest History
+      _latestHistory.value = (await _historyService.fetchLatest()).getOrThrow();
+    } on StackMoneyException catch (e) {
+      loading = LoadingType.error;
+      if (context.mounted) {
+        context.go(ErrorScreen.route, extra: e);
+      }
     } catch (e, stack) {
-      StackMoneyException(
-        message: 'Failed to load initial data',
-        scope: ExceptionScope.business,
-        payload: {'exception': e},
-        stackTrace: stack,
-      );
+      loading = LoadingType.error;
+      if (context.mounted) {
+        context.go(
+          ErrorScreen.route,
+          extra: StackMoneyException(
+            message: 'Error loading initial data',
+            scope: ExceptionScope.business,
+            exception: e as Exception,
+            stackTrace: stack,
+          ),
+        );
+      }
     } finally {
-      loading = LoadingType.done;
+      if (_loading.value != LoadingType.error) {
+        loading = LoadingType.done;
+      }
     }
   }
 

@@ -482,4 +482,37 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get loadingHistory =>
       'TRAILS: Reconstituting transaction logs and ledger history...';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get reload => 'Reload App';
+
+  @override
+  String get payload => 'Payload';
+
+  @override
+  String get stackTrace => 'Stack Trace';
+
+  @override
+  String get exception => 'Exception';
+
+  @override
+  String get dataMightBeLost => 'Some data may have been lost or corrupted...';
+
+  @override
+  String get failedSave => 'Failed to save data...';
+
+  @override
+  String get failedUpdateLastFilter => 'Failed updating last filter...';
+
+  @override
+  String get failedInitializingNewSlot => 'Failed to initialize a new slot...';
+
+  @override
+  String get failedArchivePlan => 'Failed to archive plan...';
+
+  @override
+  String get failedPurgePlan => 'Failed to purge plan...';
 }

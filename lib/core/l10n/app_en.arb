@@ -571,5 +571,49 @@
   "loadingHistory": "TRAILS: Reconstituting transaction logs and ledger history...",
   "@loadingHistory": {
     "description": "Loading history data."
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error."
+  },
+  "reload": "Reload App",
+  "@reload": {
+    "description": "Reload app."
+  },
+  "payload": "Payload",
+  "@payload": {
+    "description": "Payload title."
+  },
+  "stackTrace": "Stack Trace",
+  "@stackTrace": {
+    "description": "Stack Trace title."
+  },
+  "exception": "Exception",
+  "@exception": {
+    "description": "Exception title."
+  },
+  "dataMightBeLost": "Some data may have been lost or corrupted...",
+  "@dataMightBeLost": {
+    "description": "Data might be lost error message."
+  },
+  "failedSave": "Failed to save data...",
+  "@failedSave": {
+    "description": "Error message when saving data fail."
+  },
+  "failedUpdateLastFilter": "Failed updating last filter...",
+  "@failedUpdateLastFilter": {
+    "description": "Error message when update last filter on dashboard fail."
+  },
+  "failedInitializingNewSlot": "Failed to initialize a new slot...",
+  "@failedInitializingNewSlot": {
+    "description": "Error message when initialize a new slot fail."
+  },
+  "failedArchivePlan": "Failed to archive plan...",
+  "@failedArchivePlan": {
+    "description": "Error message when archive a plan fail."
+  },
+  "failedPurgePlan": "Failed to purge plan...",
+  "@failedPurgePlan": {
+    "description": "Error message when purge a plan fail."
   }
 }

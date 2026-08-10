@@ -20,7 +20,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
           .get();
 
       if (snapshot.docs.isEmpty) {
-        throw Exception('No salary plan found');
+        return [];
       }
 
       SmLogger.info(
@@ -34,7 +34,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Error compiling plans ledger',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
@@ -50,7 +50,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
           .get();
 
       if (snapshot.docs.isEmpty) {
-        throw Exception('No activated salary plan found');
+        return null;
       }
 
       SmLogger.info('Found ${snapshot.docs.length} activated plan(s).');
@@ -63,7 +63,7 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Error searching the current activated plan',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
@@ -76,22 +76,22 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
         .orderBy(ModelKey.position, descending: true)
         .snapshots()
         .map((snapshot) {
-      SmLogger.info(
-        'Stream plans updated with ${snapshot.docs.length} entries.',
-      );
+          SmLogger.info(
+            'Stream plans updated with ${snapshot.docs.length} entries.',
+          );
 
-      return snapshot.docs
-          .map((doc) => SalaryPlan.fromJson(doc.data()))
-          .toList();
-    })
+          return snapshot.docs
+              .map((doc) => SalaryPlan.fromJson(doc.data()))
+              .toList();
+        })
         .handleError((e, stack) {
-      throw StackMoneyException(
-        message: 'Error in plan timeline stream',
-        scope: ExceptionScope.database,
-        payload: {'exception': e},
-        stackTrace: stack,
-      );
-    });
+          throw StackMoneyException(
+            message: 'Error in plan timeline stream',
+            scope: ExceptionScope.database,
+            exception: e as Exception,
+            stackTrace: stack,
+          );
+        });
   }
 
   Future<void> save(SalaryPlan plan) async {
@@ -107,7 +107,34 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Error saving plan structure configuration',
         scope: ExceptionScope.database,
-        payload: {'plan': plan.toJson(), 'exception': e},
+        exception: e as Exception,
+        payload: {'plan': plan.toJson()},
+        stackTrace: stack,
+      );
+    }
+  }
+
+  Future<void> saveBatch(List<SalaryPlan> salaryList) async {
+    SmLogger.debug(
+      'Initializing batch save',
+      payload: {'qty': salaryList.length},
+    );
+
+    try {
+      final batch = firestore.batch();
+      for (final salary in salaryList) {
+        batch.set(
+          _collection.doc(salary.id),
+          salary.toJson(),
+          SetOptions(merge: true),
+        );
+      }
+      await batch.commit();
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Failed to submit salary plan change list',
+        scope: ExceptionScope.database,
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
@@ -141,7 +168,8 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Failed to batch activate plan',
         scope: ExceptionScope.database,
-        payload: {'planId': targetPlanId, 'exception': e},
+        exception: e as Exception,
+        payload: {'planId': targetPlanId},
         stackTrace: stack,
       );
     }
@@ -157,7 +185,8 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Failed to deactivate plan',
         scope: ExceptionScope.database,
-        payload: {'planId': targetPlanId, 'exception': e},
+        exception: e as Exception,
+        payload: {'planId': targetPlanId},
         stackTrace: stack,
       );
     }
@@ -182,7 +211,8 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Archive status alteration protocol aborted',
         scope: ExceptionScope.database,
-        payload: {'id': id, 'isArchived': isArchived, 'exception': e},
+        exception: e as Exception,
+        payload: {'id': id, 'isArchived': isArchived},
         stackTrace: stack,
       );
     }
@@ -198,7 +228,8 @@ class FirebasePlanRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Hard purge execution failed on core cluster',
         scope: ExceptionScope.database,
-        payload: {'id': id, 'exception': e},
+        exception: e as Exception,
+        payload: {'id': id},
         stackTrace: stack,
       );
     }

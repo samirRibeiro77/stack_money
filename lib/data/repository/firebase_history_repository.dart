@@ -20,7 +20,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
           .get();
 
       if (snapshot.docs.isEmpty) {
-        throw Exception('No history found');
+        return [];
       }
 
       SmLogger.info(
@@ -34,13 +34,13 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Error fetching history timeline',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
   }
 
-  Future<History> fetchLatest() async {
+  Future<History?> fetchLatest() async {
     SmLogger.debug('Fetching latest history', payload: {});
 
     try {
@@ -50,7 +50,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
           .get();
 
       if (snapshot.docs.isEmpty) {
-        throw Exception('No latest history found');
+        return null;
       }
 
       SmLogger.info('Found ${snapshot.docs.first.id} as the latest history.');
@@ -63,7 +63,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
       throw StackMoneyException(
         message: 'Error fetching last history snapshot',
         scope: ExceptionScope.database,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
@@ -88,7 +88,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
           throw StackMoneyException(
             message: 'Error in history timeline stream',
             scope: ExceptionScope.database,
-            payload: {'exception': e},
+            exception: e as Exception,
             stackTrace: stack,
           );
         });

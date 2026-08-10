@@ -78,28 +78,45 @@ class SmLogger {
   }
 
   /// ERROR LOG: Fatal errors with more details
-  static void error(String message, {Object? error, StackTrace? stackTrace}) {
-    if (kDebugMode) {
-      final buffer = StringBuffer();
-      buffer.writeln(message);
+  static String error(
+    String message, {
+    Object? payload,
+    Exception? exception,
+    StackTrace? stackTrace,
+  }) {
+    final buffer = StringBuffer();
+    buffer.writeln(message);
 
-      if (error != null) {
-        buffer.writeln('  📋 [DETAILS]: $error');
-      }
+    /// Payload
+    if (payload != null) {
+      buffer.writeln('  📦 [PAYLOAD]: $payload');
+    }
 
-      if (stackTrace != null) {
-        buffer.writeln('  🛰️ [STACK_TRACE]:');
-        final lines = stackTrace.toString().split('\n');
-        final localLines = lines
-            .where((line) => line.contains('package:stack_money'))
-            .take(5);
-        for (var line in localLines) {
-          buffer.writeln('     -> ${line.trim()}');
+    /// Exception
+    if (exception != null) {
+      buffer.writeln('  🚨 [EXCEPTION]:');
+      final exceptionLines = exception.toString().split('\n');
+      for (var line in exceptionLines) {
+        if (line.trim().isNotEmpty) {
+          buffer.writeln('     ☣️ ${line.trim()}');
         }
       }
-
-      final fullMessage = buffer.toString().trimRight();
-      _logMessage(LogLevel.error, fullMessage);
     }
+
+    /// StackTrace
+    if (stackTrace != null) {
+      buffer.writeln('  🛰️ [STACK_TRACE]:');
+      final lines = stackTrace.toString().split('\n');
+      final localLines = lines
+          .where((line) => line.contains('package:stack_money'))
+          .take(5);
+      for (var line in localLines) {
+        buffer.writeln('     -> ${line.trim()}');
+      }
+    }
+
+    final fullMessage = buffer.toString().trimRight();
+    _logMessage(LogLevel.error, fullMessage);
+    return fullMessage;
   }
 }

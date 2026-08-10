@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_number.dart';
@@ -7,11 +8,13 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/utils/result.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/transaction.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
 import 'package:stack_money/domain/service/history_service.dart';
+import 'package:stack_money/features/error/error_screen.dart';
 
 class ContributionSprintManager {
   final _bucketService = BucketManagementService();
@@ -42,15 +45,20 @@ class ContributionSprintManager {
 
   int get currentIndex => _currentIndexNotifier.value;
 
-  Future<void> initializeSprint() async {
+  Future<void> initializeSprint(BuildContext context) async {
     try {
       _isLoadingNotifier.value = true;
 
       final loadedBuckets = AppCoordinator.instance.buckets.value;
-      final lastValues = await _historyService.fetchLastSprintValues();
-      for (var t in lastValues) {
-        _originalValues[t.bucketId] = t.actualValue;
-        _lastKnownValues[t.bucketId] = t.actualValue;
+      final lastSprintResult = await _historyService.fetchLastSprintValues();
+      switch (lastSprintResult) {
+        case Success(data: final lastSprintValues):
+          for (var t in lastSprintValues) {
+            _originalValues[t.bucketId] = t.actualValue;
+            _lastKnownValues[t.bucketId] = t.actualValue;
+          }
+        case Failure(exception: final error):
+          throw error;
       }
 
       loadedBuckets.sort((a, b) => b.name.compareTo(a.name));
@@ -60,14 +68,22 @@ class ContributionSprintManager {
         _populateFieldsForIndex(0);
       }
       _isLoadingNotifier.value = false;
+    } on StackMoneyException catch (e) {
+      if (context.mounted) {
+        context.go(ErrorScreen.route, extra: e);
+      }
     } catch (e, stack) {
-      StackMoneyException(
-        message: 'Failed to initialize a new sprint',
-        scope: ExceptionScope.business,
-        payload: {'exception': e},
-        stackTrace: stack,
-      );
-      _isLoadingNotifier.value = false;
+      if (context.mounted) {
+        context.go(
+          ErrorScreen.route,
+          extra: StackMoneyException(
+            message: 'Error initializing sprint',
+            scope: ExceptionScope.business,
+            exception: e as Exception,
+            stackTrace: stack,
+          ),
+        );
+      }
     }
   }
 
@@ -234,28 +250,25 @@ class ContributionSprintManager {
     double total,
     double liquidity,
   ) async {
-    final navigatorContext = Navigator.of(context);
-    try {
-      _isLoadingNotifier.value = true;
-      await _bucketService.executeContributionSprint(
-        updatedBuckets: buckets,
-        transactions: transactions,
-        totalNetWorth: total,
-        totalLiquidity: liquidity,
-      );
-    } catch (e, stack) {
-      StackMoneyException(
-        message: 'Sprint commit failed',
-        scope: ExceptionScope.business,
-        payload: {'exception': e, 'transactionsQty': transactions.length},
-        stackTrace: stack,
-      );
-    } finally {
-      _isLoadingNotifier.value = false;
-      if (navigatorContext.mounted) {
-        navigatorContext.pop();
-      }
-    }
+    _isLoadingNotifier.value = true;
+    final result = await _bucketService.executeContributionSprint(
+      updatedBuckets: buckets,
+      transactions: transactions,
+      totalNetWorth: total,
+      totalLiquidity: liquidity,
+    );
+
+    result.fold(
+      onSuccess: (_) {
+        _isLoadingNotifier.value = false;
+        if (context.mounted) {
+          context.pop();
+        }
+      },
+      onFailure: (e) {
+        context.go(ErrorScreen.route, extra: e);
+      },
+    );
   }
 
   void dispose() {

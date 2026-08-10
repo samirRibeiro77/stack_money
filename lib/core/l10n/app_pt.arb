@@ -143,5 +143,16 @@
   "loadingUser": "AUTENTICANDO: Infiltrando redes e descriptografando perfil de usuário...",
   "loadingPlan": "ALOCAÇÃO: Sincronizando matrizes de distribuição salarial...",
   "loadingBucket": "COFRES: Consolidando montantes e sub-cofres digitais...",
-  "loadingHistory": "RASTROS: Reconstituindo logs e histórico de transações na rede..."
+  "loadingHistory": "RASTROS: Reconstituindo logs e histórico de transações na rede...",
+  "error": "Erro",
+  "reload": "Recarregar o app",
+  "payload": "Dados",
+  "stackTrace": "Pilha",
+  "exception": "Exceção",
+  "dataMightBeLost": "Alguns dados podem ter sido perdidos ou corrompidos...",
+  "failedSave": "Erro ao salvar...",
+  "failedUpdateLastFilter": "Erro ao atualizar ultimo filtro utilizado...",
+  "failedInitializingNewSlot": "Erro ao inicializar um novo slot...",
+  "failedArchivePlan": "Erro ao arquivar plano...",
+  "failedPurgePlan": "Erro ao excluir plano..."
 }

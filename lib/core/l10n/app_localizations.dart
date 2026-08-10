@@ -959,6 +959,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'TRAILS: Reconstituting transaction logs and ledger history...'**
   String get loadingHistory;
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// Reload app.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload App'**
+  String get reload;
+
+  /// Payload title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payload'**
+  String get payload;
+
+  /// Stack Trace title.
+  ///
+  /// In en, this message translates to:
+  /// **'Stack Trace'**
+  String get stackTrace;
+
+  /// Exception title.
+  ///
+  /// In en, this message translates to:
+  /// **'Exception'**
+  String get exception;
+
+  /// Data might be lost error message.
+  ///
+  /// In en, this message translates to:
+  /// **'Some data may have been lost or corrupted...'**
+  String get dataMightBeLost;
+
+  /// Error message when saving data fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save data...'**
+  String get failedSave;
+
+  /// Error message when update last filter on dashboard fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed updating last filter...'**
+  String get failedUpdateLastFilter;
+
+  /// Error message when initialize a new slot fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to initialize a new slot...'**
+  String get failedInitializingNewSlot;
+
+  /// Error message when archive a plan fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to archive plan...'**
+  String get failedArchivePlan;
+
+  /// Error message when purge a plan fail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to purge plan...'**
+  String get failedPurgePlan;
 }
 
 class _AppLocalizationsDelegate

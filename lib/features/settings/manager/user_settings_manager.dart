@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/utils/result.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
@@ -15,6 +17,7 @@ import 'package:stack_money/data/models/user_model.dart';
 import 'package:stack_money/data/models/user_preferences_model.dart';
 import 'package:stack_money/domain/service/export_service.dart';
 import 'package:stack_money/domain/service/user_service.dart';
+import 'package:stack_money/features/error/error_screen.dart';
 
 class UserSettingsManager {
   final UserService _userService = UserService();
@@ -47,19 +50,25 @@ class UserSettingsManager {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
 
-  UserSettingsManager() {
-    _userService.fetchUserData().then((fetchedUser) {
-      _initialUser = fetchedUser;
-      _currentUser = fetchedUser;
+  void loadData(BuildContext context) async {
+    final userResult = await _userService.fetchUserData();
+    switch (userResult) {
+      case Success(data: final user):
+        _initialUser = user;
+        _currentUser = user;
 
-      _securityMode.value = fetchedUser.preferences.securityMode;
-      _cardExpand.value = fetchedUser.preferences.cardExpand;
-      _defaultFilter.value = fetchedUser.preferences.defaultFilter;
-      _photoUrl.value = fetchedUser.photoUrl;
+        _securityMode.value = user.preferences.securityMode;
+        _cardExpand.value = user.preferences.cardExpand;
+        _defaultFilter.value = user.preferences.defaultFilter;
+        _photoUrl.value = user.photoUrl;
 
-      nameController.text = fetchedUser.name;
-      emailController.text = fetchedUser.email;
-    });
+        nameController.text = user.name;
+        emailController.text = user.email;
+      case Failure(exception: final error):
+        if (context.mounted) {
+          context.go(ErrorScreen.route, extra: error);
+        }
+    }
   }
 
   /// Retorna a quantidade exata de propriedades alteradas

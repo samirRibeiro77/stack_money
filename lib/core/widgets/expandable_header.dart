@@ -29,19 +29,18 @@ class ExpandableHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final isSecureActive = SecurityProvider.isSecureOf(context);
 
-    return SizedBox(
-      height: AppSizes.x10,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TitleText(title),
-          if (!isSecureActive)
-            IconButton(
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-              onPressed: toggle,
-              icon: ValueListenableBuilder<bool>(
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: toggle,
+      child: SizedBox(
+        height: AppSizes.x10,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TitleText(title),
+            if (!isSecureActive)
+              ValueListenableBuilder<bool>(
                 valueListenable: validation,
                 builder: (_, isExpanded, _) {
                   return Icon(
@@ -50,9 +49,9 @@ class ExpandableHeader extends StatelessWidget {
                     size: AppSizes.x10,
                   );
                 },
-              ),
-            ),
-        ],
+              )
+          ],
+        ),
       ),
     );
   }

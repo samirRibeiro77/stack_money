@@ -47,7 +47,7 @@ class ExportService {
       StackMoneyException(
         message: 'Error retrieving data to share',
         scope: ExceptionScope.business,
-        payload: {'exception': e},
+        exception: e as Exception,
         stackTrace: stack,
       );
     }
