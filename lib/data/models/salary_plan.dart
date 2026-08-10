@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:stack_money/core/extension/map_extension.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
@@ -106,6 +107,49 @@ class SalaryPlan {
   }
 
   String get id => _id;
+
+  /// Operators
+  bool equalsTo(SalaryPlan other) =>
+      _id == other._id &&
+      name == other.name &&
+      baseSalary == other.baseSalary &&
+      isActive == other.isActive &&
+      isArchived == other.isArchived &&
+      createdAt == other.createdAt &&
+      position == other.position &&
+      listEquals(inflows, other.inflows) &&
+      listEquals(outflows, other.outflows) &&
+      listEquals(distributions, other.distributions);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SalaryPlan &&
+          runtimeType == other.runtimeType &&
+          _id == other._id &&
+          name == other.name &&
+          baseSalary == other.baseSalary &&
+          isActive == other.isActive &&
+          isArchived == other.isArchived &&
+          createdAt == other.createdAt &&
+          position == other.position &&
+          listEquals(inflows, other.inflows) &&
+          listEquals(outflows, other.outflows) &&
+          listEquals(distributions, other.distributions);
+
+  @override
+  int get hashCode => Object.hash(
+    _id,
+    name,
+    baseSalary,
+    isActive,
+    isArchived,
+    createdAt,
+    position,
+    const ListEquality().hash(inflows),
+    const ListEquality().hash(outflows),
+    const ListEquality().hash(distributions),
+  );
 
   // Getters
   double get totalAllocated {

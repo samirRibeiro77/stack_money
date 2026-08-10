@@ -443,7 +443,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rememberLast => 'Remember last';
 
   @override
-  String get settingsChangedTitle => 'Changes';
+  String get settingsChangedTitle => 'Settings changes';
 
   @override
   String settingsChangedMessage(Object qty) {
@@ -515,4 +515,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedPurgePlan => 'Failed to purge plan...';
+
+  @override
+  String get planChangedTitle => 'Plan changes';
+
+  @override
+  String planChangedMessage(Object qty) {
+    return 'Identified $qty changes on plan:';
+  }
+
+  @override
+  String planChangedName(Object current, Object old) {
+    return '• Name:\n   $old ➔ $current\n';
+  }
+
+  @override
+  String planChangedBaseSalary(Object current, Object old) {
+    return '• Base Salary:\n   $old ➔ $current\n';
+  }
+
+  @override
+  String planChangedItem(Object code, Object current, Object old) {
+    return '• $code:\n   $old items ➔ $current items\n';
+  }
+
+  @override
+  String get planChangedIncoming => 'Incoming';
+
+  @override
+  String get planChangedOutcoming => 'Deduction';
+
+  @override
+  String get planChangedDistribution => 'Distribution';
+
+  @override
+  String get planChangedNoChanges => 'No changes detected...';
+
+  @override
+  String get planChangedValueDetails => 'Some details has changed';
 }

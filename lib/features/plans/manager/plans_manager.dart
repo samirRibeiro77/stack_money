@@ -33,9 +33,7 @@ class PlansManager {
     final isSecureActive = SecurityProvider.isSecureOf(_context);
 
     if (!isSecureActive) {
-      Navigator.of(
-        _context,
-      ).push(MaterialPageRoute(builder: (_) => PlanEditScreen(plan: plan)));
+      _context.push(PlanEditScreen.route, extra: plan);
     }
   }
 
@@ -65,7 +63,6 @@ class PlansManager {
   }
 
   void reorderFilteredPlans(
-    BuildContext _context,
     List<SalaryPlan> filteredList,
     int oldIndex,
     int newIndex,

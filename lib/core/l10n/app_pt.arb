@@ -133,7 +133,7 @@
   "exportDataJsonSize": "Tamanho do JSON: {size}",
   "exportJsonData": "Exportar dados JSON",
   "rememberLast": "Ultimo usado",
-  "settingsChangedTitle": "Alterações",
+  "settingsChangedTitle": "Alterações nas config",
   "settingsChangedMessage": "Identificamos {qty} modificações pendentes nas suas preferências:",
   "settingsChangedNote": "• {code}:\n   {old} ➔ {current}\n",
   "failedToSignIn": "Falha ao fazer login",
@@ -154,5 +154,15 @@
   "failedUpdateLastFilter": "Erro ao atualizar ultimo filtro utilizado...",
   "failedInitializingNewSlot": "Erro ao inicializar um novo slot...",
   "failedArchivePlan": "Erro ao arquivar plano...",
-  "failedPurgePlan": "Erro ao excluir plano..."
+  "failedPurgePlan": "Erro ao excluir plano...",
+  "planChangedTitle": "Alterações no plano",
+  "planChangedMessage": "Identificamos {qty} alterações no plano:",
+  "planChangedName": "• Nome:\n   {old} ➔ {current}\n",
+  "planChangedBaseSalary": "• Salário base:\n   R\\${old} ➔ R\\${current}\n",
+  "planChangedItem": "• {code}:\n   {old} itens ➔ {current} itens\n",
+  "planChangedIncoming": "Entradas",
+  "planChangedOutcoming": "Saídas",
+  "planChangedDistribution": "Distribuições",
+  "planChangedNoChanges": "Nenhuma alteração detectada...",
+  "planChangedValueDetails": "Alguns detalhes foram alterados"
 }
