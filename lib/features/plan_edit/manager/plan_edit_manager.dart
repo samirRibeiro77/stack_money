@@ -79,12 +79,12 @@ class PlanEditManager {
     final oldP = _cleanPlan(_initialPlan);
     final newP = _cleanPlan(currentPlan);
 
-    // 1. Nome do Plano
+    /// Plan name
     if (oldP.name != newP.name) {
       changes.add(l10n.planChangedName(newP.name, oldP.name));
     }
 
-    // 2. Salário Base
+    /// Base salary
     if (oldP.baseSalary != newP.baseSalary) {
       final oldVal = StackMoneyString.formatMoney(
         oldP.baseSalary,
@@ -97,7 +97,7 @@ class PlanEditManager {
       changes.add(l10n.planChangedBaseSalary(newVal, oldVal));
     }
 
-    // 3. Entradas
+    /// Inflows
     if (oldP.inflows.length != newP.inflows.length) {
       changes.add(
         l10n.planChangedItem(
@@ -108,7 +108,21 @@ class PlanEditManager {
       );
     }
 
-    // 4. Saídas
+    for (final newInflow in newP.inflows) {
+      final oldInflow = oldP.inflows.where((oldIn) => oldIn.id == newInflow.id).firstOrNull;
+      if (oldInflow == null) {
+        changes.add(
+          l10n.planChangedItem(
+            l10n.planChangedIncoming,
+            newP.inflows.length,
+            oldP.inflows.length,
+          ),
+        );
+        continue;
+      }
+    }
+
+    /// Outflows
     if (oldP.outflows.length != newP.outflows.length) {
       changes.add(
         l10n.planChangedItem(
@@ -119,7 +133,7 @@ class PlanEditManager {
       );
     }
 
-    // 5. Distribuições
+    /// Distributions
     if (oldP.distributions.length != newP.distributions.length) {
       changes.add(
         l10n.planChangedItem(
@@ -139,12 +153,6 @@ class PlanEditManager {
 
   /// Salva todas as alterações pendentes no Firebase
   Future<bool> savePlan() async {
-    if (!isDirty) {
-      final l10n = AppLocalizations.of(_context)!;
-      SmSnackBar(message: l10n.planChangedNoChanges).show(_context);
-      return true;
-    }
-
     final cleanPlanToSave = _cleanPlan(currentPlan);
     final result = await _planService.save(cleanPlanToSave);
 

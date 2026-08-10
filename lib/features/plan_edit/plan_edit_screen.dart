@@ -5,6 +5,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
+import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/plan_edit_actions.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/manager/plan_edit_manager.dart';
@@ -44,11 +45,12 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
 
   Future<bool> _showUnsavedChangesDialog(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
-    final qty = _manager.pendingChangesCount(l10n);
-    if (qty <= 0) {
+    if (!_manager.isDirty) {
+      SmSnackBar(message: l10n.planChangedNoChanges).show(context);
       return true;
     }
 
+    final qty = _manager.pendingChangesCount(l10n);
     final diffNote = _manager.getDiffNote(l10n);
     final shouldLeave = await showDialog<bool>(
       context: context,

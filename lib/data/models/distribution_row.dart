@@ -71,4 +71,20 @@ class DistributionRow {
   String get id => _id;
 
   String get name => '$category $subCategory';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DistributionRow &&
+          runtimeType == other.runtimeType &&
+          _id == other._id &&
+          category == other.category &&
+          subCategory == other.subCategory &&
+          type == other.type &&
+          value == other.value &&
+          targetDay == other.targetDay;
+
+  @override
+  int get hashCode =>
+      Object.hash(_id, category, subCategory, type, value, targetDay);
 }
