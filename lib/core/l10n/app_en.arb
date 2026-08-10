@@ -528,7 +528,7 @@
   "@rememberLast": {
     "description": "Remember the last dashboard filter for allocation buckets."
   },
-  "settingsChangedTitle": "Changes",
+  "settingsChangedTitle": "Settings changes",
   "@settingsChangedTitle": {
     "description": "Settings changed dialog title."
   },
@@ -615,5 +615,37 @@
   "failedPurgePlan": "Failed to purge plan...",
   "@failedPurgePlan": {
     "description": "Error message when purge a plan fail."
+  },
+  "planChangedTitle": "Plan changes",
+  "@planChangedTitle": {
+    "description": "Settings changed dialog title."
+  },
+  "planChangedMessage": "Identified {qty} changes on plan:",
+  "@planChangedMessage": {
+    "description": "Plan changed dialog message."
+  },
+  "planChangedName": "• Name:\n   {old} ➔ {current}\n",
+  "@planChangedName": {
+    "description": "Plan name changed diff note."
+  },
+  "planChangedBaseSalary": "• Base Salary:\n   {old} ➔ {current}\n",
+  "@planChangedBaseSalary": {
+    "description": "Plan base salary changed diff note."
+  },
+  "planChangedItem": "• {code}:\n   {old} items ➔ {current} items\n",
+  "@planChangedItem": {
+    "description": "Plan item changed diff note."
+  },
+  "planChangedIncoming": "Incoming",
+  "@planChangedIncoming": {
+    "description": "Plan incoming code."
+  },
+  "planChangedOutcoming": "Deduction",
+  "@planChangedOutcoming": {
+    "description": "Plan deduction code."
+  },
+  "planChangedDistribution": "Distribution",
+  "@planChangedDistribution": {
+    "description": "Plan distribution code."
   }
 }

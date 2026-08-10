@@ -443,7 +443,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get rememberLast => 'Ultimo usado';
 
   @override
-  String get settingsChangedTitle => 'Alterações';
+  String get settingsChangedTitle => 'Alterações nas config';
 
   @override
   String settingsChangedMessage(Object qty) {
@@ -517,4 +517,36 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get failedPurgePlan => 'Erro ao excluir plano...';
+
+  @override
+  String get planChangedTitle => 'Alterações no plano';
+
+  @override
+  String planChangedMessage(Object qty) {
+    return 'Identificamos $qty alterações no plano:';
+  }
+
+  @override
+  String planChangedName(Object current, Object old) {
+    return '• Nome:\n   $old ➔ $current\n';
+  }
+
+  @override
+  String planChangedBaseSalary(Object current, Object old) {
+    return '• Salário base:\n   R\\\$$old ➔ R\\\$$current\n';
+  }
+
+  @override
+  String planChangedItem(Object code, Object current, Object old) {
+    return '• $code:\n   $old itens ➔ $current itens\n';
+  }
+
+  @override
+  String get planChangedIncoming => 'Entradas';
+
+  @override
+  String get planChangedOutcoming => 'Saídas';
+
+  @override
+  String get planChangedDistribution => 'Distribuições';
 }

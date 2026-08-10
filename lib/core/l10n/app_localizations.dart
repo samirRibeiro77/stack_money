@@ -897,7 +897,7 @@ abstract class AppLocalizations {
   /// Settings changed dialog title.
   ///
   /// In en, this message translates to:
-  /// **'Changes'**
+  /// **'Settings changes'**
   String get settingsChangedTitle;
 
   /// Settings changed dialog message.
@@ -1025,6 +1025,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to purge plan...'**
   String get failedPurgePlan;
+
+  /// Settings changed dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan changes'**
+  String get planChangedTitle;
+
+  /// Plan changed dialog message.
+  ///
+  /// In en, this message translates to:
+  /// **'Identified {qty} changes on plan:'**
+  String planChangedMessage(Object qty);
+
+  /// Plan name changed diff note.
+  ///
+  /// In en, this message translates to:
+  /// **'• Name:\n   {old} ➔ {current}\n'**
+  String planChangedName(Object current, Object old);
+
+  /// Plan base salary changed diff note.
+  ///
+  /// In en, this message translates to:
+  /// **'• Base Salary:\n   {old} ➔ {current}\n'**
+  String planChangedBaseSalary(Object current, Object old);
+
+  /// Plan item changed diff note.
+  ///
+  /// In en, this message translates to:
+  /// **'• {code}:\n   {old} items ➔ {current} items\n'**
+  String planChangedItem(Object code, Object current, Object old);
+
+  /// Plan incoming code.
+  ///
+  /// In en, this message translates to:
+  /// **'Incoming'**
+  String get planChangedIncoming;
+
+  /// Plan deduction code.
+  ///
+  /// In en, this message translates to:
+  /// **'Deduction'**
+  String get planChangedOutcoming;
+
+  /// Plan distribution code.
+  ///
+  /// In en, this message translates to:
+  /// **'Distribution'**
+  String get planChangedDistribution;
 }
 
 class _AppLocalizationsDelegate
