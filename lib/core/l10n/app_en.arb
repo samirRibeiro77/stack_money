@@ -651,5 +651,9 @@
   "planChangedNoChanges": "No changes detected...",
   "@planChangedNoChanges": {
     "description": "No changes found in current plan."
+  },
+  "planChangedValueDetails": "Some details has changed",
+  "@planChangedValueDetails": {
+    "description": "Found changes only on details."
   }
 }

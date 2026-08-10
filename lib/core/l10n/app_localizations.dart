@@ -1079,6 +1079,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No changes detected...'**
   String get planChangedNoChanges;
+
+  /// Found changes only on details.
+  ///
+  /// In en, this message translates to:
+  /// **'Some details has changed'**
+  String get planChangedValueDetails;
 }
 
 class _AppLocalizationsDelegate

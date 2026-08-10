@@ -163,5 +163,6 @@
   "planChangedIncoming": "Entradas",
   "planChangedOutcoming": "Saídas",
   "planChangedDistribution": "Distribuições",
-  "planChangedNoChanges": "Nenhuma alteração detectada..."
+  "planChangedNoChanges": "Nenhuma alteração detectada...",
+  "planChangedValueDetails": "Alguns detalhes foram alterados"
 }

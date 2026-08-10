@@ -108,20 +108,6 @@ class PlanEditManager {
       );
     }
 
-    for (final newInflow in newP.inflows) {
-      final oldInflow = oldP.inflows.where((oldIn) => oldIn.id == newInflow.id).firstOrNull;
-      if (oldInflow == null) {
-        changes.add(
-          l10n.planChangedItem(
-            l10n.planChangedIncoming,
-            newP.inflows.length,
-            oldP.inflows.length,
-          ),
-        );
-        continue;
-      }
-    }
-
     /// Outflows
     if (oldP.outflows.length != newP.outflows.length) {
       changes.add(
@@ -144,7 +130,7 @@ class PlanEditManager {
       );
     }
 
-    return changes;
+    return changes.isNotEmpty ? changes : [l10n.planChangedValueDetails];
   }
 
   int pendingChangesCount(AppLocalizations l10n) => getDiffList(l10n).length;

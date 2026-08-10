@@ -550,4 +550,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get planChangedNoChanges => 'No changes detected...';
+
+  @override
+  String get planChangedValueDetails => 'Some details has changed';
 }
