@@ -8,19 +8,21 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
-import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
+import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
-import 'package:stack_money/data/models/salary_plan.dart';
+import 'package:stack_money/data/models/distribution_row.dart';
 import 'package:stack_money/data/models/inflow_row.dart';
 import 'package:stack_money/data/models/outflow_row.dart';
-import 'package:stack_money/data/models/distribution_row.dart';
+import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/export_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
 class PlanEditManager {
   final PlanManagementService _planService = PlanManagementService();
+
+  late final SalaryPlan _initialPlan;
   late final ValueNotifier<SalaryPlan> planNotifier;
 
   final _inflowExpandState = ValueNotifier(false);
@@ -40,12 +42,99 @@ class PlanEditManager {
       _outflowExpandState.value = !_outflowExpandState.value;
 
   PlanEditManager(SalaryPlan initialPlan) {
+    _initialPlan = initialPlan;
     planNotifier = ValueNotifier(initialPlan);
     _ensureEmptyInflowRow();
     _ensureEmptyOutflowRow();
   }
 
   SalaryPlan get currentPlan => planNotifier.value;
+
+  /// Retorna o plano limpo (sem as linhas vazias de placeholders do form)
+  SalaryPlan _cleanPlan(SalaryPlan plan) {
+    final cleanInflows = plan.inflows.where((e) => e.value > 0).toList();
+    final cleanOutflows = plan.outflows
+        .where((e) => e.value > 0 || e.name.isNotEmpty)
+        .toList();
+
+    return plan.copyWith(
+      inflows: cleanInflows,
+      outflows: cleanOutflows,
+    );
+  }
+
+  /// Verifica se houve qualquer alteração em relação ao snapshot inicial
+  bool get isDirty {
+    final cleanInitial = _cleanPlan(_initialPlan);
+    final cleanCurrent = _cleanPlan(currentPlan);
+
+    return cleanInitial != cleanCurrent;
+  }
+
+  /// Gera a lista do resumo exato estilo Git Status / Deep Diff Granular
+  List<String> getDiffList(AppLocalizations l10n) {
+    final changes = <String>[];
+    final oldP = _cleanPlan(_initialPlan);
+    final newP = _cleanPlan(currentPlan);
+
+    // 1. Nome do Plano
+    if (oldP.name != newP.name) {
+      changes.add('• Nome: "${oldP.name}" ➔ "${newP.name}"');
+    }
+
+    // 2. Salário Base
+    if (oldP.baseSalary != newP.baseSalary) {
+      final oldVal = StackMoneyString.formatMoney(oldP.baseSalary);
+      final newVal = StackMoneyString.formatMoney(newP.baseSalary);
+      changes.add('• Salário Base: R\$ $oldVal ➔ R\$ $newVal');
+    }
+
+    // 3. Entradas
+    if (oldP.inflows.length != newP.inflows.length) {
+      changes.add(
+        '• Entradas: ${oldP.inflows.length} item(ns) ➔ ${newP.inflows.length} item(ns)',
+      );
+    }
+
+    // 4. Saídas
+    if (oldP.outflows.length != newP.outflows.length) {
+      changes.add(
+        '• Saídas: ${oldP.outflows.length} item(ns) ➔ ${newP.outflows.length} item(ns)',
+      );
+    }
+
+    // 5. Distribuições
+    if (oldP.distributions.length != newP.distributions.length) {
+      changes.add(
+        '• Distribuições: ${oldP.distributions.length} item(ns) ➔ ${newP.distributions.length} item(ns)',
+      );
+    }
+
+    return changes;
+  }
+
+  int pendingChangesCount(AppLocalizations l10n) => getDiffList(l10n).length;
+
+  String getDiffNote(AppLocalizations l10n) => getDiffList(l10n).join('\n');
+
+  /// Salva todas as alterações pendentes no Firebase
+  Future<bool> savePlan() async {
+    if (!isDirty) return true;
+
+    try {
+      final cleanPlanToSave = _cleanPlan(currentPlan);
+      await _planService.save(cleanPlanToSave);
+      return true;
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to save plan',
+        scope: ExceptionScope.business,
+        payload: {'exception': e, 'plan': currentPlan.toJson()},
+        stackTrace: stack,
+      );
+      return false;
+    }
+  }
 
   void dispose() {
     _inflowExpandState.dispose();
@@ -55,12 +144,10 @@ class PlanEditManager {
 
   void updatePlanName(String newName) {
     planNotifier.value = currentPlan.copyWith(name: newName);
-    _autoSave();
   }
 
   void updateBaseSalary(double value) {
     planNotifier.value = currentPlan.copyWith(baseSalary: value);
-    _autoSave();
   }
 
   Future<void> copyPlan(BuildContext context) async {
@@ -164,7 +251,6 @@ class PlanEditManager {
 
       planNotifier.value = currentPlan.copyWith(inflows: list);
       if (index == list.length - 1 && (value ?? 0) > 0) _ensureEmptyInflowRow();
-      _autoSave();
     }
   }
 
@@ -195,7 +281,6 @@ class PlanEditManager {
         list.removeAt(index);
         planNotifier.value = currentPlan.copyWith(inflows: list);
         _ensureEmptyInflowRow();
-        _autoSave();
 
         _triggerUndoSnackBar(context, l10n.deletedInflow, backupState);
       }
@@ -214,12 +299,12 @@ class PlanEditManager {
   }
 
   void updateOutflow(
-    int index, {
-    String? name,
-    DeductionType? type,
-    double? value,
-    int? targetDay,
-  }) {
+      int index, {
+        String? name,
+        DeductionType? type,
+        double? value,
+        int? targetDay,
+      }) {
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (index >= 0 && index < list.length) {
       final outflow = list[index];
@@ -236,7 +321,6 @@ class PlanEditManager {
           ((value ?? 0) > 0 || (name ?? '').isNotEmpty)) {
         _ensureEmptyOutflowRow();
       }
-      _autoSave();
     }
   }
 
@@ -264,7 +348,6 @@ class PlanEditManager {
         list.removeAt(index);
         planNotifier.value = currentPlan.copyWith(outflows: list);
         _ensureEmptyOutflowRow();
-        _autoSave();
 
         _triggerUndoSnackBar(context, l10n.deletedOutflow, backupState);
       }
@@ -280,18 +363,17 @@ class PlanEditManager {
     list.add(DistributionRow.empty(defaultDay: defaultDay));
 
     planNotifier.value = currentPlan.copyWith(distributions: list);
-    _autoSave();
     _scrollToBottom();
   }
 
   void updateDistribution(
-    int index, {
-    String? cat,
-    String? sub,
-    AllocationType? type,
-    double? value,
-    int? targetDay,
-  }) {
+      int index, {
+        String? cat,
+        String? sub,
+        AllocationType? type,
+        double? value,
+        int? targetDay,
+      }) {
     final list = List<DistributionRow>.from(currentPlan.distributions);
     if (index >= 0 && index < list.length) {
       final distribution = list[index];
@@ -305,14 +387,13 @@ class PlanEditManager {
       );
 
       planNotifier.value = currentPlan.copyWith(distributions: list);
-      _autoSave();
     }
   }
 
   Future<bool?> removeDistributionConfirmation(
-    String distributionName,
-    BuildContext context,
-  ) {
+      String distributionName,
+      BuildContext context,
+      ) {
     final l10n = AppLocalizations.of(context)!;
 
     return showDialog<bool>(
@@ -335,7 +416,6 @@ class PlanEditManager {
     final list = List<DistributionRow>.from(currentPlan.distributions);
     list.removeWhere((e) => e.id == id);
     planNotifier.value = currentPlan.copyWith(distributions: list);
-    _autoSave();
 
     _triggerUndoSnackBar(context, l10n.deletedDistribution, backupState);
   }
@@ -348,40 +428,21 @@ class PlanEditManager {
   }
 
   void _triggerUndoSnackBar(
-    BuildContext context,
-    String message,
-    SalaryPlan backup,
-  ) {
+      BuildContext context,
+      String message,
+      SalaryPlan backup,
+      ) {
     final l10n = AppLocalizations.of(context)!;
 
     SmSnackBar(
         message: message,
         type: SnackBarType.error,
-        action: SnackBarAction(label: l10n.undo, onPressed: () {
-          planNotifier.value = backup;
-          _autoSave();
-        })
+        action: SnackBarAction(
+            label: l10n.undo,
+            onPressed: () {
+              planNotifier.value = backup;
+            })
     ).show(context);
-  }
-
-  void _autoSave() {
-    final cleanInflows = currentPlan.inflows.where((e) => e.value > 0).toList();
-    final cleanOutflows = currentPlan.outflows
-        .where((e) => e.value > 0 || e.name.isNotEmpty)
-        .toList();
-    final cleanPlan = currentPlan.copyWith(
-      inflows: cleanInflows,
-      outflows: cleanOutflows,
-    );
-
-    _planService.save(cleanPlan).catchError((e, stack) {
-      StackMoneyException(
-        message: 'Failed to save plan',
-        scope: ExceptionScope.business,
-        payload: {'exception': e, 'plan': cleanPlan.toJson()},
-        stackTrace: stack,
-      );
-    });
   }
 
   void _scrollToBottom() {
