@@ -57,10 +57,7 @@ class PlanEditManager {
         .where((e) => e.value > 0 || e.name.isNotEmpty)
         .toList();
 
-    return plan.copyWith(
-      inflows: cleanInflows,
-      outflows: cleanOutflows,
-    );
+    return plan.copyWith(inflows: cleanInflows, outflows: cleanOutflows);
   }
 
   /// Verifica se houve qualquer alteração em relação ao snapshot inicial
@@ -79,34 +76,52 @@ class PlanEditManager {
 
     // 1. Nome do Plano
     if (oldP.name != newP.name) {
-      changes.add('• Nome: "${oldP.name}" ➔ "${newP.name}"');
+      changes.add(l10n.planChangedName(newP.name, oldP.name));
     }
 
     // 2. Salário Base
     if (oldP.baseSalary != newP.baseSalary) {
-      final oldVal = StackMoneyString.formatMoney(oldP.baseSalary);
-      final newVal = StackMoneyString.formatMoney(newP.baseSalary);
-      changes.add('• Salário Base: R\$ $oldVal ➔ R\$ $newVal');
+      final oldVal = StackMoneyString.formatMoney(
+        oldP.baseSalary,
+        symbol: true,
+      );
+      final newVal = StackMoneyString.formatMoney(
+        newP.baseSalary,
+        symbol: true,
+      );
+      changes.add(l10n.planChangedBaseSalary(newVal, oldVal));
     }
 
     // 3. Entradas
     if (oldP.inflows.length != newP.inflows.length) {
       changes.add(
-        '• Entradas: ${oldP.inflows.length} item(ns) ➔ ${newP.inflows.length} item(ns)',
+        l10n.planChangedItem(
+          l10n.planChangedIncoming,
+          newP.inflows.length,
+          oldP.inflows.length,
+        ),
       );
     }
 
     // 4. Saídas
     if (oldP.outflows.length != newP.outflows.length) {
       changes.add(
-        '• Saídas: ${oldP.outflows.length} item(ns) ➔ ${newP.outflows.length} item(ns)',
+        l10n.planChangedItem(
+          l10n.planChangedOutcoming,
+          newP.outflows.length,
+          oldP.outflows.length,
+        ),
       );
     }
 
     // 5. Distribuições
     if (oldP.distributions.length != newP.distributions.length) {
       changes.add(
-        '• Distribuições: ${oldP.distributions.length} item(ns) ➔ ${newP.distributions.length} item(ns)',
+        l10n.planChangedItem(
+          l10n.planChangedDistribution,
+          newP.distributions.length,
+          oldP.distributions.length,
+        ),
       );
     }
 
@@ -299,12 +314,12 @@ class PlanEditManager {
   }
 
   void updateOutflow(
-      int index, {
-        String? name,
-        DeductionType? type,
-        double? value,
-        int? targetDay,
-      }) {
+    int index, {
+    String? name,
+    DeductionType? type,
+    double? value,
+    int? targetDay,
+  }) {
     final list = List<OutflowRow>.from(currentPlan.outflows);
     if (index >= 0 && index < list.length) {
       final outflow = list[index];
@@ -367,13 +382,13 @@ class PlanEditManager {
   }
 
   void updateDistribution(
-      int index, {
-        String? cat,
-        String? sub,
-        AllocationType? type,
-        double? value,
-        int? targetDay,
-      }) {
+    int index, {
+    String? cat,
+    String? sub,
+    AllocationType? type,
+    double? value,
+    int? targetDay,
+  }) {
     final list = List<DistributionRow>.from(currentPlan.distributions);
     if (index >= 0 && index < list.length) {
       final distribution = list[index];
@@ -391,9 +406,9 @@ class PlanEditManager {
   }
 
   Future<bool?> removeDistributionConfirmation(
-      String distributionName,
-      BuildContext context,
-      ) {
+    String distributionName,
+    BuildContext context,
+  ) {
     final l10n = AppLocalizations.of(context)!;
 
     return showDialog<bool>(
@@ -428,20 +443,21 @@ class PlanEditManager {
   }
 
   void _triggerUndoSnackBar(
-      BuildContext context,
-      String message,
-      SalaryPlan backup,
-      ) {
+    BuildContext context,
+    String message,
+    SalaryPlan backup,
+  ) {
     final l10n = AppLocalizations.of(context)!;
 
     SmSnackBar(
-        message: message,
-        type: SnackBarType.error,
-        action: SnackBarAction(
-            label: l10n.undo,
-            onPressed: () {
-              planNotifier.value = backup;
-            })
+      message: message,
+      type: SnackBarType.error,
+      action: SnackBarAction(
+        label: l10n.undo,
+        onPressed: () {
+          planNotifier.value = backup;
+        },
+      ),
     ).show(context);
   }
 

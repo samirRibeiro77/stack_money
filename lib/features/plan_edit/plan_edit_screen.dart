@@ -44,15 +44,19 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
   Future<bool> _showUnsavedChangesDialog(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
     final qty = _manager.pendingChangesCount(l10n);
-    final diffNote = _manager.getDiffNote(l10n);
+    if (qty <= 0) {
+      return true;
+    }
 
+    final diffNote = _manager.getDiffNote(l10n);
     final shouldLeave = await showDialog<bool>(
       context: context,
-      barrierDismissible: false,
       builder: (dialogContext) => SmDialog(
-        title: 'Alterações no Plano',
-        message: 'Identificamos $qty modificação(ões) pendente(s) no plano "${_manager.currentPlan.name}".',
+        title: l10n.planChangedTitle,
+        message: l10n.planChangedMessage(qty),
+        content: _manager.currentPlan.name,
         note: diffNote,
+        color: StackMoneyTheme.cyanNeon,
         onConfirm: () async {
           final success = await _manager.savePlan();
           if (dialogContext.mounted) {
@@ -60,7 +64,6 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
           }
         },
         onCancel: () {
-          // Retorna true autorizando a saída sem salvar (descarta alterações)
           Navigator.of(dialogContext).pop(true);
         },
       ),
@@ -142,24 +145,25 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                         break;
                     }
                   },
-                  itemBuilder: (context) => PlanEditActions.values.map((action) {
-                    return PopupMenuItem(
-                      value: action,
-                      child: Row(
-                        children: [
-                          Icon(action.icon, color: action.color),
-                          const SizedBox(width: AppSizes.x2),
-                          Text(
-                            action.text(l10n),
-                            style: textTheme.bodySmall?.copyWith(
-                              color: action.color,
-                              fontWeight: AppTypography.weightBold,
-                            ),
+                  itemBuilder: (context) =>
+                      PlanEditActions.values.map((action) {
+                        return PopupMenuItem(
+                          value: action,
+                          child: Row(
+                            children: [
+                              Icon(action.icon, color: action.color),
+                              const SizedBox(width: AppSizes.x2),
+                              Text(
+                                action.text(l10n),
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: action.color,
+                                  fontWeight: AppTypography.weightBold,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
+                        );
+                      }).toList(),
                 ),
               ],
             ),
@@ -184,7 +188,9 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                       onRemove: _manager.removeInflow,
                     ),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: AppSizes.x10),
+                  ),
 
                   /// Outflow Section
                   SliverToBoxAdapter(
@@ -196,14 +202,18 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                       onRemove: _manager.removeOutflow,
                     ),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: AppSizes.x10),
+                  ),
 
                   /// Net Salary Buffer Section
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: NetSalaryStickyHud(plan: currentPlan),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: AppSizes.x10)),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: AppSizes.x10),
+                  ),
 
                   /// Distribution Section
                   SliverToBoxAdapter(
