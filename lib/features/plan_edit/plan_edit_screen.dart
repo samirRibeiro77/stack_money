@@ -75,7 +75,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return PopScope(
-      canPop: !_manager.isDirty,
+      canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
 
@@ -94,7 +94,12 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                   Icons.arrow_back_ios_new_rounded,
                   size: AppSizes.x10,
                 ),
-                onPressed: () => Navigator.of(context).maybePop(),
+                onPressed: () async {
+                  final canLeave = await _showUnsavedChangesDialog(context);
+                  if (canLeave && context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
               ),
               title: IgnorePointer(
                 ignoring: currentPlan.isActive,
