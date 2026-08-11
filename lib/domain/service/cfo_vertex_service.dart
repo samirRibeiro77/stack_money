@@ -2,6 +2,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_vertexai/firebase_vertexai.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
@@ -83,6 +84,32 @@ class CfoVertexService {
       if (chunk.text != null && chunk.text!.isNotEmpty) {
         yield chunk.text!;
       }
+    }
+  }
+
+  Future<String> generateTitle(
+    AppLocalizations l10n, {
+    required String userPrompt,
+    required String aiResponse,
+  }) async {
+    try {
+      final systemPrompt = _remoteConfig.getString(
+        FirebaseKey.cfoTitleGenerator,
+      );
+
+      final model = FirebaseVertexAI.instance.generativeModel(
+        model: _remoteConfig.getString(FirebaseKey.cfoModelName),
+        systemInstruction: Content.system(systemPrompt),
+      );
+
+      final response = await model.generateContent([
+        Content.text('User: $userPrompt\nAI: $aiResponse'),
+      ]);
+
+      final title = response.text?.trim() ?? '';
+      return title.isNotEmpty ? title : 'l10n.newChat';
+    } catch (_) {
+      return 'l10n.financialAnalysis';
     }
   }
 }
