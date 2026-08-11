@@ -102,8 +102,6 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return Scaffold(
       backgroundColor: StackMoneyTheme.background,
       appBar: AppBar(
