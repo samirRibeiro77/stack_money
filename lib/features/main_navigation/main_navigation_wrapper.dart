@@ -4,6 +4,7 @@ import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/widgets/tab_content.dart';
 import 'package:stack_money/features/buckets/buckets_screen.dart';
+import 'package:stack_money/features/chats/chats_screen.dart';
 import 'package:stack_money/features/dashboard/dashboard_screen.dart';
 import 'package:stack_money/features/history/history_screen.dart';
 import 'package:stack_money/features/plans/plans_screen.dart';
@@ -89,6 +90,13 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
                               visible: activeTab == NavBarTabs.plans,
                               maintainState: true,
                               child: const PlansScreen(),
+                            ),
+
+                            /// Chats
+                            Visibility(
+                              visible: activeTab == NavBarTabs.ai,
+                              maintainState: true,
+                              child: const ChatsScreen(),
                             ),
 
                             /// Buckets

@@ -4,7 +4,6 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/card_initialize_slot.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
-import 'package:stack_money/core/widgets/title_text.dart';
 import 'package:stack_money/features/chats/manager/chats_manager.dart';
 
 class ChatsScreen extends StatefulWidget {
@@ -38,7 +37,7 @@ class _AiChatsScreenState extends State<ChatsScreen> {
         ),
         const SizedBox(height: AppSizes.sizedBoxMedium),
         CardInitializeSlot(
-          'New chat',
+          l10n.newChat,
           onTap: () => _manager.initializeNewBucketSlot(context),
         ),
       ],

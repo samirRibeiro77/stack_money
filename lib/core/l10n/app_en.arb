@@ -655,5 +655,29 @@
   "planChangedValueDetails": "Some details has changed",
   "@planChangedValueDetails": {
     "description": "Found changes only on details."
+  },
+  "hud": "HUD",
+  "@hud": {
+    "description": "Hud label for main navigation."
+  },
+  "plans": "Plans",
+  "@plans": {
+    "description": "Plans label for main navigation."
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI label for main navigation."
+  },
+  "buckets": "Buckets",
+  "@buckets": {
+    "description": "Buckets label for main navigation."
+  },
+  "log": "Log",
+  "@log": {
+    "description": "Log label for main navigation."
+  },
+  "newChat": "New Chat",
+  "@newChat": {
+    "description": "New chat with AI."
   }
 }

@@ -1085,6 +1085,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Some details has changed'**
   String get planChangedValueDetails;
+
+  /// Hud label for main navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'HUD'**
+  String get hud;
+
+  /// Plans label for main navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans'**
+  String get plans;
+
+  /// AI label for main navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'AI'**
+  String get ai;
+
+  /// Buckets label for main navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Buckets'**
+  String get buckets;
+
+  /// Log label for main navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Log'**
+  String get log;
+
+  /// New chat with AI.
+  ///
+  /// In en, this message translates to:
+  /// **'New Chat'**
+  String get newChat;
 }
 
 class _AppLocalizationsDelegate

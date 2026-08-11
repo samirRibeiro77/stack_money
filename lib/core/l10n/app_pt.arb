@@ -164,5 +164,11 @@
   "planChangedOutcoming": "Saídas",
   "planChangedDistribution": "Distribuições",
   "planChangedNoChanges": "Nenhuma alteração detectada...",
-  "planChangedValueDetails": "Alguns detalhes foram alterados"
+  "planChangedValueDetails": "Alguns detalhes foram alterados",
+  "hud": "HUD",
+  "plans": "Planos",
+  "ai": "IA",
+  "buckets": "Caixa",
+  "log": "Hist",
+  "newChat": "Nova conversa"
 }

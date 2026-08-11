@@ -553,4 +553,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get planChangedValueDetails => 'Some details has changed';
+
+  @override
+  String get hud => 'HUD';
+
+  @override
+  String get plans => 'Plans';
+
+  @override
+  String get ai => 'AI';
+
+  @override
+  String get buckets => 'Buckets';
+
+  @override
+  String get log => 'Log';
+
+  @override
+  String get newChat => 'New Chat';
 }

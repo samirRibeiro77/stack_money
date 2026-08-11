@@ -555,4 +555,22 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get planChangedValueDetails => 'Alguns detalhes foram alterados';
+
+  @override
+  String get hud => 'HUD';
+
+  @override
+  String get plans => 'Planos';
+
+  @override
+  String get ai => 'IA';
+
+  @override
+  String get buckets => 'Caixa';
+
+  @override
+  String get log => 'Hist';
+
+  @override
+  String get newChat => 'Nova conversa';
 }

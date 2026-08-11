@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/enum/nav_bar_tabs.dart';
 
@@ -18,11 +20,11 @@ class NavBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color itemColor = isActive
-        ? StackMoneyTheme.cyanNeon
-        : StackMoneyTheme.mutedGrey;
-    final double increaseSize = isActive ? 2 : 0;
+    final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
+
+    final Color itemColor = isActive ? tab.color : StackMoneyTheme.mutedGrey;
+    final double increaseSize = isActive ? 2 : 0;
 
     return GestureDetector(
       onTap: () => changeTab(tab),
@@ -61,7 +63,7 @@ class NavBarItem extends StatelessWidget {
                 color: itemColor,
                 letterSpacing: 0.5,
               ),
-              child: Text(tab.name.toUpperCase()),
+              child: Text(StackMoneyString.formatTitle(tab.label(l10n))),
             ),
           ],
         ),
