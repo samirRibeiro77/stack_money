@@ -1127,6 +1127,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ask your CFO...'**
   String get askCfo;
+
+  /// Reject AI proposal.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get reject;
+
+  /// Apply AI proposal.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply;
+
+  /// Pending action status.
+  ///
+  /// In en, this message translates to:
+  /// **'↺ Pending'**
+  String get pending;
+
+  /// Approved AI proposal.
+  ///
+  /// In en, this message translates to:
+  /// **'✓ Approved'**
+  String get approved;
+
+  /// Rejected AI proposal.
+  ///
+  /// In en, this message translates to:
+  /// **'✕ Rejected'**
+  String get rejected;
 }
 
 class _AppLocalizationsDelegate

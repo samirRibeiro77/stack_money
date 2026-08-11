@@ -576,4 +576,19 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get askCfo => 'Pergunte ao seu CFO...';
+
+  @override
+  String get reject => 'Rejeitar';
+
+  @override
+  String get apply => 'Aplicar';
+
+  @override
+  String get pending => '↺ Pendente';
+
+  @override
+  String get approved => '✓ Aprovado';
+
+  @override
+  String get rejected => '✕ Rejeitado';
 }

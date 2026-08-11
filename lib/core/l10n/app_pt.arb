@@ -171,5 +171,10 @@
   "buckets": "Caixa",
   "log": "Hist",
   "newChat": "Nova conversa",
-  "askCfo": "Pergunte ao seu CFO..."
+  "askCfo": "Pergunte ao seu CFO...",
+  "reject": "Rejeitar",
+  "apply": "Aplicar",
+  "pending": "↺ Pendente",
+  "approved": "✓ Aprovado",
+  "rejected": "✕ Rejeitado"
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/data/enum/action_status.dart';
 import 'package:stack_money/data/models/proposed_action_model.dart';
@@ -20,87 +22,84 @@ class AiActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    final isPending = action.status == ActionStatus.pending;
-    final isApproved = action.status == ActionStatus.approved;
-
-    return Container(
-      padding: const EdgeInsets.all(AppSizes.x3),
-      decoration: BoxDecoration(
-        color: StackMoneyTheme.carbonGrey.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
-        border: Border.all(
-          color: isPending
-              ? StackMoneyTheme.cyanNeon
-              : (isApproved
-                    ? StackMoneyTheme.cyanNeon
-                    : StackMoneyTheme.mutedGrey),
+    return Align(
+      alignment: Alignment.center,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: AppSizes.x4),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.8,
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.alt_route_rounded,
-                color: isApproved
-                    ? StackMoneyTheme.cyanNeon
-                    : StackMoneyTheme.magentaNeon,
-                size: AppSizes.x5,
-              ),
-              const SizedBox(width: AppSizes.x2),
-              Expanded(
-                child: Text(
-                  action.title,
-                  style: textTheme.labelSmall?.copyWith(
-                    color: StackMoneyTheme.mutedGrey,
-                    fontWeight: AppTypography.weightBold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSizes.min),
-          Text(
-            action.description,
-            style: textTheme.bodySmall?.copyWith(
-              color: StackMoneyTheme.mutedGrey,
-            ),
-          ),
-          const SizedBox(height: AppSizes.x3),
-
-          if (isPending)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+        child: GlassmorphismEffect(
+          containerHeight: null,
+          borderWidth: AppSizes.min,
+          borderColor: action.status.color,
+          borderRadius: AppSizes.radiusLarge,
+          child: Padding(
+            padding: EdgeInsets.all(AppSizes.x3),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SmChipButton(
-                  'Rejeitar',
-                  color: StackMoneyTheme.magentaNeon,
-                  onTap: () =>
-                      handleActionResponse(messageId, ActionStatus.approved),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.alt_route_rounded,
+                      color: action.status.color,
+                      size: AppSizes.x5,
+                    ),
+                    const SizedBox(width: AppSizes.x2),
+                    Expanded(
+                      child: Text(
+                        action.title,
+                        style: textTheme.bodySmall?.copyWith(
+                          fontWeight: AppTypography.weightBold,
+                          color: StackMoneyTheme.mutedGrey
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: AppSizes.sizedBoxSmall),
-                SmChipButton(
-                  'Aprovar & Aplicar',
-                  color: StackMoneyTheme.cyanNeon,
-                  onTap: () =>
-                      handleActionResponse(messageId, ActionStatus.approved),
-                ),
+                const SizedBox(height: AppSizes.min),
+                Text(action.description, style: textTheme.labelSmall),
+                const SizedBox(height: AppSizes.x3),
+
+                if (action.status == ActionStatus.pending)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SmChipButton(
+                        l10n.reject,
+                        color: StackMoneyTheme.magentaNeon,
+                        onTap: () => handleActionResponse(
+                          messageId,
+                          ActionStatus.rejected,
+                        ),
+                      ),
+                      const SizedBox(width: AppSizes.sizedBoxSmall),
+                      SmChipButton(
+                        l10n.apply,
+                        color: StackMoneyTheme.cyanNeon,
+                        onTap: () => handleActionResponse(
+                          messageId,
+                          ActionStatus.approved,
+                        ),
+                      ),
+                    ],
+                  )
+                else
+                  Text(
+                    action.status.label(l10n),
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: action.status.color,
+                      fontWeight: AppTypography.weightBold
+                    ),
+                  ),
               ],
-            )
-          else
-            Text(
-              isApproved ? '✓ Alteração Aplicada' : '✕ Proposta Recusada',
-              style: TextStyle(
-                color: isApproved
-                    ? StackMoneyTheme.cyanNeon
-                    : StackMoneyTheme.mutedGrey,
-                fontWeight: AppTypography.weightBold,
-              ),
             ),
-        ],
+          ),
+        ),
       ),
     );
   }

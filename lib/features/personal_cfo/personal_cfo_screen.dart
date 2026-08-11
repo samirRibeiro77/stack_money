@@ -5,8 +5,9 @@ import 'package:stack_money/data/enum/action_status.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/proposed_action_model.dart';
-import 'package:stack_money/features/personal_cfo/widgets/read_message.dart';
+import 'package:stack_money/features/personal_cfo/widgets/ai_message.dart';
 import 'package:stack_money/features/personal_cfo/widgets/send_message.dart';
+import 'package:stack_money/features/personal_cfo/widgets/user_message.dart';
 
 class PersonalCfoScreen extends StatefulWidget {
   static const route = '/personal_cfo';
@@ -125,7 +126,11 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                 final msg = messages[index];
                 final isUser = msg.sender == MessageSender.user;
 
-                return ReadMessage(msg: msg, isUser: isUser, handleActionResponse: _handleActionResponse);
+                if (isUser) {
+                  return UserMessage(msg: msg);
+                }
+
+                return AiMessage(msg: msg, handleActionResponse: _handleActionResponse);
               },
             ),
           ),

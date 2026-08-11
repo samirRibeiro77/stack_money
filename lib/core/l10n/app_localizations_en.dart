@@ -574,4 +574,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get askCfo => 'Ask your CFO...';
+
+  @override
+  String get reject => 'Reject';
+
+  @override
+  String get apply => 'Apply';
+
+  @override
+  String get pending => '↺ Pending';
+
+  @override
+  String get approved => '✓ Approved';
+
+  @override
+  String get rejected => '✕ Rejected';
 }

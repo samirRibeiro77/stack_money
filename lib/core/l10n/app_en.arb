@@ -683,5 +683,25 @@
   "askCfo": "Ask your CFO...",
   "@askCfo": {
     "description": "Chat message hint."
+  },
+  "reject": "Reject",
+  "@reject": {
+    "description": "Reject AI proposal."
+  },
+  "apply": "Apply",
+  "@apply": {
+    "description": "Apply AI proposal."
+  },
+  "pending": "↺ Pending",
+  "@pending": {
+    "description": "Pending action status."
+  },
+  "approved": "✓ Approved",
+  "@approved": {
+    "description": "Approved AI proposal."
+  },
+  "rejected": "✕ Rejected",
+  "@rejected": {
+    "description": "Rejected AI proposal."
   }
 }
