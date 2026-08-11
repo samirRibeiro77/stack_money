@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/data/enum/action_status.dart';
 import 'package:stack_money/data/models/proposed_action_model.dart';
 
 class AiActionCard extends StatelessWidget {
-  const AiActionCard({required this.messageId, required this.action, required this.handleActionResponse, super.key});
+  const AiActionCard({
+    required this.messageId,
+    required this.action,
+    required this.handleActionResponse,
+    super.key,
+  });
 
   final String messageId;
   final ProposedActionModel action;
@@ -28,8 +34,8 @@ class AiActionCard extends StatelessWidget {
           color: isPending
               ? StackMoneyTheme.cyanNeon
               : (isApproved
-              ? StackMoneyTheme.cyanNeon
-              : StackMoneyTheme.mutedGrey),
+                    ? StackMoneyTheme.cyanNeon
+                    : StackMoneyTheme.mutedGrey),
         ),
       ),
       child: Column(
@@ -69,23 +75,18 @@ class AiActionCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(
-                  onPressed: () =>
-                      handleActionResponse(messageId, ActionStatus.rejected),
-                  child: Text(
-                    'Rejeitar',
-                    style: TextStyle(color: StackMoneyTheme.mutedGrey),
-                  ),
-                ),
-                const SizedBox(width: AppSizes.x2),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: StackMoneyTheme.cyanNeon,
-                    foregroundColor: StackMoneyTheme.background,
-                  ),
-                  onPressed: () =>
+                SmChipButton(
+                  'Rejeitar',
+                  color: StackMoneyTheme.magentaNeon,
+                  onTap: () =>
                       handleActionResponse(messageId, ActionStatus.approved),
-                  child: const Text('Aprovar & Aplicar'),
+                ),
+                const SizedBox(width: AppSizes.sizedBoxSmall),
+                SmChipButton(
+                  'Aprovar & Aplicar',
+                  color: StackMoneyTheme.cyanNeon,
+                  onTap: () =>
+                      handleActionResponse(messageId, ActionStatus.approved),
                 ),
               ],
             )
