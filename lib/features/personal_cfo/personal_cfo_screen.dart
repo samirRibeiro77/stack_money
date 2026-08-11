@@ -7,6 +7,7 @@ import 'package:stack_money/data/enum/action_status.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/proposed_action_model.dart';
+import 'package:stack_money/features/personal_cfo/widgets/send_message.dart';
 
 class PersonalCfoScreen extends StatefulWidget {
   static const route = '/personal_cfo';
@@ -102,6 +103,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
       ),
       body: Column(
         children: [
+          /// Messages
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
@@ -149,7 +151,8 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
             ),
           ),
 
-          // BARRA INFERIOR DE INPUT
+          /// Send Message
+          SendMessage(),
           Padding(
             padding: const EdgeInsets.all(AppSizes.x4),
             child: Row(
