@@ -8,19 +8,32 @@ enum ActionStatus {
   approved,
   rejected;
 
+  static ActionStatus fromJson(String? json) {
+    return ActionStatus.values.firstWhere(
+      (e) => e.name == json,
+      orElse: () => ActionStatus.pending,
+    );
+  }
+
   Color get color {
-    switch(this) {
-      case pending: return StackMoneyTheme.platinumSilver;
-      case approved: return StackMoneyTheme.cyanNeon;
-      case rejected: return StackMoneyTheme.magentaNeon;
+    switch (this) {
+      case pending:
+        return StackMoneyTheme.platinumSilver;
+      case approved:
+        return StackMoneyTheme.cyanNeon;
+      case rejected:
+        return StackMoneyTheme.magentaNeon;
     }
   }
 
   String label(AppLocalizations l10n) {
-    switch(this) {
-      case pending: return l10n.pending;
-      case approved: return l10n.approved;
-      case rejected: return l10n.rejected;
+    switch (this) {
+      case pending:
+        return l10n.pending;
+      case approved:
+        return l10n.approved;
+      case rejected:
+        return l10n.rejected;
     }
   }
 }

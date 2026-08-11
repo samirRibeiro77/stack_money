@@ -55,4 +55,11 @@ class ModelKey {
   static const cardExpand = 'cardExpand';
   static const defaultFilter = 'defaultFilter';
   static const lastFilter = 'lastFilter';
+
+  /// AI Chat
+  static const actionType = 'actionType';
+  static const title = 'title';
+  static const description = 'description';
+  static const payload = 'payload';
+  static const status = 'status';
 }
