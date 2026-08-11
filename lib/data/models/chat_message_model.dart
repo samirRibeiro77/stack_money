@@ -34,7 +34,7 @@ class ChatMessageModel {
     );
   }
 
-  Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toJson() {
     return {
       ModelKey.id: _id,
       ModelKey.sender: sender.name,

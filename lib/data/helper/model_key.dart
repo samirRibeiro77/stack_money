@@ -67,4 +67,7 @@ class ModelKey {
   static const sender = 'sender';
   static const text = 'text';
   static const proposedAction = 'proposedAction';
+
+  /// Chat Thread
+  static const lastMessage = 'lastMessage';
 }

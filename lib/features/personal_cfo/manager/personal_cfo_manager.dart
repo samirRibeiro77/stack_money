@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
@@ -17,7 +18,9 @@ class PersonalCfoManager {
   final _isStreamingNotifier = ValueNotifier<bool>(false);
 
   /// Listeners
-  ValueListenable<List<ChatMessageModel>> get messagesNotifier => _messagesNotifier;
+  ValueListenable<List<ChatMessageModel>> get messagesNotifier =>
+      _messagesNotifier;
+
   ValueListenable<bool> get isStreamingNotifier => _isStreamingNotifier;
 
   List<ChatMessageModel> get messages => messagesNotifier.value;
@@ -32,26 +35,18 @@ class PersonalCfoManager {
     final cleanText = userText.trim();
     if (cleanText.isEmpty || isStreamingNotifier.value) return;
 
-    final String chatId = 'current_session';
-    final DateTime now = DateTime.now();
-
     // 1. Cria e adiciona a mensagem do usuário
     final userMessage = ChatMessageModel(
-      id: now.millisecondsSinceEpoch.toString(),
-      chatId: chatId,
       sender: MessageSender.user,
       text: cleanText,
-      timestamp: now,
+      timestamp: Timestamp.now(),
     );
 
     // 2. Cria a mensagem "placeholder" da IA para receber o streaming
-    final String aiMessageId = (now.millisecondsSinceEpoch + 1).toString();
     final aiMessagePlaceholder = ChatMessageModel(
-      id: aiMessageId,
-      chatId: chatId,
       sender: MessageSender.cfoAi,
       text: '',
-      timestamp: now.add(const Duration(milliseconds: 1)),
+      timestamp: Timestamp.now(),
     );
 
     // Atualiza a lista com o usuário + placeholder da IA
@@ -81,7 +76,9 @@ class PersonalCfoManager {
 
         // Atualiza apenas a mensagem da IA que está sendo preenchida
         final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
-        final aiIndex = updatedList.indexWhere((m) => m.id == aiMessageId);
+        final aiIndex = updatedList.indexWhere(
+          (m) => m.id == aiMessagePlaceholder.id,
+        );
 
         if (aiIndex != -1) {
           updatedList[aiIndex] = updatedList[aiIndex].copyWith(
@@ -101,7 +98,9 @@ class PersonalCfoManager {
 
       // Tratamento gracioso em caso de falha de conexão
       final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
-      final aiIndex = updatedList.indexWhere((m) => m.id == aiMessageId);
+      final aiIndex = updatedList.indexWhere(
+        (m) => m.id == aiMessagePlaceholder.id,
+      );
 
       if (aiIndex != -1) {
         updatedList[aiIndex] = updatedList[aiIndex].copyWith(
