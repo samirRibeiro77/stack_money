@@ -12,7 +12,6 @@ class ChatThreadModel {
     required this.createdAt,
     required this.updatedAt,
     this.isArchived = false,
-
     required this.lastMessage,
   });
 

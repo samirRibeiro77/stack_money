@@ -35,7 +35,7 @@ class CyberMarkdown extends StatelessWidget {
           color: StackMoneyTheme.magentaNeon,
           fontWeight: AppTypography.weightBold,
         ),
-        h3: textTheme.titleSmall?.copyWith(color: StackMoneyTheme.cyanNeon),
+        h3: textTheme.titleMedium?.copyWith(color: StackMoneyTheme.cyanNeon),
 
         // Listas com Marcadores Neon
         listBullet: textTheme.bodyMedium?.copyWith(
