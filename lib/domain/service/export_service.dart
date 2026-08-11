@@ -62,14 +62,11 @@ class ExportService {
   }
 
   Future<String> extractDataToAI() async {
-    final results = await Future.wait([
-      PlanManagementService().fetchActivated(),
-      HistoryManagementService().fetchLatest(),
-    ]);
-
     final jsonMap = {
-      ExportKey.currentPlan: (results[0] as SalaryPlan).toJson(),
-      ExportKey.latestHistory: (results[1] as History).toJson(),
+      ExportKey.currentPlan: AppCoordinator.instance.currentPlan.value
+          ?.toJson(),
+      ExportKey.latestHistory: AppCoordinator.instance.latestHistory.value
+          ?.toJson(),
     };
 
     return _convertDataToExport(jsonMap: jsonMap);

@@ -24,7 +24,7 @@ class SendMessage extends StatelessWidget {
         left: AppSizes.sizedBoxMedium,
         right: AppSizes.sizedBoxMedium,
         top: AppSizes.sizedBoxSmall,
-        bottom: AppSizes.navBarPaddingBottom
+        bottom: AppSizes.navBarPaddingBottom,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -63,20 +63,26 @@ class SendMessage extends StatelessWidget {
           SizedBox(width: AppSizes.sizedBoxMedium),
 
           /// Send Button
-          GlassmorphismEffect(
-            borderRadius: AppSizes.avatarRadius,
-            borderColor: StackMoneyTheme.magentaNeon,
-            borderWidth: AppSizes.min,
-            containerHeight: AppSizes.containerTiny,
-            child: SizedBox.square(
-              dimension: AppSizes.x18,
-              child: Icon(
-                Icons.send_outlined,
-                color: StackMoneyTheme.magentaNeon,
-                size: AppSizes.x10,
+          InkWell(
+            onTap: onSend,
+            borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
+            highlightColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.1),
+            splashColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.15),
+            child: GlassmorphismEffect(
+              borderRadius: AppSizes.avatarRadius,
+              borderColor: StackMoneyTheme.magentaNeon,
+              borderWidth: AppSizes.min,
+              containerHeight: AppSizes.containerTiny,
+              child: SizedBox.square(
+                dimension: AppSizes.x18,
+                child: Icon(
+                  Icons.send_outlined,
+                  color: StackMoneyTheme.magentaNeon,
+                  size: AppSizes.x10,
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

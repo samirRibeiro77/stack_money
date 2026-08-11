@@ -6,15 +6,17 @@ import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/features/personal_cfo/widgets/ai_action_card.dart';
 
 class AiMessage extends StatelessWidget {
-  const AiMessage({required this.msg, required this.handleActionResponse, super.key});
+  const AiMessage({
+    required this.msg,
+    required this.handleActionResponse,
+    super.key,
+  });
 
   final ChatMessageModel msg;
   final Function(String, ActionStatus) handleActionResponse;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return Align(
       alignment: Alignment.center,
       child: Padding(
@@ -23,9 +25,7 @@ class AiMessage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// Text message
-            CyberMarkdown(
-              data: msg.text,
-            ),
+            CyberMarkdown(data: msg.text),
 
             /// Action
             if (msg.proposedAction != null) ...[

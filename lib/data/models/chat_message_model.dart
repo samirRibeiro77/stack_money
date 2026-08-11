@@ -19,13 +19,14 @@ class ChatMessageModel {
   });
 
   ChatMessageModel copyWith({
+    String? text,
     ProposedActionModel? proposedAction,
   }) {
     return ChatMessageModel(
       id: id,
       chatId: chatId,
       sender: sender,
-      text: text,
+      text: text ?? this.text,
       timestamp: timestamp,
       proposedAction: proposedAction ?? this.proposedAction,
     );

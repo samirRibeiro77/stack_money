@@ -8,4 +8,5 @@ class FirebaseKey {
 
   /// Remote config
   static const cfoSystemPrompt = 'cfo_system_prompt';
+  static const cfoModelName = 'cfo_model_name';
 }
