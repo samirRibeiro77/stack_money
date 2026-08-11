@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stack_money/features/personal_cfo/personal_cfo_screen.dart';
 
 class ChatsManager {
   final ValueNotifier<bool> _showArchived = ValueNotifier(false);
@@ -13,7 +14,7 @@ class ChatsManager {
 
   void initializeNewBucketSlot(BuildContext context) {
     if (context.mounted) {
-      context.push('unknown'); // TODO: Add CFO Chat route
+      context.push(PersonalCfoScreen.route);
     }
   }
 }
