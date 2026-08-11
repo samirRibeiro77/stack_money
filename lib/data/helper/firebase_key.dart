@@ -5,4 +5,7 @@ class FirebaseKey {
   static const buckets = 'buckets';
   static const salaryPlans = 'salaryPlans';
   static const netWorth = 'netWorth';
+
+  /// Remote config
+  static const cfoSystemPrompt = 'cfo_system_prompt';
 }
