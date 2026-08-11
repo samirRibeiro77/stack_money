@@ -5,9 +5,14 @@ import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 
 class SendMessage extends StatelessWidget {
-  const SendMessage({super.key});
+  final TextEditingController controller;
+  final VoidCallback onSend;
 
-  static final _firstMessage = 'Aqui vai ficar uma mensagem muito grande para ver como vai ficar o texto';
+  const SendMessage({
+    required this.controller,
+    required this.onSend,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,23 +20,31 @@ class SendMessage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: AppSizes.sizedBoxSmall,
-        horizontal: AppSizes.sizedBoxMedium,
+      padding: EdgeInsets.only(
+        left: AppSizes.sizedBoxMedium,
+        right: AppSizes.sizedBoxMedium,
+        top: AppSizes.sizedBoxSmall,
+        bottom: AppSizes.navBarPaddingBottom
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+          /// Multi line expanded text field
           Expanded(
             child: GlassmorphismEffect(
-              borderColor: StackMoneyTheme.magentaNeon,
+              borderRadius: AppSizes.radiusLarge,
+              borderColor: StackMoneyTheme.cyanNeon,
               borderWidth: AppSizes.min,
+              containerHeight: null,
               child: TextField(
+                controller: controller,
                 keyboardType: TextInputType.multiline,
-                controller: TextEditingController(),
+                minLines: 1,
+                maxLines: 12,
                 style: textTheme.bodyMedium,
                 decoration: InputDecoration(
                   fillColor: Colors.transparent,
-                  hintText: 'Pergunte ao seu CFO...',
+                  hintText: l10n.askCfo,
                   hintStyle: textTheme.labelMedium,
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -40,27 +53,30 @@ class SendMessage extends StatelessWidget {
                   errorBorder: InputBorder.none,
                   focusedErrorBorder: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(
-                    horizontal: AppSizes.x3,
-                    vertical: AppSizes.x2,
+                    horizontal: AppSizes.x4,
+                    vertical: AppSizes.x3,
                   ),
                 ),
               ),
             ),
           ),
           SizedBox(width: AppSizes.sizedBoxMedium),
+
+          /// Send Button
           GlassmorphismEffect(
             borderRadius: AppSizes.avatarRadius,
-            borderColor: StackMoneyTheme.cyanNeon,
+            borderColor: StackMoneyTheme.magentaNeon,
             borderWidth: AppSizes.min,
+            containerHeight: AppSizes.containerTiny,
             child: SizedBox.square(
-              dimension: AppSizes.x20,
+              dimension: AppSizes.x18,
               child: Icon(
                 Icons.send_outlined,
-                color: StackMoneyTheme.cyanNeon,
+                color: StackMoneyTheme.magentaNeon,
                 size: AppSizes.x10,
               ),
             ),
-          ),
+          )
         ],
       ),
     );

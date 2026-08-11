@@ -571,4 +571,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newChat => 'New Chat';
+
+  @override
+  String get askCfo => 'Ask your CFO...';
 }

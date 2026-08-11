@@ -573,4 +573,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get newChat => 'Nova conversa';
+
+  @override
+  String get askCfo => 'Pergunte ao seu CFO...';
 }

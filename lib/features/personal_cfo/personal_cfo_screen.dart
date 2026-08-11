@@ -28,21 +28,27 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
       id: '1',
       chatId: 'mock_chat',
       sender: MessageSender.user,
-      text: 'Como posso reorganizar meu aporte para comprar o consórcio sem zerar a reserva?',
+      text:
+          'Como posso reorganizar meu aporte para comprar o consórcio sem zerar a reserva?',
       timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
     ),
     ChatMessageModel(
       id: '2',
       chatId: 'mock_chat',
       sender: MessageSender.cfoAi,
-      text: 'Analisando seu plano "CI&T untill Sep" e seus baldes atuais: se ajustarmos a distribuição do balde "Compass" em R\$ 300/mês, você mantém 100% da sua liquidez imediata intacta.',
+      text:
+          'Analisando seu plano "CI&T untill Sep" e seus baldes atuais: se ajustarmos a distribuição do balde "Compass" em R\$ 300/mês, você mantém 100% da sua liquidez imediata intacta.',
       timestamp: DateTime.now().subtract(const Duration(minutes: 9)),
       proposedAction: ProposedActionModel(
         id: 'action_1',
         actionType: 'update_bucket',
         title: 'Reajuste Tático de Balde',
-        description: 'Aumentar o valor mínimo do balde "Compass" para R\$ 5.484,04.',
-        payload: {'bucketId': '98c929a8-337a-48b0-a2a5-0524d7b26788', 'newValue': 5484.04},
+        description:
+            'Aumentar o valor mínimo do balde "Compass" para R\$ 5.484,04.',
+        payload: {
+          'bucketId': '98c929a8-337a-48b0-a2a5-0524d7b26788',
+          'newValue': 5484.04,
+        },
         status: ActionStatus.pending,
       ),
     ),
@@ -72,8 +78,12 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
     setState(() {
       final index = messages.indexWhere((m) => m.id == messageId);
       if (index != -1 && messages[index].proposedAction != null) {
-        final updatedAction = messages[index].proposedAction!.copyWith(status: newStatus);
-        messages[index] = messages[index].copyWith(proposedAction: updatedAction);
+        final updatedAction = messages[index].proposedAction!.copyWith(
+          status: newStatus,
+        );
+        messages[index] = messages[index].copyWith(
+          proposedAction: updatedAction,
+        );
       }
     });
   }
@@ -107,14 +117,19 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
-              padding: const EdgeInsets.symmetric(horizontal: AppSizes.x4, vertical: AppSizes.x4),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.x4,
+                vertical: AppSizes.x4,
+              ),
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 final msg = messages[index];
                 final isUser = msg.sender == MessageSender.user;
 
                 return Align(
-                  alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                  alignment: isUser
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
                   child: Container(
                     margin: const EdgeInsets.only(bottom: AppSizes.x4),
                     constraints: BoxConstraints(
@@ -122,7 +137,9 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                     ),
                     child: GlassmorphismEffect(
                       borderRadius: AppSizes.radiusSmall,
-                      borderColor: isUser ? StackMoneyTheme.cyanNeon : StackMoneyTheme.magentaNeon,
+                      borderColor: isUser
+                          ? StackMoneyTheme.cyanNeon
+                          : StackMoneyTheme.magentaNeon,
                       borderWidth: AppSizes.min,
                       child: Padding(
                         padding: const EdgeInsets.all(AppSizes.x3),
@@ -139,7 +156,11 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                             // RENDERIZAÇÃO DO CARD TÁTICO DE PROPOSTA
                             if (msg.proposedAction != null) ...[
                               const SizedBox(height: AppSizes.x3),
-                              _buildActionCard(msg.id, msg.proposedAction!, textTheme),
+                              _buildActionCard(
+                                msg.id,
+                                msg.proposedAction!,
+                                textTheme,
+                              ),
                             ],
                           ],
                         ),
@@ -152,50 +173,17 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
           ),
 
           /// Send Message
-          SendMessage(),
-          Padding(
-            padding: const EdgeInsets.all(AppSizes.x4),
-            child: Row(
-              children: [
-                Expanded(
-                  child: GlassmorphismEffect(
-                    borderRadius: AppSizes.radiusSmall,
-                    borderColor: StackMoneyTheme.magentaNeon,
-                    borderWidth: AppSizes.min,
-                    child: TextField(
-                      controller: _textController,
-                      style: textTheme.bodyMedium?.copyWith(color: StackMoneyTheme.mutedGrey),
-                      decoration: const InputDecoration(
-                        hintText: 'Pergunte ao seu CFO...',
-                        hintStyle: TextStyle(color: StackMoneyTheme.mutedGrey),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: AppSizes.x3,
-                          vertical: AppSizes.x2,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: AppSizes.x2),
-                GlassmorphismEffect(
-                  borderRadius: AppSizes.radiusSmall,
-                  borderColor: StackMoneyTheme.cyanNeon,
-                  borderWidth: AppSizes.min,
-                  child: IconButton(
-                    icon: const Icon(Icons.send_rounded, color: StackMoneyTheme.cyanNeon),
-                    onPressed: _sendMessage,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          SendMessage(controller: _textController, onSend: _sendMessage),
         ],
       ),
     );
   }
 
-  Widget _buildActionCard(String messageId, ProposedActionModel action, TextTheme textTheme) {
+  Widget _buildActionCard(
+    String messageId,
+    ProposedActionModel action,
+    TextTheme textTheme,
+  ) {
     final isPending = action.status == ActionStatus.pending;
     final isApproved = action.status == ActionStatus.approved;
 
@@ -207,7 +195,9 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
         border: Border.all(
           color: isPending
               ? StackMoneyTheme.cyanNeon
-              : (isApproved ? StackMoneyTheme.cyanNeon : StackMoneyTheme.mutedGrey),
+              : (isApproved
+                    ? StackMoneyTheme.cyanNeon
+                    : StackMoneyTheme.mutedGrey),
         ),
       ),
       child: Column(
@@ -217,7 +207,9 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
             children: [
               Icon(
                 Icons.alt_route_rounded,
-                color: isApproved ? StackMoneyTheme.cyanNeon : StackMoneyTheme.magentaNeon,
+                color: isApproved
+                    ? StackMoneyTheme.cyanNeon
+                    : StackMoneyTheme.magentaNeon,
                 size: AppSizes.x5,
               ),
               const SizedBox(width: AppSizes.x2),
@@ -235,7 +227,9 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
           const SizedBox(height: AppSizes.min),
           Text(
             action.description,
-            style: textTheme.bodySmall?.copyWith(color: StackMoneyTheme.mutedGrey),
+            style: textTheme.bodySmall?.copyWith(
+              color: StackMoneyTheme.mutedGrey,
+            ),
           ),
           const SizedBox(height: AppSizes.x3),
 
@@ -244,8 +238,12 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () => _handleActionResponse(messageId, ActionStatus.rejected),
-                  child: Text('Rejeitar', style: TextStyle(color: StackMoneyTheme.mutedGrey)),
+                  onPressed: () =>
+                      _handleActionResponse(messageId, ActionStatus.rejected),
+                  child: Text(
+                    'Rejeitar',
+                    style: TextStyle(color: StackMoneyTheme.mutedGrey),
+                  ),
                 ),
                 const SizedBox(width: AppSizes.x2),
                 ElevatedButton(
@@ -253,7 +251,8 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                     backgroundColor: StackMoneyTheme.cyanNeon,
                     foregroundColor: StackMoneyTheme.background,
                   ),
-                  onPressed: () => _handleActionResponse(messageId, ActionStatus.approved),
+                  onPressed: () =>
+                      _handleActionResponse(messageId, ActionStatus.approved),
                   child: const Text('Aprovar & Aplicar'),
                 ),
               ],
@@ -262,7 +261,9 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
             Text(
               isApproved ? '✓ Alteração Aplicada' : '✕ Proposta Recusada',
               style: TextStyle(
-                color: isApproved ? StackMoneyTheme.cyanNeon : StackMoneyTheme.mutedGrey,
+                color: isApproved
+                    ? StackMoneyTheme.cyanNeon
+                    : StackMoneyTheme.mutedGrey,
                 fontWeight: AppTypography.weightBold,
               ),
             ),

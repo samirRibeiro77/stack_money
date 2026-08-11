@@ -170,5 +170,6 @@
   "ai": "IA",
   "buckets": "Caixa",
   "log": "Hist",
-  "newChat": "Nova conversa"
+  "newChat": "Nova conversa",
+  "askCfo": "Pergunte ao seu CFO..."
 }

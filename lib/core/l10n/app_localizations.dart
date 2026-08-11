@@ -1121,6 +1121,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New Chat'**
   String get newChat;
+
+  /// Chat message hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask your CFO...'**
+  String get askCfo;
 }
 
 class _AppLocalizationsDelegate

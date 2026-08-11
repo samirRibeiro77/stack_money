@@ -679,5 +679,9 @@
   "newChat": "New Chat",
   "@newChat": {
     "description": "New chat with AI."
+  },
+  "askCfo": "Ask your CFO...",
+  "@askCfo": {
+    "description": "Chat message hint."
   }
 }
