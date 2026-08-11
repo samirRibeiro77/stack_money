@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
-import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/data/enum/action_status.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/proposed_action_model.dart';
+import 'package:stack_money/features/personal_cfo/widgets/read_message.dart';
 import 'package:stack_money/features/personal_cfo/widgets/send_message.dart';
 
 class PersonalCfoScreen extends StatefulWidget {
@@ -126,147 +125,13 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                 final msg = messages[index];
                 final isUser = msg.sender == MessageSender.user;
 
-                return Align(
-                  alignment: isUser
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: AppSizes.x4),
-                    constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 0.82,
-                    ),
-                    child: GlassmorphismEffect(
-                      borderRadius: AppSizes.radiusSmall,
-                      borderColor: isUser
-                          ? StackMoneyTheme.cyanNeon
-                          : StackMoneyTheme.magentaNeon,
-                      borderWidth: AppSizes.min,
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppSizes.x3),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              msg.text,
-                              style: textTheme.bodyMedium?.copyWith(
-                                color: StackMoneyTheme.mutedGrey,
-                              ),
-                            ),
-
-                            // RENDERIZAÇÃO DO CARD TÁTICO DE PROPOSTA
-                            if (msg.proposedAction != null) ...[
-                              const SizedBox(height: AppSizes.x3),
-                              _buildActionCard(
-                                msg.id,
-                                msg.proposedAction!,
-                                textTheme,
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
+                return ReadMessage(msg: msg, isUser: isUser, handleActionResponse: _handleActionResponse);
               },
             ),
           ),
 
           /// Send Message
           SendMessage(controller: _textController, onSend: _sendMessage),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionCard(
-    String messageId,
-    ProposedActionModel action,
-    TextTheme textTheme,
-  ) {
-    final isPending = action.status == ActionStatus.pending;
-    final isApproved = action.status == ActionStatus.approved;
-
-    return Container(
-      padding: const EdgeInsets.all(AppSizes.x3),
-      decoration: BoxDecoration(
-        color: StackMoneyTheme.carbonGrey.withValues(alpha: 0.6),
-        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
-        border: Border.all(
-          color: isPending
-              ? StackMoneyTheme.cyanNeon
-              : (isApproved
-                    ? StackMoneyTheme.cyanNeon
-                    : StackMoneyTheme.mutedGrey),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.alt_route_rounded,
-                color: isApproved
-                    ? StackMoneyTheme.cyanNeon
-                    : StackMoneyTheme.magentaNeon,
-                size: AppSizes.x5,
-              ),
-              const SizedBox(width: AppSizes.x2),
-              Expanded(
-                child: Text(
-                  action.title,
-                  style: textTheme.labelSmall?.copyWith(
-                    color: StackMoneyTheme.mutedGrey,
-                    fontWeight: AppTypography.weightBold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSizes.min),
-          Text(
-            action.description,
-            style: textTheme.bodySmall?.copyWith(
-              color: StackMoneyTheme.mutedGrey,
-            ),
-          ),
-          const SizedBox(height: AppSizes.x3),
-
-          if (isPending)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () =>
-                      _handleActionResponse(messageId, ActionStatus.rejected),
-                  child: Text(
-                    'Rejeitar',
-                    style: TextStyle(color: StackMoneyTheme.mutedGrey),
-                  ),
-                ),
-                const SizedBox(width: AppSizes.x2),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: StackMoneyTheme.cyanNeon,
-                    foregroundColor: StackMoneyTheme.background,
-                  ),
-                  onPressed: () =>
-                      _handleActionResponse(messageId, ActionStatus.approved),
-                  child: const Text('Aprovar & Aplicar'),
-                ),
-              ],
-            )
-          else
-            Text(
-              isApproved ? '✓ Alteração Aplicada' : '✕ Proposta Recusada',
-              style: TextStyle(
-                color: isApproved
-                    ? StackMoneyTheme.cyanNeon
-                    : StackMoneyTheme.mutedGrey,
-                fontWeight: AppTypography.weightBold,
-              ),
-            ),
         ],
       ),
     );
