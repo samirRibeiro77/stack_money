@@ -20,12 +20,7 @@ class SendMessage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: EdgeInsets.only(
-        left: AppSizes.sizedBoxMedium,
-        right: AppSizes.sizedBoxMedium,
-        top: AppSizes.sizedBoxSmall,
-        bottom: AppSizes.navBarPaddingBottom,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: AppSizes.sizedBoxMedium),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [

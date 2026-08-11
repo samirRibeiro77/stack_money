@@ -45,6 +45,8 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isKeyboardActive = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return Scaffold(
       backgroundColor: StackMoneyTheme.background,
       appBar: AppBar(
@@ -52,47 +54,55 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
         backgroundColor: StackMoneyTheme.background,
         centerTitle: false,
       ),
-      body: Column(
+      body: Stack(
         children: [
           /// Stream Messages
-          Expanded(
-            child: ValueListenableBuilder<List<ChatMessageModel>>(
-              valueListenable: _manager.messagesNotifier,
-              builder: (_, messages, _) {
-                if (messages.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      'Terminal CFO Conectado.\nPergunte algo sobre seus planos ou baldes!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: StackMoneyTheme.mutedGrey),
-                    ),
-                  );
-                }
-
-                return ListView.builder(
-                  controller: _manager.scrollController,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSizes.x4,
-                    vertical: AppSizes.x4,
+          ValueListenableBuilder<List<ChatMessageModel>>(
+            valueListenable: _manager.messagesNotifier,
+            builder: (_, messages, _) {
+              if (messages.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Terminal CFO Conectado.\nPergunte algo sobre seus planos ou baldes!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: StackMoneyTheme.mutedGrey),
                   ),
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    final msg = messages[index];
-                    final isUser = msg.sender == MessageSender.user;
-
-                    if (isUser) {
-                      return UserMessage(msg: msg);
-                    }
-
-                    return AiMessage(msg: msg, handleActionResponse: (_, _) {});
-                  },
                 );
-              },
-            ),
+              }
+
+              return ListView.builder(
+                controller: _manager.scrollController,
+                itemCount: messages.length + 1,
+                itemBuilder: (context, index) {
+                  if (index >= messages.length) {
+                    return SizedBox(height: AppSizes.cfoContentBottomPadding);
+                  }
+
+                  final msg = messages[index];
+                  final isUser = msg.sender == MessageSender.user;
+
+                  if (isUser) {
+                    return UserMessage(msg: msg);
+                  }
+
+                  return AiMessage(msg: msg, handleActionResponse: (_, _) {});
+                },
+              );
+            },
           ),
 
           /// Send Message
-          SendMessage(controller: _textController, onSend: _handleSend),
+          Positioned(
+            left: AppSizes.min,
+            right: AppSizes.min,
+            bottom: isKeyboardActive
+                ? AppSizes.cfoKeyboardOpen
+                : AppSizes.cfoKeyboardClosed,
+            child: SendMessage(
+              controller: _textController,
+              onSend: _handleSend,
+            ),
+          ),
         ],
       ),
     );

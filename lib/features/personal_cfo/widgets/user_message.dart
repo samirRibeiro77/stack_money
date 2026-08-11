@@ -9,6 +9,23 @@ class UserMessage extends StatelessWidget {
 
   final ChatMessageModel msg;
 
+  BorderRadius get _radius => BorderRadius.horizontal(
+    left: Radius.circular(AppSizes.radiusSmall),
+    right: Radius.zero,
+  );
+
+  BorderSide get _borderSide => BorderSide(
+    color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.5),
+    width: AppSizes.min,
+  );
+
+  Border get _border => Border(
+    top: _borderSide,
+    bottom: _borderSide,
+    left: _borderSide,
+    right: BorderSide.none,
+  );
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -16,15 +33,15 @@ class UserMessage extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
-        margin: const EdgeInsets.only(bottom: AppSizes.x4),
+        margin: const EdgeInsets.only(bottom: AppSizes.x4, right: 0),
+        padding: const EdgeInsets.only(right: 0),
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.8,
         ),
         child: GlassmorphismEffect(
-          borderRadius: AppSizes.radiusSmall,
+          borderSpec: _border,
+          borderRadiusSpec: _radius,
           containerHeight: null,
-          borderColor: StackMoneyTheme.cyanNeon,
-          borderWidth: AppSizes.min,
           child: Padding(
             padding: const EdgeInsets.all(AppSizes.x3),
             child: Column(
