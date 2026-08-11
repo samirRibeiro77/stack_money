@@ -47,7 +47,7 @@ class CfoVertexService {
 $baseSystemPrompt
 
 ---
-## 📊 DADOS DO USUÁRIO EM TEMPO REAL (SNAPSHOT ATUAL):
+## 📊 DADOS DO USUÁRIO EM TEMPO REAL:
 $liveContextJson
 ''';
 
@@ -75,6 +75,7 @@ $liveContextJson
     SmLogger.debug(
       'AI data',
       payload: {
+        'model': _remoteConfig.getString(FirebaseKey.cfoModelName),
         'userPrompt': userPrompt,
         'systemInstruction': fullSystemInstruction,
         'history': historyContents.map((c) => c.toJson()),

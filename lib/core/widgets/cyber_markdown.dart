@@ -27,38 +27,32 @@ class CyberMarkdown extends StatelessWidget {
         ),
 
         // Títulos (H1, H2, H3)
-        h1: textTheme.titleMedium?.copyWith(
+        h1: textTheme.titleLarge?.copyWith(
           color: StackMoneyTheme.cyanNeon,
           fontWeight: AppTypography.weightBold,
         ),
-        h2: textTheme.titleSmall?.copyWith(
-          color: StackMoneyTheme.cyanNeon,
-          fontWeight: AppTypography.weightBold,
-          fontSize: AppTypography.fontBodyMedium,
-        ),
-        h3: textTheme.titleSmall?.copyWith(
+        h2: textTheme.titleMedium?.copyWith(
           color: StackMoneyTheme.magentaNeon,
-          fontWeight: AppTypography.weightMedium,
+          fontWeight: AppTypography.weightBold,
         ),
+        h3: textTheme.titleSmall?.copyWith(color: StackMoneyTheme.cyanNeon),
 
         // Listas com Marcadores Neon
         listBullet: textTheme.bodyMedium?.copyWith(
-          color: StackMoneyTheme.cyanNeon,
+          color: StackMoneyTheme.magentaNeon,
           fontWeight: AppTypography.weightBold,
         ),
 
         // Tabelas Leves & Minimalistas
         tableBorder: TableBorder.all(
-          color: StackMoneyTheme.mutedGrey.withValues(alpha: 0.3),
+          color: StackMoneyTheme.carbonGrey,
           width: AppSizes.min,
         ),
         tableHead: textTheme.labelMedium?.copyWith(
           color: StackMoneyTheme.cyanNeon,
           fontWeight: AppTypography.weightBold,
         ),
-        tableBody: textTheme.bodySmall?.copyWith(
-          color: StackMoneyTheme.mutedGrey,
-        ),
+        tableBody: textTheme.bodySmall,
         tablePadding: const EdgeInsets.symmetric(
           horizontal: AppSizes.x3,
           vertical: AppSizes.x2,
@@ -67,7 +61,7 @@ class CyberMarkdown extends StatelessWidget {
 
         // Blocos de Código Inline / Citações
         code: textTheme.bodySmall?.copyWith(
-          color: StackMoneyTheme.mutedGrey,
+          color: StackMoneyTheme.magentaNeon,
           backgroundColor: StackMoneyTheme.carbonGrey.withValues(alpha: 0.5),
           fontWeight: AppTypography.weightMedium,
         ),

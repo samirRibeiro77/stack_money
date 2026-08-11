@@ -12,8 +12,6 @@ import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/data_export_model.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
-import 'package:stack_money/domain/service/history_service.dart';
-import 'package:stack_money/domain/service/plan_service.dart';
 
 class ExportService {
   static final _filePath =
@@ -67,6 +65,9 @@ class ExportService {
           ?.toJson(),
       ExportKey.latestHistory: AppCoordinator.instance.latestHistory.value
           ?.toJson(),
+      ExportKey.buckets: AppCoordinator.instance.buckets.value
+          .map((b) => b.toJson())
+          .toList(),
     };
 
     return _convertDataToExport(jsonMap: jsonMap);
