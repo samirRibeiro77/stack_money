@@ -591,4 +591,14 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get rejected => '✕ Rejeitado';
+
+  @override
+  String get personalCfo => 'CFO Pessoal';
+
+  @override
+  String get chatConnectionError =>
+      '⚡ *Falha ao conectar com o terminal do CFO...\nTente novamente mais tarde!_*';
+
+  @override
+  String get chatEmpty => 'CFO Pessoal AI conectado!\nPergunte algo...';
 }

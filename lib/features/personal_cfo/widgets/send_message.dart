@@ -34,6 +34,7 @@ class SendMessage extends StatelessWidget {
               child: TextField(
                 controller: controller,
                 keyboardType: TextInputType.multiline,
+                textCapitalization: TextCapitalization.sentences,
                 minLines: 1,
                 maxLines: 12,
                 style: textTheme.bodyMedium,
@@ -49,7 +50,7 @@ class SendMessage extends StatelessWidget {
                   focusedErrorBorder: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: AppSizes.x4,
-                    vertical: AppSizes.x3,
+                    vertical: AppSizes.x4,
                   ),
                 ),
               ),
@@ -60,20 +61,20 @@ class SendMessage extends StatelessWidget {
           /// Send Button
           InkWell(
             onTap: onSend,
-            borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
+            borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
             highlightColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.1),
             splashColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.15),
             child: GlassmorphismEffect(
               borderRadius: AppSizes.avatarRadius,
               borderColor: StackMoneyTheme.magentaNeon,
               borderWidth: AppSizes.min,
-              containerHeight: AppSizes.containerTiny,
+              containerHeight: AppSizes.cfoSendButtonHeight,
               child: SizedBox.square(
-                dimension: AppSizes.x18,
+                dimension: AppSizes.x16,
                 child: Icon(
                   Icons.send_outlined,
                   color: StackMoneyTheme.magentaNeon,
-                  size: AppSizes.x10,
+                  size: AppSizes.x12,
                 ),
               ),
             ),

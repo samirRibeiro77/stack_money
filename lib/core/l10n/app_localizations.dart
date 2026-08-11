@@ -1157,6 +1157,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'✕ Rejected'**
   String get rejected;
+
+  /// Personal CFO title.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal CFO • Lab'**
+  String get personalCfo;
+
+  /// Message to show when the user create a new CFO chat.
+  ///
+  /// In en, this message translates to:
+  /// **'⚡ *Fail to connect to the CFO terminal...\n_Try again later!_*'**
+  String get chatConnectionError;
+
+  /// Message to show when the user create a new CFO chat.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal AI CFO connected!\nAsk something right away...'**
+  String get chatEmpty;
 }
 
 class _AppLocalizationsDelegate

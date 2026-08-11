@@ -106,7 +106,7 @@ class PersonalCfoManager {
       if (aiIndex != -1) {
         updatedList[aiIndex] = updatedList[aiIndex].copyWith(
           text:
-              '⚡ *Falha de conexão com o terminal do CFO. _Tente novamente em instantes._*',
+              '⚡ *Fail to connect to the CFO terminal...\n_Try again later!_*',
         );
         _messagesNotifier.value = updatedList;
       }

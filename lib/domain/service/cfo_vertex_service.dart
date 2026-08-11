@@ -42,14 +42,7 @@ class CfoVertexService {
     );
 
     /// Instruction
-    final fullSystemInstruction =
-        '''
-$baseSystemPrompt
-
----
-## 📊 DADOS DO USUÁRIO EM TEMPO REAL:
-$liveContextJson
-''';
+    final fullSystemInstruction = '$baseSystemPrompt $liveContextJson';
 
     /// Init model
     final model = FirebaseVertexAI.instance.generativeModel(

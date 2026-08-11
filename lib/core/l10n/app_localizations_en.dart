@@ -589,4 +589,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rejected => '✕ Rejected';
+
+  @override
+  String get personalCfo => 'Personal CFO • Lab';
+
+  @override
+  String get chatConnectionError =>
+      '⚡ *Fail to connect to the CFO terminal...\n_Try again later!_*';
+
+  @override
+  String get chatEmpty =>
+      'Personal AI CFO connected!\nAsk something right away...';
 }

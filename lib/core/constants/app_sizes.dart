@@ -74,6 +74,7 @@ class AppSizes {
   static const double containerTiny = 55;
 
   /// --- AI Chat ---
+  static const double cfoSendButtonHeight = 50.0;
   static const double cfoKeyboardOpen = 5.0;
   static const double cfoKeyboardClosed = cfoKeyboardOpen * 3;
   static const double cfoContentBottomPadding = cfoKeyboardClosed * 4;

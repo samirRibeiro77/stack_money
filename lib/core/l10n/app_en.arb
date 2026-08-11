@@ -703,5 +703,17 @@
   "rejected": "✕ Rejected",
   "@rejected": {
     "description": "Rejected AI proposal."
+  },
+  "personalCfo": "Personal CFO • Lab",
+  "@personalCfo": {
+    "description": "Personal CFO title."
+  },
+  "chatConnectionError": "⚡ *Fail to connect to the CFO terminal...\n_Try again later!_*",
+  "@chatConnectionError": {
+    "description": "Message to show when the user create a new CFO chat."
+  },
+  "chatEmpty": "Personal AI CFO connected sucessfully!\nAsk something right away...",
+  "@chatEmpty": {
+    "description": "Message to show when the user create a new CFO chat."
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
@@ -7,6 +9,7 @@ import 'package:stack_money/features/personal_cfo/manager/personal_cfo_manager.d
 import 'package:stack_money/features/personal_cfo/widgets/ai_message.dart';
 import 'package:stack_money/features/personal_cfo/widgets/send_message.dart';
 import 'package:stack_money/features/personal_cfo/widgets/user_message.dart';
+import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
 
 class PersonalCfoScreen extends StatefulWidget {
   static const route = '/personal_cfo';
@@ -45,14 +48,25 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
+
     final bool isKeyboardActive = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
       backgroundColor: StackMoneyTheme.background,
       appBar: AppBar(
-        title: const Text('Personal CFO • Lab'),
-        backgroundColor: StackMoneyTheme.background,
+        title: EditableTitle(l10n.personalCfo, onSave: (_){}),
         centerTitle: false,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: AppSizes.x10,
+          ),
+          onPressed: () async {
+            context.pop();
+          },
+        ),
       ),
       body: Stack(
         children: [
@@ -61,11 +75,11 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
             valueListenable: _manager.messagesNotifier,
             builder: (_, messages, _) {
               if (messages.isEmpty) {
-                return const Center(
+                return Center(
                   child: Text(
-                    'Terminal CFO Conectado.\nPergunte algo sobre seus planos ou baldes!',
+                    l10n.chatEmpty,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: StackMoneyTheme.mutedGrey),
+                    style: textTheme.labelLarge,
                   ),
                 );
               }

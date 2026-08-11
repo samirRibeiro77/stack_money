@@ -176,5 +176,8 @@
   "apply": "Aplicar",
   "pending": "↺ Pendente",
   "approved": "✓ Aprovado",
-  "rejected": "✕ Rejeitado"
+  "rejected": "✕ Rejeitado",
+  "personalCfo": "CFO Pessoal",
+  "chatConnectionError": "⚡ *Falha ao conectar com o terminal do CFO...\nTente novamente mais tarde!_*",
+  "chatEmpty": "CFO Pessoal AI conectado com sucesso!\nPergunte algo..."
 }
