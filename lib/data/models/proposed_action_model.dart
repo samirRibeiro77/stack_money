@@ -28,7 +28,7 @@ class ProposedActionModel {
       title: json?[ModelKey.title] as String? ?? '',
       description: json?[ModelKey.description] as String? ?? '',
       payload: Map<String, Object?>.from(json?[ModelKey.payload] as Map? ?? {}),
-      status: ActionStatus.fromJson(json?[ModelKey.status].toString()),
+      status: ActionStatus.fromJson(json?[ModelKey.status] as String?),
     );
   }
 
