@@ -21,18 +21,18 @@ class ProposedActionModel {
     this.status = ActionStatus.pending,
   }) : _id = id ?? const Uuid().v4();
 
-  factory ProposedActionModel.fromMap(Map<String, dynamic> map) {
+  factory ProposedActionModel.fromJson(Map<String, Object?>? json) {
     return ProposedActionModel(
-      id: map[ModelKey.id] as String?,
-      actionType: map[ModelKey.actionType] as String? ?? '',
-      title: map[ModelKey.title] as String? ?? '',
-      description: map[ModelKey.description] as String? ?? '',
-      payload: Map<String, Object?>.from(map[ModelKey.payload] as Map? ?? {}),
-      status: ActionStatus.fromJson(map[ModelKey.status]),
+      id: json?[ModelKey.id] as String?,
+      actionType: json?[ModelKey.actionType] as String? ?? '',
+      title: json?[ModelKey.title] as String? ?? '',
+      description: json?[ModelKey.description] as String? ?? '',
+      payload: Map<String, Object?>.from(json?[ModelKey.payload] as Map? ?? {}),
+      status: ActionStatus.fromJson(json?[ModelKey.status].toString()),
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       ModelKey.id: _id,
       ModelKey.actionType: actionType,
