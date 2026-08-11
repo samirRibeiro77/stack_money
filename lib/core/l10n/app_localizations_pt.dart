@@ -600,5 +600,6 @@ class AppLocalizationsPt extends AppLocalizations {
       '⚡ *Falha ao conectar com o terminal do CFO...\nTente novamente mais tarde!_*';
 
   @override
-  String get chatEmpty => 'CFO Pessoal AI conectado!\nPergunte algo...';
+  String get chatEmpty =>
+      'CFO Pessoal AI conectado com sucesso!\nPergunte algo...';
 }

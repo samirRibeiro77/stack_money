@@ -599,5 +599,5 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatEmpty =>
-      'Personal AI CFO connected!\nAsk something right away...';
+      'Personal AI CFO connected sucessfully!\nAsk something right away...';
 }

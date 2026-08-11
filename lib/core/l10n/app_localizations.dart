@@ -1173,7 +1173,7 @@ abstract class AppLocalizations {
   /// Message to show when the user create a new CFO chat.
   ///
   /// In en, this message translates to:
-  /// **'Personal AI CFO connected!\nAsk something right away...'**
+  /// **'Personal AI CFO connected sucessfully!\nAsk something right away...'**
   String get chatEmpty;
 }
 
