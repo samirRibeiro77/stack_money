@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/widgets/cyber_markdown.dart';
 import 'package:stack_money/data/enum/action_status.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/features/personal_cfo/widgets/ai_action_card.dart';
@@ -22,9 +23,8 @@ class AiMessage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// Text message
-            Text(
-              msg.text,
-              style: textTheme.bodyMedium,
+            CyberMarkdown(
+              data: msg.text,
             ),
 
             /// Action

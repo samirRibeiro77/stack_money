@@ -7,10 +7,7 @@ import 'package:stack_money/core/theme/theme.dart';
 class CyberMarkdown extends StatelessWidget {
   final String data;
 
-  const CyberMarkdown({
-    required this.data,
-    super.key,
-  });
+  const CyberMarkdown({required this.data, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +18,7 @@ class CyberMarkdown extends StatelessWidget {
       selectable: true,
       styleSheet: MarkdownStyleSheet(
         // Parágrafos Padrão
-        p: textTheme.bodyMedium?.copyWith(
-          color: StackMoneyTheme.mutedGrey,
-          height: 1.4,
-        ),
+        p: textTheme.bodyMedium,
 
         // Negritos (Destaque Neon Cyan)
         strong: textTheme.bodyMedium?.copyWith(
@@ -40,10 +34,11 @@ class CyberMarkdown extends StatelessWidget {
         h2: textTheme.titleSmall?.copyWith(
           color: StackMoneyTheme.cyanNeon,
           fontWeight: AppTypography.weightBold,
+          fontSize: AppTypography.fontBodyMedium,
         ),
-        h3: textTheme.labelLarge?.copyWith(
+        h3: textTheme.titleSmall?.copyWith(
           color: StackMoneyTheme.magentaNeon,
-          fontWeight: AppTypography.weightBold,
+          fontWeight: AppTypography.weightMedium,
         ),
 
         // Listas com Marcadores Neon
@@ -72,11 +67,12 @@ class CyberMarkdown extends StatelessWidget {
 
         // Blocos de Código Inline / Citações
         code: textTheme.bodySmall?.copyWith(
-          color: StackMoneyTheme.magentaNeon,
+          color: StackMoneyTheme.mutedGrey,
           backgroundColor: StackMoneyTheme.carbonGrey.withValues(alpha: 0.5),
+          fontWeight: AppTypography.weightMedium,
         ),
         codeblockDecoration: BoxDecoration(
-          color: StackMoneyTheme.carbonGrey.withValues(alpha: 0.6),
+          color: StackMoneyTheme.carbonGrey.withValues(alpha: 0.4),
           borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
           border: Border.all(
             color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.4),

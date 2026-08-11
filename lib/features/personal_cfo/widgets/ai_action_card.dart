@@ -28,9 +28,10 @@ class AiActionCard extends StatelessWidget {
     return Align(
       alignment: Alignment.center,
       child: Container(
-        margin: const EdgeInsets.only(bottom: AppSizes.x4),
+        margin: const EdgeInsets.only(bottom: AppSizes.sizedBoxSmall),
+        padding: EdgeInsets.all(AppSizes.sizedBoxSmall),
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.8,
+          maxWidth: MediaQuery.of(context).size.width * 0.85,
         ),
         child: GlassmorphismEffect(
           containerHeight: null,

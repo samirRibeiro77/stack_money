@@ -37,7 +37,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
       chatId: 'mock_chat',
       sender: MessageSender.cfoAi,
       text:
-          'Analisando seu plano "CI&T untill Sep" e seus baldes atuais: se ajustarmos a distribuição do balde "Compass" em R\$ 300/mês, você mantém 100% da sua liquidez imediata intacta.',
+          '# Analisando seu plano "CI&T untill Sep" e seus baldes atuais: \n## Header 2\n### Header 3\n\nSe ajustarmos a distribuição do balde `Compass` em **R\$ 300/mês**,você: \n- Mantém _100%_ da sua liquidez imediata intacta.\n\n```dart\nfinal codeExample = \'Code format written in dart to see on the app how it will show...\'\n```',
       timestamp: DateTime.now().subtract(const Duration(minutes: 9)),
       proposedAction: ProposedActionModel(
         id: 'action_1',
