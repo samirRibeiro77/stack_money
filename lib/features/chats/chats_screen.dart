@@ -8,6 +8,7 @@ import 'package:stack_money/core/widgets/card_initialize_slot.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/features/chats/manager/chats_manager.dart';
+import 'package:stack_money/features/chats/widgets/chat_dismissible_card.dart';
 
 class ChatsScreen extends StatefulWidget {
   const ChatsScreen({super.key = const ValueKey(route)});
@@ -89,46 +90,20 @@ class _ChatsScreenState extends State<ChatsScreen> {
         ValueListenableBuilder(
           valueListenable: AppCoordinator.instance.chats,
           builder: (_, allThreads, _) {
-            return ValueListenableBuilder(valueListenable: _manager.showArchivedNotifier, builder: (_, showArchived, _) {
-              return Column(
-                children: List.generate(allThreads.length, (index) {
-                  final thread = allThreads[index];
+            return ValueListenableBuilder(
+              valueListenable: _manager.showArchivedNotifier,
+              builder: (_, showArchived, _) {
+                final filteredThreads = allThreads
+                    .where((p) => showArchived ? true : !p.isArchived)
+                    .toList();
 
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: AppSizes.x3),
-                    child: Dismissible(
-                      key: ValueKey(thread.id),
+                return Column(
+                  children: List.generate(filteredThreads.length, (index) {
+                    final thread = filteredThreads[index];
 
-                      // Swipe Esquerda -> Direita (Arquivar / Prata)
-                      background: Container(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(horizontal: AppSizes.x5),
-                        decoration: BoxDecoration(
-                          color: StackMoneyTheme.mutedGrey.withValues(alpha: 0.4),
-                          borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
-                        ),
-                        child: const Icon(
-                          Icons.archive_outlined,
-                          color: StackMoneyTheme.mutedGrey,
-                        ),
-                      ),
-
-                      // Swipe Direita -> Esquerda (Deletar / Magenta)
-                      secondaryBackground: Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.symmetric(horizontal: AppSizes.x5),
-                        decoration: BoxDecoration(
-                          color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.3),
-                          borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
-                          border: Border.all(color: StackMoneyTheme.magentaNeon),
-                        ),
-                        child: const Icon(
-                          Icons.delete_outline,
-                          color: StackMoneyTheme.magentaNeon,
-                        ),
-                      ),
-
-                      // Validação do Swipe
+                    return ChatDismissibleCard(
+                      thread,
+                      onTap: () => _manager.openThread(context, thread.id),
                       confirmDismiss: (direction) async {
                         if (direction == DismissDirection.endToStart) {
                           // Deletar -> Modal de confirmação
@@ -137,7 +112,6 @@ class _ChatsScreenState extends State<ChatsScreen> {
                         // Arquivar -> Executa direto
                         return true;
                       },
-
                       onDismissed: (direction) {
                         if (direction == DismissDirection.endToStart) {
                           _manager.deleteThreadWithUndo(context, thread.id);
@@ -145,67 +119,11 @@ class _ChatsScreenState extends State<ChatsScreen> {
                           _manager.toggleArchiveThread(thread);
                         }
                       },
-
-                      /// Card da Conversa (Borda Neon + Layout Cyberpunk)
-                      child: InkWell(
-                        onTap: () => _manager.openThread(context, thread.id),
-                        borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
-                        child: Container(
-                          padding: const EdgeInsets.all(AppSizes.x4),
-                          decoration: BoxDecoration(
-                            color: StackMoneyTheme.carbonGrey,
-                            borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
-                            border: Border.all(
-                              color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.4),
-                              width: AppSizes.min,
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Título em Ciano Neon
-                              Text(
-                                thread.title,
-                                style: textTheme.titleMedium?.copyWith(
-                                  color: StackMoneyTheme.cyanNeon,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(height: AppSizes.x2),
-
-                              // Última Mensagem Truncada (...) em Muted Grey
-                              Text(
-                                thread.lastMessage,
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: StackMoneyTheme.mutedGrey,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(height: AppSizes.x2),
-
-                              // Data Relativa Pequena em Magenta Neon no Canto Inferior Direito
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  TimeAgoFormatter.format(l10n, thread.updatedAt),
-                                  style: textTheme.labelSmall?.copyWith(
-                                    color: StackMoneyTheme.magentaNeon,
-                                    fontSize: 10,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-              );
-            });
+                    );
+                  }),
+                );
+              },
+            );
           },
         ),
       ],

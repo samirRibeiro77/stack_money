@@ -1191,13 +1191,13 @@ abstract class AppLocalizations {
   /// Time ago formatter (Minutes).
   ///
   /// In en, this message translates to:
-  /// **'{m}m'**
+  /// **'{m}m ago'**
   String timeAgoMin(Object m);
 
   /// Time ago formatter (Hour).
   ///
   /// In en, this message translates to:
-  /// **'{h}h'**
+  /// **'{h}h ago'**
   String timeAgoHour(Object h);
 
   /// Time ago formatter (Yesterday).
@@ -1209,7 +1209,7 @@ abstract class AppLocalizations {
   /// Time ago formatter (Day).
   ///
   /// In en, this message translates to:
-  /// **'{d}d'**
+  /// **'{d}d ago'**
   String timeAgoDay(Object d);
 
   /// Time ago formatter (DateTime).

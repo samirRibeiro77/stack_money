@@ -612,12 +612,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String timeAgoMin(Object m) {
-    return '${m}m';
+    return '${m}m atrás';
   }
 
   @override
   String timeAgoHour(Object h) {
-    return '${h}h';
+    return '${h}h atrás';
   }
 
   @override
@@ -625,7 +625,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String timeAgoDay(Object d) {
-    return '${d}d';
+    return '${d}d atrás';
   }
 
   @override
