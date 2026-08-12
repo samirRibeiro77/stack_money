@@ -1,6 +1,8 @@
-import 'dart:async';
+import 'dart:core';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
@@ -14,10 +16,10 @@ class PersonalCfoManager {
   final ValueNotifier<List<ChatMessageModel>> messagesNotifier = ValueNotifier(
     [],
   );
-  final ValueNotifier<bool> isStreamingNotifier = ValueNotifier(false);
-  final ValueNotifier<ChatThreadModel?> activeThreadNotifier = ValueNotifier(
-    null,
-  );
+  final ValueNotifier<bool> _isStreaming = ValueNotifier(false);
+  final ValueNotifier<ChatThreadModel?> _activeThread = ValueNotifier(null);
+
+  ValueListenable get activeThread => _activeThread;
 
   List<ChatMessageModel> get messages => messagesNotifier.value;
 
@@ -31,7 +33,7 @@ class PersonalCfoManager {
 
   void _listenToMessages(String threadId) {
     _cfoService.getMessagesStream(threadId).listen((remoteMessages) {
-      if (!isStreamingNotifier.value) {
+      if (!_isStreaming.value) {
         messagesNotifier.value = remoteMessages;
         _scrollToBottom();
       }
@@ -40,17 +42,17 @@ class PersonalCfoManager {
 
   Future<void> sendMessage(AppLocalizations l10n, String userText) async {
     final cleanText = userText.trim();
-    if (cleanText.isEmpty || isStreamingNotifier.value) return;
+    if (cleanText.isEmpty || _isStreaming.value) return;
 
     // 1. Garante ou cria a Thread ativa
     final thread =
-        activeThreadNotifier.value ??
+        _activeThread.value ??
         ChatThreadModel(title: l10n.newChat, lastMessage: cleanText);
 
-    final bool isFirstMessage = activeThreadNotifier.value == null;
+    final bool isFirstMessage = _activeThread.value == null;
 
     if (isFirstMessage) {
-      activeThreadNotifier.value = thread;
+      _activeThread.value = thread;
       await _cfoService.saveThread(thread);
       _listenToMessages(thread.id);
     }
@@ -69,7 +71,7 @@ class PersonalCfoManager {
 
     messagesNotifier.value = [...messagesNotifier.value, aiMessage];
     _scrollToBottom();
-    isStreamingNotifier.value = true;
+    _isStreaming.value = true;
 
     final StringBuffer accumulatedText = StringBuffer();
 
@@ -113,8 +115,9 @@ class PersonalCfoManager {
 
         final generatedTitle = generatedTitleResult.getOrThrow();
 
+        changeTitle(generatedTitle);
         await _cfoService.updateThreadTitle(thread.id, generatedTitle);
-        activeThreadNotifier.value = thread.copyWith(title: generatedTitle);
+        _activeThread.value = thread.copyWith(title: generatedTitle);
       }
     } catch (e) {
       final errorAiMessage = aiMessage.copyWith(text: l10n.chatConnectionError);
@@ -123,9 +126,40 @@ class PersonalCfoManager {
         errorAiMessage,
       ];
     } finally {
-      isStreamingNotifier.value = false;
+      _isStreaming.value = false;
       _scrollToBottom();
     }
+  }
+
+  Future<bool> changeTitle(String title) async {
+    SmLogger.debug('Change title', payload: {'title': title});
+
+    if (_activeThread.value == null) {
+      return false;
+    }
+
+    final result = await _cfoService.updateThreadTitle(
+      _activeThread.value!.id,
+      title,
+    );
+
+    result.fold(
+      onSuccess: (_) {
+        _activeThread.value = _activeThread.value!.copyWith(title: title);
+        SmLogger.debug(
+          'Change title -- Success',
+          payload: _activeThread.value!.toJson(),
+        );
+      },
+      onFailure: (_) {
+        SmLogger.debug(
+          'Change title -- Failed',
+          payload: _activeThread.value!.toJson(),
+        );
+      },
+    );
+
+    return result.isSuccess;
   }
 
   void _scrollToBottom() {
@@ -142,8 +176,8 @@ class PersonalCfoManager {
 
   void dispose() {
     messagesNotifier.dispose();
-    isStreamingNotifier.dispose();
-    activeThreadNotifier.dispose();
+    _isStreaming.dispose();
+    _activeThread.dispose();
     scrollController.dispose();
   }
 }

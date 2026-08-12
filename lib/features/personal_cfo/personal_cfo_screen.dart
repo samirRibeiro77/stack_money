@@ -3,6 +3,7 @@ import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
+import 'package:stack_money/data/helper/asset_name.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/features/personal_cfo/manager/personal_cfo_manager.dart';
 import 'package:stack_money/features/personal_cfo/widgets/ai_message.dart';
@@ -56,6 +57,11 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
       backgroundColor: StackMoneyTheme.background,
       body: Stack(
         children: [
+          /// Background
+          Positioned.fill(
+            child: Image.asset(AssetName.chatBackground, fit: BoxFit.cover),
+          ),
+
           /// Stream Messages
           ValueListenableBuilder<List<ChatMessageModel>>(
             valueListenable: _manager.messagesNotifier,
@@ -105,20 +111,18 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
           ),
 
           /// Chat Header
-          SafeArea(
-            child: Positioned(
-              left: AppSizes.min,
-              right: AppSizes.min,
-              top: AppSizes.x10,
-              child: ValueListenableBuilder(
-                valueListenable: _manager.activeThreadNotifier,
-                builder: (_, thread, _) {
-                  return ChatHeader(
-                    title: thread?.title ?? l10n.newChat,
-                    saveTitle: (_) {},
-                  );
-                },
-              ),
+          Positioned(
+            left: AppSizes.min,
+            right: AppSizes.min,
+            top: AppSizes.x20,
+            child: ValueListenableBuilder(
+              valueListenable: _manager.activeThread,
+              builder: (_, thread, _) {
+                return ChatHeader(
+                  title: thread?.title ?? l10n.newChat,
+                  saveTitle: _manager.changeTitle,
+                );
+              },
             ),
           ),
         ],

@@ -18,10 +18,10 @@ class CyberMarkdown extends StatelessWidget {
       selectable: true,
       styleSheet: MarkdownStyleSheet(
         // Parágrafos Padrão
-        p: textTheme.bodyMedium,
+        p: textTheme.bodyLarge,
 
         // Negritos (Destaque Neon Cyan)
-        strong: textTheme.bodyMedium?.copyWith(
+        strong: textTheme.bodyLarge?.copyWith(
           color: StackMoneyTheme.cyanNeon,
           fontWeight: AppTypography.weightBold,
         ),
@@ -38,29 +38,32 @@ class CyberMarkdown extends StatelessWidget {
         h3: textTheme.titleMedium?.copyWith(color: StackMoneyTheme.cyanNeon),
 
         // Listas com Marcadores Neon
-        listBullet: textTheme.bodyMedium?.copyWith(
+        listBullet: textTheme.bodyLarge?.copyWith(
           color: StackMoneyTheme.magentaNeon,
           fontWeight: AppTypography.weightBold,
         ),
 
         // Tabelas Leves & Minimalistas
         tableBorder: TableBorder.all(
-          color: StackMoneyTheme.carbonGrey,
+          color: StackMoneyTheme.mutedGrey,
           width: AppSizes.min,
         ),
         tableHead: textTheme.labelMedium?.copyWith(
-          color: StackMoneyTheme.cyanNeon,
+          color: StackMoneyTheme.magentaNeon,
           fontWeight: AppTypography.weightBold,
         ),
         tableBody: textTheme.bodySmall,
-        tablePadding: const EdgeInsets.symmetric(
-          horizontal: AppSizes.x3,
-          vertical: AppSizes.x2,
+        tablePadding: const EdgeInsets.only(
+          top: AppSizes.sizedBoxSmall,
+          right: AppSizes.sizedBoxSmall,
+          left: AppSizes.sizedBoxSmall,
+          bottom: AppSizes.x10,
         ),
+        tableColumnWidth: IntrinsicColumnWidth(),
         tableHeadAlign: TextAlign.center,
 
         // Blocos de Código Inline / Citações
-        code: textTheme.bodySmall?.copyWith(
+        code: textTheme.bodyMedium?.copyWith(
           color: StackMoneyTheme.magentaNeon,
           backgroundColor: StackMoneyTheme.carbonGrey.withValues(alpha: 0.5),
           fontWeight: AppTypography.weightMedium,
@@ -73,6 +76,15 @@ class CyberMarkdown extends StatelessWidget {
             width: AppSizes.min,
           ),
         ),
+
+        // Teste
+        horizontalRuleDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
+          border: Border.all(
+            color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.4),
+            width: 1,
+          ),
+        )
       ),
     );
   }
