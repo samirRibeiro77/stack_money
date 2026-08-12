@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -7,9 +6,9 @@ import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/features/personal_cfo/manager/personal_cfo_manager.dart';
 import 'package:stack_money/features/personal_cfo/widgets/ai_message.dart';
+import 'package:stack_money/features/personal_cfo/widgets/chat_header.dart';
 import 'package:stack_money/features/personal_cfo/widgets/send_message.dart';
 import 'package:stack_money/features/personal_cfo/widgets/user_message.dart';
-import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
 
 class PersonalCfoScreen extends StatefulWidget {
   static const route = '/personal_cfo';
@@ -55,19 +54,6 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
 
     return Scaffold(
       backgroundColor: StackMoneyTheme.background,
-      appBar: AppBar(
-        title: EditableTitle(l10n.personalCfo, onSave: (_) {}),
-        centerTitle: false,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: AppSizes.x10,
-          ),
-          onPressed: () async {
-            context.pop();
-          },
-        ),
-      ),
       body: Stack(
         children: [
           /// Stream Messages
@@ -86,12 +72,12 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
 
               return ListView.builder(
                 controller: _manager.scrollController,
-                itemCount: messages.length + 1,
+                padding: EdgeInsets.only(
+                  top: AppSizes.cfoContentTopPadding,
+                  bottom: AppSizes.cfoContentBottomPadding,
+                ),
+                itemCount: messages.length,
                 itemBuilder: (context, index) {
-                  if (index >= messages.length) {
-                    return SizedBox(height: AppSizes.cfoContentBottomPadding);
-                  }
-
                   final msg = messages[index];
                   final isUser = msg.sender == MessageSender.user;
 
@@ -115,6 +101,24 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
             child: SendMessage(
               controller: _textController,
               onSend: () => _handleSend(l10n),
+            ),
+          ),
+
+          /// Chat Header
+          SafeArea(
+            child: Positioned(
+              left: AppSizes.min,
+              right: AppSizes.min,
+              top: AppSizes.x10,
+              child: ValueListenableBuilder(
+                valueListenable: _manager.activeThreadNotifier,
+                builder: (_, thread, _) {
+                  return ChatHeader(
+                    title: thread?.title ?? l10n.newChat,
+                    saveTitle: (_) {},
+                  );
+                },
+              ),
             ),
           ),
         ],

@@ -45,7 +45,7 @@ class PersonalCfoManager {
     // 1. Garante ou cria a Thread ativa
     final thread =
         activeThreadNotifier.value ??
-        ChatThreadModel(title: 'l10n.newChat', lastMessage: cleanText);
+        ChatThreadModel(title: l10n.newChat, lastMessage: cleanText);
 
     final bool isFirstMessage = activeThreadNotifier.value == null;
 
