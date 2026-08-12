@@ -7,9 +7,12 @@ import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
+import 'package:stack_money/data/models/chat_thread_model.dart';
+import 'package:stack_money/data/repository/firebase_cfo_chat_repository.dart';
 
 class CfoVertexService {
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
+  final FirebaseCfoChatRepository _repository = FirebaseCfoChatRepository();
 
   /// Inicializa e sincroniza as configurações do Remote Config
   Future<void> initRemoteConfig() async {
@@ -111,5 +114,30 @@ class CfoVertexService {
     } catch (_) {
       return 'l10n.financialAnalysis';
     }
+  }
+
+  /// Salva ou atualiza a thread principal no Firestore
+  Future<void> saveThread(ChatThreadModel thread) async {
+    await _repository.saveThread(thread);
+  }
+
+  /// Atualiza apenas o título da thread
+  Future<void> updateThreadTitle(String threadId, String title) async {
+    await _repository.updateThreadTitle(threadId, title);
+  }
+
+  /// Salva uma nova mensagem dentro da subcoleção de mensagens da thread
+  Future<void> saveMessage(ChatMessageModel message) async {
+    await _repository.saveMessage(message);
+  }
+
+  /// Ouve em tempo real todas as conversas não arquivadas do usuário
+  Stream<List<ChatThreadModel>> getThreadsStream() {
+    return _repository.getThreadsStream();
+  }
+
+  /// Ouve as mensagens de uma thread específica em ordem cronológica
+  Stream<List<ChatMessageModel>> getMessagesStream(String threadId) {
+    return _repository.getMessagesStream(threadId);
   }
 }

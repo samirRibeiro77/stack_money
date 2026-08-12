@@ -5,16 +5,15 @@ import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/data/repository/base_firebase_repository.dart';
 
-class CfoChatRepository extends BaseFirebaseRepository {
+class FirebaseCfoChatRepository extends BaseFirebaseRepository {
   CollectionReference<Map<String, Object?>> get _collection =>
       getUserDoc().collection(FirebaseKey.cfoThreads);
 
   /// Salva ou atualiza a thread principal no Firestore
   Future<void> saveThread(ChatThreadModel thread) async {
-    await _collection.doc(thread.id).set(
-      thread.toJson(),
-      SetOptions(merge: true),
-    );
+    await _collection
+        .doc(thread.id)
+        .set(thread.toJson(), SetOptions(merge: true));
   }
 
   /// Atualiza apenas o título da thread
@@ -46,9 +45,11 @@ class CfoChatRepository extends BaseFirebaseRepository {
         .where(ModelKey.isArchived, isEqualTo: false)
         .orderBy(ModelKey.updateAt, descending: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-        .map((doc) => ChatThreadModel.fromJson(doc.data(), id: doc.id))
-        .toList());
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => ChatThreadModel.fromJson(doc.data(), id: doc.id))
+              .toList(),
+        );
   }
 
   /// Ouve as mensagens de uma thread específica em ordem cronológica
@@ -58,8 +59,10 @@ class CfoChatRepository extends BaseFirebaseRepository {
         .collection(FirebaseKey.messages)
         .orderBy(ModelKey.date, descending: false)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-        .map((doc) => ChatMessageModel.fromJson(doc.data(), id: doc.id))
-        .toList());
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => ChatMessageModel.fromJson(doc.data(), id: doc.id))
+              .toList(),
+        );
   }
 }

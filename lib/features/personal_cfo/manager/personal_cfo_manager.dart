@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stack_money/core/exceptions/exception_scope.dart';
-import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
+import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/domain/service/cfo_vertex_service.dart';
 import 'package:stack_money/domain/service/export_service.dart';
 
@@ -13,104 +11,117 @@ class PersonalCfoManager {
   final CfoVertexService _cfoService = CfoVertexService();
   final ScrollController scrollController = ScrollController();
 
-  /// Notifiers
-  final _messagesNotifier = ValueNotifier<List<ChatMessageModel>>([]);
-  final _isStreamingNotifier = ValueNotifier<bool>(false);
-
-  /// Listeners
-  ValueListenable<List<ChatMessageModel>> get messagesNotifier =>
-      _messagesNotifier;
-
-  ValueListenable<bool> get isStreamingNotifier => _isStreamingNotifier;
+  final ValueNotifier<List<ChatMessageModel>> messagesNotifier = ValueNotifier(
+    [],
+  );
+  final ValueNotifier<bool> isStreamingNotifier = ValueNotifier(false);
+  final ValueNotifier<ChatThreadModel?> activeThreadNotifier = ValueNotifier(
+    null,
+  );
 
   List<ChatMessageModel> get messages => messagesNotifier.value;
 
-  /// Init service
-  Future<void> init() async {
+  Future<void> init([String? threadId]) async {
     await _cfoService.initRemoteConfig();
+
+    if (threadId != null) {
+      _listenToMessages(threadId);
+    }
   }
 
-  /// Send message and start stream
-  Future<void> sendMessage(String userText) async {
+  void _listenToMessages(String threadId) {
+    _cfoService.getMessagesStream(threadId).listen((remoteMessages) {
+      if (!isStreamingNotifier.value) {
+        messagesNotifier.value = remoteMessages;
+        _scrollToBottom();
+      }
+    });
+  }
+
+  Future<void> sendMessage(AppLocalizations l10n, String userText) async {
     final cleanText = userText.trim();
     if (cleanText.isEmpty || isStreamingNotifier.value) return;
 
-    // 1. Cria e adiciona a mensagem do usuário
+    // 1. Garante ou cria a Thread ativa
+    ChatThreadModel thread =
+        activeThreadNotifier.value ??
+        ChatThreadModel(title: 'l10n.newChat', lastMessage: cleanText);
+
+    final bool isFirstMessage = activeThreadNotifier.value == null;
+
+    if (isFirstMessage) {
+      activeThreadNotifier.value = thread;
+      await _cfoService.saveThread(thread);
+      _listenToMessages(thread.id);
+    }
+
+    // 2. Instancia e salva a mensagem do Usuário no Firestore
     final userMessage = ChatMessageModel(
       sender: MessageSender.user,
       text: cleanText,
-      timestamp: Timestamp.now(),
     );
 
-    // 2. Cria a mensagem "placeholder" da IA para receber o streaming
-    final aiMessagePlaceholder = ChatMessageModel(
-      sender: MessageSender.cfoAi,
-      text: '',
-      timestamp: Timestamp.now(),
-    );
+    messagesNotifier.value = [...messages, userMessage];
+    await _cfoService.saveMessage(userMessage);
 
-    // Atualiza a lista com o usuário + placeholder da IA
-    _messagesNotifier.value = [...messages, userMessage, aiMessagePlaceholder];
+    // 3. Prepara a mensagem "placeholder" local da IA
+    final aiMessage = ChatMessageModel(sender: MessageSender.cfoAi, text: '');
 
+    messagesNotifier.value = [...messagesNotifier.value, aiMessage];
     _scrollToBottom();
-    _isStreamingNotifier.value = true;
+    isStreamingNotifier.value = true;
+
+    final StringBuffer accumulatedText = StringBuffer();
 
     try {
-      // 3. Captura o snapshot vivo do patrimônio em JSON via AppCoordinator
       final String liveContextJson = await ExportService().extractDataToAI();
 
-      // 4. Inicia o consumo da transmissão em tempo real
       final responseStream = _cfoService.generateCfoResponseStream(
         userPrompt: cleanText,
         liveContextJson: liveContextJson,
-        history: messages.sublist(
-          0,
-          messages.length - 2,
-        ), // Exclui as 2 últimas novas
+        history: messages.sublist(0, messages.length - 2),
       );
-
-      StringBuffer accumulatedText = StringBuffer();
 
       await for (final chunk in responseStream) {
         accumulatedText.write(chunk);
 
-        // Atualiza apenas a mensagem da IA que está sendo preenchida
         final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
-        final aiIndex = updatedList.indexWhere(
-          (m) => m.id == aiMessagePlaceholder.id,
-        );
+        final aiIndex = updatedList.indexWhere((m) => m.id == aiMessage.id);
 
         if (aiIndex != -1) {
           updatedList[aiIndex] = updatedList[aiIndex].copyWith(
             text: accumulatedText.toString(),
           );
-          _messagesNotifier.value = updatedList;
+          messagesNotifier.value = updatedList;
           _scrollToBottom();
         }
       }
-    } catch (e, stack) {
-      StackMoneyException(
-        message: 'Error streaming AI message',
-        scope: ExceptionScope.business,
-        exception: e as Exception,
-        stackTrace: stack,
-      );
 
-      // Tratamento gracioso em caso de falha de conexão
-      final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
-      final aiIndex = updatedList.indexWhere(
-        (m) => m.id == aiMessagePlaceholder.id,
+      // 4. Salva a resposta da IA no Firestore APENAS quando o streaming terminar
+      final finalAiMessage = aiMessage.copyWith(
+        text: accumulatedText.toString(),
       );
+      await _cfoService.saveMessage(finalAiMessage);
 
-      if (aiIndex != -1) {
-        updatedList[aiIndex] = updatedList[aiIndex].copyWith(
-          text:
-              '⚡ *Fail to connect to the CFO terminal...\n_Try again later!_*',
+      // 5. Se for a primeira troca de mensagens, gera o título de 2 palavras
+      if (isFirstMessage) {
+        final generatedTitle = await _cfoService.generateTitle(
+          l10n,
+          userPrompt: cleanText,
+          aiResponse: accumulatedText.toString(),
         );
-        _messagesNotifier.value = updatedList;
+
+        await _cfoService.updateThreadTitle(thread.id, generatedTitle);
+        activeThreadNotifier.value = thread.copyWith(title: generatedTitle);
       }
+    } catch (e) {
+      final errorAiMessage = aiMessage.copyWith(text: l10n.chatConnectionError);
+      messagesNotifier.value = [
+        ...messagesNotifier.value..removeLast(),
+        errorAiMessage,
+      ];
     } finally {
-      _isStreamingNotifier.value = false;
+      isStreamingNotifier.value = false;
       _scrollToBottom();
     }
   }
@@ -128,8 +139,9 @@ class PersonalCfoManager {
   }
 
   void dispose() {
-    _messagesNotifier.dispose();
-    _isStreamingNotifier.dispose();
+    messagesNotifier.dispose();
+    isStreamingNotifier.dispose();
+    activeThreadNotifier.dispose();
     scrollController.dispose();
   }
 }

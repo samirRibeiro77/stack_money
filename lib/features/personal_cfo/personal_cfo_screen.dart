@@ -38,11 +38,11 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
     super.dispose();
   }
 
-  void _handleSend() {
+  void _handleSend(AppLocalizations l10n) {
     final text = _textController.text;
     if (text.trim().isEmpty) return;
 
-    _manager.sendMessage(text);
+    _manager.sendMessage(l10n, text);
     _textController.clear();
   }
 
@@ -56,7 +56,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
     return Scaffold(
       backgroundColor: StackMoneyTheme.background,
       appBar: AppBar(
-        title: EditableTitle(l10n.personalCfo, onSave: (_){}),
+        title: EditableTitle(l10n.personalCfo, onSave: (_) {}),
         centerTitle: false,
         leading: IconButton(
           icon: const Icon(
@@ -114,7 +114,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                 : AppSizes.cfoKeyboardClosed,
             child: SendMessage(
               controller: _textController,
-              onSend: _handleSend,
+              onSend: () => _handleSend(l10n),
             ),
           ),
         ],
