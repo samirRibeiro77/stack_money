@@ -6,11 +6,13 @@ import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 
 class SendMessage extends StatelessWidget {
   final TextEditingController controller;
+  final bool isStreaming;
   final VoidCallback onSend;
 
   const SendMessage({
     required this.controller,
     required this.onSend,
+    this.isStreaming = false,
     super.key,
   });
 
@@ -27,7 +29,7 @@ class SendMessage extends StatelessWidget {
           /// Multi line expanded text field
           Expanded(
             child: GlassmorphismEffect(
-              borderRadius: AppSizes.radiusLarge,
+              borderRadius: AppSizes.navBarRadius,
               borderColor: StackMoneyTheme.cyanNeon,
               borderWidth: AppSizes.min,
               containerHeight: null,
@@ -70,12 +72,14 @@ class SendMessage extends StatelessWidget {
               borderWidth: AppSizes.min,
               containerHeight: AppSizes.cfoSendButtonHeight,
               child: SizedBox.square(
-                dimension: AppSizes.x16,
-                child: Icon(
-                  Icons.send_outlined,
-                  color: StackMoneyTheme.magentaNeon,
-                  size: AppSizes.x12,
-                ),
+                dimension: AppSizes.cfoSendButton,
+                child: isStreaming
+                    ? CircularProgressIndicator.adaptive()
+                    : Icon(
+                        Icons.send_outlined,
+                        color: StackMoneyTheme.magentaNeon,
+                        size: AppSizes.x12,
+                      ),
               ),
             ),
           ),

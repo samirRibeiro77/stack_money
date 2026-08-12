@@ -25,7 +25,7 @@ class ChatHeader extends StatelessWidget {
             borderWidth: AppSizes.min,
             containerHeight: AppSizes.cfoAppBarHeight,
             child: SizedBox.square(
-              dimension: AppSizes.x12,
+              dimension: AppSizes.cfoAppBarReturnButton,
               child: Icon(
                 Icons.arrow_back_ios_new_rounded,
                 color: StackMoneyTheme.magentaNeon,
@@ -35,43 +35,49 @@ class ChatHeader extends StatelessWidget {
           ),
         ),
 
-        /// Title
-        SizedBox(width: AppSizes.sizedBoxLarge),
-        Expanded(
-          child: GlassmorphismEffect(
-            borderColor: StackMoneyTheme.cyanNeon,
-            borderWidth: AppSizes.min,
-            containerHeight: AppSizes.cfoAppBarHeight,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSizes.min),
-              child: EditableTitle(title, removeUnderlineBorder: true, onSave: saveTitle),
-            ),
-          ),
-        ),
-        SizedBox(width: AppSizes.sizedBoxLarge),
-
-        /// Actions
-        InkWell(
-          onTap: () {},
-          borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
-          highlightColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.1),
-          splashColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.15),
-          child: GlassmorphismEffect(
-            borderRadius: AppSizes.avatarRadius,
-            borderColor: StackMoneyTheme.magentaNeon,
-            borderWidth: AppSizes.min,
-            containerHeight: AppSizes.cfoAppBarHeight,
-            child: SizedBox.square(
-              dimension: AppSizes.x12,
-              child: Icon(
-                Icons.more_vert_rounded,
-                color: StackMoneyTheme.magentaNeon,
-                size: AppSizes.x10,
+        if (title.isNotEmpty) ...[
+          /// Title
+          SizedBox(width: AppSizes.sizedBoxLarge),
+          Expanded(
+            child: GlassmorphismEffect(
+              borderColor: StackMoneyTheme.cyanNeon,
+              borderWidth: AppSizes.min,
+              containerHeight: AppSizes.cfoAppBarHeight,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppSizes.min),
+                child: EditableTitle(
+                  title,
+                  removeUnderlineBorder: true,
+                  onSave: saveTitle,
+                ),
               ),
             ),
           ),
-        ),
-        SizedBox(width: AppSizes.sizedBoxSmall),
+          SizedBox(width: AppSizes.sizedBoxLarge),
+
+          /// Actions
+          InkWell(
+            onTap: () {},
+            borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
+            highlightColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.1),
+            splashColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.15),
+            child: GlassmorphismEffect(
+              borderRadius: AppSizes.avatarRadius,
+              borderColor: StackMoneyTheme.magentaNeon,
+              borderWidth: AppSizes.min,
+              containerHeight: AppSizes.cfoAppBarHeight,
+              child: SizedBox.square(
+                dimension: AppSizes.x12,
+                child: Icon(
+                  Icons.more_vert_rounded,
+                  color: StackMoneyTheme.magentaNeon,
+                  size: AppSizes.x10,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: AppSizes.sizedBoxSmall),
+        ],
       ],
     );
   }

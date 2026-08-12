@@ -96,9 +96,15 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
             bottom: isKeyboardActive
                 ? AppSizes.cfoKeyboardOpen
                 : AppSizes.cfoKeyboardClosed,
-            child: SendMessage(
-              controller: _manager.messageController,
-              onSend: _manager.sendMessage,
+            child: ValueListenableBuilder(
+              valueListenable: _manager.isStreaming,
+              builder: (_, isStreaming, _) {
+                return SendMessage(
+                  controller: _manager.messageController,
+                  isStreaming: isStreaming,
+                  onSend: _manager.sendMessage,
+                );
+              },
             ),
           ),
 
@@ -106,7 +112,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
           Positioned(
             left: AppSizes.min,
             right: AppSizes.min,
-            top: AppSizes.x20,
+            top: AppSizes.cfoSendButtonHeight,
             child: ValueListenableBuilder(
               valueListenable: _manager.titleController,
               builder: (_, title, _) {

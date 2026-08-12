@@ -29,11 +29,13 @@ class PersonalCfoManager {
 
   List<ChatMessageModel> get messages => messagesNotifier.value;
 
+  ValueListenable<bool> get isStreaming => _isStreaming;
+
   late final TextEditingController titleController;
   late final TextEditingController messageController;
 
   PersonalCfoManager(ChatThreadModel? initialThread, this._context) {
-    _thread = initialThread ?? ChatThreadModel(title: 'New chat');
+    _thread = initialThread ?? ChatThreadModel(title: '');
 
     titleController = TextEditingController(text: _thread.title);
     messageController = TextEditingController(text: '');
@@ -83,6 +85,8 @@ class PersonalCfoManager {
 
     final cleanText = messageController.text.trim();
     if (cleanText.isEmpty || _isStreaming.value) return;
+    _isStreaming.value = true;
+    messageController.text = '';
 
     final bool isFirstMessage = _thread.lastMessage.isEmpty;
 

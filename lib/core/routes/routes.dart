@@ -54,7 +54,8 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: ErrorScreen.route,
-      builder: (_, state) => ErrorScreen(exception: state.extra as StackMoneyException),
+      builder: (_, state) =>
+          ErrorScreen(exception: state.extra as StackMoneyException),
     ),
     GoRoute(
       path: PlanEditScreen.route,
@@ -62,7 +63,8 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: PersonalCfoScreen.route,
-      builder: (_, state) => PersonalCfoScreen(thread: state.extra as ChatThreadModel),
+      builder: (_, state) =>
+          PersonalCfoScreen(thread: state.extra as ChatThreadModel?),
     ),
   ],
 );
