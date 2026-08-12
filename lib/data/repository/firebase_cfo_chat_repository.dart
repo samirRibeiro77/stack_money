@@ -41,6 +41,37 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
     }
   }
 
+  Future<List<ChatMessageModel>> fetchMessages(String threadId) async {
+    SmLogger.debug('Fetching messages', payload: {'threadId': threadId});
+
+    try {
+      final snapshot = await _collection
+          .doc(threadId)
+          .collection(FirebaseKey.messages)
+          .orderBy(ModelKey.date, descending: false)
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        return [];
+      }
+
+      SmLogger.info(
+        'Fetch messages completed with ${snapshot.docs.length} entries.',
+      );
+
+      return snapshot.docs.map((doc) {
+        return ChatMessageModel.fromJson(doc.data(), id: doc.id);
+      }).toList();
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Error fetching thread messages timeline',
+        scope: ExceptionScope.database,
+        exception: e as Exception,
+        stackTrace: stack,
+      );
+    }
+  }
+
   /// Salva ou atualiza a thread principal no Firestore
   Future<void> saveThread(ChatThreadModel thread) async {
     SmLogger.debug('Initializing save', payload: thread.toJson());
@@ -68,8 +99,35 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
     SmLogger.debug('Deleting chat thread', payload: {'id': id});
 
     try {
+      await _deleteMessages(id);
       await _collection.doc(id).delete();
       SmLogger.warning('Chat thread deleted.');
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Hard purge execution failed on core cluster',
+        scope: ExceptionScope.database,
+        exception: e as Exception,
+        payload: {'id': id},
+        stackTrace: stack,
+      );
+    }
+  }
+
+  Future<void> _deleteMessages(String id) async {
+    SmLogger.debug('Deleting chat messages', payload: {'id': id});
+
+    try {
+      final collectionRef = FirebaseFirestore.instance.collection(
+        FirebaseKey.messages,
+      );
+      final querySnapshot = await collectionRef.get();
+      final batch = FirebaseFirestore.instance.batch();
+      for (final doc in querySnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+      await batch.commit();
+
+      SmLogger.warning('Chat messages deleted.');
     } catch (e, stack) {
       throw StackMoneyException(
         message: 'Hard purge execution failed on core cluster',

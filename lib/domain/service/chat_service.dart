@@ -33,6 +33,25 @@ class ChatManagementService {
     }
   }
 
+  Future<Result<List<ChatMessageModel>>> fetchMessages(String threadId) async {
+    try {
+      final messageList = await _repository.fetchMessages(threadId);
+      return Success(messageList);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error fetching thread messages',
+          scope: ExceptionScope.service,
+          payload: {'threadId': threadId},
+          exception: e as Exception,
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
+
   /// Inicializa e sincroniza as configurações do Remote Config
   Future<Result<void>> initRemoteConfig() async {
     try {

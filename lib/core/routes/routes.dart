@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/user_service.dart';
 import 'package:stack_money/features/auth/login_screen.dart';
@@ -61,7 +62,7 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: PersonalCfoScreen.route,
-      builder: (_, state) => PersonalCfoScreen(),
+      builder: (_, state) => PersonalCfoScreen(thread: state.extra as ChatThreadModel),
     ),
   ],
 );

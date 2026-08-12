@@ -5,6 +5,7 @@ import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/helper/asset_name.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
+import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/features/personal_cfo/manager/personal_cfo_manager.dart';
 import 'package:stack_money/features/personal_cfo/widgets/ai_message.dart';
 import 'package:stack_money/features/personal_cfo/widgets/chat_header.dart';
@@ -12,38 +13,29 @@ import 'package:stack_money/features/personal_cfo/widgets/send_message.dart';
 import 'package:stack_money/features/personal_cfo/widgets/user_message.dart';
 
 class PersonalCfoScreen extends StatefulWidget {
+  final ChatThreadModel? thread;
+
   static const route = '/personal_cfo';
 
-  const PersonalCfoScreen({super.key});
+  const PersonalCfoScreen({this.thread, super.key});
 
   @override
   State<PersonalCfoScreen> createState() => _PersonalCfoScreenState();
 }
 
 class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
-  final TextEditingController _textController = TextEditingController();
   late final PersonalCfoManager _manager;
 
   @override
   void initState() {
     super.initState();
-    _manager = PersonalCfoManager();
-    _manager.init();
+    _manager = PersonalCfoManager(widget.thread, context);
   }
 
   @override
   void dispose() {
-    _textController.dispose();
     _manager.dispose();
     super.dispose();
-  }
-
-  void _handleSend(AppLocalizations l10n) {
-    final text = _textController.text;
-    if (text.trim().isEmpty) return;
-
-    _manager.sendMessage(l10n, text);
-    _textController.clear();
   }
 
   @override
@@ -105,8 +97,8 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                 ? AppSizes.cfoKeyboardOpen
                 : AppSizes.cfoKeyboardClosed,
             child: SendMessage(
-              controller: _textController,
-              onSend: () => _handleSend(l10n),
+              controller: _manager.messageController,
+              onSend: _manager.sendMessage,
             ),
           ),
 
@@ -116,10 +108,10 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
             right: AppSizes.min,
             top: AppSizes.x20,
             child: ValueListenableBuilder(
-              valueListenable: _manager.activeThread,
-              builder: (_, thread, _) {
+              valueListenable: _manager.titleController,
+              builder: (_, title, _) {
                 return ChatHeader(
-                  title: thread?.title ?? l10n.newChat,
+                  title: title.text,
                   saveTitle: _manager.changeTitle,
                 );
               },

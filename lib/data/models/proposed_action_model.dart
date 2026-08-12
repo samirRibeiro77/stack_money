@@ -21,14 +21,14 @@ class ProposedActionModel {
     this.status = ActionStatus.pending,
   }) : _id = id ?? const Uuid().v4();
 
-  factory ProposedActionModel.fromJson(Map<String, Object?>? json) {
-    return ProposedActionModel(
-      id: json?[ModelKey.id] as String?,
-      actionType: json?[ModelKey.actionType] as String? ?? '',
-      title: json?[ModelKey.title] as String? ?? '',
-      description: json?[ModelKey.description] as String? ?? '',
-      payload: Map<String, Object?>.from(json?[ModelKey.payload] as Map? ?? {}),
-      status: ActionStatus.fromJson(json?[ModelKey.status] as String?),
+  static ProposedActionModel? fromJson(Map<String, Object?>? json) {
+    return json == null ? null : ProposedActionModel(
+      id: json[ModelKey.id] as String?,
+      actionType: json[ModelKey.actionType] as String? ?? '',
+      title: json[ModelKey.title] as String? ?? '',
+      description: json[ModelKey.description] as String? ?? '',
+      payload: Map<String, Object?>.from(json[ModelKey.payload] as Map? ?? {}),
+      status: ActionStatus.fromJson(json[ModelKey.status] as String?),
     );
   }
 

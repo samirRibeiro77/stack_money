@@ -18,7 +18,7 @@ class ChatThreadModel {
     Timestamp? createdAt,
     Timestamp? updatedAt,
     this.isArchived = false,
-    required this.lastMessage,
+    this.lastMessage = '',
   }) : _id = id ?? const Uuid().v4(),
        createdAt = createdAt ?? Timestamp.now(),
        updatedAt = updatedAt ?? Timestamp.now();

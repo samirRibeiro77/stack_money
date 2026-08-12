@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
-import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
@@ -30,9 +29,9 @@ class ChatsManager {
     }
   }
 
-  void openThread(BuildContext context, String threadId) {
+  void openThread(BuildContext context, ChatThreadModel thread) {
     if (context.mounted) {
-      context.push(PersonalCfoScreen.route, extra: threadId);
+      context.push(PersonalCfoScreen.route, extra: thread);
     }
   }
 

@@ -1,33 +1,71 @@
 import 'dart:core';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:stack_money/core/exceptions/exception_scope.dart';
+import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
+import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/domain/service/chat_service.dart';
 import 'package:stack_money/domain/service/export_service.dart';
+import 'package:stack_money/features/error/error_screen.dart';
 
 class PersonalCfoManager {
   final ChatManagementService _cfoService = ChatManagementService();
+
+  late ChatThreadModel _thread;
+  late final BuildContext _context;
+
+  ChatThreadModel get thread => _thread;
+
   final ScrollController scrollController = ScrollController();
-
-  final ValueNotifier<List<ChatMessageModel>> messagesNotifier = ValueNotifier(
-    [],
-  );
-  final ValueNotifier<bool> _isStreaming = ValueNotifier(false);
-  final ValueNotifier<ChatThreadModel?> _activeThread = ValueNotifier(null);
-
-  ValueListenable get activeThread => _activeThread;
+  final messagesNotifier = ValueNotifier<List<ChatMessageModel>>([]);
+  final _isStreaming = ValueNotifier(false);
 
   List<ChatMessageModel> get messages => messagesNotifier.value;
 
-  Future<void> init([String? threadId]) async {
-    await _cfoService.initRemoteConfig();
+  late final TextEditingController titleController;
+  late final TextEditingController messageController;
 
-    if (threadId != null) {
-      _listenToMessages(threadId);
+  PersonalCfoManager(ChatThreadModel? initialThread, this._context) {
+    _thread = initialThread ?? ChatThreadModel(title: 'New chat');
+
+    titleController = TextEditingController(text: _thread.title);
+    messageController = TextEditingController(text: '');
+
+    _cfoService.initRemoteConfig();
+    _getMessages(_thread.id);
+    _listenToMessages(_thread.id);
+  }
+
+  void _getMessages(String threadId) async {
+    try {
+      final messagesResult = await _cfoService.fetchMessages(threadId);
+      final messages = messagesResult.getOrThrow();
+      messagesNotifier.value = messages;
+      _scrollToBottom();
+    } on StackMoneyException catch (e) {
+      if (_context.mounted) {
+        _context.go(ErrorScreen.route, extra: e);
+      }
+    } catch (e, stack) {
+      if (_context.mounted) {
+        _context.go(
+          ErrorScreen.route,
+          extra: StackMoneyException(
+            message: 'Error fetching thread messages',
+            scope: ExceptionScope.business,
+            payload: {'threadId': threadId},
+            exception: e as Exception,
+            stackTrace: stack,
+          ),
+        );
+      }
     }
   }
 
@@ -40,21 +78,18 @@ class PersonalCfoManager {
     });
   }
 
-  Future<void> sendMessage(AppLocalizations l10n, String userText) async {
-    final cleanText = userText.trim();
+  Future<void> sendMessage() async {
+    final l10n = AppLocalizations.of(_context)!;
+
+    final cleanText = messageController.text.trim();
     if (cleanText.isEmpty || _isStreaming.value) return;
 
-    // 1. Garante ou cria a Thread ativa
-    final thread =
-        _activeThread.value ??
-        ChatThreadModel(title: l10n.newChat, lastMessage: cleanText);
-
-    final bool isFirstMessage = _activeThread.value == null;
+    final bool isFirstMessage = _thread.lastMessage.isEmpty;
 
     if (isFirstMessage) {
-      _activeThread.value = thread;
-      await _cfoService.saveThread(thread);
-      _listenToMessages(thread.id);
+      _thread = _thread.copyWith(lastMessage: cleanText);
+      await _cfoService.saveThread(_thread);
+      _listenToMessages(_thread.id);
     }
 
     // 2. Instancia e salva a mensagem do Usuário no Firestore
@@ -116,8 +151,8 @@ class PersonalCfoManager {
         final generatedTitle = generatedTitleResult.getOrThrow();
 
         changeTitle(generatedTitle);
-        await _cfoService.updateThreadTitle(thread.id, generatedTitle);
-        _activeThread.value = thread.copyWith(title: generatedTitle);
+        await _cfoService.updateThreadTitle(_thread.id, generatedTitle);
+        _thread = _thread.copyWith(title: generatedTitle);
       }
     } catch (e) {
       final errorAiMessage = aiMessage.copyWith(text: l10n.chatConnectionError);
@@ -134,28 +169,15 @@ class PersonalCfoManager {
   Future<bool> changeTitle(String title) async {
     SmLogger.debug('Change title', payload: {'title': title});
 
-    if (_activeThread.value == null) {
-      return false;
-    }
-
-    final result = await _cfoService.updateThreadTitle(
-      _activeThread.value!.id,
-      title,
-    );
+    final result = await _cfoService.updateThreadTitle(_thread.id, title);
 
     result.fold(
       onSuccess: (_) {
-        _activeThread.value = _activeThread.value!.copyWith(title: title);
-        SmLogger.debug(
-          'Change title -- Success',
-          payload: _activeThread.value!.toJson(),
-        );
+        _thread = _thread.copyWith(title: title);
       },
       onFailure: (_) {
-        SmLogger.debug(
-          'Change title -- Failed',
-          payload: _activeThread.value!.toJson(),
-        );
+        final l10n = AppLocalizations.of(_context)!;
+        SmSnackBar(message: 'l10n.failUploadTitle', type: SnackBarType.error);
       },
     );
 
@@ -177,7 +199,8 @@ class PersonalCfoManager {
   void dispose() {
     messagesNotifier.dispose();
     _isStreaming.dispose();
-    _activeThread.dispose();
     scrollController.dispose();
+    titleController.dispose();
+    messageController.dispose();
   }
 }
