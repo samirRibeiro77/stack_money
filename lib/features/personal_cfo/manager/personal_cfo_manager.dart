@@ -62,7 +62,7 @@ class PersonalCfoManager {
     );
 
     messagesNotifier.value = [...messages, userMessage];
-    await _cfoService.saveMessage(userMessage);
+    await _cfoService.saveMessage(thread.id, userMessage);
 
     // 3. Prepara a mensagem "placeholder" local da IA
     final aiMessage = ChatMessageModel(sender: MessageSender.cfoAi, text: '');
@@ -101,7 +101,7 @@ class PersonalCfoManager {
       final finalAiMessage = aiMessage.copyWith(
         text: accumulatedText.toString(),
       );
-      await _cfoService.saveMessage(finalAiMessage);
+      await _cfoService.saveMessage(thread.id, finalAiMessage);
 
       // 5. Se for a primeira troca de mensagens, gera o título de 2 palavras
       if (isFirstMessage) {

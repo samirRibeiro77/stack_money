@@ -127,17 +127,17 @@ class CfoVertexService {
   }
 
   /// Salva uma nova mensagem dentro da subcoleção de mensagens da thread
-  Future<void> saveMessage(ChatMessageModel message) async {
-    await _repository.saveMessage(message);
+  Future<void> saveMessage(String threadId, ChatMessageModel message) async {
+    await _repository.saveMessage(threadId, message);
   }
 
   /// Ouve em tempo real todas as conversas não arquivadas do usuário
   Stream<List<ChatThreadModel>> getThreadsStream() {
-    return _repository.getThreadsStream();
+    return _repository.watchThreads();
   }
 
   /// Ouve as mensagens de uma thread específica em ordem cronológica
   Stream<List<ChatMessageModel>> getMessagesStream(String threadId) {
-    return _repository.getMessagesStream(threadId);
+    return _repository.watchMessages(threadId);
   }
 }
