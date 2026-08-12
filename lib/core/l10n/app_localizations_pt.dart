@@ -641,4 +641,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get deleteChatNote => 'Todas as mensagens serão deletadas.';
+
+  @override
+  String get aiThreads => 'CFO IA';
 }

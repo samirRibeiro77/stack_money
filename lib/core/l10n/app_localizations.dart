@@ -1235,6 +1235,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All messages will be expurged.'**
   String get deleteChatNote;
+
+  /// AI threads title for tab.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Threads'**
+  String get aiThreads;
 }
 
 class _AppLocalizationsDelegate

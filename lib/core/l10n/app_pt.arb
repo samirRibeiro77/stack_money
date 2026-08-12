@@ -189,5 +189,6 @@
   "timeAgoWhen": "{d}/{m}/{y}",
   "failedPurgeChatThread": "Erro ao excluir conversa...",
   "deleteChatMessage": "Deseja deletar a conversa com o CFO?",
-  "deleteChatNote": "Todas as mensagens serão deletadas."
+  "deleteChatNote": "Todas as mensagens serão deletadas.",
+  "aiThreads": "CFO IA"
 }

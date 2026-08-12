@@ -639,4 +639,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteChatNote => 'All messages will be expurged.';
+
+  @override
+  String get aiThreads => 'AI Threads';
 }

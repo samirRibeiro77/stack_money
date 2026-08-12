@@ -30,7 +30,7 @@ class ChatCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSizes.x3),
       child: GestureDetector(
-        onTap: onTap,
+        onTap: isSecureActive ? null : onTap,
         child: SmCard(
           shadowColor: shadowColor,
           child: Column(
@@ -64,11 +64,8 @@ class ChatCard extends StatelessWidget {
                 ),
               ],
               if (isSecureActive) ...[
-                SecurityText(
-                  '',
-                  style: textTheme.bodySmall,
-                ),
-              ]
+                SecurityText('', style: textTheme.bodySmall),
+              ],
             ],
           ),
         ),

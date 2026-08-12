@@ -52,7 +52,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         ExpandableHeader(
-          title: l10n.plansConfig,
+          title: l10n.aiThreads,
           validation: _manager.showArchivedNotifier,
           toggle: _manager.toggleShowArchived,
           activeIcon: Icons.archive_outlined,

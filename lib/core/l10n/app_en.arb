@@ -755,5 +755,9 @@
   "deleteChatNote": "All messages will be expurged.",
   "@deleteChatNote": {
     "description": "Message to show on alert when deleting a chat thread"
+  },
+  "aiThreads": "AI Threads",
+  "@aiThreads": {
+    "description": "AI threads title for tab."
   }
 }
