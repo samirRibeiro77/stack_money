@@ -182,10 +182,10 @@
   "chatConnectionError": "⚡ *Falha ao conectar com o terminal do CFO...\nTente novamente mais tarde!_*",
   "chatEmpty": "CFO Pessoal AI conectado com sucesso!\nPergunte algo...",
   "timeAgoJustNow": "Agora",
-  "timeAgoMin": "{m}m",
-  "timeAgoHour": "{h}h",
+  "timeAgoMin": "{m}m atrás",
+  "timeAgoHour": "{h}h atrás",
   "timeAgoYesterday": "Ontem",
-  "timeAgoDay": "{d}d",
+  "timeAgoDay": "{d}d atrás",
   "timeAgoWhen": "{d}/{m}/{y}",
   "failedPurgeChatThread": "Erro ao excluir conversa..."
 }

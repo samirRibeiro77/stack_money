@@ -724,11 +724,11 @@
   "@timeAgoJustNow": {
     "description": "Time ago formatter (just now)."
   },
-  "timeAgoMin": "{m}m",
+  "timeAgoMin": "{m}m ago",
   "@timeAgoMin": {
     "description": "Time ago formatter (Minutes)."
   },
-  "timeAgoHour": "{h}h",
+  "timeAgoHour": "{h}h ago",
   "@timeAgoHour": {
     "description": "Time ago formatter (Hour)."
   },
@@ -736,7 +736,7 @@
   "@timeAgoYesterday": {
     "description": "Time ago formatter (Yesterday)."
   },
-  "timeAgoDay": "{d}d",
+  "timeAgoDay": "{d}d ago",
   "@timeAgoDay": {
     "description": "Time ago formatter (Day)."
   },

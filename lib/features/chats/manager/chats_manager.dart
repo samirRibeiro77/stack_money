@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
-import 'package:stack_money/core/providers/app_coordinator.dart';
-import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
