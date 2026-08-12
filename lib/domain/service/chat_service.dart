@@ -4,7 +4,6 @@ import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/utils/result.dart';
-import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
@@ -78,7 +77,11 @@ class ChatManagementService {
   }
 
   /// Dispara a pergunta com streaming continuo de resposta e contexto vivo
-  Stream<String> generateCfoResponseStream({required String userPrompt, required String liveContextJson, List<ChatMessageModel> history = const [],}) async* {
+  Stream<String> generateCfoResponseStream({
+    required String userPrompt,
+    required String liveContextJson,
+    List<ChatMessageModel> history = const [],
+  }) async* {
     /// System Prompt
     final baseSystemPrompt = _remoteConfig.getString(
       FirebaseKey.cfoSystemPrompt,
@@ -107,17 +110,6 @@ class ChatManagementService {
       }
     }).toList();
 
-    /// Logger
-    SmLogger.debug(
-      'AI data',
-      payload: {
-        'model': _remoteConfig.getString(FirebaseKey.cfoModelName),
-        'userPrompt': userPrompt,
-        'systemInstruction': fullSystemInstruction,
-        'history': historyContents.map((c) => c.toJson()),
-      },
-    );
-
     /// Session and stream
     final chat = model.startChat(history: historyContents);
     final responseStream = chat.sendMessageStream(Content.text(userPrompt));
@@ -129,7 +121,11 @@ class ChatManagementService {
     }
   }
 
-  Future<Result<String>> generateTitle(AppLocalizations l10n, {required String userPrompt, required String aiResponse,}) async {
+  Future<Result<String>> generateTitle(
+    AppLocalizations l10n, {
+    required String userPrompt,
+    required String aiResponse,
+  }) async {
     try {
       final systemPrompt = _remoteConfig.getString(
         FirebaseKey.cfoTitleGenerator,
@@ -221,7 +217,10 @@ class ChatManagementService {
   }
 
   /// Salva uma nova mensagem dentro da subcoleção de mensagens da thread
-  Future<Result<void>> saveMessage(String threadId, ChatMessageModel message,) async {
+  Future<Result<void>> saveMessage(
+    String threadId,
+    ChatMessageModel message,
+  ) async {
     try {
       await _repository.saveMessage(threadId, message);
       return Success(null);

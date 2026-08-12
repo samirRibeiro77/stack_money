@@ -67,7 +67,7 @@ class SendMessage extends StatelessWidget {
             borderWidth: AppSizes.min,
             containerHeight: AppSizes.cfoSendBarHeight,
             child: InkWell(
-              onTap: onSend,
+              onTap: isStreaming ? null : onSend,
               borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
               highlightColor: StackMoneyTheme.magentaNeon.withValues(
                 alpha: 0.1,
@@ -76,7 +76,15 @@ class SendMessage extends StatelessWidget {
               child: SizedBox.square(
                 dimension: AppSizes.cfoSendButton,
                 child: isStreaming
-                    ? CircularProgressIndicator.adaptive()
+                    ? Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: AppSizes.cfoSendBarHeight / 5,
+                          horizontal: AppSizes.cfoSendBarHeight / 25,
+                        ),
+                        child: CircularProgressIndicator.adaptive(
+                          backgroundColor: StackMoneyTheme.magentaNeon,
+                        ),
+                      )
                     : Icon(
                         Icons.send_outlined,
                         color: StackMoneyTheme.magentaNeon,
