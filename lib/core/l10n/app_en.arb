@@ -747,5 +747,13 @@
   "failedPurgeChatThread": "Failed to purge chat thread...",
   "@failedPurgeChatThread": {
     "description": "Failed to delete chat thread."
+  },
+  "deleteChatMessage": "Execute purge protocol on CFO chat thread?",
+  "@deleteChatMessage": {
+    "description": "Title to show on alert when deleting a chat thread"
+  },
+  "deleteChatNote": "All messages will be expurged.",
+  "@deleteChatNote": {
+    "description": "Message to show on alert when deleting a chat thread"
   }
 }

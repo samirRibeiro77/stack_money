@@ -633,4 +633,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedPurgeChatThread => 'Failed to purge chat thread...';
+
+  @override
+  String get deleteChatMessage => 'Execute purge protocol on CFO chat thread?';
+
+  @override
+  String get deleteChatNote => 'All messages will be expurged.';
 }

@@ -20,53 +20,33 @@ class ChatsScreen extends StatefulWidget {
 }
 
 class _ChatsScreenState extends State<ChatsScreen> {
-  final _manager = ChatsManager();
+  late final ChatsManager _manager;
 
-  /// Modal de Confirmação para Exclusão
-  Future<bool?> _showDeleteConfirmation(BuildContext context) {
-    return showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: StackMoneyTheme.carbonGrey,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
-          side: const BorderSide(color: StackMoneyTheme.magentaNeon),
-        ),
-        title: const Text(
-          'Excluir Conversa?',
-          style: TextStyle(color: StackMoneyTheme.cyanNeon),
-        ),
-        content: const Text(
-          'Esta ação removerá o histórico do terminal do CFO.',
-          style: TextStyle(color: StackMoneyTheme.mutedGrey),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text(
-              'CANCELAR',
-              style: TextStyle(color: StackMoneyTheme.mutedGrey),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text(
-              'EXCLUIR',
-              style: TextStyle(
-                color: StackMoneyTheme.magentaNeon,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+  Future<bool?> _confirmDismiss(
+    DismissDirection direction,
+    ChatThreadModel chat,
+  ) async {
+    if (direction == DismissDirection.endToStart) {
+      final result = await _manager.showTerminalConfirmDialog(chat.title);
+      if (result == true) {
+        await _manager.purgeChatThread(chat.id);
+      }
+      return result;
+    } else {
+      _manager.toggleArchiveThread(chat);
+      return false;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _manager = ChatsManager(context);
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final textTheme = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,21 +84,8 @@ class _ChatsScreenState extends State<ChatsScreen> {
                     return ChatDismissibleCard(
                       thread,
                       onTap: () => _manager.openThread(context, thread.id),
-                      confirmDismiss: (direction) async {
-                        if (direction == DismissDirection.endToStart) {
-                          // Deletar -> Modal de confirmação
-                          return await _showDeleteConfirmation(context);
-                        }
-                        // Arquivar -> Executa direto
-                        return true;
-                      },
-                      onDismissed: (direction) {
-                        if (direction == DismissDirection.endToStart) {
-                          _manager.deleteThreadWithUndo(context, thread.id);
-                        } else {
-                          _manager.toggleArchiveThread(thread);
-                        }
-                      },
+                      confirmDismiss: (direction) =>
+                          _confirmDismiss(direction, thread),
                     );
                   }),
                 );

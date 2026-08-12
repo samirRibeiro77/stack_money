@@ -1223,6 +1223,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to purge chat thread...'**
   String get failedPurgeChatThread;
+
+  /// Title to show on alert when deleting a chat thread
+  ///
+  /// In en, this message translates to:
+  /// **'Execute purge protocol on CFO chat thread?'**
+  String get deleteChatMessage;
+
+  /// Message to show on alert when deleting a chat thread
+  ///
+  /// In en, this message translates to:
+  /// **'All messages will be expurged.'**
+  String get deleteChatNote;
 }
 
 class _AppLocalizationsDelegate

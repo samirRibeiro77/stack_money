@@ -187,5 +187,7 @@
   "timeAgoYesterday": "Ontem",
   "timeAgoDay": "{d}d atrás",
   "timeAgoWhen": "{d}/{m}/{y}",
-  "failedPurgeChatThread": "Erro ao excluir conversa..."
+  "failedPurgeChatThread": "Erro ao excluir conversa...",
+  "deleteChatMessage": "Deseja deletar a conversa com o CFO?",
+  "deleteChatNote": "Todas as mensagens serão deletadas."
 }

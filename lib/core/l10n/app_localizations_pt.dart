@@ -635,4 +635,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get failedPurgeChatThread => 'Erro ao excluir conversa...';
+
+  @override
+  String get deleteChatMessage => 'Deseja deletar a conversa com o CFO?';
+
+  @override
+  String get deleteChatNote => 'Todas as mensagens serão deletadas.';
 }
