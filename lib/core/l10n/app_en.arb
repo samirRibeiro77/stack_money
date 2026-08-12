@@ -715,5 +715,29 @@
   "chatEmpty": "Personal AI CFO connected sucessfully!\nAsk something right away...",
   "@chatEmpty": {
     "description": "Message to show when the user create a new CFO chat."
+  },
+  "timeAgoJustNow": "Just now",
+  "@timeAgoJustNow": {
+    "description": "Time ago formatter (just now)."
+  },
+  "timeAgoMin": "{m}m",
+  "@timeAgoMin": {
+    "description": "Time ago formatter (Minutes)."
+  },
+  "timeAgoHour": "{h}h",
+  "@timeAgoHour": {
+    "description": "Time ago formatter (Hour)."
+  },
+  "timeAgoYesterday": "Yesterday",
+  "@timeAgoYesterday": {
+    "description": "Time ago formatter (Yesterday)."
+  },
+  "timeAgoDay": "{d}d",
+  "@timeAgoDay": {
+    "description": "Time ago formatter (Day)."
+  },
+  "timeAgoWhen": "{y}/{m}/{d}",
+  "@timeAgoWhen": {
+    "description": "Time ago formatter (DateTime)."
   }
 }

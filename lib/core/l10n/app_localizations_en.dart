@@ -600,4 +600,30 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get chatEmpty =>
       'Personal AI CFO connected sucessfully!\nAsk something right away...';
+
+  @override
+  String get timeAgoJustNow => 'Just now';
+
+  @override
+  String timeAgoMin(Object m) {
+    return '${m}m';
+  }
+
+  @override
+  String timeAgoHour(Object h) {
+    return '${h}h';
+  }
+
+  @override
+  String get timeAgoYesterday => 'Yesterday';
+
+  @override
+  String timeAgoDay(Object d) {
+    return '${d}d';
+  }
+
+  @override
+  String timeAgoWhen(Object d, Object m, Object y) {
+    return '$y/$m/$d';
+  }
 }

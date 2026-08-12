@@ -602,4 +602,30 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get chatEmpty =>
       'CFO Pessoal AI conectado com sucesso!\nPergunte algo...';
+
+  @override
+  String get timeAgoJustNow => 'Agora';
+
+  @override
+  String timeAgoMin(Object m) {
+    return '${m}m';
+  }
+
+  @override
+  String timeAgoHour(Object h) {
+    return '${h}h';
+  }
+
+  @override
+  String get timeAgoYesterday => 'Ontem';
+
+  @override
+  String timeAgoDay(Object d) {
+    return '${d}d';
+  }
+
+  @override
+  String timeAgoWhen(Object d, Object m, Object y) {
+    return '$d/$m/$y';
+  }
 }

@@ -179,5 +179,11 @@
   "rejected": "✕ Rejeitado",
   "personalCfo": "CFO Pessoal",
   "chatConnectionError": "⚡ *Falha ao conectar com o terminal do CFO...\nTente novamente mais tarde!_*",
-  "chatEmpty": "CFO Pessoal AI conectado com sucesso!\nPergunte algo..."
+  "chatEmpty": "CFO Pessoal AI conectado com sucesso!\nPergunte algo...",
+  "timeAgoJustNow": "Agora",
+  "timeAgoMin": "{m}m",
+  "timeAgoHour": "{h}h",
+  "timeAgoYesterday": "Ontem",
+  "timeAgoDay": "{d}d",
+  "timeAgoWhen": "{d}/{m}/{y}"
 }

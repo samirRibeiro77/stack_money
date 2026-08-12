@@ -1175,6 +1175,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Personal AI CFO connected sucessfully!\nAsk something right away...'**
   String get chatEmpty;
+
+  /// Time ago formatter (just now).
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get timeAgoJustNow;
+
+  /// Time ago formatter (Minutes).
+  ///
+  /// In en, this message translates to:
+  /// **'{m}m'**
+  String timeAgoMin(Object m);
+
+  /// Time ago formatter (Hour).
+  ///
+  /// In en, this message translates to:
+  /// **'{h}h'**
+  String timeAgoHour(Object h);
+
+  /// Time ago formatter (Yesterday).
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get timeAgoYesterday;
+
+  /// Time ago formatter (Day).
+  ///
+  /// In en, this message translates to:
+  /// **'{d}d'**
+  String timeAgoDay(Object d);
+
+  /// Time ago formatter (DateTime).
+  ///
+  /// In en, this message translates to:
+  /// **'{y}/{m}/{d}'**
+  String timeAgoWhen(Object d, Object m, Object y);
 }
 
 class _AppLocalizationsDelegate
