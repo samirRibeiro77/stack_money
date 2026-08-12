@@ -117,9 +117,9 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
     SmLogger.debug('Deleting chat messages', payload: {'id': id});
 
     try {
-      final collectionRef = FirebaseFirestore.instance.collection(
-        FirebaseKey.messages,
-      );
+      final collectionRef = _collection
+          .doc(id)
+          .collection(FirebaseKey.messages);
       final querySnapshot = await collectionRef.get();
       final batch = FirebaseFirestore.instance.batch();
       for (final doc in querySnapshot.docs) {

@@ -642,4 +642,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiThreads => 'AI Threads';
+
+  @override
+  String get failUpdateThreadTitle => 'Failed to update thread title...';
 }

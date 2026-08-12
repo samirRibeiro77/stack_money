@@ -759,5 +759,9 @@
   "aiThreads": "AI Threads",
   "@aiThreads": {
     "description": "AI threads title for tab."
+  },
+  "failUpdateThreadTitle": "Failed to update thread title...",
+  "@failUpdateThreadTitle": {
+    "description": "Message when some error happen when updating chat thread title."
   }
 }

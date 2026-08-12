@@ -1241,6 +1241,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI Threads'**
   String get aiThreads;
+
+  /// Message when some error happen when updating chat thread title.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update thread title...'**
+  String get failUpdateThreadTitle;
 }
 
 class _AppLocalizationsDelegate

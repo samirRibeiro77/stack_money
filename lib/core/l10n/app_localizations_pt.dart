@@ -644,4 +644,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get aiThreads => 'CFO IA';
+
+  @override
+  String get failUpdateThreadTitle => 'Failed to update thread title...';
 }

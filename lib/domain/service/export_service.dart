@@ -60,11 +60,15 @@ class ExportService {
   }
 
   Future<String> extractDataToAI() async {
+    final history = AppCoordinator.instance.history.value.reversed.toList();
+
     final jsonMap = {
       ExportKey.currentPlan: AppCoordinator.instance.currentPlan.value
           ?.toJson(),
-      ExportKey.latestHistory: AppCoordinator.instance.latestHistory.value
-          ?.toJson(),
+      ExportKey.latestHistory: history
+          .getRange(0, 3)
+          .map((h) => h.toJson())
+          .toList(),
       ExportKey.buckets: AppCoordinator.instance.buckets.value
           .map((b) => b.toJson())
           .toList(),

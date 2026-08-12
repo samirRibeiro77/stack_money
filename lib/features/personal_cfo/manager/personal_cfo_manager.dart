@@ -45,7 +45,7 @@ class PersonalCfoManager {
     _listenToMessages(_thread.id);
   }
 
-  void _getMessages(String threadId) async {
+  Future<void> _getMessages(String threadId) async {
     try {
       final messagesResult = await _cfoService.fetchMessages(threadId);
       final messages = messagesResult.getOrThrow();
@@ -139,6 +139,7 @@ class PersonalCfoManager {
       }
 
       // 4. Salva a resposta da IA no Firestore APENAS quando o streaming terminar
+      _isStreaming.value = false;
       final finalAiMessage = aiMessage.copyWith(
         text: accumulatedText.toString(),
       );
@@ -153,10 +154,7 @@ class PersonalCfoManager {
         );
 
         final generatedTitle = generatedTitleResult.getOrThrow();
-
         changeTitle(generatedTitle);
-        await _cfoService.updateThreadTitle(_thread.id, generatedTitle);
-        _thread = _thread.copyWith(title: generatedTitle);
       }
     } catch (e) {
       final errorAiMessage = aiMessage.copyWith(text: l10n.chatConnectionError);
@@ -177,11 +175,15 @@ class PersonalCfoManager {
 
     result.fold(
       onSuccess: (_) {
+        titleController.text = title;
         _thread = _thread.copyWith(title: title);
       },
       onFailure: (_) {
         final l10n = AppLocalizations.of(_context)!;
-        SmSnackBar(message: 'l10n.failUploadTitle', type: SnackBarType.error);
+        SmSnackBar(
+          message: l10n.failUpdateThreadTitle,
+          type: SnackBarType.error,
+        );
       },
     );
 
