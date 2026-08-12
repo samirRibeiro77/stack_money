@@ -77,9 +77,7 @@ class AppSizes {
   static const double cfoAppBarActionButton = 21.0;
   static const double cfoAppBarHeight = 40.0;
   static const double cfoSendButton = 31.0;
-  static const double cfoSendButtonHeight = 50.0;
+  static const double cfoSendBarHeight = 50.0;
   static const double cfoKeyboardOpen = 5.0;
   static const double cfoKeyboardClosed = cfoKeyboardOpen * 3;
-  static const double cfoContentTopPadding = cfoKeyboardClosed * 6;
-  static const double cfoContentBottomPadding = cfoKeyboardClosed * 4;
 }

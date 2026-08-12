@@ -65,7 +65,7 @@ class SendMessage extends StatelessWidget {
             borderRadius: AppSizes.avatarRadius,
             borderColor: StackMoneyTheme.magentaNeon,
             borderWidth: AppSizes.min,
-            containerHeight: AppSizes.cfoSendButtonHeight,
+            containerHeight: AppSizes.cfoSendBarHeight,
             child: InkWell(
               onTap: onSend,
               borderRadius: BorderRadius.circular(AppSizes.avatarRadius),

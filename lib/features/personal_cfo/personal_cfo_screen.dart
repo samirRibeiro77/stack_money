@@ -44,6 +44,8 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     final bool isKeyboardActive = MediaQuery.of(context).viewInsets.bottom > 0;
+    final double topSafeArea = MediaQuery.of(context).padding.top;
+    final double bottomSafeArea = MediaQuery.of(context).padding.bottom;
 
     return Scaffold(
       backgroundColor: StackMoneyTheme.background,
@@ -71,8 +73,11 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
               return ListView.builder(
                 controller: _manager.scrollController,
                 padding: EdgeInsets.only(
-                  top: AppSizes.cfoContentTopPadding,
-                  bottom: AppSizes.cfoContentBottomPadding,
+                  top:
+                      topSafeArea +
+                      AppSizes.cfoAppBarHeight +
+                      AppSizes.sizedBoxMedium,
+                  bottom: bottomSafeArea + AppSizes.cfoSendBarHeight,
                 ),
                 itemCount: messages.length,
                 itemBuilder: (context, index) {
@@ -94,8 +99,8 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
             left: AppSizes.min,
             right: AppSizes.min,
             bottom: isKeyboardActive
-                ? AppSizes.cfoKeyboardOpen
-                : AppSizes.cfoKeyboardClosed,
+                ? bottomSafeArea + AppSizes.cfoKeyboardOpen
+                : bottomSafeArea,
             child: ValueListenableBuilder(
               valueListenable: _manager.isStreaming,
               builder: (_, isStreaming, _) {
@@ -112,7 +117,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
           Positioned(
             left: AppSizes.min,
             right: AppSizes.min,
-            top: AppSizes.cfoSendButtonHeight,
+            top: topSafeArea,
             child: ValueListenableBuilder(
               valueListenable: _manager.titleController,
               builder: (_, title, _) {

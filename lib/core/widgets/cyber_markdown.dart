@@ -52,7 +52,7 @@ class CyberMarkdown extends StatelessWidget {
           color: StackMoneyTheme.magentaNeon,
           fontWeight: AppTypography.weightBold,
         ),
-        tableBody: textTheme.bodySmall,
+        tableBody: textTheme.bodyLarge,
         tablePadding: const EdgeInsets.only(
           top: AppSizes.sizedBoxSmall,
           right: AppSizes.sizedBoxSmall,
