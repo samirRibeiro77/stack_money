@@ -65,12 +65,12 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
   Future<void> saveMessage(String threadId, ChatMessageModel message) async {
     SmLogger.debug(
       'Initializing save',
-      payload: {'threadId': threadId, 'message': message.toJson()},
+      payload: {'threadId': threadId, 'message': message.id},
     );
 
     try {
       await _collection
-          .doc(message.id)
+          .doc(threadId)
           .collection(FirebaseKey.messages)
           .doc(message.id)
           .set(message.toJson());

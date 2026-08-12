@@ -3,6 +3,7 @@ import 'package:firebase_vertexai/firebase_vertexai.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/utils/result.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
@@ -15,7 +16,7 @@ class CfoVertexService {
   final FirebaseCfoChatRepository _repository = FirebaseCfoChatRepository();
 
   /// Inicializa e sincroniza as configurações do Remote Config
-  Future<void> initRemoteConfig() async {
+  Future<Result<void>> initRemoteConfig() async {
     try {
       await _remoteConfig.setConfigSettings(
         RemoteConfigSettings(
@@ -24,12 +25,17 @@ class CfoVertexService {
         ),
       );
       await _remoteConfig.fetchAndActivate();
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
     } catch (e, stack) {
-      StackMoneyException(
-        message: 'Error initializing remote config',
-        scope: ExceptionScope.service,
-        exception: e as Exception,
-        stackTrace: stack,
+      return Failure(
+        StackMoneyException(
+          message: 'Error initializing remote config',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          stackTrace: stack,
+        ),
       );
     }
   }
@@ -90,7 +96,7 @@ class CfoVertexService {
     }
   }
 
-  Future<String> generateTitle(
+  Future<Result<String>> generateTitle(
     AppLocalizations l10n, {
     required String userPrompt,
     required String aiResponse,
@@ -110,25 +116,83 @@ class CfoVertexService {
       ]);
 
       final title = response.text?.trim() ?? '';
-      return title.isNotEmpty ? title : 'l10n.newChat';
-    } catch (_) {
-      return 'l10n.financialAnalysis';
+      return Success(title.isNotEmpty ? title : 'l10n.newChat');
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error executing generating title',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: {'userPrompt': userPrompt, 'aiResponse': aiResponse},
+          stackTrace: stack,
+        ),
+      );
     }
   }
 
   /// Salva ou atualiza a thread principal no Firestore
-  Future<void> saveThread(ChatThreadModel thread) async {
-    await _repository.saveThread(thread);
+  Future<Result<void>> saveThread(ChatThreadModel thread) async {
+    try {
+      await _repository.saveThread(thread);
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error saving thread',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: thread.toJson(),
+          stackTrace: stack,
+        ),
+      );
+    }
   }
 
   /// Atualiza apenas o título da thread
-  Future<void> updateThreadTitle(String threadId, String title) async {
-    await _repository.updateThreadTitle(threadId, title);
+  Future<Result<void>> updateThreadTitle(String threadId, String title) async {
+    try {
+      await _repository.updateThreadTitle(threadId, title);
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error saving thread',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: {'threadId': threadId, 'title': title},
+          stackTrace: stack,
+        ),
+      );
+    }
   }
 
   /// Salva uma nova mensagem dentro da subcoleção de mensagens da thread
-  Future<void> saveMessage(String threadId, ChatMessageModel message) async {
-    await _repository.saveMessage(threadId, message);
+  Future<Result<void>> saveMessage(
+    String threadId,
+    ChatMessageModel message,
+  ) async {
+    try {
+      await _repository.saveMessage(threadId, message);
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error saving thread',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: {'threadId': threadId, 'message': message.toJson()},
+          stackTrace: stack,
+        ),
+      );
+    }
   }
 
   /// Ouve em tempo real todas as conversas não arquivadas do usuário

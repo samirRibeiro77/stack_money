@@ -43,7 +43,7 @@ class PersonalCfoManager {
     if (cleanText.isEmpty || isStreamingNotifier.value) return;
 
     // 1. Garante ou cria a Thread ativa
-    ChatThreadModel thread =
+    final thread =
         activeThreadNotifier.value ??
         ChatThreadModel(title: 'l10n.newChat', lastMessage: cleanText);
 
@@ -105,11 +105,13 @@ class PersonalCfoManager {
 
       // 5. Se for a primeira troca de mensagens, gera o título de 2 palavras
       if (isFirstMessage) {
-        final generatedTitle = await _cfoService.generateTitle(
+        final generatedTitleResult = await _cfoService.generateTitle(
           l10n,
           userPrompt: cleanText,
           aiResponse: accumulatedText.toString(),
         );
+
+        final generatedTitle = generatedTitleResult.getOrThrow();
 
         await _cfoService.updateThreadTitle(thread.id, generatedTitle);
         activeThreadNotifier.value = thread.copyWith(title: generatedTitle);
