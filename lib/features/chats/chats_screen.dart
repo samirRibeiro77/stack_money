@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/card_initialize_slot.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
 import 'package:stack_money/features/chats/manager/chats_manager.dart';
@@ -22,25 +24,43 @@ class _AiChatsScreenState extends State<ChatsScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ExpandableHeader(
-          title: l10n.plansConfig,
-          validation: _manager.showArchivedNotifier,
-          toggle: _manager.toggleShowArchived,
-          activeIcon: Icons.archive_outlined,
-          inactiveIcon: Icons.unarchive_outlined,
-          activeColor: StackMoneyTheme.magentaNeon,
-          inactiveColor: StackMoneyTheme.cyanNeon,
-        ),
-        const SizedBox(height: AppSizes.sizedBoxMedium),
-        CardInitializeSlot(
-          l10n.newChat,
-          onTap: () => _manager.initializeNewBucketSlot(context),
-        ),
-      ],
+    return ValueListenableBuilder(
+      valueListenable: AppCoordinator.instance.chats,
+      builder: (_, chats, _) {
+        return ValueListenableBuilder(
+          valueListenable: _manager.showArchivedNotifier,
+          builder: (_, showArchived, _) {
+            final baseList = chats
+                .where((p) => showArchived ? true : !p.isArchived)
+                .toList();
+
+            baseList.forEach((c) => SmLogger.debug(c.title, payload: c.toJson()));
+
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ExpandableHeader(
+                    title: l10n.plansConfig,
+                    validation: _manager.showArchivedNotifier,
+                    toggle: _manager.toggleShowArchived,
+                    activeIcon: Icons.archive_outlined,
+                    inactiveIcon: Icons.unarchive_outlined,
+                    activeColor: StackMoneyTheme.magentaNeon,
+                    inactiveColor: StackMoneyTheme.cyanNeon,
+                  ),
+                  const SizedBox(height: AppSizes.sizedBoxMedium),
+                  CardInitializeSlot(
+                    l10n.newChat,
+                    onTap: () => _manager.initializeNewChat(context),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

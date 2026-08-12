@@ -480,6 +480,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'COFRES: Consolidando montantes e sub-cofres digitais...';
 
   @override
+  String get loadingChats =>
+      'AI: Sincronizando canais seguros e insights financeiros de IA...';
+
+  @override
   String get loadingHistory =>
       'RASTROS: Reconstituindo logs e histórico de transações na rede...';
 
@@ -628,4 +632,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String timeAgoWhen(Object d, Object m, Object y) {
     return '$d/$m/$y';
   }
+
+  @override
+  String get failedPurgeChatThread => 'Erro ao excluir conversa...';
 }

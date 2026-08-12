@@ -12,6 +12,35 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
   CollectionReference<Map<String, Object?>> get _collection =>
       getUserDoc().collection(FirebaseKey.cfoThreads);
 
+  Future<List<ChatThreadModel>> fetch() async {
+    SmLogger.debug('Fetching threads', payload: {});
+
+    try {
+      final snapshot = await _collection
+          .orderBy(ModelKey.updateAt, descending: false)
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        return [];
+      }
+
+      SmLogger.info(
+        'Fetch Threads completed with ${snapshot.docs.length} entries.',
+      );
+
+      return snapshot.docs.map((doc) {
+        return ChatThreadModel.fromJson(doc.data(), id: doc.id);
+      }).toList();
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Error fetching chat threads timeline',
+        scope: ExceptionScope.database,
+        exception: e as Exception,
+        stackTrace: stack,
+      );
+    }
+  }
+
   /// Salva ou atualiza a thread principal no Firestore
   Future<void> saveThread(ChatThreadModel thread) async {
     SmLogger.debug('Initializing save', payload: thread.toJson());
@@ -32,6 +61,24 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
             stackTrace: stack,
           );
         });
+  }
+
+  /// Deleta a thread principal no Firestore
+  Future<void> deleteThread(String id) async {
+    SmLogger.debug('Deleting chat thread', payload: {'id': id});
+
+    try {
+      await _collection.doc(id).delete();
+      SmLogger.warning('Chat thread deleted.');
+    } catch (e, stack) {
+      throw StackMoneyException(
+        message: 'Hard purge execution failed on core cluster',
+        scope: ExceptionScope.database,
+        exception: e as Exception,
+        payload: {'id': id},
+        stackTrace: stack,
+      );
+    }
   }
 
   /// Atualiza apenas o título da thread
@@ -96,14 +143,17 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
     SmLogger.debug('Watching threads', payload: {});
 
     return _collection
-        .where(ModelKey.isArchived, isEqualTo: false)
         .orderBy(ModelKey.updateAt, descending: true)
         .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map((doc) => ChatThreadModel.fromJson(doc.data(), id: doc.id))
-              .toList(),
-        )
+        .map((snapshot) {
+          SmLogger.info(
+            'Stream threads updated with ${snapshot.docs.length} entries.',
+          );
+
+          return snapshot.docs
+              .map((doc) => ChatThreadModel.fromJson(doc.data()))
+              .toList();
+        })
         .handleError((e, stack) {
           throw StackMoneyException(
             message: 'Error in threads timeline stream',

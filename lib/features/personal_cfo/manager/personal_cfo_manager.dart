@@ -6,11 +6,11 @@ import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
-import 'package:stack_money/domain/service/cfo_vertex_service.dart';
+import 'package:stack_money/domain/service/chat_service.dart';
 import 'package:stack_money/domain/service/export_service.dart';
 
 class PersonalCfoManager {
-  final CfoVertexService _cfoService = CfoVertexService();
+  final ChatManagementService _cfoService = ChatManagementService();
   final ScrollController scrollController = ScrollController();
 
   final ValueNotifier<List<ChatMessageModel>> messagesNotifier = ValueNotifier(

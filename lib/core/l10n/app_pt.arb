@@ -143,6 +143,7 @@
   "loadingUser": "AUTENTICANDO: Infiltrando redes e descriptografando perfil de usuário...",
   "loadingPlan": "ALOCAÇÃO: Sincronizando matrizes de distribuição salarial...",
   "loadingBucket": "COFRES: Consolidando montantes e sub-cofres digitais...",
+  "loadingChats": "AI: Sincronizando canais seguros e insights financeiros de IA...",
   "loadingHistory": "RASTROS: Reconstituindo logs e histórico de transações na rede...",
   "error": "Erro",
   "reload": "Recarregar o app",
@@ -185,5 +186,6 @@
   "timeAgoHour": "{h}h",
   "timeAgoYesterday": "Ontem",
   "timeAgoDay": "{d}d",
-  "timeAgoWhen": "{d}/{m}/{y}"
+  "timeAgoWhen": "{d}/{m}/{y}",
+  "failedPurgeChatThread": "Erro ao excluir conversa..."
 }

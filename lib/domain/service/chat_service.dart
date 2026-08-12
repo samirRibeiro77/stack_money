@@ -11,9 +11,27 @@ import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/data/repository/firebase_cfo_chat_repository.dart';
 
-class CfoVertexService {
+class ChatManagementService {
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final FirebaseCfoChatRepository _repository = FirebaseCfoChatRepository();
+
+  Future<Result<List<ChatThreadModel>>> fetchChats() async {
+    try {
+      final threadList = await _repository.fetch();
+      return Success(threadList);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error fetching chat threads',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
 
   /// Inicializa e sincroniza as configurações do Remote Config
   Future<Result<void>> initRemoteConfig() async {
@@ -41,11 +59,7 @@ class CfoVertexService {
   }
 
   /// Dispara a pergunta com streaming continuo de resposta e contexto vivo
-  Stream<String> generateCfoResponseStream({
-    required String userPrompt,
-    required String liveContextJson,
-    List<ChatMessageModel> history = const [],
-  }) async* {
+  Stream<String> generateCfoResponseStream({required String userPrompt, required String liveContextJson, List<ChatMessageModel> history = const [],}) async* {
     /// System Prompt
     final baseSystemPrompt = _remoteConfig.getString(
       FirebaseKey.cfoSystemPrompt,
@@ -96,11 +110,7 @@ class CfoVertexService {
     }
   }
 
-  Future<Result<String>> generateTitle(
-    AppLocalizations l10n, {
-    required String userPrompt,
-    required String aiResponse,
-  }) async {
+  Future<Result<String>> generateTitle(AppLocalizations l10n, {required String userPrompt, required String aiResponse,}) async {
     try {
       final systemPrompt = _remoteConfig.getString(
         FirebaseKey.cfoTitleGenerator,
@@ -152,6 +162,25 @@ class CfoVertexService {
     }
   }
 
+  Future<Result<void>> deleteThread(String id) async {
+    try {
+      await _repository.deleteThread(id);
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error deleting chat thread',
+          scope: ExceptionScope.service,
+          payload: {'id': id},
+          exception: e as Exception,
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
+
   /// Atualiza apenas o título da thread
   Future<Result<void>> updateThreadTitle(String threadId, String title) async {
     try {
@@ -173,10 +202,7 @@ class CfoVertexService {
   }
 
   /// Salva uma nova mensagem dentro da subcoleção de mensagens da thread
-  Future<Result<void>> saveMessage(
-    String threadId,
-    ChatMessageModel message,
-  ) async {
+  Future<Result<void>> saveMessage(String threadId, ChatMessageModel message,) async {
     try {
       await _repository.saveMessage(threadId, message);
       return Success(null);
@@ -196,7 +222,7 @@ class CfoVertexService {
   }
 
   /// Ouve em tempo real todas as conversas não arquivadas do usuário
-  Stream<List<ChatThreadModel>> getThreadsStream() {
+  Stream<List<ChatThreadModel>> watchThreads() {
     return _repository.watchThreads();
   }
 

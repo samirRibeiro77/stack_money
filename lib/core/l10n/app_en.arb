@@ -568,6 +568,10 @@
   "@loadingBucket": {
     "description": "Loading bucket data."
   },
+  "loadingChats": "AI: Syncing secure channels and AI financial insights...",
+  "@loadingChats": {
+    "description": "Loading chats data."
+  },
   "loadingHistory": "TRAILS: Reconstituting transaction logs and ledger history...",
   "@loadingHistory": {
     "description": "Loading history data."
@@ -739,5 +743,9 @@
   "timeAgoWhen": "{y}/{m}/{d}",
   "@timeAgoWhen": {
     "description": "Time ago formatter (DateTime)."
+  },
+  "failedPurgeChatThread": "Failed to purge chat thread...",
+  "@failedPurgeChatThread": {
+    "description": "Failed to delete chat thread."
   }
 }

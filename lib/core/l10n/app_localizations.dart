@@ -954,6 +954,12 @@ abstract class AppLocalizations {
   /// **'VAULTS: Securing funds and digital sub-vaults...'**
   String get loadingBucket;
 
+  /// Loading chats data.
+  ///
+  /// In en, this message translates to:
+  /// **'AI: Syncing secure channels and AI financial insights...'**
+  String get loadingChats;
+
   /// Loading history data.
   ///
   /// In en, this message translates to:
@@ -1211,6 +1217,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{y}/{m}/{d}'**
   String timeAgoWhen(Object d, Object m, Object y);
+
+  /// Failed to delete chat thread.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to purge chat thread...'**
+  String get failedPurgeChatThread;
 }
 
 class _AppLocalizationsDelegate

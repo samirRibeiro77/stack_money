@@ -480,6 +480,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'VAULTS: Securing funds and digital sub-vaults...';
 
   @override
+  String get loadingChats =>
+      'AI: Syncing secure channels and AI financial insights...';
+
+  @override
   String get loadingHistory =>
       'TRAILS: Reconstituting transaction logs and ledger history...';
 
@@ -626,4 +630,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String timeAgoWhen(Object d, Object m, Object y) {
     return '$y/$m/$d';
   }
+
+  @override
+  String get failedPurgeChatThread => 'Failed to purge chat thread...';
 }
