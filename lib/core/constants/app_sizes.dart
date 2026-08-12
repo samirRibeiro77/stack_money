@@ -74,7 +74,7 @@ class AppSizes {
   static const double containerTiny = 55;
 
   /// --- AI Chat ---
-  static const double cfoAppBarReturnButton = 21.0;
+  static const double cfoAppBarActionButton = 21.0;
   static const double cfoAppBarHeight = 40.0;
   static const double cfoSendButton = 31.0;
   static const double cfoSendButtonHeight = 50.0;

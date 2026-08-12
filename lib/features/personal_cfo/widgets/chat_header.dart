@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
 
@@ -25,7 +26,7 @@ class ChatHeader extends StatelessWidget {
             borderWidth: AppSizes.min,
             containerHeight: AppSizes.cfoAppBarHeight,
             child: SizedBox.square(
-              dimension: AppSizes.cfoAppBarReturnButton,
+              dimension: AppSizes.cfoAppBarActionButton,
               child: Icon(
                 Icons.arrow_back_ios_new_rounded,
                 color: StackMoneyTheme.magentaNeon,
@@ -56,18 +57,20 @@ class ChatHeader extends StatelessWidget {
           SizedBox(width: AppSizes.sizedBoxLarge),
 
           /// Actions
-          InkWell(
-            onTap: () {},
-            borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
-            highlightColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.1),
-            splashColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.15),
-            child: GlassmorphismEffect(
-              borderRadius: AppSizes.avatarRadius,
-              borderColor: StackMoneyTheme.magentaNeon,
-              borderWidth: AppSizes.min,
-              containerHeight: AppSizes.cfoAppBarHeight,
+          GlassmorphismEffect(
+            borderRadius: AppSizes.avatarRadius,
+            borderColor: StackMoneyTheme.magentaNeon,
+            borderWidth: AppSizes.min,
+            containerHeight: AppSizes.cfoAppBarHeight,
+            child: InkWell(
+              onTap: () => SmLogger.info('Open chat configs'),
+              borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
+              highlightColor: StackMoneyTheme.magentaNeon.withValues(
+                alpha: 0.1,
+              ),
+              splashColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.15),
               child: SizedBox.square(
-                dimension: AppSizes.x12,
+                dimension: AppSizes.cfoAppBarActionButton,
                 child: Icon(
                   Icons.more_vert_rounded,
                   color: StackMoneyTheme.magentaNeon,

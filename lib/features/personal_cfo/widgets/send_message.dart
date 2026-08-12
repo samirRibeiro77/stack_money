@@ -61,16 +61,18 @@ class SendMessage extends StatelessWidget {
           SizedBox(width: AppSizes.sizedBoxMedium),
 
           /// Send Button
-          InkWell(
-            onTap: onSend,
-            borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
-            highlightColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.1),
-            splashColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.15),
-            child: GlassmorphismEffect(
-              borderRadius: AppSizes.avatarRadius,
-              borderColor: StackMoneyTheme.magentaNeon,
-              borderWidth: AppSizes.min,
-              containerHeight: AppSizes.cfoSendButtonHeight,
+          GlassmorphismEffect(
+            borderRadius: AppSizes.avatarRadius,
+            borderColor: StackMoneyTheme.magentaNeon,
+            borderWidth: AppSizes.min,
+            containerHeight: AppSizes.cfoSendButtonHeight,
+            child: InkWell(
+              onTap: onSend,
+              borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
+              highlightColor: StackMoneyTheme.magentaNeon.withValues(
+                alpha: 0.1,
+              ),
+              splashColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.15),
               child: SizedBox.square(
                 dimension: AppSizes.cfoSendButton,
                 child: isStreaming
