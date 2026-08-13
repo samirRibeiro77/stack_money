@@ -6,8 +6,9 @@ import 'package:stack_money/core/theme/theme.dart';
 
 class CyberMarkdown extends StatelessWidget {
   final String data;
+  final TextStyle? p;
 
-  const CyberMarkdown({required this.data, super.key});
+  const CyberMarkdown(this.data, {this.p, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +19,10 @@ class CyberMarkdown extends StatelessWidget {
       selectable: true,
       styleSheet: MarkdownStyleSheet(
         // Parágrafos Padrão
-        p: textTheme.bodyLarge,
+        p: p ?? textTheme.bodyLarge,
 
         // Negritos (Destaque Neon Cyan)
-        strong: textTheme.bodyLarge?.copyWith(
+        strong: (p ?? textTheme.bodyLarge)?.copyWith(
           color: StackMoneyTheme.cyanNeon,
           fontWeight: AppTypography.weightBold,
         ),
@@ -38,7 +39,7 @@ class CyberMarkdown extends StatelessWidget {
         h3: textTheme.titleMedium?.copyWith(color: StackMoneyTheme.cyanNeon),
 
         // Listas com Marcadores Neon
-        listBullet: textTheme.bodyLarge?.copyWith(
+        listBullet: (p ?? textTheme.bodyLarge)?.copyWith(
           color: StackMoneyTheme.magentaNeon,
           fontWeight: AppTypography.weightBold,
         ),
@@ -48,11 +49,11 @@ class CyberMarkdown extends StatelessWidget {
           color: StackMoneyTheme.mutedGrey,
           width: AppSizes.min,
         ),
-        tableHead: textTheme.labelMedium?.copyWith(
+        tableHead: (p ?? textTheme.bodyLarge)?.copyWith(
           color: StackMoneyTheme.magentaNeon,
           fontWeight: AppTypography.weightBold,
         ),
-        tableBody: textTheme.bodyLarge,
+        tableBody: (p ?? textTheme.bodyLarge),
         tablePadding: const EdgeInsets.only(
           top: AppSizes.sizedBoxSmall,
           right: AppSizes.sizedBoxSmall,

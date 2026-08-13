@@ -53,7 +53,11 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
         children: [
           /// Background
           Positioned.fill(
-            child: Image.asset(AssetName.chatBackground, fit: BoxFit.cover),
+            child: Image.asset(
+              AssetName.chatBackground,
+              fit: BoxFit.cover,
+              opacity: const AlwaysStoppedAnimation(0.5),
+            ),
           ),
 
           /// Stream Messages

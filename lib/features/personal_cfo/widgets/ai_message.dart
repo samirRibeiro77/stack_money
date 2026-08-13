@@ -25,7 +25,7 @@ class AiMessage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// Text message
-            CyberMarkdown(data: msg.text),
+            CyberMarkdown(msg.text),
 
             /// Action
             if (msg.proposedAction != null) ...[

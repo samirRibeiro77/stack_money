@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/cyber_markdown.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 
@@ -38,7 +39,7 @@ class UserMessage extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(width: 0),
           borderRadius: _radius,
-          color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.15),
+          color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.1),
         ),
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.8,
@@ -49,10 +50,7 @@ class UserMessage extends StatelessWidget {
           containerHeight: null,
           child: Padding(
             padding: const EdgeInsets.all(AppSizes.x3),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [Text(msg.text, style: textTheme.bodyMedium)],
-            ),
+            child: CyberMarkdown(msg.text, p: textTheme.bodyMedium),
           ),
         ),
       ),
