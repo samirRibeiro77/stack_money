@@ -1,5 +1,5 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:firebase_vertexai/firebase_vertexai.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
@@ -13,6 +13,18 @@ import 'package:stack_money/data/repository/firebase_cfo_chat_repository.dart';
 class ChatManagementService {
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final FirebaseCfoChatRepository _repository = FirebaseCfoChatRepository();
+
+  /// Método reutilizável para instanciação centralizada do GenerativeModel
+  GenerativeModel _getGenerativeModel(String systemInstruction) {
+    final apiKey = _remoteConfig.getString(FirebaseKey.geminiApiKey);
+    final modelName = _remoteConfig.getString(FirebaseKey.cfoModelName);
+
+    return GenerativeModel(
+      model: modelName.isNotEmpty ? modelName : 'gemini-3.6-flash',
+      apiKey: apiKey,
+      systemInstruction: Content.system(systemInstruction),
+    );
+  }
 
   Future<Result<List<ChatThreadModel>>> fetchChats() async {
     try {
@@ -76,7 +88,7 @@ class ChatManagementService {
     }
   }
 
-  /// Dispara a pergunta com streaming continuo de resposta e contexto vivo
+  /// Dispara a pergunta com streaming contínuo de resposta e contexto vivo
   Stream<String> generateCfoResponseStream({
     required String userPrompt,
     required String liveContextJson,
@@ -90,11 +102,8 @@ class ChatManagementService {
     /// Instruction
     final fullSystemInstruction = '$baseSystemPrompt $liveContextJson';
 
-    /// Init model
-    final model = FirebaseVertexAI.instance.generativeModel(
-      model: _remoteConfig.getString(FirebaseKey.cfoModelName),
-      systemInstruction: Content.system(fullSystemInstruction),
-    );
+    /// Instanciação via método reutilizável
+    final model = _getGenerativeModel(fullSystemInstruction);
 
     /// Limit history
     final limitedHistory = history.length > 50
@@ -111,30 +120,37 @@ class ChatManagementService {
     }).toList();
 
     /// Session and stream
-    final chat = model.startChat(history: historyContents);
-    final responseStream = chat.sendMessageStream(Content.text(userPrompt));
+    try {
+      final chat = model.startChat(history: historyContents);
+      final responseStream = chat.sendMessageStream(Content.text(userPrompt));
 
-    await for (final chunk in responseStream) {
-      if (chunk.text != null && chunk.text!.isNotEmpty) {
-        yield chunk.text!;
+      await for (final chunk in responseStream) {
+        if (chunk.text != null && chunk.text!.isNotEmpty) {
+          yield chunk.text!;
+        }
       }
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Failed to initialize AI chat',
+        scope: ExceptionScope.service,
+        exception: e as Exception,
+        stackTrace: stack
+      );
     }
   }
 
   Future<Result<String>> generateTitle(
-    AppLocalizations l10n, {
-    required String userPrompt,
-    required String aiResponse,
-  }) async {
+      AppLocalizations l10n, {
+        required String userPrompt,
+        required String aiResponse,
+      }) async {
     try {
       final systemPrompt = _remoteConfig.getString(
         FirebaseKey.cfoTitleGenerator,
       );
 
-      final model = FirebaseVertexAI.instance.generativeModel(
-        model: _remoteConfig.getString(FirebaseKey.cfoModelName),
-        systemInstruction: Content.system(systemPrompt),
-      );
+      /// Instanciação via método reutilizável
+      final model = _getGenerativeModel(systemPrompt);
 
       final response = await model.generateContent([
         Content.text('User: $userPrompt\nAI: $aiResponse'),
@@ -218,9 +234,9 @@ class ChatManagementService {
 
   /// Salva uma nova mensagem dentro da subcoleção de mensagens da thread
   Future<Result<void>> saveMessage(
-    String threadId,
-    ChatMessageModel message,
-  ) async {
+      String threadId,
+      ChatMessageModel message,
+      ) async {
     try {
       await _repository.saveMessage(threadId, message);
       return Success(null);
