@@ -85,7 +85,7 @@ class CyberMarkdown extends StatelessWidget {
             color: StackMoneyTheme.magentaNeon.withValues(alpha: 0.4),
             width: 1,
           ),
-        )
+        ),
       ),
     );
   }

@@ -29,7 +29,7 @@ class SendMessage extends StatelessWidget {
           /// Multi line expanded text field
           Expanded(
             child: GlassmorphismEffect(
-              borderRadius: AppSizes.navBarRadius,
+              borderRadius: AppSizes.radiusLarge,
               borderColor: StackMoneyTheme.cyanNeon,
               borderWidth: AppSizes.min,
               containerHeight: null,
@@ -51,9 +51,8 @@ class SendMessage extends StatelessWidget {
                   errorBorder: InputBorder.none,
                   focusedErrorBorder: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(
-                    horizontal: AppSizes.x4,
-                    vertical: AppSizes.x4,
-                  ),
+                    vertical: AppSizes.x2,
+                  )
                 ),
               ),
             ),
