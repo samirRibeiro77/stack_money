@@ -8,9 +8,9 @@ enum ActionType {
 
   const ActionType(this.value);
 
-  static ActionType fromJson(String? val) {
+  static ActionType fromJson(String? json) {
     return ActionType.values.firstWhere(
-      (e) => e.value == val || e.name == val,
+      (e) => e.value == json || e.name == json,
       orElse: () => ActionType.unknown,
     );
   }

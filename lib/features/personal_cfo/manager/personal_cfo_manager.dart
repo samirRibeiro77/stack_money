@@ -8,16 +8,19 @@ import 'package:stack_money/core/helpers/action_parser.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
+import 'package:stack_money/data/enum/action_status.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
+import 'package:stack_money/domain/service/ai_action_service.dart';
 import 'package:stack_money/domain/service/chat_service.dart';
 import 'package:stack_money/domain/service/export_service.dart';
 import 'package:stack_money/features/error/error_screen.dart';
 
 class PersonalCfoManager {
-  final ChatManagementService _cfoService = ChatManagementService();
+  final _cfoService = ChatManagementService();
+  final _aiActionService = AiActionService();
 
   late ChatThreadModel _thread;
   late final BuildContext _context;
@@ -257,6 +260,55 @@ class PersonalCfoManager {
     );
 
     return result.isSuccess;
+  }
+
+  /// Executa a sugestão feita pelo CFO e marca a ação como aplicada
+  Future<void> acceptProposedAction(ChatMessageModel message) async {
+    final action = message.proposedAction;
+    if (action == null) return;
+
+    try {
+      _aiActionService.handleAction(action);
+
+      // Atualiza o status da ação para "applied" e salva a mensagem no Firestore
+      final updatedAction = action.copyWith(status: ActionStatus.approved);
+      final updatedMessage = message.copyWith(proposedAction: updatedAction);
+
+      await _cfoService.saveMessage(_thread.id, updatedMessage);
+
+      // Atualiza o estado local
+      final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
+      final index = updatedList.indexWhere((m) => m.id == message.id);
+      if (index != -1) {
+        updatedList[index] = updatedMessage;
+        messagesNotifier.value = updatedList;
+      }
+    } catch (e, stack) {
+      SmLogger.error(
+        'Failed to apply proposed action',
+        exception: e as Exception,
+        payload: action.toJson(),
+        stackTrace: stack,
+      );
+    }
+  }
+
+  /// Recusa a sugestão feita pelo CFO
+  Future<void> rejectProposedAction(ChatMessageModel message) async {
+    final action = message.proposedAction;
+    if (action == null) return;
+
+    final updatedAction = action.copyWith(status: ActionStatus.rejected);
+    final updatedMessage = message.copyWith(proposedAction: updatedAction);
+
+    await _cfoService.saveMessage(_thread.id, updatedMessage);
+
+    final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
+    final index = updatedList.indexWhere((m) => m.id == message.id);
+    if (index != -1) {
+      updatedList[index] = updatedMessage;
+      messagesNotifier.value = updatedList;
+    }
   }
 
   void _scrollToBottom() {
