@@ -36,7 +36,7 @@ class History {
 
   factory History.fromJson(Map<String, Object?>? json, {String? documentId}) {
     return History._(
-      documentId ?? json?[ModelKey.id] as String? ?? '',
+      documentId ?? json?[ModelKey.id] as String? ?? const Uuid().v4(),
       date: TimestampParser.fromJson(json?[ModelKey.date]),
       transactions:
           json?.decodeList(ModelKey.transactions, Transaction.fromJson) ?? [],

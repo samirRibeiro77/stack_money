@@ -30,9 +30,9 @@ class DistributionRow {
     );
   }
 
-  factory DistributionRow.fromJson(Map<String, Object?>? json) {
+  factory DistributionRow.fromJson(Map<String, Object?>? json, {String? id}) {
     return DistributionRow._(
-      json?[ModelKey.id] as String? ?? '',
+      id ?? json?[ModelKey.id] as String? ?? const Uuid().v4(),
       category: json?[ModelKey.category] as String? ?? '',
       subCategory: json?[ModelKey.subCategory] as String? ?? '',
       type: AllocationType.fromJson(json?[ModelKey.type] as String? ?? ''),

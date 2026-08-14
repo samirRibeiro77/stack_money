@@ -51,9 +51,9 @@ class SalaryPlan {
     );
   }
 
-  factory SalaryPlan.fromJson(Map<String, Object?>? json) {
+  factory SalaryPlan.fromJson(Map<String, Object?>? json, {String? id}) {
     return SalaryPlan._(
-      json?[ModelKey.id] as String? ?? '',
+      id ?? json?[ModelKey.id] as String? ?? const Uuid().v4(),
       name: json?[ModelKey.name] as String? ?? '',
       baseSalary: (json?[ModelKey.baseSalary] as num? ?? 0.0).toDouble(),
       isActive: json?[ModelKey.isActive] as bool? ?? false,
