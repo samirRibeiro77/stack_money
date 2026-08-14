@@ -33,6 +33,10 @@ class AiActionService {
   }
 
   Future<Result<void>> _handlePlan(Map<String, Object?>? json) async {
-    return _planService.save(SalaryPlan.fromJson(json).copyWith(newId: true));
+    return _planService.save(
+      SalaryPlan.fromJson(
+        json,
+      ).copyWith(newId: true, isActive: false, isArchived: false),
+    );
   }
 }
