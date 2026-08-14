@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/helpers/action_parser.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
@@ -80,91 +81,159 @@ class PersonalCfoManager {
     });
   }
 
+  /// Dispara o fluxo de envio de mensagem e processamento da resposta da IA
   Future<void> sendMessage() async {
-    final l10n = AppLocalizations.of(_context)!;
-
     final cleanText = messageController.text.trim();
     if (cleanText.isEmpty || _isStreaming.value) return;
+
     _isStreaming.value = true;
     messageController.text = '';
 
     final bool isFirstMessage = _thread.lastMessage.isEmpty;
-
-    if (isFirstMessage) {
-      _thread = _thread.copyWith(lastMessage: cleanText);
-      await _cfoService.saveThread(_thread);
-      _listenToMessages(_thread.id);
-    }
-
-    // 2. Instancia e salva a mensagem do Usuário no Firestore
-    final userMessage = ChatMessageModel(
-      sender: MessageSender.user,
-      text: cleanText,
-    );
-
-    messagesNotifier.value = [...messages, userMessage];
-    await _cfoService.saveMessage(thread.id, userMessage);
-
-    // 3. Prepara a mensagem "placeholder" local da IA
-    final aiMessage = ChatMessageModel(sender: MessageSender.cfoAi, text: '');
-
-    messagesNotifier.value = [...messagesNotifier.value, aiMessage];
-    _scrollToBottom();
-    _isStreaming.value = true;
-
-    final StringBuffer accumulatedText = StringBuffer();
+    final l10n = AppLocalizations.of(_context)!;
 
     try {
-      final String liveContextJson = await ExportService().extractDataToAI();
-
-      final responseStream = _cfoService.generateCfoResponseStream(
-        userPrompt: cleanText,
-        liveContextJson: liveContextJson,
-        history: messages.sublist(0, messages.length - 2),
-      );
-
-      await for (final chunk in responseStream) {
-        accumulatedText.write(chunk);
-
-        final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
-        final aiIndex = updatedList.indexWhere((m) => m.id == aiMessage.id);
-
-        if (aiIndex != -1) {
-          updatedList[aiIndex] = updatedList[aiIndex].copyWith(
-            text: accumulatedText.toString(),
-          );
-          messagesNotifier.value = updatedList;
-          _scrollToBottom();
-        }
-      }
-
-      // 4. Salva a resposta da IA no Firestore APENAS quando o streaming terminar
-      _isStreaming.value = false;
-      final finalAiMessage = aiMessage.copyWith(
-        text: accumulatedText.toString(),
-      );
-      await _cfoService.saveMessage(thread.id, finalAiMessage);
-
-      // 5. Se for a primeira troca de mensagens, gera o título de 2 palavras
       if (isFirstMessage) {
-        final generatedTitleResult = await _cfoService.generateTitle(
-          l10n,
-          userPrompt: cleanText,
-          aiResponse: accumulatedText.toString(),
-        );
-
-        final generatedTitle = generatedTitleResult.getOrThrow();
-        changeTitle(generatedTitle);
+        await _initializeFirstMessageThread(cleanText);
       }
-    } catch (e) {
-      final errorAiMessage = aiMessage.copyWith(text: l10n.chatConnectionError);
-      messagesNotifier.value = [
-        ...messagesNotifier.value..removeLast(),
-        errorAiMessage,
-      ];
+
+      await _addUserMessage(cleanText);
+      final aiPlaceholder = _addAiPlaceholderMessage();
+
+      final rawResponse = await _consumeCfoStream(
+        userPrompt: cleanText,
+        aiMessageId: aiPlaceholder.id,
+      );
+
+      await _finalizeAiResponse(
+        aiPlaceholder: aiPlaceholder,
+        rawResponseText: rawResponse,
+        userPrompt: cleanText,
+        isFirstMessage: isFirstMessage,
+        l10n: l10n,
+      );
+    } catch (e, stack) {
+      SmLogger.error(
+        'Error during chat stream processing',
+        exception: e as Exception,
+        stackTrace: stack,
+      );
+      _handleSendMessageError(l10n.chatConnectionError);
     } finally {
       _isStreaming.value = false;
       _scrollToBottom();
+    }
+  }
+
+  /// Configura a thread inicial no Firestore na primeira troca de mensagens
+  Future<void> _initializeFirstMessageThread(String firstMessage) async {
+    _thread = _thread.copyWith(lastMessage: firstMessage);
+    await _cfoService.saveThread(_thread);
+    _listenToMessages(_thread.id);
+  }
+
+  /// Cria, exibe na UI e persiste a mensagem do usuário
+  Future<void> _addUserMessage(String text) async {
+    final userMessage = ChatMessageModel(
+      sender: MessageSender.user,
+      text: text,
+    );
+
+    messagesNotifier.value = [...messages, userMessage];
+    await _cfoService.saveMessage(_thread.id, userMessage);
+  }
+
+  /// Insere a mensagem placeholder da IA na tela para animação de digitação
+  ChatMessageModel _addAiPlaceholderMessage() {
+    final aiMessage = ChatMessageModel(sender: MessageSender.cfoAi, text: '');
+    messagesNotifier.value = [...messagesNotifier.value, aiMessage];
+    _scrollToBottom();
+    return aiMessage;
+  }
+
+  /// Processa a stream contínua de respostas vinda do serviço do Gemini
+  Future<String> _consumeCfoStream({
+    required String userPrompt,
+    required String aiMessageId,
+  }) async {
+    final StringBuffer accumulatedText = StringBuffer();
+    final String liveContextJson = await ExportService().extractDataToAI();
+
+    final responseStream = _cfoService.generateCfoResponseStream(
+      userPrompt: userPrompt,
+      liveContextJson: liveContextJson,
+      history: messages.sublist(0, messages.length - 2),
+    );
+
+    await for (final chunk in responseStream) {
+      accumulatedText.write(chunk);
+
+      final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
+      final aiIndex = updatedList.indexWhere((m) => m.id == aiMessageId);
+
+      if (aiIndex != -1) {
+        updatedList[aiIndex] = updatedList[aiIndex].copyWith(
+          text: accumulatedText.toString(),
+        );
+        messagesNotifier.value = updatedList;
+        _scrollToBottom();
+      }
+    }
+
+    return accumulatedText.toString();
+  }
+
+  /// Finaliza a resposta da IA: limpa as tags JSON, anexa a ação e persiste tudo
+  Future<void> _finalizeAiResponse({
+    required ChatMessageModel aiPlaceholder,
+    required String rawResponseText,
+    required String userPrompt,
+    required bool isFirstMessage,
+    required AppLocalizations l10n,
+  }) async {
+    // Executa o parser da ação estruturada (<<<PROPOSED_ACTION>>>)
+    final parsed = ActionParser.parse(rawResponseText);
+
+    final finalAiMessage = aiPlaceholder.copyWith(
+      text: parsed.cleanText,
+      proposedAction: parsed.action,
+    );
+
+    // Atualiza a lista local com o texto limpo e a ação vinculada
+    final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
+    final aiIndex = updatedList.indexWhere((m) => m.id == aiPlaceholder.id);
+    if (aiIndex != -1) {
+      updatedList[aiIndex] = finalAiMessage;
+      messagesNotifier.value = updatedList;
+    }
+
+    // Persiste a mensagem pronta no Firestore
+    await _cfoService.saveMessage(_thread.id, finalAiMessage);
+
+    // Gera o título da conversa se for o primeiro fluxo
+    if (isFirstMessage) {
+      final generatedTitleResult = await _cfoService.generateTitle(
+        l10n,
+        userPrompt: userPrompt,
+        aiResponse: parsed.cleanText,
+      );
+
+      final generatedTitle = generatedTitleResult.getOrThrow();
+      changeTitle(generatedTitle);
+    }
+  }
+
+  /// Trata erros durante a transmissão exibindo mensagem amigável no chat
+  void _handleSendMessageError(String errorText) {
+    if (messagesNotifier.value.isNotEmpty) {
+      final lastMessage = messagesNotifier.value.last;
+      if (lastMessage.sender == MessageSender.cfoAi) {
+        final errorAiMessage = lastMessage.copyWith(text: errorText);
+        messagesNotifier.value = [
+          ...messagesNotifier.value..removeLast(),
+          errorAiMessage,
+        ];
+      }
     }
   }
 
