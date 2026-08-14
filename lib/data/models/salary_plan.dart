@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stack_money/core/extension/map_extension.dart';
+import 'package:stack_money/core/helpers/timestamp_parser.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
@@ -57,7 +58,7 @@ class SalaryPlan {
       baseSalary: (json?[ModelKey.baseSalary] as num? ?? 0.0).toDouble(),
       isActive: json?[ModelKey.isActive] as bool? ?? false,
       isArchived: json?[ModelKey.isArchived] as bool? ?? false,
-      createdAt: json?[ModelKey.createdAt] as Timestamp? ?? Timestamp.now(),
+      createdAt: TimestampParser.fromJson(json?[ModelKey.createdAt]),
       position: json?[ModelKey.position] as int? ?? 0,
       inflows: json?.decodeList(ModelKey.inflows, InflowRow.fromJson) ?? [],
       outflows: json?.decodeList(ModelKey.outflows, OutflowRow.fromJson) ?? [],

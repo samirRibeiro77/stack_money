@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:stack_money/core/helpers/timestamp_parser.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/proposed_action_model.dart';
@@ -20,14 +21,14 @@ class ChatMessageModel {
     Timestamp? timestamp,
     this.proposedAction,
   }) : _id = id ?? const Uuid().v4(),
-       timestamp = timestamp ?? Timestamp.now();
+       timestamp = TimestampParser.fromJson(timestamp);
 
   factory ChatMessageModel.fromJson(Map<String, Object?>? json, {String? id}) {
     return ChatMessageModel(
       id: id ?? json?[ModelKey.id] as String?,
       sender: MessageSender.fromJson(json?[ModelKey.sender] as String?),
       text: json?[ModelKey.text] as String? ?? '',
-      timestamp: json?[ModelKey.date] as Timestamp? ?? Timestamp.now(),
+      timestamp: TimestampParser.fromJson(json?[ModelKey.date]),
       proposedAction: ProposedActionModel.fromJson(
         json?[ModelKey.proposedAction] as Map<String, Object?>?,
       ),

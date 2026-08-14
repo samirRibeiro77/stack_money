@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:stack_money/core/helpers/timestamp_parser.dart';
 import 'package:stack_money/data/helper/model_key.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,15 +21,15 @@ class ChatThreadModel {
     this.isArchived = false,
     this.lastMessage = '',
   }) : _id = id ?? const Uuid().v4(),
-       createdAt = createdAt ?? Timestamp.now(),
-       updatedAt = updatedAt ?? Timestamp.now();
+       createdAt = TimestampParser.fromJson(createdAt),
+       updatedAt = TimestampParser.fromJson(updatedAt);
 
   factory ChatThreadModel.fromJson(Map<String, Object?>? json, {String? id}) {
     return ChatThreadModel(
       id: id ?? json?[ModelKey.id] as String?,
       title: json?[ModelKey.title] as String? ?? '',
-      createdAt: json?[ModelKey.createdAt] as Timestamp? ?? Timestamp.now(),
-      updatedAt: json?[ModelKey.updateAt] as Timestamp? ?? Timestamp.now(),
+      createdAt: TimestampParser.fromJson(json?[ModelKey.createdAt]),
+      updatedAt: TimestampParser.fromJson(json?[ModelKey.updateAt]),
       isArchived: json?[ModelKey.isArchived] as bool? ?? false,
       lastMessage: json?[ModelKey.lastMessage] as String? ?? '',
     );
