@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/helper/asset_name.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
@@ -56,7 +55,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
             child: Image.asset(
               AssetName.chatBackground,
               fit: BoxFit.cover,
-              opacity: const AlwaysStoppedAnimation(0.5),
+              opacity: const AlwaysStoppedAnimation(0.55),
             ),
           ),
 

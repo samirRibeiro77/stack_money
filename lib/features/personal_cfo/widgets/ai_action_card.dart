@@ -48,15 +48,14 @@ class AiActionCard extends StatelessWidget {
                     Icon(
                       Icons.alt_route_rounded,
                       color: action.status.color,
-                      size: AppSizes.x5,
+                      size: AppSizes.x8,
                     ),
                     const SizedBox(width: AppSizes.x2),
                     Expanded(
                       child: Text(
                         action.title,
-                        style: textTheme.bodySmall?.copyWith(
+                        style: textTheme.labelMedium?.copyWith(
                           fontWeight: AppTypography.weightBold,
-                          color: StackMoneyTheme.mutedGrey
                         ),
                       ),
                     ),
@@ -92,9 +91,9 @@ class AiActionCard extends StatelessWidget {
                 else
                   Text(
                     action.status.label(l10n),
-                    style: textTheme.bodyMedium?.copyWith(
+                    style: textTheme.titleSmall?.copyWith(
                       color: action.status.color,
-                      fontWeight: AppTypography.weightBold
+                      fontWeight: AppTypography.weightBold,
                     ),
                   ),
               ],
