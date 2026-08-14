@@ -42,7 +42,7 @@ class ProposedActionModel {
   Map<String, dynamic> toJson() {
     return {
       ModelKey.id: _id,
-      ModelKey.actionType: actionType,
+      ModelKey.actionType: actionType.name,
       ModelKey.title: title,
       ModelKey.description: description,
       ModelKey.payload: payload,

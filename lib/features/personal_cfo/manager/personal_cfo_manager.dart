@@ -115,12 +115,7 @@ class PersonalCfoManager {
         isFirstMessage: isFirstMessage,
         l10n: l10n,
       );
-    } catch (e, stack) {
-      SmLogger.error(
-        'Error during chat stream processing',
-        exception: e as Exception,
-        stackTrace: stack,
-      );
+    } catch (_) {
       _handleSendMessageError(l10n.chatConnectionError);
     } finally {
       _isStreaming.value = false;
@@ -159,31 +154,35 @@ class PersonalCfoManager {
     required String userPrompt,
     required String aiMessageId,
   }) async {
-    final StringBuffer accumulatedText = StringBuffer();
-    final String liveContextJson = await ExportService().extractDataToAI();
+    try {
+      final StringBuffer accumulatedText = StringBuffer();
+      final String liveContextJson = await ExportService().extractDataToAI();
 
-    final responseStream = _cfoService.generateCfoResponseStream(
-      userPrompt: userPrompt,
-      liveContextJson: liveContextJson,
-      history: messages.sublist(0, messages.length - 2),
-    );
+      final responseStream = _cfoService.generateCfoResponseStream(
+        userPrompt: userPrompt,
+        liveContextJson: liveContextJson,
+        history: messages.sublist(0, messages.length - 2),
+      );
 
-    await for (final chunk in responseStream) {
-      accumulatedText.write(chunk);
+      await for (final chunk in responseStream) {
+        accumulatedText.write(chunk);
 
-      final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
-      final aiIndex = updatedList.indexWhere((m) => m.id == aiMessageId);
+        final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
+        final aiIndex = updatedList.indexWhere((m) => m.id == aiMessageId);
 
-      if (aiIndex != -1) {
-        updatedList[aiIndex] = updatedList[aiIndex].copyWith(
-          text: accumulatedText.toString(),
-        );
-        messagesNotifier.value = updatedList;
-        _scrollToBottom();
+        if (aiIndex != -1) {
+          updatedList[aiIndex] = updatedList[aiIndex].copyWith(
+            text: accumulatedText.toString(),
+          );
+          messagesNotifier.value = updatedList;
+          _scrollToBottom();
+        }
       }
-    }
 
-    return accumulatedText.toString();
+      return accumulatedText.toString();
+    } catch (_) {
+      rethrow;
+    }
   }
 
   /// Finaliza a resposta da IA: limpa as tags JSON, anexa a ação e persiste tudo
@@ -262,8 +261,21 @@ class PersonalCfoManager {
     return result.isSuccess;
   }
 
+  Future<void> handleActionResponse(String messageId, ActionStatus status) async {
+    final index = messages.indexWhere((m) => m.id == messageId);
+    if (index == -1) return;
+
+    final message = messages[index];
+
+    if (status == ActionStatus.approved) {
+      await _acceptProposedAction(message);
+    } else if (status == ActionStatus.rejected) {
+      await _rejectProposedAction(message);
+    }
+  }
+
   /// Executa a sugestão feita pelo CFO e marca a ação como aplicada
-  Future<void> acceptProposedAction(ChatMessageModel message) async {
+  Future<void> _acceptProposedAction(ChatMessageModel message) async {
     final action = message.proposedAction;
     if (action == null) return;
 
@@ -294,7 +306,7 @@ class PersonalCfoManager {
   }
 
   /// Recusa a sugestão feita pelo CFO
-  Future<void> rejectProposedAction(ChatMessageModel message) async {
+  Future<void> _rejectProposedAction(ChatMessageModel message) async {
     final action = message.proposedAction;
     if (action == null) return;
 

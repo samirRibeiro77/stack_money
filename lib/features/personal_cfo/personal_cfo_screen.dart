@@ -86,13 +86,15 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                 itemCount: messages.length,
                 itemBuilder: (context, index) {
                   final msg = messages[index];
-                  final isUser = msg.sender == MessageSender.user;
 
-                  if (isUser) {
+                  if (msg.sender.isUser) {
                     return UserMessage(msg: msg);
                   }
 
-                  return AiMessage(msg: msg, handleActionResponse: (_, _) {});
+                  return AiMessage(
+                    msg: msg,
+                    handleActionResponse: _manager.handleActionResponse,
+                  );
                 },
               );
             },

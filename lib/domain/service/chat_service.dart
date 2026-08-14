@@ -130,20 +130,20 @@ class ChatManagementService {
         }
       }
     } catch (e, stack) {
-      StackMoneyException(
+      throw StackMoneyException(
         message: 'Failed to initialize AI chat',
         scope: ExceptionScope.service,
         exception: e as Exception,
-        stackTrace: stack
+        stackTrace: stack,
       );
     }
   }
 
   Future<Result<String>> generateTitle(
-      AppLocalizations l10n, {
-        required String userPrompt,
-        required String aiResponse,
-      }) async {
+    AppLocalizations l10n, {
+    required String userPrompt,
+    required String aiResponse,
+  }) async {
     try {
       final systemPrompt = _remoteConfig.getString(
         FirebaseKey.cfoTitleGenerator,
@@ -234,9 +234,9 @@ class ChatManagementService {
 
   /// Salva uma nova mensagem dentro da subcoleção de mensagens da thread
   Future<Result<void>> saveMessage(
-      String threadId,
-      ChatMessageModel message,
-      ) async {
+    String threadId,
+    ChatMessageModel message,
+  ) async {
     try {
       await _repository.saveMessage(threadId, message);
       return Success(null);
