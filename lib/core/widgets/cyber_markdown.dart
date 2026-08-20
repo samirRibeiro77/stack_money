@@ -18,16 +18,16 @@ class CyberMarkdown extends StatelessWidget {
       data: data,
       selectable: true,
       styleSheet: MarkdownStyleSheet(
-        // Parágrafos Padrão
+        /// Standard paragraph
         p: p ?? textTheme.bodyLarge,
 
-        // Negritos (Destaque Neon Cyan)
+        /// Bold
         strong: (p ?? textTheme.bodyLarge)?.copyWith(
           color: StackMoneyTheme.cyanNeon,
           fontWeight: AppTypography.weightBold,
         ),
 
-        // Títulos (H1, H2, H3)
+        /// Titles (H1, H2, H3)
         h1: textTheme.titleLarge?.copyWith(
           color: StackMoneyTheme.cyanNeon,
           fontWeight: AppTypography.weightBold,
@@ -38,13 +38,13 @@ class CyberMarkdown extends StatelessWidget {
         ),
         h3: textTheme.titleMedium?.copyWith(color: StackMoneyTheme.cyanNeon),
 
-        // Listas com Marcadores Neon
+        /// List
         listBullet: (p ?? textTheme.bodyLarge)?.copyWith(
           color: StackMoneyTheme.magentaNeon,
           fontWeight: AppTypography.weightBold,
         ),
 
-        // Tabelas Leves & Minimalistas
+        /// Table
         tableBorder: TableBorder.all(
           color: StackMoneyTheme.mutedGrey,
           width: AppSizes.min,
@@ -63,8 +63,8 @@ class CyberMarkdown extends StatelessWidget {
         tableColumnWidth: IntrinsicColumnWidth(),
         tableHeadAlign: TextAlign.center,
 
-        // Blocos de Código Inline / Citações
-        code: textTheme.bodyMedium?.copyWith(
+        /// Code block
+        code: (p ?? textTheme.bodyLarge)?.copyWith(
           color: StackMoneyTheme.magentaNeon,
           backgroundColor: StackMoneyTheme.carbonGrey.withValues(alpha: 0.5),
           fontWeight: AppTypography.weightMedium,
@@ -78,7 +78,7 @@ class CyberMarkdown extends StatelessWidget {
           ),
         ),
 
-        // Teste
+        /// Divider
         horizontalRuleDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
           border: Border.all(

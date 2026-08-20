@@ -52,7 +52,7 @@ class SendMessage extends StatelessWidget {
                   focusedErrorBorder: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(
                     vertical: AppSizes.x2,
-                  )
+                  ),
                 ),
               ),
             ),
@@ -62,16 +62,14 @@ class SendMessage extends StatelessWidget {
           /// Send Button
           GlassmorphismEffect(
             borderRadius: AppSizes.avatarRadius,
-            borderColor: StackMoneyTheme.magentaNeon,
+            borderColor: StackMoneyTheme.cyanNeon,
             borderWidth: AppSizes.min,
             containerHeight: AppSizes.cfoSendBarHeight,
             child: InkWell(
               onTap: isStreaming ? null : onSend,
               borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
-              highlightColor: StackMoneyTheme.magentaNeon.withValues(
-                alpha: 0.1,
-              ),
-              splashColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.15),
+              highlightColor: StackMoneyTheme.cyanNeon.withValues(alpha: 0.1),
+              splashColor: StackMoneyTheme.cyanNeon.withValues(alpha: 0.15),
               child: SizedBox.square(
                 dimension: AppSizes.cfoSendButton,
                 child: isStreaming
@@ -81,12 +79,12 @@ class SendMessage extends StatelessWidget {
                           horizontal: AppSizes.cfoSendBarHeight / 25,
                         ),
                         child: CircularProgressIndicator.adaptive(
-                          backgroundColor: StackMoneyTheme.magentaNeon,
+                          backgroundColor: StackMoneyTheme.cyanNeon,
                         ),
                       )
                     : Icon(
                         Icons.send_outlined,
-                        color: StackMoneyTheme.magentaNeon,
+                        color: StackMoneyTheme.cyanNeon,
                         size: AppSizes.x12,
                       ),
               ),

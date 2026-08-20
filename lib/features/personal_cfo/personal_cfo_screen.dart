@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/data/helper/asset_name.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
@@ -131,6 +132,20 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                   saveTitle: _manager.changeTitle,
                 );
               },
+            ),
+          ),
+
+          /// Header SafeArea
+          Positioned(
+            top: 0,
+            right: 0,
+            left: 0,
+            child: GlassmorphismEffect(
+              borderRadius: 0,
+              containerHeight: topSafeArea - AppSizes.x2,
+              backgroundColor: StackMoneyTheme.background,
+              borderColor: StackMoneyTheme.background,
+              child: SizedBox.shrink(),
             ),
           ),
         ],

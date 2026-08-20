@@ -22,14 +22,14 @@ class ChatHeader extends StatelessWidget {
           onTap: () => context.pop(),
           child: GlassmorphismEffect(
             borderRadius: AppSizes.avatarRadius,
-            borderColor: StackMoneyTheme.magentaNeon,
+            borderColor: StackMoneyTheme.cyanNeon,
             borderWidth: AppSizes.min,
             containerHeight: AppSizes.cfoAppBarHeight,
             child: SizedBox.square(
               dimension: AppSizes.cfoAppBarActionButton,
               child: Icon(
                 Icons.arrow_back_ios_new_rounded,
-                color: StackMoneyTheme.magentaNeon,
+                color: StackMoneyTheme.cyanNeon,
                 size: AppSizes.x10,
               ),
             ),
@@ -59,21 +59,19 @@ class ChatHeader extends StatelessWidget {
           /// Actions
           GlassmorphismEffect(
             borderRadius: AppSizes.avatarRadius,
-            borderColor: StackMoneyTheme.magentaNeon,
+            borderColor: StackMoneyTheme.cyanNeon,
             borderWidth: AppSizes.min,
             containerHeight: AppSizes.cfoAppBarHeight,
             child: InkWell(
               onTap: () => SmLogger.info('Open chat configs'),
               borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
-              highlightColor: StackMoneyTheme.magentaNeon.withValues(
-                alpha: 0.1,
-              ),
-              splashColor: StackMoneyTheme.magentaNeon.withValues(alpha: 0.15),
+              highlightColor: StackMoneyTheme.cyanNeon.withValues(alpha: 0.1),
+              splashColor: StackMoneyTheme.cyanNeon.withValues(alpha: 0.15),
               child: SizedBox.square(
                 dimension: AppSizes.cfoAppBarActionButton,
                 child: Icon(
                   Icons.more_vert_rounded,
-                  color: StackMoneyTheme.magentaNeon,
+                  color: StackMoneyTheme.cyanNeon,
                   size: AppSizes.x10,
                 ),
               ),
