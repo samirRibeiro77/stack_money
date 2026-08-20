@@ -43,19 +43,21 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    final bool isKeyboardActive = MediaQuery.of(context).viewInsets.bottom > 0;
+    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final bool isKeyboardActive = keyboardHeight > 0;
     final double topSafeArea = MediaQuery.of(context).padding.top;
     final double bottomSafeArea = MediaQuery.of(context).padding.bottom;
 
     return Scaffold(
       backgroundColor: StackMoneyTheme.background,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           /// Background
           Positioned.fill(
             child: Image.asset(
               AssetName.chatBackground,
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               opacity: const AlwaysStoppedAnimation(0.55),
             ),
           ),
@@ -81,7 +83,10 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                       topSafeArea +
                       AppSizes.cfoAppBarHeight +
                       AppSizes.sizedBoxMedium,
-                  bottom: bottomSafeArea + AppSizes.cfoSendBarHeight,
+                  bottom:
+                      bottomSafeArea +
+                      AppSizes.cfoSendBarHeight +
+                      keyboardHeight,
                 ),
                 itemCount: messages.length,
                 itemBuilder: (context, index) {
@@ -105,7 +110,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
             left: AppSizes.min,
             right: AppSizes.min,
             bottom: isKeyboardActive
-                ? bottomSafeArea + AppSizes.cfoKeyboardOpen
+                ? keyboardHeight + AppSizes.cfoKeyboardOpen
                 : bottomSafeArea,
             child: ValueListenableBuilder(
               valueListenable: _manager.isStreaming,

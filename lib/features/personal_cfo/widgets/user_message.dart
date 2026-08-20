@@ -50,7 +50,11 @@ class UserMessage extends StatelessWidget {
           containerHeight: null,
           child: Padding(
             padding: const EdgeInsets.all(AppSizes.x3),
-            child: CyberMarkdown(msg.text, p: textTheme.bodyMedium),
+            child: CyberMarkdown(
+              msg.text,
+              p: textTheme.bodyMedium,
+              horizontalPadding: AppSizes.min,
+            ),
           ),
         ),
       ),

@@ -20,7 +20,7 @@ class AiMessage extends StatelessWidget {
     return Align(
       alignment: Alignment.center,
       child: Padding(
-        padding: const EdgeInsets.all(AppSizes.sizedBoxLarge),
+        padding: const EdgeInsets.symmetric(vertical: AppSizes.sizedBoxLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
