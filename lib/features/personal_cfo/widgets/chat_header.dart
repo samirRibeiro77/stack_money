@@ -14,72 +14,73 @@ class ChatHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        /// Leading
-        SizedBox(width: AppSizes.sizedBoxSmall),
-        GestureDetector(
-          onTap: () => context.pop(),
-          child: GlassmorphismEffect(
-            borderRadius: AppSizes.avatarRadius,
-            borderColor: StackMoneyTheme.cyanNeon,
-            borderWidth: AppSizes.min,
-            containerHeight: AppSizes.cfoAppBarHeight,
-            child: SizedBox.square(
-              dimension: AppSizes.cfoAppBarActionButton,
-              child: Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: StackMoneyTheme.cyanNeon,
-                size: AppSizes.x10,
-              ),
-            ),
-          ),
-        ),
-
-        if (title.isNotEmpty) ...[
-          /// Title
-          SizedBox(width: AppSizes.sizedBoxLarge),
-          Expanded(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: AppSizes.sizedBoxSmall),
+      child: Row(
+        children: [
+          /// Leading
+          GestureDetector(
+            onTap: () => context.pop(),
             child: GlassmorphismEffect(
+              borderRadius: AppSizes.avatarRadius,
               borderColor: StackMoneyTheme.cyanNeon,
               borderWidth: AppSizes.min,
               containerHeight: AppSizes.cfoAppBarHeight,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppSizes.min),
-                child: EditableTitle(
-                  title,
-                  removeUnderlineBorder: true,
-                  onSave: saveTitle,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(width: AppSizes.sizedBoxLarge),
-
-          /// Actions
-          GlassmorphismEffect(
-            borderRadius: AppSizes.avatarRadius,
-            borderColor: StackMoneyTheme.cyanNeon,
-            borderWidth: AppSizes.min,
-            containerHeight: AppSizes.cfoAppBarHeight,
-            child: InkWell(
-              onTap: () => SmLogger.info('Open chat configs'),
-              borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
-              highlightColor: StackMoneyTheme.cyanNeon.withValues(alpha: 0.1),
-              splashColor: StackMoneyTheme.cyanNeon.withValues(alpha: 0.15),
               child: SizedBox.square(
                 dimension: AppSizes.cfoAppBarActionButton,
                 child: Icon(
-                  Icons.more_vert_rounded,
+                  Icons.arrow_back_ios_new_rounded,
                   color: StackMoneyTheme.cyanNeon,
                   size: AppSizes.x10,
                 ),
               ),
             ),
           ),
-          SizedBox(width: AppSizes.sizedBoxSmall),
+
+          if (title.isNotEmpty) ...[
+            /// Title
+            SizedBox(width: AppSizes.sizedBoxSmall),
+            Expanded(
+              child: GlassmorphismEffect(
+                borderColor: StackMoneyTheme.cyanNeon,
+                borderWidth: AppSizes.min,
+                containerHeight: AppSizes.cfoAppBarHeight,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppSizes.min),
+                  child: EditableTitle(
+                    title,
+                    removeUnderlineBorder: true,
+                    onSave: saveTitle,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: AppSizes.sizedBoxSmall),
+
+            /// Actions
+            GlassmorphismEffect(
+              borderRadius: AppSizes.avatarRadius,
+              borderColor: StackMoneyTheme.cyanNeon,
+              borderWidth: AppSizes.min,
+              containerHeight: AppSizes.cfoAppBarHeight,
+              child: InkWell(
+                onTap: () => SmLogger.info('Open chat configs'),
+                borderRadius: BorderRadius.circular(AppSizes.avatarRadius),
+                highlightColor: StackMoneyTheme.cyanNeon.withValues(alpha: 0.1),
+                splashColor: StackMoneyTheme.cyanNeon.withValues(alpha: 0.15),
+                child: SizedBox.square(
+                  dimension: AppSizes.cfoAppBarActionButton,
+                  child: Icon(
+                    Icons.more_vert_rounded,
+                    color: StackMoneyTheme.cyanNeon,
+                    size: AppSizes.x10,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }
