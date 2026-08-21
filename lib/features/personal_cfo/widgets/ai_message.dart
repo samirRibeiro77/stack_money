@@ -29,7 +29,7 @@ class AiMessage extends StatelessWidget {
 
             /// Action
             if (msg.proposedAction != null) ...[
-              const SizedBox(height: AppSizes.x5),
+              const SizedBox(height: AppSizes.sizedBoxSmall),
               AiActionCard(
                 messageId: msg.id,
                 action: msg.proposedAction!,

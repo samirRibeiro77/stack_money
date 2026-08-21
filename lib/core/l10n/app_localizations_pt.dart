@@ -601,7 +601,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get chatConnectionError =>
-      '⚡ *Falha ao conectar com o terminal do CFO...\nTente novamente mais tarde!_*';
+      '#### ⚡ Falha ao conectar com o terminal do CFO...\n_Tente novamente mais tarde!_';
 
   @override
   String get chatEmpty =>

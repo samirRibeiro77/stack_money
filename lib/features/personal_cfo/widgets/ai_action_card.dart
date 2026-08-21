@@ -5,7 +5,6 @@ import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
@@ -30,7 +29,6 @@ class AiActionCard extends StatelessWidget {
 
   void _showPreview(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    SmLogger.debug('Action Log', payload: action.payload);
 
     if (action.actionType == ActionType.updateSalaryPlan) {
       context.push(

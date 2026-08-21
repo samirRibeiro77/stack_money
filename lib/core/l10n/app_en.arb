@@ -712,7 +712,7 @@
   "@personalCfo": {
     "description": "Personal CFO title."
   },
-  "chatConnectionError": "⚡ *Fail to connect to the CFO terminal...\n_Try again later!_*",
+  "chatConnectionError": "#### ⚡ Fail to connect to the CFO terminal...\n_Try again later!_",
   "@chatConnectionError": {
     "description": "Message to show when the user create a new CFO chat."
   },

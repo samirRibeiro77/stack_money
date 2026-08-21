@@ -1173,7 +1173,7 @@ abstract class AppLocalizations {
   /// Message to show when the user create a new CFO chat.
   ///
   /// In en, this message translates to:
-  /// **'⚡ *Fail to connect to the CFO terminal...\n_Try again later!_*'**
+  /// **'#### ⚡ Fail to connect to the CFO terminal...\n_Try again later!_'**
   String get chatConnectionError;
 
   /// Message to show when the user create a new CFO chat.

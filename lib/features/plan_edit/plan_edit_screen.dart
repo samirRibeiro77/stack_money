@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
@@ -13,8 +14,6 @@ import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
 import 'package:stack_money/features/plan_edit/widgets/inflow/inflow_section.dart';
 import 'package:stack_money/features/plan_edit/widgets/net_salary/net_salary_sticky_hud.dart';
 import 'package:stack_money/features/plan_edit/widgets/outflow/outflow_section.dart';
-
-import '../../core/constants/app_sizes.dart' show AppSizes;
 
 class PlanEditScreen extends StatefulWidget {
   final SalaryPlan plan;
@@ -163,7 +162,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                       : () async => await _manager.togglePlanActivation(),
                 ),
 
-                if (!currentPlan.isPreview)...[
+                if (!currentPlan.isPreview) ...[
                   PopupMenuButton<PlanEditActions>(
                     icon: const Icon(
                       Icons.more_vert_rounded,
@@ -205,10 +204,10 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                             ),
                           );
                         }).toList(),
-                  )
-                ] else...[
-                  SizedBox(width: AppSizes.sizedBoxMedium)
-                ]
+                  ),
+                ] else ...[
+                  SizedBox(width: AppSizes.sizedBoxMedium),
+                ],
               ],
             ),
             body: Padding(

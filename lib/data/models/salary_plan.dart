@@ -53,7 +53,11 @@ class SalaryPlan {
     );
   }
 
-  factory SalaryPlan.fromJson(Map<String, Object?>? json, {String? id, bool? isPreview}) {
+  factory SalaryPlan.fromJson(
+    Map<String, Object?>? json, {
+    String? id,
+    bool isPreview = false,
+  }) {
     return SalaryPlan._(
       id ?? json?[ModelKey.id] as String? ?? const Uuid().v4(),
       name: json?[ModelKey.name] as String? ?? '',
@@ -67,7 +71,7 @@ class SalaryPlan {
       distributions:
           json?.decodeList(ModelKey.distributions, DistributionRow.fromJson) ??
           [],
-      isPreview: isPreview ?? false
+      isPreview: isPreview,
     );
   }
 
