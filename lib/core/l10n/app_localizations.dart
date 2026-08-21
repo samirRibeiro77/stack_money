@@ -1247,6 +1247,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to update thread title...'**
   String get failUpdateThreadTitle;
+
+  /// Dialog title when AI is updating a bucket.
+  ///
+  /// In en, this message translates to:
+  /// **'Update bucket'**
+  String get updateBucket;
+
+  /// Dialog title when AI is creating a bucket.
+  ///
+  /// In en, this message translates to:
+  /// **'Create bucket'**
+  String get createBucket;
+
+  /// Dialog message when AI is creating/updating a bucket.
+  ///
+  /// In en, this message translates to:
+  /// **'Name: {name}\nMin Value: {minValue}'**
+  String aiBucketMessage(Object minValue, Object name);
 }
 
 class _AppLocalizationsDelegate

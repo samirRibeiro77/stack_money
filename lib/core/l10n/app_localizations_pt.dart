@@ -647,4 +647,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get failUpdateThreadTitle => 'Failed to update thread title...';
+
+  @override
+  String get updateBucket => 'Atualizar caixinha';
+
+  @override
+  String get createBucket => 'Criar caixinha';
+
+  @override
+  String aiBucketMessage(Object minValue, Object name) {
+    return 'Nome: $name\nValor minimo: $minValue';
+  }
 }

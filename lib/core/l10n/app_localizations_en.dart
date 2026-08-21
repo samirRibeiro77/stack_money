@@ -645,4 +645,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failUpdateThreadTitle => 'Failed to update thread title...';
+
+  @override
+  String get updateBucket => 'Update bucket';
+
+  @override
+  String get createBucket => 'Create bucket';
+
+  @override
+  String aiBucketMessage(Object minValue, Object name) {
+    return 'Name: $name\nMin Value: $minValue';
+  }
 }

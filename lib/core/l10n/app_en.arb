@@ -763,5 +763,17 @@
   "failUpdateThreadTitle": "Failed to update thread title...",
   "@failUpdateThreadTitle": {
     "description": "Message when some error happen when updating chat thread title."
+  },
+  "updateBucket": "Update bucket",
+  "@updateBucket": {
+    "description": "Dialog title when AI is updating a bucket."
+  },
+  "createBucket": "Create bucket",
+  "@createBucket": {
+    "description": "Dialog title when AI is creating a bucket."
+  },
+  "aiBucketMessage": "Name: {name}\nMin Value: {minValue}",
+  "@aiBucketMessage": {
+    "description": "Dialog message when AI is creating/updating a bucket."
   }
 }
