@@ -1265,6 +1265,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Name: {name}\nMin Value: {minValue}'**
   String aiBucketMessage(Object minValue, Object name);
+
+  /// Preview label.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get preview;
 }
 
 class _AppLocalizationsDelegate

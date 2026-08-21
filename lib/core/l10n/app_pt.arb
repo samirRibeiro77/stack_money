@@ -194,5 +194,6 @@
   "failUpdateThreadTitle": "Failed to update thread title...",
   "updateBucket": "Atualizar caixinha",
   "createBucket": "Criar caixinha",
-  "aiBucketMessage": "Nome: {name}\nValor minimo: {minValue}"
+  "aiBucketMessage": "Nome: {name}\nValor minimo: {minValue}",
+  "preview": "Prévia"
 }

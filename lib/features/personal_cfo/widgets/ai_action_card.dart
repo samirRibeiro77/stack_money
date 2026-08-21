@@ -13,6 +13,8 @@ import 'package:stack_money/data/enum/action_status.dart';
 import 'package:stack_money/data/enum/action_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/proposed_action_model.dart';
+import 'package:stack_money/data/models/salary_plan.dart';
+import 'package:stack_money/features/plan_edit/plan_edit_screen.dart';
 
 class AiActionCard extends StatelessWidget {
   const AiActionCard({
@@ -31,6 +33,10 @@ class AiActionCard extends StatelessWidget {
     SmLogger.debug('Action Log', payload: action.payload);
 
     if (action.actionType == ActionType.updateSalaryPlan) {
+      context.push(
+        PlanEditScreen.route,
+        extra: SalaryPlan.fromJson(action.payload, isPreview: true),
+      );
       return;
     }
 
@@ -100,7 +106,7 @@ class AiActionCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       SmChipButton(
-                        'Preview',
+                        l10n.preview,
                         color: StackMoneyTheme.mutedGrey,
                         onTap: () => _showPreview(context),
                       ),

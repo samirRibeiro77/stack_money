@@ -775,5 +775,9 @@
   "aiBucketMessage": "Name: {name}\nMin Value: {minValue}",
   "@aiBucketMessage": {
     "description": "Dialog message when AI is creating/updating a bucket."
+  },
+  "preview": "Preview",
+  "@preview": {
+    "description": "Preview label."
   }
 }

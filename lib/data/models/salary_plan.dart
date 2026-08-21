@@ -22,6 +22,7 @@ class SalaryPlan {
   final List<InflowRow> inflows;
   final List<OutflowRow> outflows;
   final List<DistributionRow> distributions;
+  final bool isPreview;
 
   const SalaryPlan._(
     this._id, {
@@ -34,6 +35,7 @@ class SalaryPlan {
     required this.inflows,
     required this.outflows,
     required this.distributions,
+    this.isPreview = false,
   });
 
   factory SalaryPlan.empty({bool? isActive}) {
@@ -51,7 +53,7 @@ class SalaryPlan {
     );
   }
 
-  factory SalaryPlan.fromJson(Map<String, Object?>? json, {String? id}) {
+  factory SalaryPlan.fromJson(Map<String, Object?>? json, {String? id, bool? isPreview}) {
     return SalaryPlan._(
       id ?? json?[ModelKey.id] as String? ?? const Uuid().v4(),
       name: json?[ModelKey.name] as String? ?? '',
@@ -65,6 +67,7 @@ class SalaryPlan {
       distributions:
           json?.decodeList(ModelKey.distributions, DistributionRow.fromJson) ??
           [],
+      isPreview: isPreview ?? false
     );
   }
 
@@ -104,10 +107,13 @@ class SalaryPlan {
       inflows: inflows ?? this.inflows,
       outflows: outflows ?? this.outflows,
       distributions: distributions ?? this.distributions,
+      isPreview: isPreview,
     );
   }
 
   String get id => _id;
+
+  bool get blockEdit => isPreview || isActive;
 
   /// Operators
   bool equalsTo(SalaryPlan other) =>

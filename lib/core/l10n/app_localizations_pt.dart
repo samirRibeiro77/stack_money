@@ -658,4 +658,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String aiBucketMessage(Object minValue, Object name) {
     return 'Nome: $name\nValor minimo: $minValue';
   }
+
+  @override
+  String get preview => 'Prévia';
 }

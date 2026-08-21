@@ -51,6 +51,10 @@ class PlanEditManager {
     _planNotifier = ValueNotifier(initialPlan);
     _ensureEmptyInflowRow();
     _ensureEmptyOutflowRow();
+    if (initialPlan.isPreview) {
+      _inflowExpandState.value = true;
+      _outflowExpandState.value = true;
+    }
   }
 
   SalaryPlan get currentPlan => _planNotifier.value;
