@@ -661,4 +661,20 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get preview => 'Prévia';
+
+  @override
+  String get context => 'Contexto';
+
+  @override
+  String get noCurrentPlan => 'Sem plano ativo';
+
+  @override
+  String contextMessage(Object bucketQty, Object history, Object planName) {
+    return 'Nome do plano: $planName\nCaixinhas: $bucketQty\nHistórico:\n$history';
+  }
+
+  @override
+  String contextHistory(Object date, Object total) {
+    return '  • $date -> $total';
+  }
 }

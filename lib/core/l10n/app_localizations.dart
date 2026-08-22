@@ -1271,6 +1271,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Preview'**
   String get preview;
+
+  /// Context label.
+  ///
+  /// In en, this message translates to:
+  /// **'Context'**
+  String get context;
+
+  /// There's no currently activated plan.
+  ///
+  /// In en, this message translates to:
+  /// **'No current plan'**
+  String get noCurrentPlan;
+
+  /// AI context message.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan name: {planName}\nBuckets: {bucketQty}\nHistory:\n{history}'**
+  String contextMessage(Object bucketQty, Object history, Object planName);
+
+  /// AI context message for history.
+  ///
+  /// In en, this message translates to:
+  /// **'  • {date} -> {total}'**
+  String contextHistory(Object date, Object total);
 }
 
 class _AppLocalizationsDelegate

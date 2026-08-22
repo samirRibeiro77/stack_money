@@ -779,5 +779,21 @@
   "preview": "Preview",
   "@preview": {
     "description": "Preview label."
+  },
+  "context": "Context",
+  "@context": {
+    "description": "Context label."
+  },
+  "noCurrentPlan": "No current plan",
+  "@noCurrentPlan": {
+    "description": "There's no currently activated plan."
+  },
+  "contextMessage": "Plan name: {planName}\nBuckets: {bucketQty}\nHistory:\n{history}",
+  "@contextMessage": {
+    "description": "AI context message."
+  },
+  "contextHistory": "  • {date} -> {total}",
+  "@contextHistory": {
+    "description": "AI context message for history."
   }
 }

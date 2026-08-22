@@ -156,11 +156,11 @@ class PersonalCfoManager {
   }) async {
     try {
       final StringBuffer accumulatedText = StringBuffer();
-      final String liveContextJson = await ExportService().extractDataToAI();
+      final data = await ExportService().extractDataToAI();
 
       final responseStream = _cfoService.generateCfoResponseStream(
         userPrompt: userPrompt,
-        liveContextJson: liveContextJson,
+        liveContextJson: data.json,
         history: messages.sublist(0, messages.length - 2),
       );
 
@@ -261,7 +261,10 @@ class PersonalCfoManager {
     return result.isSuccess;
   }
 
-  Future<void> handleActionResponse(String messageId, ActionStatus status) async {
+  Future<void> handleActionResponse(
+    String messageId,
+    ActionStatus status,
+  ) async {
     final index = messages.indexWhere((m) => m.id == messageId);
     if (index == -1) return;
 

@@ -8,6 +8,7 @@ import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/data/helper/export_key.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
+import 'package:stack_money/data/models/ai_context.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/data_export_model.dart';
 import 'package:stack_money/data/models/history.dart';
@@ -59,22 +60,15 @@ class ExportService {
     );
   }
 
-  Future<String> extractDataToAI() async {
+  Future<AiContext> extractDataToAI() async {
     final history = AppCoordinator.instance.history.value.reversed.toList();
 
-    final jsonMap = {
-      ExportKey.currentPlan: AppCoordinator.instance.currentPlan.value
-          ?.toJson(),
-      ExportKey.latestHistory: history
-          .getRange(0, 3)
-          .map((h) => h.toJson())
-          .toList(),
-      ExportKey.buckets: AppCoordinator.instance.buckets.value
-          .map((b) => b.toJson())
-          .toList(),
-    };
-
-    return _convertDataToExport(jsonMap: jsonMap);
+    return AiContext(
+      _convertDataToExport,
+      currentPlan: AppCoordinator.instance.currentPlan.value,
+      buckets: AppCoordinator.instance.buckets.value,
+      history: history.getRange(0, 3).toList(),
+    );
   }
 
   Future<ShareResult> shareFile(File file) async {

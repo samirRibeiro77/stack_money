@@ -195,5 +195,9 @@
   "updateBucket": "Atualizar caixinha",
   "createBucket": "Criar caixinha",
   "aiBucketMessage": "Nome: {name}\nValor minimo: {minValue}",
-  "preview": "Prévia"
+  "preview": "Prévia",
+  "context": "Contexto",
+  "noCurrentPlan": "Sem plano ativo",
+  "contextMessage": "Nome do plano: {planName}\nCaixinhas: {bucketQty}\nHistórico:\n{history}",
+  "contextHistory": "  • {date} -> {total}"
 }
