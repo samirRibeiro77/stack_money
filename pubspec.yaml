@@ -50,6 +50,7 @@ flutter:
     - assets/images/app_icon.png
     - assets/images/app_icon_nobackground.png
     - assets/images/app_icon_safe.png
+    - assets/images/chat_background.png
 
 flutter_launcher_icons:
   android: "launcher_icon"
