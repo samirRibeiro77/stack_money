@@ -38,7 +38,8 @@ class TelemetryLineChart extends StatelessWidget {
     return rawHistoryData
         .where(
           (h) =>
-              latestDate.toDate().difference(h.date.toDate()).inDays <= filterState.filter.days,
+              latestDate.toDate().difference(h.date.toDate()).inDays <=
+              filterState.filter.days,
         )
         .toList();
   }
@@ -54,12 +55,14 @@ class TelemetryLineChart extends StatelessWidget {
       return SizedBox(
         height: 200,
         child: Center(
-          child: !isSecureActive ? Text(
-            l10n.noData,
-            style: textTheme.titleLarge?.copyWith(
-              color: StackMoneyTheme.magentaNeon,
-            ),
-          ) : SizedBox.shrink(),
+          child: !isSecureActive
+              ? Text(
+                  l10n.noData,
+                  style: textTheme.titleLarge?.copyWith(
+                    color: StackMoneyTheme.magentaNeon,
+                  ),
+                )
+              : SizedBox.shrink(),
         ),
       );
     }
@@ -189,8 +192,14 @@ class TelemetryLineChart extends StatelessWidget {
                     return const SizedBox();
                   }
                   return Text(
-                    StackMoneyString.formatMoney(value, compact: true, symbol: true),
-                    style: textTheme.labelSmall?.copyWith(fontSize: AppTypography.fontSmallest),
+                    StackMoneyString.formatMoney(
+                      value,
+                      compact: true,
+                      symbol: true,
+                    ),
+                    style: textTheme.labelSmall?.copyWith(
+                      fontSize: AppTypography.fontSmallest,
+                    ),
                   );
                 },
               ),
@@ -208,7 +217,9 @@ class TelemetryLineChart extends StatelessWidget {
                       padding: EdgeInsets.only(top: AppSizes.x3),
                       child: Text(
                         StackMoneyString.formatDate(data[idx].date.toDate()),
-                        style: textTheme.bodySmall?.copyWith(fontSize: AppTypography.fontSmallest),
+                        style: textTheme.bodySmall?.copyWith(
+                          fontSize: AppTypography.fontSmallest,
+                        ),
                       ),
                     );
                   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
-import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/glass_popup_menu.dart';
 import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/enum/plan_edit_actions.dart';
@@ -76,32 +76,21 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
     return shouldLeave ?? false;
   }
 
-  String _chipLabel(
-    AppLocalizations l10n, {
-    bool isActive = false,
-    bool isPreview = false,
-  }) {
-    if (isPreview) {
-      return l10n.preview;
+  void _handleAction(PlanEditActions action) {
+    switch (action) {
+      case PlanEditActions.copy:
+        _manager.copyPlan();
+        break;
+      case PlanEditActions.share:
+        _manager.sharePlan();
+        break;
+      case PlanEditActions.archive:
+        _manager.archivePlan();
+        break;
+      case PlanEditActions.delete:
+        _manager.deletePlan();
+        break;
     }
-
-    if (isActive) {
-      return l10n.active;
-    }
-
-    return l10n.setActive;
-  }
-
-  Color _chipColor({bool isActive = false, bool isPreview = false}) {
-    if (isPreview) {
-      return StackMoneyTheme.magentaNeon;
-    }
-
-    if (isActive) {
-      return StackMoneyTheme.cyanNeon;
-    }
-
-    return StackMoneyTheme.mutedGrey;
   }
 
   @override
@@ -137,7 +126,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                 },
               ),
               title: IgnorePointer(
-                ignoring: currentPlan.blockEdit,
+                ignoring: currentPlan.isActive,
                 child: EditableTitle(
                   currentPlan.name,
                   onSave: (newName) => _manager.updatePlanName(newName),
@@ -148,66 +137,17 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
               surfaceTintColor: StackMoneyTheme.carbonGrey,
               actions: [
                 SmChipButton(
-                  _chipLabel(
-                    l10n,
-                    isPreview: currentPlan.isPreview,
-                    isActive: currentPlan.isActive,
-                  ),
-                  color: _chipColor(
-                    isPreview: currentPlan.isPreview,
-                    isActive: currentPlan.isActive,
-                  ),
-                  onTap: currentPlan.isPreview
-                      ? null
-                      : () async => await _manager.togglePlanActivation(),
+                  currentPlan.isActive ? l10n.active : l10n.setActive,
+                  color: currentPlan.isActive
+                      ? StackMoneyTheme.cyanNeon
+                      : StackMoneyTheme.mutedGrey,
+                  onTap: () async => await _manager.togglePlanActivation(),
                 ),
 
-                if (!currentPlan.isPreview) ...[
-                  PopupMenuButton<PlanEditActions>(
-                    icon: const Icon(
-                      Icons.more_vert_rounded,
-                      color: StackMoneyTheme.mutedGrey,
-                    ),
-                    color: StackMoneyTheme.carbonGrey,
-                    onSelected: (value) {
-                      switch (value) {
-                        case PlanEditActions.copy:
-                          _manager.copyPlan();
-                          break;
-                        case PlanEditActions.share:
-                          _manager.sharePlan();
-                          break;
-                        case PlanEditActions.archive:
-                          _manager.archivePlan();
-                          break;
-                        case PlanEditActions.delete:
-                          _manager.deletePlan();
-                          break;
-                      }
-                    },
-                    itemBuilder: (context) =>
-                        PlanEditActions.values.map((action) {
-                          return PopupMenuItem(
-                            value: action,
-                            child: Row(
-                              children: [
-                                Icon(action.icon, color: action.color),
-                                const SizedBox(width: AppSizes.x2),
-                                Text(
-                                  action.text(l10n),
-                                  style: textTheme.bodySmall?.copyWith(
-                                    color: action.color,
-                                    fontWeight: AppTypography.weightBold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                  ),
-                ] else ...[
-                  SizedBox(width: AppSizes.sizedBoxMedium),
-                ],
+                GlassPopupMenu<PlanEditActions>(
+                  onSelected: _handleAction,
+                  items: PlanEditActions.values,
+                ),
               ],
             ),
             body: Padding(

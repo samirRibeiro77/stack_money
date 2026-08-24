@@ -38,8 +38,9 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
   );
 
   double _getBucketValueAt(History history) {
-    final transaction =
-        history.transactions.where((t) => t.bucketId == widget.parameter.id).firstOrNull;
+    final transaction = history.transactions
+        .where((t) => t.bucketId == widget.parameter.id)
+        .firstOrNull;
     return transaction?.actualValue ?? 0.0;
   }
 
@@ -168,7 +169,8 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
         return h.date.toDate().isAfter(_chartFilter.start!) &&
             h.date.toDate().isBefore(_chartFilter.end!);
       }
-      return latestDate.toDate().difference(h.date.toDate()).inDays <= _chartFilter.filter.days;
+      return latestDate.toDate().difference(h.date.toDate()).inDays <=
+          _chartFilter.filter.days;
     }).toList();
 
     if (filteredHistory.isEmpty) filteredHistory = [widget.historyList.last];

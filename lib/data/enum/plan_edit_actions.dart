@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/data/enum/stack_money_popup_menu_item.dart';
 
-enum PlanEditActions {
+enum PlanEditActions implements StackMoneyPopupMenuItem{
   copy,
   share,
   archive,
   delete;
 
-  String text(AppLocalizations l10n) {
+  @override
+  String label(AppLocalizations l10n) {
     switch (this) {
       case copy:
         return l10n.copy;
@@ -21,6 +23,7 @@ enum PlanEditActions {
     }
   }
 
+  @override
   Color get color {
     switch (this) {
       case copy:
@@ -33,6 +36,7 @@ enum PlanEditActions {
     }
   }
 
+  @override
   IconData get icon {
     switch (this) {
       case copy:
