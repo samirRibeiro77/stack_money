@@ -16,11 +16,13 @@ import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/domain/service/ai_action_service.dart';
 import 'package:stack_money/domain/service/chat_service.dart';
 import 'package:stack_money/domain/service/export_service.dart';
+import 'package:stack_money/features/chats/manager/chats_manager.dart';
 import 'package:stack_money/features/error/error_screen.dart';
 
 class PersonalCfoManager {
   final _cfoService = ChatManagementService();
   final _aiActionService = AiActionService();
+  late final ChatsManager _chatsManager;
 
   late ChatThreadModel _thread;
   late final BuildContext _context;
@@ -39,6 +41,7 @@ class PersonalCfoManager {
   late final TextEditingController messageController;
 
   PersonalCfoManager(ChatThreadModel? initialThread, this._context) {
+    _chatsManager = ChatsManager(_context);
     _thread = initialThread ?? ChatThreadModel(title: '');
 
     titleController = TextEditingController(text: _thread.title);
@@ -324,6 +327,25 @@ class PersonalCfoManager {
       updatedList[index] = updatedMessage;
       messagesNotifier.value = updatedList;
     }
+  }
+
+  Future<void> toggleArchiveThread() async {
+    return await _chatsManager.toggleArchiveThread(thread);
+  }
+
+  Future<void> deleteThread() async {
+    final shouldDelete = await _showTerminalConfirmDialog();
+    if (shouldDelete == true) {
+      _purgeChatThread();
+    }
+  }
+
+  Future<bool?> _showTerminalConfirmDialog() {
+    return _chatsManager.showTerminalConfirmDialog(thread.title);
+  }
+
+  Future<void> _purgeChatThread() async {
+    await _chatsManager.purgeChatThread(thread.id);
   }
 
   void _scrollToBottom() {
