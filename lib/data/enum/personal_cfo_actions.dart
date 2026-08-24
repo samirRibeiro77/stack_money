@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/data/enum/stack_money_popup_menu_item.dart';
 
-enum PersonalCfoActions {
+enum PersonalCfoActions implements StackMoneyPopupMenuItem {
   currentData,
   archive,
   delete;
 
-  String text(AppLocalizations l10n) {
+  @override
+  String label(AppLocalizations l10n) {
     switch (this) {
       case currentData:
         return l10n.context;
@@ -18,6 +20,7 @@ enum PersonalCfoActions {
     }
   }
 
+  @override
   Color get color {
     switch (this) {
       case currentData:
@@ -29,6 +32,7 @@ enum PersonalCfoActions {
     }
   }
 
+  @override
   IconData get icon {
     switch (this) {
       case currentData:

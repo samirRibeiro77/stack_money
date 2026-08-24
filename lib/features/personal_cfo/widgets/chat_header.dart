@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
-import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/glass_popup_menu.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/enum/personal_cfo_actions.dart';
@@ -32,9 +32,11 @@ class ChatHeader extends StatelessWidget {
         break;
       case PersonalCfoActions.archive:
         onArchive();
+        context.pop();
         break;
       case PersonalCfoActions.delete:
         onDelete();
+        context.pop();
         break;
     }
   }
@@ -78,9 +80,6 @@ class ChatHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final textTheme = Theme.of(context).textTheme;
-
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: AppSizes.sizedBoxSmall),
       child: Row(
@@ -132,34 +131,11 @@ class ChatHeader extends StatelessWidget {
               containerHeight: AppSizes.cfoAppBarHeight,
               child: SizedBox.square(
                 dimension: AppSizes.cfoAppBarActionButton,
-                child: PopupMenuButton<PersonalCfoActions>(
-                  icon: const Icon(
-                    Icons.more_vert_rounded,
-                    color: StackMoneyTheme.cyanNeon,
-                    size: AppSizes.x10,
-                  ),
-                  padding: EdgeInsets.zero,
-                  color: StackMoneyTheme.carbonGrey,
-                  onSelected: (value) => _handleAction(value, context),
-                  itemBuilder: (context) =>
-                      PersonalCfoActions.values.map((action) {
-                        return PopupMenuItem(
-                          value: action,
-                          child: Row(
-                            children: [
-                              Icon(action.icon, color: action.color),
-                              const SizedBox(width: AppSizes.x2),
-                              Text(
-                                action.text(l10n),
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: action.color,
-                                  fontWeight: AppTypography.weightBold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                child: GlassPopupMenu<PersonalCfoActions>(
+                  iconColor: StackMoneyTheme.cyanNeon,
+                  iconSize: AppSizes.x10,
+                  onSelected: (action) => _handleAction(action, context),
+                  items: PersonalCfoActions.values,
                 ),
               ),
             ),
