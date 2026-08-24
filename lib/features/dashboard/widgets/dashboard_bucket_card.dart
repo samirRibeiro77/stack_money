@@ -214,9 +214,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                 horizontal: 8,
                 vertical: 4,
               ),
-              tooltipBorderRadius: BorderRadius.circular(
-                AppSizes.navBarContentPadding,
-              ),
+              tooltipRoundedRadius: 2,
               getTooltipItems: (touchedSpots) {
                 return touchedSpots.map((spot) {
                   final deltaValue = spot.y - widget.parameter.minValue;
