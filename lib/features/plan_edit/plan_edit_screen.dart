@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stack_money/core/constants/app_typography.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/glass_popup_menu.dart';
 import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
@@ -14,8 +15,6 @@ import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
 import 'package:stack_money/features/plan_edit/widgets/inflow/inflow_section.dart';
 import 'package:stack_money/features/plan_edit/widgets/net_salary/net_salary_sticky_hud.dart';
 import 'package:stack_money/features/plan_edit/widgets/outflow/outflow_section.dart';
-
-import '../../core/constants/app_sizes.dart' show AppSizes;
 
 class PlanEditScreen extends StatefulWidget {
   final SalaryPlan plan;
@@ -79,10 +78,26 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
     return shouldLeave ?? false;
   }
 
+  void _handleAction(PlanEditActions action) {
+    switch (action) {
+      case PlanEditActions.copy:
+        _manager.copyPlan();
+        break;
+      case PlanEditActions.share:
+        _manager.sharePlan();
+        break;
+      case PlanEditActions.archive:
+        _manager.archivePlan();
+        break;
+      case PlanEditActions.delete:
+        _manager.deletePlan();
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final textTheme = Theme.of(context).textTheme;
 
     return PopScope(
       canPop: false,
@@ -130,47 +145,9 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                   onTap: () async => await _manager.togglePlanActivation(),
                 ),
 
-                PopupMenuButton<PlanEditActions>(
-                  icon: const Icon(
-                    Icons.more_vert_rounded,
-                    color: StackMoneyTheme.mutedGrey,
-                  ),
-                  color: StackMoneyTheme.carbonGrey,
-                  onSelected: (value) {
-                    switch (value) {
-                      case PlanEditActions.copy:
-                        _manager.copyPlan();
-                        break;
-                      case PlanEditActions.share:
-                        _manager.sharePlan();
-                        break;
-                      case PlanEditActions.archive:
-                        _manager.archivePlan();
-                        break;
-                      case PlanEditActions.delete:
-                        _manager.deletePlan();
-                        break;
-                    }
-                  },
-                  itemBuilder: (context) =>
-                      PlanEditActions.values.map((action) {
-                        return PopupMenuItem(
-                          value: action,
-                          child: Row(
-                            children: [
-                              Icon(action.icon, color: action.color),
-                              const SizedBox(width: AppSizes.x2),
-                              Text(
-                                action.text(l10n),
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: action.color,
-                                  fontWeight: AppTypography.weightBold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                GlassPopupMenu<PlanEditActions>(
+                  onSelected: _handleAction,
+                  items: PlanEditActions.values,
                 ),
               ],
             ),
