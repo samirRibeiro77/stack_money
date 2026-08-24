@@ -330,7 +330,9 @@ class PersonalCfoManager {
   }
 
   Future<void> toggleArchiveThread() async {
-    return await _chatsManager.toggleArchiveThread(thread);
+    await _chatsManager.toggleArchiveThread(thread);
+    if (!_context.mounted) return;
+    _context.pop();
   }
 
   Future<void> deleteThread() async {
@@ -340,12 +342,15 @@ class PersonalCfoManager {
     }
   }
 
-  Future<bool?> _showTerminalConfirmDialog() {
+  Future<bool?> _showTerminalConfirmDialog() async {
+    await Future.delayed(Duration.zero);
     return _chatsManager.showTerminalConfirmDialog(thread.title);
   }
 
   Future<void> _purgeChatThread() async {
     await _chatsManager.purgeChatThread(thread.id);
+    if (!_context.mounted) return;
+    _context.pop();
   }
 
   Future<void> shareChat() async {

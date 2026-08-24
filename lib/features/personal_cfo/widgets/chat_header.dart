@@ -37,11 +37,9 @@ class ChatHeader extends StatelessWidget {
         break;
       case PersonalCfoActions.archive:
         onArchive();
-        context.pop();
         break;
       case PersonalCfoActions.delete:
         onDelete();
-        context.pop();
         break;
     }
   }
