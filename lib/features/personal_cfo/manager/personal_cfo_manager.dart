@@ -348,6 +348,10 @@ class PersonalCfoManager {
     await _chatsManager.purgeChatThread(thread.id);
   }
 
+  Future<void> shareChat() async {
+    await ExportService().exportData(messages);
+  }
+
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (scrollController.hasClients) {

@@ -14,12 +14,14 @@ import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
 class ChatHeader extends StatelessWidget {
   final String title;
   final ValueChanged<String> saveTitle;
+  final VoidCallback onShare;
   final VoidCallback onArchive;
   final VoidCallback onDelete;
 
   const ChatHeader({
     required this.title,
     required this.saveTitle,
+    required this.onShare,
     required this.onArchive,
     required this.onDelete,
     super.key,
@@ -27,6 +29,9 @@ class ChatHeader extends StatelessWidget {
 
   void _handleAction(PersonalCfoActions action, BuildContext context) {
     switch (action) {
+      case PersonalCfoActions.share:
+        onShare();
+        break;
       case PersonalCfoActions.currentData:
         _showCurrentData(context);
         break;

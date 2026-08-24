@@ -135,6 +135,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                 return ChatHeader(
                   title: title.text,
                   saveTitle: _manager.changeTitle,
+                  onShare: _manager.shareChat,
                   onArchive: _manager.toggleArchiveThread,
                   onDelete: _manager.deleteThread,
                 );
