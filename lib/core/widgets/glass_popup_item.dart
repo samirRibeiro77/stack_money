@@ -14,23 +14,29 @@ class GlassPopupItem<T> extends PopupMenuItem<T> {
     required BuildContext context,
   }) : super(
          padding: EdgeInsets.symmetric(vertical: AppSizes.min),
-         child: GlassmorphismEffect(
-           containerHeight: AppSizes.x20,
-           borderColor: color,
-           borderWidth: AppSizes.min,
-           backgroundColor: StackMoneyTheme.background,
-           child: Row(
-             children: [
-               Icon(icon, color: color, size: AppSizes.x10),
-               const SizedBox(width: AppSizes.sizedBoxSmall),
-               Text(
-                 label,
-                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                   color: color,
-                   fontWeight: AppTypography.weightBold,
+         child: Container(
+           decoration: BoxDecoration(
+             borderRadius: BorderRadius.circular(AppSizes.navBarRadius),
+             color: color.withValues(alpha: 0.15),
+           ),
+           child: GlassmorphismEffect(
+             containerHeight: AppSizes.x20,
+             borderColor: color,
+             borderWidth: AppSizes.min,
+             backgroundColor: StackMoneyTheme.background,
+             child: Row(
+               children: [
+                 Icon(icon, color: color, size: AppSizes.x10),
+                 const SizedBox(width: AppSizes.sizedBoxSmall),
+                 Text(
+                   label,
+                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                     color: color,
+                     fontWeight: AppTypography.weightBold,
+                   ),
                  ),
-               ),
-             ],
+               ],
+             ),
            ),
          ),
        );

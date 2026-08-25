@@ -75,7 +75,6 @@ class ChatHeader extends StatelessWidget {
           color: StackMoneyTheme.platinumSilver,
           title: l10n.context,
           message: message,
-          onConfirm: () => dialogContext.pop(),
         ),
       );
     }
