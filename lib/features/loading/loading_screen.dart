@@ -7,6 +7,7 @@ import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/data/enum/loading_type.dart';
+import 'package:stack_money/features/loading/widget/loading_linear_progress_bar.dart';
 import 'package:stack_money/features/main_navigation/main_navigation_wrapper.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -71,35 +72,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
                   ),
                   textAlign: TextAlign.start,
                 ),
-
                 const SizedBox(height: AppSizes.sizedBoxLarge),
 
                 /// Progress bar
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
-                  child: Container(
-                    height: AppSizes.x4,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: StackMoneyTheme.mutedGrey),
-                    ),
-                    child: ShaderMask(
-                      shaderCallback: (bounds) => const LinearGradient(
-                        colors: [
-                          StackMoneyTheme.magentaNeon,
-                          StackMoneyTheme.cyanNeon,
-                        ],
-                      ).createShader(bounds),
-                      child: const LinearProgressIndicator(
-                        backgroundColor: Colors.transparent,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          StackMoneyTheme.platinumSilver,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
+                LoadingLinearProgressBar(),
                 const SizedBox(height: AppSizes.sizedBoxLarge),
 
                 /// Enum message

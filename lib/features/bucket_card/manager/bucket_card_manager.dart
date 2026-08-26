@@ -46,9 +46,8 @@ class BucketCardManager {
 
   Timer? _debounceTimer;
 
-  BucketCardManager(Bucket initialBucket, BuildContext context) {
+  BucketCardManager(Bucket initialBucket, this._context) {
     _bucket = initialBucket;
-    _context = context;
 
     _isImmediateLiquidity.value = _bucket.isImmediateLiquidity;
     _minValueSign.value = ValueSign.define(_bucket.minValue);

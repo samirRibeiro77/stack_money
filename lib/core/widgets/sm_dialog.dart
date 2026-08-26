@@ -19,7 +19,7 @@ class SmDialog extends StatelessWidget {
 
   const SmDialog({
     required this.message,
-    required this.onConfirm,
+    this.onConfirm,
     this.onCancel,
     this.onDeny,
     this.title,

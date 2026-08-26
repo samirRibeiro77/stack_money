@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stack_money/core/extension/map_extension.dart';
+import 'package:stack_money/core/helpers/timestamp_parser.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/enum/inflow_type.dart';
 import 'package:stack_money/data/enum/deduction_type.dart';
@@ -21,6 +22,7 @@ class SalaryPlan {
   final List<InflowRow> inflows;
   final List<OutflowRow> outflows;
   final List<DistributionRow> distributions;
+  final bool isPreview;
 
   const SalaryPlan._(
     this._id, {
@@ -33,6 +35,7 @@ class SalaryPlan {
     required this.inflows,
     required this.outflows,
     required this.distributions,
+    this.isPreview = false,
   });
 
   factory SalaryPlan.empty({bool? isActive}) {
@@ -50,20 +53,25 @@ class SalaryPlan {
     );
   }
 
-  factory SalaryPlan.fromJson(Map<String, Object?>? json) {
+  factory SalaryPlan.fromJson(
+    Map<String, Object?>? json, {
+    String? id,
+    bool isPreview = false,
+  }) {
     return SalaryPlan._(
-      json?[ModelKey.id] as String? ?? '',
+      id ?? json?[ModelKey.id] as String? ?? const Uuid().v4(),
       name: json?[ModelKey.name] as String? ?? '',
       baseSalary: (json?[ModelKey.baseSalary] as num? ?? 0.0).toDouble(),
       isActive: json?[ModelKey.isActive] as bool? ?? false,
       isArchived: json?[ModelKey.isArchived] as bool? ?? false,
-      createdAt: json?[ModelKey.createdAt] as Timestamp? ?? Timestamp.now(),
+      createdAt: TimestampParser.fromJson(json?[ModelKey.createdAt]),
       position: json?[ModelKey.position] as int? ?? 0,
       inflows: json?.decodeList(ModelKey.inflows, InflowRow.fromJson) ?? [],
       outflows: json?.decodeList(ModelKey.outflows, OutflowRow.fromJson) ?? [],
       distributions:
           json?.decodeList(ModelKey.distributions, DistributionRow.fromJson) ??
           [],
+      isPreview: isPreview,
     );
   }
 
@@ -103,10 +111,13 @@ class SalaryPlan {
       inflows: inflows ?? this.inflows,
       outflows: outflows ?? this.outflows,
       distributions: distributions ?? this.distributions,
+      isPreview: isPreview,
     );
   }
 
   String get id => _id;
+
+  bool get blockEdit => isPreview || isActive;
 
   /// Operators
   bool equalsTo(SalaryPlan other) =>

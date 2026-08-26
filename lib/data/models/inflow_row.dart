@@ -24,9 +24,9 @@ class InflowRow {
     );
   }
 
-  factory InflowRow.fromJson(Map<String, Object?>? json) {
+  factory InflowRow.fromJson(Map<String, Object?>? json, {String? id}) {
     return InflowRow._(
-      json?[ModelKey.id] as String? ?? '',
+      id ?? json?[ModelKey.id] as String? ?? const Uuid().v4(),
       type: InflowType.fromJson(json?[ModelKey.type] as String? ?? ''),
       value: (json?[ModelKey.value] as num? ?? 0.0).toDouble(),
       day: json?[ModelKey.day] as int? ?? 0,

@@ -5,6 +5,7 @@ enum LoadingType {
   user,
   plan,
   bucket,
+  chats,
   history,
   done,
   error;
@@ -21,6 +22,8 @@ enum LoadingType {
         return l10n.loadingPlan;
       case bucket:
         return l10n.loadingBucket;
+      case chats:
+        return l10n.loadingChats;
       case history:
         return l10n.loadingHistory;
     }

@@ -6,7 +6,6 @@ import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/glass_popup_menu.dart';
 import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
-import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/plan_edit_actions.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/manager/plan_edit_manager.dart';
@@ -45,7 +44,6 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
   Future<bool> _showUnsavedChangesDialog(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
     if (!_manager.isDirty) {
-      SmSnackBar(message: l10n.planChangedNoChanges).show(context);
       return true;
     }
 
@@ -98,6 +96,7 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
 
     return PopScope(
       canPop: false,

@@ -8,10 +8,12 @@ import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/loading_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
+import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/data/models/user_model.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
+import 'package:stack_money/domain/service/chat_service.dart';
 import 'package:stack_money/domain/service/history_service.dart';
 import 'package:stack_money/domain/service/plan_service.dart';
 import 'package:stack_money/domain/service/user_service.dart';
@@ -23,6 +25,7 @@ class AppCoordinator {
   final _historyService = HistoryManagementService();
   final _planService = PlanManagementService();
   final _bucketService = BucketManagementService();
+  final _chatsService = ChatManagementService();
 
   /// Notifiers
   final ValueNotifier<UserModel> _user = ValueNotifier(UserModel.empty());
@@ -31,6 +34,7 @@ class AppCoordinator {
   final ValueNotifier<List<SalaryPlan>> _plans = ValueNotifier([]);
   final ValueNotifier<SalaryPlan?> _currentPlan = ValueNotifier(null);
   final ValueNotifier<List<Bucket>> _buckets = ValueNotifier([]);
+  final ValueNotifier<List<ChatThreadModel>> _chats = ValueNotifier([]);
   final ValueNotifier<LoadingType> _loading = ValueNotifier(LoadingType.none);
 
   /// Subscriptions
@@ -38,6 +42,7 @@ class AppCoordinator {
   late final StreamSubscription? _historySubscription;
   late final StreamSubscription? _planSubscription;
   late final StreamSubscription? _bucketSubscription;
+  late final StreamSubscription? _chatsSubscription;
 
   /// Constructors
   AppCoordinator._privateConstructor();
@@ -58,6 +63,8 @@ class AppCoordinator {
   ValueListenable<SalaryPlan?> get currentPlan => _currentPlan;
 
   ValueListenable<List<Bucket>> get buckets => _buckets;
+
+  ValueListenable<List<ChatThreadModel>> get chats => _chats;
 
   ValueListenable<LoadingType> get loading => _loading;
 
@@ -93,6 +100,10 @@ class AppCoordinator {
 
       /// Activated Plan
       _currentPlan.value = (await _planService.fetchActivated()).getOrThrow();
+
+      /// Chats thread
+      loading = LoadingType.chats;
+      _chats.value = (await _chatsService.fetchChats()).getOrThrow();
 
       /// History
       loading = LoadingType.history;
@@ -165,6 +176,13 @@ class AppCoordinator {
         // TODO: Create error page
       },
     );
+
+    _chatsSubscription = _chatsService.watchThreads().listen(
+      (chatList) => _chats.value = chatList,
+      onError: (error) {
+        // TODO: Create error page
+      },
+    );
   }
 
   void clearAndCloseListeners() {
@@ -176,11 +194,13 @@ class AppCoordinator {
     _historySubscription?.cancel();
     _planSubscription?.cancel();
     _bucketSubscription?.cancel();
+    _chatsSubscription?.cancel();
 
     _user.value = UserModel.empty();
     _history.value = [];
     _plans.value = [];
     _buckets.value = [];
+    _chats.value = [];
     _loading.value = LoadingType.none;
   }
 }

@@ -30,7 +30,7 @@ class Bucket {
 
   factory Bucket.fromJson(Map<String, Object?>? json, {String? id}) {
     return Bucket._(
-      id ?? json?[ModelKey.id] as String? ?? '',
+      id ?? json?[ModelKey.id] as String? ?? const Uuid().v4(),
       category: json?[ModelKey.category] as String? ?? '',
       where: json?[ModelKey.where] as String? ?? '',
       minValue: (json?[ModelKey.minValue] as num?)?.toDouble() ?? 0.0,

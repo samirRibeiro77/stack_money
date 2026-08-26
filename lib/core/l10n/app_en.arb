@@ -568,6 +568,10 @@
   "@loadingBucket": {
     "description": "Loading bucket data."
   },
+  "loadingChats": "AI: Syncing secure channels and AI financial insights...",
+  "@loadingChats": {
+    "description": "Loading chats data."
+  },
   "loadingHistory": "TRAILS: Reconstituting transaction logs and ledger history...",
   "@loadingHistory": {
     "description": "Loading history data."
@@ -655,5 +659,141 @@
   "planChangedValueDetails": "Some details has changed",
   "@planChangedValueDetails": {
     "description": "Found changes only on details."
+  },
+  "hud": "HUD",
+  "@hud": {
+    "description": "Hud label for main navigation."
+  },
+  "plans": "Plans",
+  "@plans": {
+    "description": "Plans label for main navigation."
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI label for main navigation."
+  },
+  "buckets": "Buckets",
+  "@buckets": {
+    "description": "Buckets label for main navigation."
+  },
+  "log": "Log",
+  "@log": {
+    "description": "Log label for main navigation."
+  },
+  "newChat": "New Chat",
+  "@newChat": {
+    "description": "New chat with AI."
+  },
+  "askCfo": "Ask your CFO...",
+  "@askCfo": {
+    "description": "Chat message hint."
+  },
+  "reject": "Reject",
+  "@reject": {
+    "description": "Reject AI proposal."
+  },
+  "apply": "Apply",
+  "@apply": {
+    "description": "Apply AI proposal."
+  },
+  "pending": "↺ Pending",
+  "@pending": {
+    "description": "Pending action status."
+  },
+  "approved": "✓ Approved",
+  "@approved": {
+    "description": "Approved AI proposal."
+  },
+  "rejected": "✕ Rejected",
+  "@rejected": {
+    "description": "Rejected AI proposal."
+  },
+  "personalCfo": "Personal CFO • Lab",
+  "@personalCfo": {
+    "description": "Personal CFO title."
+  },
+  "chatConnectionError": "#### ⚡ Fail to connect to the CFO terminal...\n_Try again later!_",
+  "@chatConnectionError": {
+    "description": "Message to show when the user create a new CFO chat."
+  },
+  "chatEmpty": "Personal AI CFO connected sucessfully!\nAsk something right away...",
+  "@chatEmpty": {
+    "description": "Message to show when the user create a new CFO chat."
+  },
+  "timeAgoJustNow": "Just now",
+  "@timeAgoJustNow": {
+    "description": "Time ago formatter (just now)."
+  },
+  "timeAgoMin": "{m}m ago",
+  "@timeAgoMin": {
+    "description": "Time ago formatter (Minutes)."
+  },
+  "timeAgoHour": "{h}h ago",
+  "@timeAgoHour": {
+    "description": "Time ago formatter (Hour)."
+  },
+  "timeAgoYesterday": "Yesterday",
+  "@timeAgoYesterday": {
+    "description": "Time ago formatter (Yesterday)."
+  },
+  "timeAgoDay": "{d}d ago",
+  "@timeAgoDay": {
+    "description": "Time ago formatter (Day)."
+  },
+  "timeAgoWhen": "{y}/{m}/{d}",
+  "@timeAgoWhen": {
+    "description": "Time ago formatter (DateTime)."
+  },
+  "failedPurgeChatThread": "Failed to purge chat thread...",
+  "@failedPurgeChatThread": {
+    "description": "Failed to delete chat thread."
+  },
+  "deleteChatMessage": "Execute purge protocol on CFO chat thread?",
+  "@deleteChatMessage": {
+    "description": "Title to show on alert when deleting a chat thread"
+  },
+  "deleteChatNote": "All messages will be expurged.",
+  "@deleteChatNote": {
+    "description": "Message to show on alert when deleting a chat thread"
+  },
+  "aiThreads": "AI Threads",
+  "@aiThreads": {
+    "description": "AI threads title for tab."
+  },
+  "failUpdateThreadTitle": "Failed to update thread title...",
+  "@failUpdateThreadTitle": {
+    "description": "Message when some error happen when updating chat thread title."
+  },
+  "updateBucket": "Update bucket",
+  "@updateBucket": {
+    "description": "Dialog title when AI is updating a bucket."
+  },
+  "createBucket": "Create bucket",
+  "@createBucket": {
+    "description": "Dialog title when AI is creating a bucket."
+  },
+  "aiBucketMessage": "Name: {name}\nMin Value: {minValue}",
+  "@aiBucketMessage": {
+    "description": "Dialog message when AI is creating/updating a bucket."
+  },
+  "preview": "Preview",
+  "@preview": {
+    "description": "Preview label."
+  },
+  "context": "Context",
+  "@context": {
+    "description": "Context label."
+  },
+  "noCurrentPlan": "No current plan",
+  "@noCurrentPlan": {
+    "description": "There's no currently activated plan."
+  },
+  "contextMessage": "Plan name: {planName}\nBuckets: {bucketQty}\nHistory:\n{history}",
+  "@contextMessage": {
+    "description": "AI context message."
+  },
+  "contextHistory": "  • {date} -> {total}",
+  "@contextHistory": {
+    "description": "AI context message for history."
   }
 }

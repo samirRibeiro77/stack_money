@@ -20,7 +20,7 @@ dependencies:
   go_router: ^17.5.0
   firebase_core: ^4.13.0
   firebase_auth: ^6.5.7
-  google_sign_in: ^7.2.0
+  google_sign_in: ^6.2.1
   cloud_firestore: ^6.8.0
   fl_chart: ^1.2.0
   flutter_launcher_icons: ^0.14.4
@@ -50,6 +50,7 @@ flutter:
     - assets/images/app_icon.png
     - assets/images/app_icon_nobackground.png
     - assets/images/app_icon_safe.png
+    - assets/images/chat_background.png
 
 flutter_launcher_icons:
   android: "launcher_icon"

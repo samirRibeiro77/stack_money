@@ -1,0 +1,44 @@
+import 'package:flutter/material.dart';
+import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/widgets/cyber_markdown.dart';
+import 'package:stack_money/data/enum/action_status.dart';
+import 'package:stack_money/data/models/chat_message_model.dart';
+import 'package:stack_money/features/personal_cfo/widgets/ai_action_card.dart';
+
+class AiMessage extends StatelessWidget {
+  const AiMessage({
+    required this.msg,
+    required this.handleActionResponse,
+    super.key,
+  });
+
+  final ChatMessageModel msg;
+  final Function(String, ActionStatus) handleActionResponse;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSizes.sizedBoxLarge),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// Text message
+            CyberMarkdown(msg.text),
+
+            /// Action
+            if (msg.proposedAction != null) ...[
+              const SizedBox(height: AppSizes.sizedBoxSmall),
+              AiActionCard(
+                messageId: msg.id,
+                action: msg.proposedAction!,
+                handleActionResponse: handleActionResponse,
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}

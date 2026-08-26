@@ -954,6 +954,12 @@ abstract class AppLocalizations {
   /// **'VAULTS: Securing funds and digital sub-vaults...'**
   String get loadingBucket;
 
+  /// Loading chats data.
+  ///
+  /// In en, this message translates to:
+  /// **'AI: Syncing secure channels and AI financial insights...'**
+  String get loadingChats;
+
   /// Loading history data.
   ///
   /// In en, this message translates to:
@@ -1085,6 +1091,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Some details has changed'**
   String get planChangedValueDetails;
+
+  /// Hud label for main navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'HUD'**
+  String get hud;
+
+  /// Plans label for main navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans'**
+  String get plans;
+
+  /// AI label for main navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'AI'**
+  String get ai;
+
+  /// Buckets label for main navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Buckets'**
+  String get buckets;
+
+  /// Log label for main navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Log'**
+  String get log;
+
+  /// New chat with AI.
+  ///
+  /// In en, this message translates to:
+  /// **'New Chat'**
+  String get newChat;
+
+  /// Chat message hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask your CFO...'**
+  String get askCfo;
+
+  /// Reject AI proposal.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get reject;
+
+  /// Apply AI proposal.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply;
+
+  /// Pending action status.
+  ///
+  /// In en, this message translates to:
+  /// **'↺ Pending'**
+  String get pending;
+
+  /// Approved AI proposal.
+  ///
+  /// In en, this message translates to:
+  /// **'✓ Approved'**
+  String get approved;
+
+  /// Rejected AI proposal.
+  ///
+  /// In en, this message translates to:
+  /// **'✕ Rejected'**
+  String get rejected;
+
+  /// Personal CFO title.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal CFO • Lab'**
+  String get personalCfo;
+
+  /// Message to show when the user create a new CFO chat.
+  ///
+  /// In en, this message translates to:
+  /// **'#### ⚡ Fail to connect to the CFO terminal...\n_Try again later!_'**
+  String get chatConnectionError;
+
+  /// Message to show when the user create a new CFO chat.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal AI CFO connected sucessfully!\nAsk something right away...'**
+  String get chatEmpty;
+
+  /// Time ago formatter (just now).
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get timeAgoJustNow;
+
+  /// Time ago formatter (Minutes).
+  ///
+  /// In en, this message translates to:
+  /// **'{m}m ago'**
+  String timeAgoMin(Object m);
+
+  /// Time ago formatter (Hour).
+  ///
+  /// In en, this message translates to:
+  /// **'{h}h ago'**
+  String timeAgoHour(Object h);
+
+  /// Time ago formatter (Yesterday).
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get timeAgoYesterday;
+
+  /// Time ago formatter (Day).
+  ///
+  /// In en, this message translates to:
+  /// **'{d}d ago'**
+  String timeAgoDay(Object d);
+
+  /// Time ago formatter (DateTime).
+  ///
+  /// In en, this message translates to:
+  /// **'{y}/{m}/{d}'**
+  String timeAgoWhen(Object d, Object m, Object y);
+
+  /// Failed to delete chat thread.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to purge chat thread...'**
+  String get failedPurgeChatThread;
+
+  /// Title to show on alert when deleting a chat thread
+  ///
+  /// In en, this message translates to:
+  /// **'Execute purge protocol on CFO chat thread?'**
+  String get deleteChatMessage;
+
+  /// Message to show on alert when deleting a chat thread
+  ///
+  /// In en, this message translates to:
+  /// **'All messages will be expurged.'**
+  String get deleteChatNote;
+
+  /// AI threads title for tab.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Threads'**
+  String get aiThreads;
+
+  /// Message when some error happen when updating chat thread title.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update thread title...'**
+  String get failUpdateThreadTitle;
+
+  /// Dialog title when AI is updating a bucket.
+  ///
+  /// In en, this message translates to:
+  /// **'Update bucket'**
+  String get updateBucket;
+
+  /// Dialog title when AI is creating a bucket.
+  ///
+  /// In en, this message translates to:
+  /// **'Create bucket'**
+  String get createBucket;
+
+  /// Dialog message when AI is creating/updating a bucket.
+  ///
+  /// In en, this message translates to:
+  /// **'Name: {name}\nMin Value: {minValue}'**
+  String aiBucketMessage(Object minValue, Object name);
+
+  /// Preview label.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get preview;
+
+  /// Context label.
+  ///
+  /// In en, this message translates to:
+  /// **'Context'**
+  String get context;
+
+  /// There's no currently activated plan.
+  ///
+  /// In en, this message translates to:
+  /// **'No current plan'**
+  String get noCurrentPlan;
+
+  /// AI context message.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan name: {planName}\nBuckets: {bucketQty}\nHistory:\n{history}'**
+  String contextMessage(Object bucketQty, Object history, Object planName);
+
+  /// AI context message for history.
+  ///
+  /// In en, this message translates to:
+  /// **'  • {date} -> {total}'**
+  String contextHistory(Object date, Object total);
 }
 
 class _AppLocalizationsDelegate

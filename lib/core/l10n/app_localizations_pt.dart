@@ -480,6 +480,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'COFRES: Consolidando montantes e sub-cofres digitais...';
 
   @override
+  String get loadingChats =>
+      'AI: Sincronizando canais seguros e insights financeiros de IA...';
+
+  @override
   String get loadingHistory =>
       'RASTROS: Reconstituindo logs e histórico de transações na rede...';
 
@@ -555,4 +559,122 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get planChangedValueDetails => 'Alguns detalhes foram alterados';
+
+  @override
+  String get hud => 'HUD';
+
+  @override
+  String get plans => 'Planos';
+
+  @override
+  String get ai => 'IA';
+
+  @override
+  String get buckets => 'Caixa';
+
+  @override
+  String get log => 'Hist';
+
+  @override
+  String get newChat => 'Nova conversa';
+
+  @override
+  String get askCfo => 'Pergunte ao seu CFO...';
+
+  @override
+  String get reject => 'Rejeitar';
+
+  @override
+  String get apply => 'Aplicar';
+
+  @override
+  String get pending => '↺ Pendente';
+
+  @override
+  String get approved => '✓ Aprovado';
+
+  @override
+  String get rejected => '✕ Rejeitado';
+
+  @override
+  String get personalCfo => 'CFO Pessoal';
+
+  @override
+  String get chatConnectionError =>
+      '#### ⚡ Falha ao conectar com o terminal do CFO...\n_Tente novamente mais tarde!_';
+
+  @override
+  String get chatEmpty =>
+      'CFO Pessoal AI conectado com sucesso!\nPergunte algo...';
+
+  @override
+  String get timeAgoJustNow => 'Agora';
+
+  @override
+  String timeAgoMin(Object m) {
+    return '${m}m atrás';
+  }
+
+  @override
+  String timeAgoHour(Object h) {
+    return '${h}h atrás';
+  }
+
+  @override
+  String get timeAgoYesterday => 'Ontem';
+
+  @override
+  String timeAgoDay(Object d) {
+    return '${d}d atrás';
+  }
+
+  @override
+  String timeAgoWhen(Object d, Object m, Object y) {
+    return '$d/$m/$y';
+  }
+
+  @override
+  String get failedPurgeChatThread => 'Erro ao excluir conversa...';
+
+  @override
+  String get deleteChatMessage => 'Deseja deletar a conversa com o CFO?';
+
+  @override
+  String get deleteChatNote => 'Todas as mensagens serão deletadas.';
+
+  @override
+  String get aiThreads => 'CFO IA';
+
+  @override
+  String get failUpdateThreadTitle => 'Failed to update thread title...';
+
+  @override
+  String get updateBucket => 'Atualizar caixinha';
+
+  @override
+  String get createBucket => 'Criar caixinha';
+
+  @override
+  String aiBucketMessage(Object minValue, Object name) {
+    return 'Nome: $name\nValor minimo: $minValue';
+  }
+
+  @override
+  String get preview => 'Prévia';
+
+  @override
+  String get context => 'Contexto';
+
+  @override
+  String get noCurrentPlan => 'Sem plano ativo';
+
+  @override
+  String contextMessage(Object bucketQty, Object history, Object planName) {
+    return 'Nome do plano: $planName\nCaixinhas: $bucketQty\nHistórico:\n$history';
+  }
+
+  @override
+  String contextHistory(Object date, Object total) {
+    return '  • $date -> $total';
+  }
 }

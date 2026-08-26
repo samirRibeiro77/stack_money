@@ -28,7 +28,7 @@ class GlassPopupMenu<T extends StackMoneyPopupMenuItem> extends StatelessWidget 
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       padding: EdgeInsets.zero,
-      elevation: 0,
+      elevation: 1,
       icon: Icon(
         Icons.more_vert_rounded,
         color: iconColor,

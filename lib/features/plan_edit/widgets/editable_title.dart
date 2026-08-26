@@ -3,9 +3,17 @@ import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/theme/theme.dart';
 
 class EditableTitle extends StatelessWidget {
-  const EditableTitle(this.title, {required this.onSave, super.key});
+  const EditableTitle(
+    this.title, {
+    required this.onSave,
+    bool centerTitle = false,
+    this.removeUnderlineBorder = false,
+    super.key,
+  }) : textAlign = centerTitle ? TextAlign.center : TextAlign.left;
 
   final String title;
+  final TextAlign textAlign;
+  final bool removeUnderlineBorder;
   final ValueChanged<String> onSave;
 
   @override
@@ -16,6 +24,7 @@ class EditableTitle extends StatelessWidget {
       initialValue: title,
       onChanged: onSave,
       onFieldSubmitted: onSave,
+      textAlign: textAlign,
       textCapitalization: TextCapitalization.sentences,
       style: textTheme.titleMedium,
       decoration: InputDecoration(
@@ -23,8 +32,10 @@ class EditableTitle extends StatelessWidget {
         enabledBorder: InputBorder.none,
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: StackMoneyTheme.cyanNeon,
-            width: AppSizes.min,
+            color: removeUnderlineBorder
+                ? Colors.transparent
+                : StackMoneyTheme.cyanNeon,
+            width: removeUnderlineBorder ? 0 : AppSizes.min,
           ),
         ),
         filled: false,

@@ -110,7 +110,7 @@ class TelemetryLineChart extends StatelessWidget {
                 horizontal: AppSizes.x7,
                 vertical: AppSizes.x4,
               ),
-              tooltipRoundedRadius: AppSizes.navBarRadius,
+              tooltipBorderRadius: BorderRadius.circular(AppSizes.navBarRadius),
               // Quase zero para cantos vivos e retos
               getTooltipItems: (touchedSpots) {
                 return touchedSpots.map((spot) {

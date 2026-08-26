@@ -26,8 +26,8 @@ class AppTypography {
   static const double navBar = 7.0;
 
   // --- Font Weights ---
-  static const FontWeight weightBold = FontWeight.w700;
-  static const FontWeight weightMedium = FontWeight.w500;
+  static const FontWeight weightBold = FontWeight.w800;
+  static const FontWeight weightMedium = FontWeight.w600;
   static const FontWeight weightNormal = FontWeight.w400;
 
   // --- Font Spacing ---

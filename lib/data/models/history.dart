@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:stack_money/core/extension/map_extension.dart';
+import 'package:stack_money/core/helpers/timestamp_parser.dart';
 import 'package:stack_money/data/helper/model_key.dart';
 import 'package:stack_money/data/models/transaction.dart';
 import 'package:uuid/uuid.dart';
@@ -35,8 +36,8 @@ class History {
 
   factory History.fromJson(Map<String, Object?>? json, {String? documentId}) {
     return History._(
-      documentId ?? json?[ModelKey.id] as String? ?? '',
-      date: json?[ModelKey.date] as Timestamp? ?? Timestamp.now(),
+      documentId ?? json?[ModelKey.id] as String? ?? const Uuid().v4(),
+      date: TimestampParser.fromJson(json?[ModelKey.date]),
       transactions:
           json?.decodeList(ModelKey.transactions, Transaction.fromJson) ?? [],
       total: (json?[ModelKey.total] as num?)?.toDouble() ?? 0,

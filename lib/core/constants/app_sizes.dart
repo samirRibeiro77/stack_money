@@ -18,6 +18,7 @@ class AppSizes {
   static const double x12 = min * 12;
   static const double x16 = min * 16;
   static const double x17 = min * 17;
+  static const double x18 = min * 18;
   static const double x20 = min * 20;
   static const double x24 = min * 24;
   static const double x26 = min * 26;
@@ -71,4 +72,13 @@ class AppSizes {
   static const double containerMedium = 220;
   static const double containerSmall = 110;
   static const double containerTiny = 55;
+
+  /// --- AI Chat ---
+  static const double cfoAppBarBackButton = 21.0;
+  static const double cfoAppBarActionButton = 22.0;
+  static const double cfoAppBarHeight = 40.0;
+  static const double cfoSendButton = 31.0;
+  static const double cfoSendBarHeight = 50.0;
+  static const double cfoKeyboardOpen = 5.0;
+  static const double cfoKeyboardClosed = cfoKeyboardOpen * 3;
 }

@@ -53,7 +53,7 @@ class InflowSection extends StatelessWidget {
               if (!isExpand) return SizedBox.shrink();
 
               return IgnorePointer(
-                ignoring: plan.isActive,
+                ignoring: plan.blockEdit,
                 child: Column(
                   children: [
                     const Divider(color: StackMoneyTheme.background, height: 1),
@@ -71,7 +71,7 @@ class InflowSection extends StatelessWidget {
                             ),
                             decoration: StackMoneyTheme.inputDecoration(
                               l10n.baseSalary,
-                              readOnly: plan.isActive,
+                              readOnly: plan.blockEdit,
                             ),
                             inputFormatters: [MoneyInputFormatter()],
                             onChanged: (value) => onBaseUpdate(
@@ -90,7 +90,7 @@ class InflowSection extends StatelessWidget {
                             return InflowSectionRow(
                               row,
                               index: index,
-                              isReadOnly: plan.isActive,
+                              isReadOnly: plan.blockEdit,
                               isLast: isLast,
                               absVal: absVal,
                               onUpdate: onUpdate,

@@ -27,9 +27,9 @@ class OutflowRow {
     );
   }
 
-  factory OutflowRow.fromJson(Map<String, Object?>? json) {
+  factory OutflowRow.fromJson(Map<String, Object?>? json, {String? id}) {
     return OutflowRow._(
-      json?[ModelKey.id] as String? ?? '',
+      id ?? json?[ModelKey.id] as String? ?? const Uuid().v4(),
       name: json?[ModelKey.name] as String? ?? '',
       type: DeductionType.fromJson(json?[ModelKey.type] as String? ?? ''),
       value: (json?[ModelKey.value] as num? ?? 0.0).toDouble(),
