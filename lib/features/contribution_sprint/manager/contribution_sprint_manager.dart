@@ -229,15 +229,16 @@ class ContributionSprintManager {
         message: messageText,
         note: noteText,
         color: StackMoneyTheme.cyanNeon,
-        onDeny: () => Navigator.of(dialogContext).pop(),
+        onDeny: () => dialogContext.pop(),
         onConfirm: () {
-          Navigator.of(dialogContext).pop();
+          dialogContext.pop();
           _executeFirebaseCommit(
             context,
             compiledTransactions,
             netWorthTotal,
             netWorthLiquidity,
           );
+          context.pop();
         },
       ),
     );
