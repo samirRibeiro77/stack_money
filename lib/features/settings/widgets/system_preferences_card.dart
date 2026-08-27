@@ -24,6 +24,7 @@ class SystemPreferencesCard extends StatelessWidget {
               return SettingsSwitchTile(
                 title: l10n.securityModeTitle,
                 systemCode: l10n.securityModeCode,
+                icon: Icons.security_rounded,
                 value: boot,
                 onChanged: manager.toggleSecurityMode,
               );
@@ -35,6 +36,7 @@ class SystemPreferencesCard extends StatelessWidget {
               return SettingsSwitchTile(
                 title: l10n.cardExpandTitle,
                 systemCode: l10n.cardExpandCode,
+                icon: Icons.expand_rounded,
                 value: card,
                 onChanged: manager.toggleCardExpand,
               );

@@ -73,7 +73,7 @@ class FirebaseHistoryRepository extends BaseFirebaseRepository {
     SmLogger.debug('Watching history', payload: {});
 
     return _collection
-        .orderBy(ModelKey.date, descending: false)
+        .orderBy(ModelKey.date, descending: true)
         .snapshots()
         .map((snapshot) {
           SmLogger.info(

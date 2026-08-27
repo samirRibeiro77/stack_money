@@ -40,8 +40,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return ValueListenableBuilder(
       valueListenable: AppCoordinator.instance.history,
-      builder: (_, historyList, _) {
-        historyList.sort((a, b) => a.date.compareTo(b.date));
+      builder: (_, fbHistory, _) {
+        final history = fbHistory;
+        history.sort((a, b) => a.date.compareTo(b.date));
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       SizedBox(
                         height: AppSizes.containerMedium,
                         child: TelemetryLineChart(
-                          rawHistoryData: historyList,
+                          rawHistoryData: history,
                           filterState: currentFilter,
                         ),
                       ),
@@ -70,7 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       TelemetryFilterBar(
                         currentState: currentFilter,
                         firstDate:
-                            historyList.firstOrNull?.date.toDate() ??
+                            history.firstOrNull?.date.toDate() ??
                             DateTime.now(),
                         onFilterChanged: _manager.updateChartFilter,
                       ),
@@ -82,7 +83,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: AppSizes.x12),
             ValueListenableBuilder(
               valueListenable: AppCoordinator.instance.buckets,
-              builder: (_, buckets, _) {
+              builder: (_, fbBuckets, _) {
+                final buckets = fbBuckets;
+
                 return ValueListenableBuilder(
                   valueListenable: AppCoordinator.instance.user,
                   builder: (_, user, _) {
@@ -165,7 +168,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 return DashboardBucketCard(
                                   key: ValueKey(param.id),
                                   parameter: param,
-                                  historyList: historyList,
+                                  historyList: history,
                                   isExpanded: isCardExpanded,
                                   onHeaderTap: () =>
                                       _manager.toggleBucketExpansion(param.id),

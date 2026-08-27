@@ -27,7 +27,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
         const SizedBox(height: AppSizes.sizedBoxMedium),
         ValueListenableBuilder(
           valueListenable: AppCoordinator.instance.history,
-          builder: (_, history, _) {
+          builder: (_, fbHistory, _) {
+            final history = fbHistory;
             history.sort((a, b) => b.date.compareTo(a.date));
 
             return Column(

@@ -3,7 +3,7 @@ import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/widgets/glassmorphism_effect.dart'; // 🔥 REUTILIZAÇÃO DO SEU COMPONENTE COMPATÍVEL
+import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 
 class DashboardSortBottomSheet extends StatelessWidget {

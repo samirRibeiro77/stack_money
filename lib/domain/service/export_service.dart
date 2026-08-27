@@ -61,13 +61,13 @@ class ExportService {
   }
 
   Future<AiContext> extractDataToAI() async {
-    final history = AppCoordinator.instance.history.value.reversed.toList();
+    final fbHistory = AppCoordinator.instance.history.value;
+    fbHistory.sort((a, b) => b.date.compareTo(a.date));
 
     return AiContext(
-      _convertDataToExport,
       currentPlan: AppCoordinator.instance.currentPlan.value,
       buckets: AppCoordinator.instance.buckets.value,
-      history: history.getRange(0, 3).toList(),
+      history: AppCoordinator.instance.history.value,
     );
   }
 
@@ -82,7 +82,7 @@ class ExportService {
     List<Object?>? jsonList,
   }) {
     if (jsonMap == null && jsonList == null) {
-      throw Exception('Must fill one of the two (jsonMap || jsonList');
+      throw Exception('Must fill one of the two (jsonMap || jsonList)');
     }
 
     return jsonEncode(

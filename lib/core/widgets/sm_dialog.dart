@@ -114,7 +114,9 @@ class SmDialog extends StatelessWidget {
                   ],
 
                   /// Confirm
-                  SmChipButton(l10n.confirm, onTap: onConfirm, color: color),
+                  if (onConfirm != null) ...[
+                    SmChipButton(l10n.confirm, onTap: onConfirm, color: color),
+                  ],
                 ],
               ),
             ],

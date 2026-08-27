@@ -154,7 +154,7 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
         })
         .catchError((e, stack) {
           throw StackMoneyException(
-            message: 'Background update failed',
+            message: 'Update CFO thread title failed',
             scope: ExceptionScope.database,
             payload: {
               ModelKey.title: title,
@@ -187,7 +187,7 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
       });
     } catch (e, stack) {
       throw StackMoneyException(
-        message: 'Background update failed',
+        message: 'Save ${message.sender.name} message failed',
         scope: ExceptionScope.database,
         payload: {'threadId': threadId, 'message': message.toJson()},
         exception: e as Exception,
@@ -209,7 +209,7 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
           );
 
           return snapshot.docs
-              .map((doc) => ChatThreadModel.fromJson(doc.data()))
+              .map((doc) => ChatThreadModel.fromJson(doc.data(), id: doc.id))
               .toList();
         })
         .handleError((e, stack) {

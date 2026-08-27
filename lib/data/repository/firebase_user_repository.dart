@@ -18,7 +18,10 @@ class FirebaseUserRepository extends BaseFirebaseRepository {
   Future<void> save(UserModel user, {bool savePrefs = false}) async {
     SmLogger.debug(
       'Saving user',
-      payload: {'savePrefs': savePrefs, 'user': user.toJson(keepPrefs: true)},
+      payload: {
+        'savePrefs': savePrefs,
+        'user': user.toJson(keepPrefs: savePrefs),
+      },
     );
 
     try {

@@ -8,12 +8,14 @@ import 'package:stack_money/core/theme/theme.dart';
 class SettingsSwitchTile extends StatelessWidget {
   final String title;
   final String systemCode;
+  final IconData icon;
   final bool value;
   final ValueChanged<bool> onChanged;
 
   const SettingsSwitchTile({
     required this.title,
     required this.systemCode,
+    required this.icon,
     required this.value,
     required this.onChanged,
     super.key,
@@ -50,6 +52,14 @@ class SettingsSwitchTile extends StatelessWidget {
             ),
           ),
           Switch.adaptive(
+            thumbIcon: WidgetStateProperty.resolveWith<Icon?>((
+              Set<WidgetState> states,
+            ) {
+              if (states.contains(WidgetState.selected)) {
+                return Icon(icon, color: StackMoneyTheme.cyanNeon);
+              }
+              return Icon(Icons.close, color: StackMoneyTheme.surface);
+            }),
             value: value,
             activeTrackColor: StackMoneyTheme.cyanNeon.withValues(alpha: 0.75),
             activeThumbColor: StackMoneyTheme.surface,

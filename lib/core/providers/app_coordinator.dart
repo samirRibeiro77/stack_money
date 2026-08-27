@@ -148,8 +148,8 @@ class AppCoordinator {
     _historySubscription = _historyService.watch().listen(
       (historyList) {
         _history.value = historyList;
-        if (_latestHistory.value?.date != historyList.lastOrNull?.date) {
-          _latestHistory.value = historyList.lastOrNull;
+        if (_latestHistory.value?.date != historyList.firstOrNull?.date) {
+          _latestHistory.value = historyList.firstOrNull;
         }
       },
       onError: (error) {

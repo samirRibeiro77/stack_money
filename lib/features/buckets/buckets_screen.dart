@@ -32,9 +32,7 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
 
     return ValueListenableBuilder(
       valueListenable: AppCoordinator.instance.buckets,
-      builder: (_, buckets, _) {
-        buckets.sort((a, b) => a.position.compareTo(b.position));
-
+      builder: (_, fbBuckets, _) {
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -54,11 +52,14 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
               ValueListenableBuilder(
                 valueListenable: _manager.expandedIdsNotifier,
                 builder: (_, expandedIds, _) {
+                  final buckets = fbBuckets;
+                  buckets.sort((a, b) => a.position.compareTo(b.position));
+
                   return SmReorderableList(
                     items: buckets,
                     onReorder: (oldIdx, newIdx) => _manager
                         .reorderFilteredBuckets(buckets, oldIdx, newIdx),
-                    itemBuilder: (_, bucket, index) {
+                    itemBuilder: (_, bucket, _) {
                       final isCardExpanded = expandedIds.contains(bucket.id);
                       return BucketCard(
                         key: ValueKey(bucket.id),
