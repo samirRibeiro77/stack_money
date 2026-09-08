@@ -117,6 +117,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
               builder: (_, isStreaming, _) {
                 return SendMessage(
                   controller: _manager.messageController,
+                  onChanged: _manager.draftMessage,
                   isStreaming: isStreaming,
                   onSend: _manager.sendMessage,
                 );

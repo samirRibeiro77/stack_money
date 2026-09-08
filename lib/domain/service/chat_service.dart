@@ -9,10 +9,12 @@ import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/data/repository/firebase_cfo_chat_repository.dart';
+import 'package:stack_money/data/repository/shared_preferences_repository.dart';
 
 class ChatManagementService {
-  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
-  final FirebaseCfoChatRepository _repository = FirebaseCfoChatRepository();
+  final _remoteConfig = FirebaseRemoteConfig.instance;
+  final _repository = FirebaseCfoChatRepository();
+  final _localRepo = SharedPreferencesRepository();
 
   /// Centralized instance of GenerativeModel
   GenerativeModel _getGenerativeModel(String systemInstruction) {
@@ -251,6 +253,46 @@ class ChatManagementService {
           scope: ExceptionScope.service,
           exception: e as Exception,
           payload: {'threadId': threadId, 'message': message.toJson()},
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
+
+  /// Draft a message on local storage
+  Future<Result<void>> draftMessage(String threadId, String text) async {
+    try {
+      _localRepo.saveDraft(threadId, text);
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error drafting message',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: {'threadId': threadId, 'text': text},
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
+
+  /// Get draft message from local storage
+  Future<Result<String?>> getDraft(String threadId) async {
+    try {
+      final result = await _localRepo.getDraft(threadId);
+      return Success(result);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error drafting message',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: {'threadId': threadId},
           stackTrace: stack,
         ),
       );

@@ -40,12 +40,12 @@ class UserService {
   Future<Result<UserModel>> fetchUserData() async {
     try {
       final remoteUser = await _remoteRepo.get();
-      final localPrefs = await _localRepo.get();
+      final localPrefs = await _localRepo.getPreferences();
 
       if (localPrefs != null) {
         return Success(remoteUser.copyWith(preferences: localPrefs));
       } else {
-        await _localRepo.save(remoteUser.preferences);
+        await _localRepo.savePreferences(remoteUser.preferences);
         return Success(remoteUser);
       }
     } on StackMoneyException catch (e) {
@@ -64,7 +64,7 @@ class UserService {
 
   Future<Result<UserPreferencesModel>> fetchPreferences() async {
     try {
-      final localPrefs = await _localRepo.get();
+      final localPrefs = await _localRepo.getPreferences();
       if (localPrefs != null) {
         return Success(localPrefs);
       }
@@ -124,7 +124,7 @@ class UserService {
         preferences: newPreferences,
       );
 
-      await _localRepo.save(newPreferences);
+      await _localRepo.savePreferences(newPreferences);
       await _remoteRepo.save(updatedUser, savePrefs: true);
 
       return Success(null);
@@ -171,7 +171,7 @@ class UserService {
     try {
       AppCoordinator.instance.clearAndCloseListeners();
 
-      await _localRepo.clear();
+      await _localRepo.clearPreferences();
       await _remoteRepo.signOut();
 
       return Success(null);

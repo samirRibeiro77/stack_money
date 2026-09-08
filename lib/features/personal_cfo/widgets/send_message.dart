@@ -8,10 +8,12 @@ class SendMessage extends StatelessWidget {
   final TextEditingController controller;
   final bool isStreaming;
   final VoidCallback onSend;
+  final Function(String) onChanged;
 
   const SendMessage({
     required this.controller,
     required this.onSend,
+  required this.onChanged,
     this.isStreaming = false,
     super.key,
   });
@@ -35,6 +37,7 @@ class SendMessage extends StatelessWidget {
               containerHeight: null,
               child: TextField(
                 controller: controller,
+                onChanged: onChanged,
                 keyboardType: TextInputType.multiline,
                 textCapitalization: TextCapitalization.sentences,
                 minLines: 1,

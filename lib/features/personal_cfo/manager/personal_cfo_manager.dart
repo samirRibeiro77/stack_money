@@ -48,13 +48,14 @@ class PersonalCfoManager {
     messageController = TextEditingController(text: '');
 
     _cfoService.initRemoteConfig();
-    _getMessages(_thread.id);
-    _listenToMessages(_thread.id);
+    _getMessages();
+    _listenToMessages();
+    _recoveryDraft();
   }
 
-  Future<void> _getMessages(String threadId) async {
+  Future<void> _getMessages() async {
     try {
-      final messagesResult = await _cfoService.fetchMessages(threadId);
+      final messagesResult = await _cfoService.fetchMessages(_thread.id);
       final messages = messagesResult.getOrThrow();
       messagesNotifier.value = messages;
       _scrollToBottom();
@@ -69,7 +70,7 @@ class PersonalCfoManager {
           extra: StackMoneyException(
             message: 'Error fetching thread messages',
             scope: ExceptionScope.business,
-            payload: {'threadId': threadId},
+            payload: {'threadId': _thread.id},
             exception: e as Exception,
             stackTrace: stack,
           ),
@@ -78,13 +79,28 @@ class PersonalCfoManager {
     }
   }
 
-  void _listenToMessages(String threadId) {
-    _cfoService.getMessagesStream(threadId).listen((remoteMessages) {
+  void _listenToMessages() {
+    _cfoService.getMessagesStream(_thread.id).listen((remoteMessages) {
       if (!_isStreaming.value) {
         messagesNotifier.value = remoteMessages;
         _scrollToBottom();
       }
     });
+  }
+
+  /// Get draft if exists
+  void _recoveryDraft() {
+    _cfoService.getDraft(_thread.id).then((result) {
+      result.fold(
+        onSuccess: (text) => messageController.text = text ?? '',
+        onFailure: (_) => messageController.text = '',
+      );
+    });
+  }
+
+  /// Draft message saving locally
+  void draftMessage(String text) {
+    _cfoService.draftMessage(_thread.id, text);
   }
 
   /// Send a new message on the thread
@@ -129,7 +145,7 @@ class PersonalCfoManager {
   Future<void> _initializeFirstMessageThread(String firstMessage) async {
     _thread = _thread.copyWith(lastMessage: firstMessage);
     await _cfoService.saveThread(_thread);
-    _listenToMessages(_thread.id);
+    _listenToMessages();
   }
 
   /// Add user message on the list and save on database
