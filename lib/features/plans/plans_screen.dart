@@ -51,7 +51,9 @@ class _PlansScreenState extends State<PlansScreen> {
 
     return ValueListenableBuilder(
       valueListenable: AppCoordinator.instance.plans,
-      builder: (_, plans, _) {
+      builder: (_, fbPlans, _) {
+        final plans = List.of(fbPlans);
+
         return ValueListenableBuilder<bool>(
           valueListenable: _manager.showArchivedNotifier,
           builder: (_, showArchived, _) {

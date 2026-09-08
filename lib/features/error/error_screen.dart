@@ -23,7 +23,7 @@ class ErrorScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.close_rounded, size: AppSizes.x12),
+          icon: Icon(Icons.close_rounded, size: AppSizes.appBarIcon),
           onPressed: () => SystemNavigator.pop(),
         ),
         title: Text(

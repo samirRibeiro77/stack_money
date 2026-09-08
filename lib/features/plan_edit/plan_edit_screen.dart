@@ -93,10 +93,29 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
     }
   }
 
+  String _statusLabel(
+    AppLocalizations l10n, {
+    bool isPreview = false,
+    bool isActive = false,
+  }) {
+    return isPreview
+        ? l10n.preview
+        : isActive
+        ? l10n.active
+        : l10n.setActive;
+  }
+
+  Color _statusColor({bool isPreview = false, bool isActive = false}) {
+    return isPreview
+        ? StackMoneyTheme.magentaNeon
+        : isActive
+        ? StackMoneyTheme.cyanNeon
+        : StackMoneyTheme.mutedGrey;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final textTheme = Theme.of(context).textTheme;
 
     return PopScope(
       canPop: false,
@@ -137,17 +156,28 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
               surfaceTintColor: StackMoneyTheme.carbonGrey,
               actions: [
                 SmChipButton(
-                  currentPlan.isActive ? l10n.active : l10n.setActive,
-                  color: currentPlan.isActive
-                      ? StackMoneyTheme.cyanNeon
-                      : StackMoneyTheme.mutedGrey,
-                  onTap: () async => await _manager.togglePlanActivation(),
+                  _statusLabel(
+                    l10n,
+                    isPreview: currentPlan.isPreview,
+                    isActive: currentPlan.isActive,
+                  ),
+                  color: _statusColor(
+                    isPreview: currentPlan.isPreview,
+                    isActive: currentPlan.isActive,
+                  ),
+                  onTap: currentPlan.isPreview
+                      ? null
+                      : () async => await _manager.togglePlanActivation(),
                 ),
 
-                GlassPopupMenu<PlanEditActions>(
-                  onSelected: _handleAction,
-                  items: PlanEditActions.values,
-                ),
+                if (!currentPlan.isPreview) ...[
+                  GlassPopupMenu<PlanEditActions>(
+                    onSelected: _handleAction,
+                    items: PlanEditActions.values,
+                  ),
+                ] else ...[
+                  SizedBox(width: AppSizes.sizedBoxMedium),
+                ],
               ],
             ),
             body: Padding(

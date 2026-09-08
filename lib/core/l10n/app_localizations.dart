@@ -1215,7 +1215,7 @@ abstract class AppLocalizations {
   /// Time ago formatter (DateTime).
   ///
   /// In en, this message translates to:
-  /// **'{y}/{m}/{d}'**
+  /// **'{m}/{d}/{y}'**
   String timeAgoWhen(Object d, Object m, Object y);
 
   /// Failed to delete chat thread.

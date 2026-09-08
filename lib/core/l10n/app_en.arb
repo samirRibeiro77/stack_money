@@ -740,7 +740,7 @@
   "@timeAgoDay": {
     "description": "Time ago formatter (Day)."
   },
-  "timeAgoWhen": "{y}/{m}/{d}",
+  "timeAgoWhen": "{m}/{d}/{y}",
   "@timeAgoWhen": {
     "description": "Time ago formatter (DateTime)."
   },

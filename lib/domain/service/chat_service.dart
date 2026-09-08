@@ -14,7 +14,7 @@ class ChatManagementService {
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final FirebaseCfoChatRepository _repository = FirebaseCfoChatRepository();
 
-  /// Método reutilizável para instanciação centralizada do GenerativeModel
+  /// Centralized instance of GenerativeModel
   GenerativeModel _getGenerativeModel(String systemInstruction) {
     final apiKey = _remoteConfig.getString(FirebaseKey.geminiApiKey);
     final modelName = _remoteConfig.getString(FirebaseKey.cfoModelName);
@@ -63,7 +63,7 @@ class ChatManagementService {
     }
   }
 
-  /// Inicializa e sincroniza as configurações do Remote Config
+  /// Init and Sync RemoteConfig
   Future<Result<void>> initRemoteConfig() async {
     try {
       await _remoteConfig.setConfigSettings(
@@ -88,7 +88,7 @@ class ChatManagementService {
     }
   }
 
-  /// Dispara a pergunta com streaming contínuo de resposta e contexto vivo
+  /// Stream the AI response
   Stream<String> generateCfoResponseStream({
     required String userPrompt,
     required String liveContextJson,
@@ -102,7 +102,7 @@ class ChatManagementService {
     /// Instruction
     final fullSystemInstruction = '$baseSystemPrompt $liveContextJson';
 
-    /// Instanciação via método reutilizável
+    /// Init
     final model = _getGenerativeModel(fullSystemInstruction);
 
     /// Limit history
@@ -139,25 +139,26 @@ class ChatManagementService {
     }
   }
 
+  /// Generate CFO chat title
   Future<Result<String>> generateTitle(
     AppLocalizations l10n, {
-    required String userPrompt,
-    required String aiResponse,
+    required List<ChatMessageModel> messages,
   }) async {
     try {
       final systemPrompt = _remoteConfig.getString(
         FirebaseKey.cfoTitleGenerator,
       );
 
-      /// Instanciação via método reutilizável
       final model = _getGenerativeModel(systemPrompt);
 
       final response = await model.generateContent([
-        Content.text('User: $userPrompt\nAI: $aiResponse'),
+        Content.text(
+          '# Messages ${messages.map((m) => '\n- ${m.sender.name}: ${m.text}').toList()}',
+        ),
       ]);
 
       final title = response.text?.trim() ?? '';
-      return Success(title.isNotEmpty ? title : 'l10n.newChat');
+      return Success(title.isNotEmpty ? title : l10n.newChat);
     } on StackMoneyException catch (e) {
       return Failure(e);
     } catch (e, stack) {
@@ -166,14 +167,14 @@ class ChatManagementService {
           message: 'Error executing generating title',
           scope: ExceptionScope.service,
           exception: e as Exception,
-          payload: {'userPrompt': userPrompt, 'aiResponse': aiResponse},
+          payload: {'Messages': messages},
           stackTrace: stack,
         ),
       );
     }
   }
 
-  /// Salva ou atualiza a thread principal no Firestore
+  /// Save or Update main Tread
   Future<Result<void>> saveThread(ChatThreadModel thread) async {
     try {
       await _repository.saveThread(thread);
@@ -193,6 +194,7 @@ class ChatManagementService {
     }
   }
 
+  /// Delete thread
   Future<Result<void>> deleteThread(String id) async {
     try {
       await _repository.deleteThread(id);
@@ -212,7 +214,7 @@ class ChatManagementService {
     }
   }
 
-  /// Atualiza apenas o título da thread
+  /// Update CFO Thread title
   Future<Result<void>> updateThreadTitle(String threadId, String title) async {
     try {
       await _repository.updateThreadTitle(threadId, title);
@@ -232,7 +234,7 @@ class ChatManagementService {
     }
   }
 
-  /// Salva uma nova mensagem dentro da subcoleção de mensagens da thread
+  /// Save a new message on thread
   Future<Result<void>> saveMessage(
     String threadId,
     ChatMessageModel message,
@@ -255,12 +257,12 @@ class ChatManagementService {
     }
   }
 
-  /// Ouve em tempo real todas as conversas não arquivadas do usuário
+  /// Listen to all non-archived threads
   Stream<List<ChatThreadModel>> watchThreads() {
     return _repository.watchThreads();
   }
 
-  /// Ouve as mensagens de uma thread específica em ordem cronológica
+  /// Listen to a single thread chronologically
   Stream<List<ChatMessageModel>> getMessagesStream(String threadId) {
     return _repository.watchMessages(threadId);
   }

@@ -59,7 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 leading: IconButton(
                   icon: Icon(
                     Icons.arrow_back_ios_new_rounded,
-                    size: AppSizes.x12,
+                    size: AppSizes.appBarIcon,
                   ),
                   onPressed: () async {
                     final canLeave = await _manager.handlePopScope(context);

@@ -33,9 +33,13 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
     return ValueListenableBuilder(
       valueListenable: AppCoordinator.instance.buckets,
       builder: (_, fbBuckets, _) {
+        final buckets = List.of(fbBuckets);
+        buckets.sort((a, b) => a.position.compareTo(b.position));
+
         return SingleChildScrollView(
           child: Column(
             children: [
+              /// Header
               ExpandableHeader(
                 title: l10n.bucketsConfig,
                 validation: _manager.expandState,
@@ -43,16 +47,17 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
               ),
               const SizedBox(height: AppSizes.sizedBoxMedium),
 
+              /// New bucket
               CardInitializeSlot(
                 l10n.newBucket,
                 onTap: _manager.initializeNewBucketSlot,
               ),
               const SizedBox(height: AppSizes.sizedBoxSmall),
 
+              /// List of buckets
               ValueListenableBuilder(
                 valueListenable: _manager.expandedIdsNotifier,
                 builder: (_, expandedIds, _) {
-                  final buckets = fbBuckets;
                   buckets.sort((a, b) => a.position.compareTo(b.position));
 
                   return SmReorderableList(

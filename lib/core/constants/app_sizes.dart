@@ -81,4 +81,7 @@ class AppSizes {
   static const double cfoSendBarHeight = 50.0;
   static const double cfoKeyboardOpen = 5.0;
   static const double cfoKeyboardClosed = cfoKeyboardOpen * 3;
+
+  /// --- Widgets ---
+  static const double appBarIcon = x10;
 }

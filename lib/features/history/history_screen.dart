@@ -28,7 +28,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         ValueListenableBuilder(
           valueListenable: AppCoordinator.instance.history,
           builder: (_, fbHistory, _) {
-            final history = fbHistory;
+            final history = List.of(fbHistory);
             history.sort((a, b) => b.date.compareTo(a.date));
 
             return Column(

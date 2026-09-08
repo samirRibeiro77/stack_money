@@ -87,7 +87,7 @@ class PersonalCfoManager {
     });
   }
 
-  /// Dispara o fluxo de envio de mensagem e processamento da resposta da IA
+  /// Send a new message on the thread
   Future<void> sendMessage() async {
     final cleanText = messageController.text.trim();
     if (cleanText.isEmpty || _isStreaming.value) return;
@@ -115,7 +115,6 @@ class PersonalCfoManager {
         aiPlaceholder: aiPlaceholder,
         rawResponseText: rawResponse,
         userPrompt: cleanText,
-        isFirstMessage: isFirstMessage,
         l10n: l10n,
       );
     } catch (_) {
@@ -126,14 +125,14 @@ class PersonalCfoManager {
     }
   }
 
-  /// Configura a thread inicial no Firestore na primeira troca de mensagens
+  /// Configure a new Thread on the first message exchange
   Future<void> _initializeFirstMessageThread(String firstMessage) async {
     _thread = _thread.copyWith(lastMessage: firstMessage);
     await _cfoService.saveThread(_thread);
     _listenToMessages(_thread.id);
   }
 
-  /// Cria, exibe na UI e persiste a mensagem do usuário
+  /// Add user message on the list and save on database
   Future<void> _addUserMessage(String text) async {
     final userMessage = ChatMessageModel(
       sender: MessageSender.user,
@@ -144,7 +143,7 @@ class PersonalCfoManager {
     await _cfoService.saveMessage(_thread.id, userMessage);
   }
 
-  /// Insere a mensagem placeholder da IA na tela para animação de digitação
+  /// AI message placeholder to animate the screen
   ChatMessageModel _addAiPlaceholderMessage() {
     final aiMessage = ChatMessageModel(sender: MessageSender.cfoAi, text: '');
     messagesNotifier.value = [...messagesNotifier.value, aiMessage];
@@ -152,7 +151,7 @@ class PersonalCfoManager {
     return aiMessage;
   }
 
-  /// Processa a stream contínua de respostas vinda do serviço do Gemini
+  /// Stream AI response
   Future<String> _consumeCfoStream({
     required String userPrompt,
     required String aiMessageId,
@@ -188,15 +187,14 @@ class PersonalCfoManager {
     }
   }
 
-  /// Finaliza a resposta da IA: limpa as tags JSON, anexa a ação e persiste tudo
+  /// Finalize AI respose: Clear JSON, add action and save on database
   Future<void> _finalizeAiResponse({
     required ChatMessageModel aiPlaceholder,
     required String rawResponseText,
     required String userPrompt,
-    required bool isFirstMessage,
     required AppLocalizations l10n,
   }) async {
-    // Executa o parser da ação estruturada (<<<PROPOSED_ACTION>>>)
+    /// Parse action (<<<PROPOSED_ACTION>>>)
     final parsed = ActionParser.parse(rawResponseText);
 
     final finalAiMessage = aiPlaceholder.copyWith(
@@ -204,7 +202,7 @@ class PersonalCfoManager {
       proposedAction: parsed.action,
     );
 
-    // Atualiza a lista local com o texto limpo e a ação vinculada
+    /// Update list with clear text
     final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
     final aiIndex = updatedList.indexWhere((m) => m.id == aiPlaceholder.id);
     if (aiIndex != -1) {
@@ -212,23 +210,26 @@ class PersonalCfoManager {
       messagesNotifier.value = updatedList;
     }
 
-    // Persiste a mensagem pronta no Firestore
+    /// Save on database
     await _cfoService.saveMessage(_thread.id, finalAiMessage);
 
-    // Gera o título da conversa se for o primeiro fluxo
-    if (isFirstMessage) {
-      final generatedTitleResult = await _cfoService.generateTitle(
-        l10n,
-        userPrompt: userPrompt,
-        aiResponse: parsed.cleanText,
-      );
+    /// Generate title with Thread doesn't have one
+    if (_thread.title.isEmpty) {
+      try {
+        final generatedTitleResult = await _cfoService.generateTitle(
+          l10n,
+          messages: messages,
+        );
 
-      final generatedTitle = generatedTitleResult.getOrThrow();
-      changeTitle(generatedTitle);
+        final generatedTitle = generatedTitleResult.getOrThrow();
+        changeTitle(generatedTitle);
+      } catch (_) {
+        changeTitle(l10n.newChat);
+      }
     }
   }
 
-  /// Trata erros durante a transmissão exibindo mensagem amigável no chat
+  /// Handle errors
   void _handleSendMessageError(String errorText) {
     if (messagesNotifier.value.isNotEmpty) {
       final lastMessage = messagesNotifier.value.last;
@@ -280,7 +281,7 @@ class PersonalCfoManager {
     }
   }
 
-  /// Executa a sugestão feita pelo CFO e marca a ação como aplicada
+  /// Exec proposed action from AI
   Future<void> _acceptProposedAction(ChatMessageModel message) async {
     final action = message.proposedAction;
     if (action == null) return;
@@ -288,13 +289,13 @@ class PersonalCfoManager {
     try {
       _aiActionService.handleAction(action);
 
-      // Atualiza o status da ação para "applied" e salva a mensagem no Firestore
+      /// Update action to "applied" and save
       final updatedAction = action.copyWith(status: ActionStatus.approved);
       final updatedMessage = message.copyWith(proposedAction: updatedAction);
 
       await _cfoService.saveMessage(_thread.id, updatedMessage);
 
-      // Atualiza o estado local
+      /// Update local
       final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
       final index = updatedList.indexWhere((m) => m.id == message.id);
       if (index != -1) {
@@ -311,7 +312,7 @@ class PersonalCfoManager {
     }
   }
 
-  /// Recusa a sugestão feita pelo CFO
+  /// Refuese CFO suggestion
   Future<void> _rejectProposedAction(ChatMessageModel message) async {
     final action = message.proposedAction;
     if (action == null) return;

@@ -70,7 +70,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                     isFirst
                         ? WizardButtonAction.exit.icon
                         : WizardButtonAction.previous.icon,
-                    size: AppSizes.x12,
+                    size: AppSizes.appBarIcon,
                   ),
                   onPressed: () => _manager.previousStep(context),
                 ),
@@ -85,7 +85,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
                       isLast
                           ? WizardButtonAction.finish.icon
                           : WizardButtonAction.next.icon,
-                      size: AppSizes.x12,
+                      size: AppSizes.appBarIcon,
                     ),
                     onPressed: () => _manager.nextStep(context),
                   ),

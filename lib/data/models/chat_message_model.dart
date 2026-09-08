@@ -35,7 +35,7 @@ class ChatMessageModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, Object?> toJson() {
     return {
       ModelKey.id: _id,
       ModelKey.sender: sender.name,

@@ -68,7 +68,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
         const SizedBox(height: AppSizes.sizedBoxMedium),
         ValueListenableBuilder(
           valueListenable: AppCoordinator.instance.chats,
-          builder: (_, allThreads, _) {
+          builder: (_, fbThreads, _) {
+            final allThreads = List.of(fbThreads);
+
             return ValueListenableBuilder(
               valueListenable: _manager.showArchivedNotifier,
               builder: (_, showArchived, _) {

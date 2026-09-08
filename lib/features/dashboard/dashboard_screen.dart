@@ -7,11 +7,13 @@ import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
 import 'package:stack_money/core/widgets/sm_card.dart';
 import 'package:stack_money/core/widgets/sm_gravity_swop_list.dart';
+import 'package:stack_money/core/widgets/title_text.dart';
 import 'package:stack_money/data/enum/dashboard_sort_filter.dart';
 import 'package:stack_money/features/dashboard/manager/dashboard_manager.dart';
 import 'package:stack_money/features/dashboard/widgets/dashboard_sort_bottom_sheet.dart';
 import 'package:stack_money/features/dashboard/widgets/dashboard_bucket_card.dart';
 import 'package:stack_money/features/dashboard/widgets/patrimonial_hud.dart';
+import 'package:stack_money/features/dashboard/widgets/telemetry_card.dart';
 import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart';
 import 'package:stack_money/features/dashboard/widgets/telemetry_line_chart.dart';
 
@@ -41,7 +43,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return ValueListenableBuilder(
       valueListenable: AppCoordinator.instance.history,
       builder: (_, fbHistory, _) {
-        final history = fbHistory;
+        final history = List.of(fbHistory);
         history.sort((a, b) => a.date.compareTo(b.date));
 
         return Column(
@@ -53,30 +55,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ValueListenableBuilder(
               valueListenable: _manager.chartFilterNotifier,
               builder: (_, currentFilter, _) {
-                return SmCard(
-                  title: l10n.telemetryStream,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: AppSizes.containerMedium,
-                        child: TelemetryLineChart(
-                          rawHistoryData: history,
-                          filterState: currentFilter,
-                        ),
-                      ),
-                      const SizedBox(height: AppSizes.sizedBoxMedium),
-                      const Divider(height: 1),
-                      const SizedBox(height: AppSizes.sizedBoxMedium),
-                      TelemetryFilterBar(
-                        currentState: currentFilter,
-                        firstDate:
-                            history.firstOrNull?.date.toDate() ??
-                            DateTime.now(),
-                        onFilterChanged: _manager.updateChartFilter,
-                      ),
-                    ],
-                  ),
+                return TelemetryCard(
+                  history: history,
+                  currentFilter: currentFilter,
+                  updateChartFilter: _manager.updateChartFilter,
                 );
               },
             ),
@@ -84,7 +66,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ValueListenableBuilder(
               valueListenable: AppCoordinator.instance.buckets,
               builder: (_, fbBuckets, _) {
-                final buckets = fbBuckets;
+                final buckets = List.of(fbBuckets);
 
                 return ValueListenableBuilder(
                   valueListenable: AppCoordinator.instance.user,

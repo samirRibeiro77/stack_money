@@ -628,7 +628,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String timeAgoWhen(Object d, Object m, Object y) {
-    return '$y/$m/$d';
+    return '$m/$d/$y';
   }
 
   @override

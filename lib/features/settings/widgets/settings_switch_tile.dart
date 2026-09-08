@@ -56,7 +56,10 @@ class SettingsSwitchTile extends StatelessWidget {
               Set<WidgetState> states,
             ) {
               if (states.contains(WidgetState.selected)) {
-                return Icon(icon, color: StackMoneyTheme.cyanNeon);
+                return Icon(
+                  icon,
+                  color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.75),
+                );
               }
               return Icon(Icons.close, color: StackMoneyTheme.surface);
             }),

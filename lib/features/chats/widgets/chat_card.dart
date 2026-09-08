@@ -41,13 +41,13 @@ class ChatCard extends StatelessWidget {
                 children: [
                   SecurityText(
                     StackMoneyString.formatTitle(chat.title),
-                    activeColor: StackMoneyTheme.cyanNeon,
+                    activeColor: StackMoneyTheme.platinumSilver,
                     style: textTheme.titleSmall,
                     type: SecurityType.systemLocked,
                   ),
                   SecurityText(
                     TimeAgoFormatter.format(l10n, chat.updatedAt),
-                    activeColor: StackMoneyTheme.magentaNeon,
+                    activeColor: StackMoneyTheme.mutedGrey,
                     style: textTheme.labelSmall,
                   ),
                 ],
