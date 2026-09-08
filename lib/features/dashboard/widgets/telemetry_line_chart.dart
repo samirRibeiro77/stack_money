@@ -53,7 +53,7 @@ class TelemetryLineChart extends StatelessWidget {
     final data = _filteredData;
     if (data.isEmpty) {
       return SizedBox(
-        height: 200,
+        height: AppSizes.containerMedium,
         child: Center(
           child: !isSecureActive
               ? Text(
@@ -83,8 +83,13 @@ class TelemetryLineChart extends StatelessWidget {
     }
 
     return Container(
-      height: 220,
-      padding: const EdgeInsets.only(right: AppSizes.x8, top: AppSizes.x6),
+      height: AppSizes.containerMedium,
+      padding: const EdgeInsets.fromLTRB(
+        AppSizes.x10,
+        AppSizes.x8,
+        AppSizes.x8,
+        0,
+      ),
       child: LineChart(
         duration: const Duration(milliseconds: 450),
         // Animação fluida de transição de ondas
@@ -100,7 +105,7 @@ class TelemetryLineChart extends StatelessWidget {
             enabled: !isSecureActive, // Desativa toque se estiver encriptado
             touchTooltipData: LineTouchTooltipData(
               getTooltipColor: (spot) =>
-                  StackMoneyTheme.surface.withValues(alpha: 0.95),
+                  StackMoneyTheme.surface.withValues(alpha: 0.85),
               tooltipBorder: const BorderSide(
                 color: StackMoneyTheme.magentaNeon,
                 width: 1.5,
@@ -179,11 +184,11 @@ class TelemetryLineChart extends StatelessWidget {
             topTitles: const AxisTitles(
               sideTitles: SideTitles(showTitles: false),
             ),
-            rightTitles: const AxisTitles(
+            leftTitles: const AxisTitles(
               sideTitles: SideTitles(showTitles: false),
             ),
             // Legendas Laterais (Valores reduzidos compactos)
-            leftTitles: AxisTitles(
+            rightTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: !isSecureActive,
                 reservedSize: 42,
@@ -191,14 +196,17 @@ class TelemetryLineChart extends StatelessWidget {
                   if (value == meta.min || value == meta.max) {
                     return const SizedBox();
                   }
-                  return Text(
-                    StackMoneyString.formatMoney(
-                      value,
-                      compact: true,
-                      symbol: true,
-                    ),
-                    style: textTheme.labelSmall?.copyWith(
-                      fontSize: AppTypography.fontSmallest,
+                  return Padding(
+                    padding: EdgeInsets.only(left: AppSizes.x5),
+                    child: Text(
+                      StackMoneyString.formatMoney(
+                        value,
+                        compact: true,
+                        symbol: true,
+                      ),
+                      style: textTheme.labelSmall?.copyWith(
+                        fontSize: AppTypography.fontSmallest,
+                      ),
                     ),
                   );
                 },

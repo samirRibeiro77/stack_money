@@ -51,7 +51,7 @@ class DashboardManager {
       payload: {'old': _sortFilter.value, 'new': newFilter},
     );
 
-    final latestHistory = AppCoordinator.instance.history.value.lastOrNull;
+    final latestHistory = AppCoordinator.instance.latestHistory.value;
 
     buckets.sort((a, b) {
       final double valA =
@@ -79,7 +79,7 @@ class DashboardManager {
         case DashboardSortFilter.allocation:
           final double allocA = (valA / (latestHistory?.total ?? 1)) * 100;
           final double allocB = (valB / (latestHistory?.total ?? 1)) * 100;
-          return allocB.compareTo(allocA);
+          return allocA.compareTo(allocB);
       }
     });
 
