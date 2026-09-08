@@ -8,29 +8,29 @@ import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/features/dashboard/widgets/telemetry_filter_chip.dart';
 
 class TelemetryFilterBar extends StatelessWidget {
-  final DateTime firstDate;
+  final DateTime _firstDate;
   final ChartFilterState currentState;
   final ValueChanged<ChartFilterState> onFilterChanged;
   final Color chipColor;
 
-  const TelemetryFilterBar({
+  TelemetryFilterBar({
     super.key,
-    required this.firstDate,
     required this.currentState,
     required this.onFilterChanged,
+    DateTime? firstDate,
     this.chipColor = StackMoneyTheme.cyanNeon,
-  });
+  }) : _firstDate = firstDate ?? DateTime.now();
 
   Future<void> _openCustomDatePicker(
     BuildContext context,
     AppLocalizations l10n,
-      bool isEnabled
+    bool isEnabled,
   ) async {
     if (!isEnabled) return;
 
     final DateTimeRange? picked = await showDateRangePicker(
       context: context,
-      firstDate: firstDate,
+      firstDate: _firstDate,
       lastDate: DateTime.now(),
       helpText: StackMoneyString.formatTitle(
         l10n.selectRange,
