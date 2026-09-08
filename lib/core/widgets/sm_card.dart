@@ -32,16 +32,14 @@ class SmCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: StackMoneyTheme.surface,
         borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
-        boxShadow: !isSecureActive
-            ? [
-                BoxShadow(
-                  color: shadowColor.withValues(alpha: 0.07),
-                  blurRadius: AppSizes.x10,
-                  spreadRadius: 3,
-                  offset: const Offset(0, 6),
-                ),
-              ]
-            : [],
+        boxShadow: [
+          BoxShadow(
+            color: (!isSecureActive ? shadowColor : Colors.transparent).withValues(alpha: 0.07),
+            blurRadius: AppSizes.x10,
+            spreadRadius: 3,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: Column(
         children: [

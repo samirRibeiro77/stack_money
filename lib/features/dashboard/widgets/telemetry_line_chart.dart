@@ -53,7 +53,7 @@ class TelemetryLineChart extends StatelessWidget {
     final data = _filteredData;
     if (data.isEmpty) {
       return SizedBox(
-        height: 200,
+        height: AppSizes.containerMedium,
         child: Center(
           child: !isSecureActive
               ? Text(
@@ -105,7 +105,7 @@ class TelemetryLineChart extends StatelessWidget {
             enabled: !isSecureActive, // Desativa toque se estiver encriptado
             touchTooltipData: LineTouchTooltipData(
               getTooltipColor: (spot) =>
-                  StackMoneyTheme.surface.withValues(alpha: 0.95),
+                  StackMoneyTheme.surface.withValues(alpha: 0.85),
               tooltipBorder: const BorderSide(
                 color: StackMoneyTheme.magentaNeon,
                 width: 1.5,
