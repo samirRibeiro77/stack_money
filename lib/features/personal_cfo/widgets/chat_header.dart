@@ -13,16 +13,18 @@ import 'package:stack_money/features/plan_edit/widgets/editable_title.dart';
 
 class ChatHeader extends StatelessWidget {
   final String title;
+  final bool isArchived;
   final ValueChanged<String> saveTitle;
   final VoidCallback onShare;
-  final VoidCallback onArchive;
+  final VoidCallback toggleArchive;
   final VoidCallback onDelete;
 
   const ChatHeader({
     required this.title,
+    required this.isArchived,
     required this.saveTitle,
     required this.onShare,
-    required this.onArchive,
+    required this.toggleArchive,
     required this.onDelete,
     super.key,
   });
@@ -36,7 +38,10 @@ class ChatHeader extends StatelessWidget {
         _showCurrentData(context);
         break;
       case PersonalCfoActions.archive:
-        onArchive();
+        toggleArchive();
+        break;
+      case PersonalCfoActions.unarchive:
+        toggleArchive();
         break;
       case PersonalCfoActions.delete:
         onDelete();
@@ -79,6 +84,16 @@ class ChatHeader extends StatelessWidget {
       );
     }
   }
+
+  List<PersonalCfoActions> get filteredActions => PersonalCfoActions.values
+      .where(
+        (a) =>
+            a !=
+            (isArchived
+                ? PersonalCfoActions.archive
+                : PersonalCfoActions.unarchive),
+      )
+      .toList();
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +152,7 @@ class ChatHeader extends StatelessWidget {
                   iconColor: StackMoneyTheme.cyanNeon,
                   iconSize: AppSizes.x10,
                   onSelected: (action) => _handleAction(action, context),
-                  items: PersonalCfoActions.values,
+                  items: filteredActions,
                 ),
               ),
             ),

@@ -65,6 +65,7 @@
   "copy": "Copiar",
   "share": "Compartilhar",
   "archive": "Arquivar",
+  "unarchive": "Desarquivar",
   "delete": "Deletar",
   "dayX": "D{d}",
   "lastKnownValue": "Último valor conhecido:",

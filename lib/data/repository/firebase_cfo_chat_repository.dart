@@ -150,7 +150,7 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
         .doc(threadId)
         .update({ModelKey.title: title, ModelKey.updateAt: Timestamp.now()})
         .then((_) {
-          SmLogger.info('Document updated in background: $threadId ($title)');
+          SmLogger.info('Title updated: $threadId ($title)');
         })
         .catchError((e, stack) {
           throw StackMoneyException(
@@ -158,6 +158,37 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
             scope: ExceptionScope.database,
             payload: {
               ModelKey.title: title,
+              ModelKey.updateAt: Timestamp.now(),
+            },
+            exception: e as Exception,
+            stackTrace: stack,
+          );
+        });
+  }
+
+  /// Update Thread archive status
+  Future<void> updateArchiveStatus(String threadId, bool isArchive) async {
+    SmLogger.debug(
+      'Update thread archive status',
+      payload: {'threadId': threadId, 'isArchive': isArchive},
+    );
+
+    _collection
+        .doc(threadId)
+        .update({
+          ModelKey.isArchived: isArchive,
+          ModelKey.updateAt: Timestamp.now(),
+        })
+        .then((_) {
+          SmLogger.info('Archived status updated: $threadId ($isArchive)');
+        })
+        .catchError((e, stack) {
+          throw StackMoneyException(
+            message: 'Update CFO thread title failed',
+            scope: ExceptionScope.database,
+            payload: {
+              ModelKey.id: threadId,
+              ModelKey.isArchived: isArchive,
               ModelKey.updateAt: Timestamp.now(),
             },
             exception: e as Exception,
@@ -174,6 +205,10 @@ class FirebaseCfoChatRepository extends BaseFirebaseRepository {
     );
 
     try {
+      /// Unarchive thread
+      await updateArchiveStatus(threadId, false);
+
+      /// Save message
       await _collection
           .doc(threadId)
           .collection(FirebaseKey.messages)

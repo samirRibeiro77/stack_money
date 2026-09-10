@@ -482,6 +482,12 @@ abstract class AppLocalizations {
   /// **'Archive'**
   String get archive;
 
+  /// Unarchive something
+  ///
+  /// In en, this message translates to:
+  /// **'Unarchive'**
+  String get unarchive;
+
   /// Delete something
   ///
   /// In en, this message translates to:

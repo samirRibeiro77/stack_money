@@ -256,6 +256,10 @@
   "@archive": {
     "description": "Archive something"
   },
+  "unarchive": "Unarchive",
+  "@unarchive": {
+    "description": "Unarchive something"
+  },
   "delete": "Delete",
   "@delete": {
     "description": "Delete something"

@@ -216,6 +216,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get archive => 'Arquivar';
 
   @override
+  String get unarchive => 'Desarquivar';
+
+  @override
   String get delete => 'Deletar';
 
   @override
