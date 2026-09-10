@@ -36,6 +36,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get liquidityBuffer => 'Liquidez imediata';
 
   @override
+  String get investmentBuffer => 'Investimento travado';
+
+  @override
   String get allocationBuckets => 'Caixinhas';
 
   @override

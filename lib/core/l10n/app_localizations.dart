@@ -152,6 +152,12 @@ abstract class AppLocalizations {
   /// **'Liquidity Buffer'**
   String get liquidityBuffer;
 
+  /// Locked investment total
+  ///
+  /// In en, this message translates to:
+  /// **'Investment Buffer'**
+  String get investmentBuffer;
+
   /// Allocation buckets title
   ///
   /// In en, this message translates to:

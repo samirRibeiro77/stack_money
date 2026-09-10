@@ -30,8 +30,10 @@ class _PatrimonialHudState extends State<PatrimonialHud>
   double _oldTotalAmount = 0.0;
 
   /// Toggle details
-  void _toggleDetails() {
-    _hideDetails.value = !_hideDetails.value;
+  void _toggleDetails(bool isSecureActive) {
+    if (!isSecureActive) {
+      _hideDetails.value = !_hideDetails.value;
+    }
   }
 
   @override
@@ -139,7 +141,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
                 builder: (_, hideDetails, _) {
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
-                    onTap: _toggleDetails,
+                    onTap: () => _toggleDetails(isSecureActive),
                     child: Column(
                       children: [
                         Row(
@@ -173,20 +175,22 @@ class _PatrimonialHudState extends State<PatrimonialHud>
                                   activeColor: StackMoneyTheme.platinumSilver,
                                   mutedColor: StackMoneyTheme.mutedGrey,
                                 ),
-                                Icon(
-                                  hideDetails
-                                      ? Icons.arrow_drop_down
-                                      : Icons.arrow_drop_up,
-                                  color: hideDetails
-                                      ? StackMoneyTheme.cyanNeon
-                                      : StackMoneyTheme.magentaNeon,
-                                  size: AppSizes.x7,
-                                ),
+                                if (!isSecureActive) ...[
+                                  Icon(
+                                    hideDetails
+                                        ? Icons.arrow_drop_down
+                                        : Icons.arrow_drop_up,
+                                    color: hideDetails
+                                        ? StackMoneyTheme.cyanNeon
+                                        : StackMoneyTheme.magentaNeon,
+                                    size: AppSizes.x7,
+                                  ),
+                                ],
                               ],
                             ),
                           ],
                         ),
-                        if (!hideDetails) ...[
+                        if (!isSecureActive && !hideDetails) ...[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -199,7 +203,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
                                   ),
                                   const SizedBox(width: AppSizes.x2),
                                   Text(
-                                    'Investment Buffer', // TODO: l10n.investmentBuffer,
+                                    l10n.investmentBuffer,
                                     style: textTheme.labelMedium,
                                   ),
                                 ],

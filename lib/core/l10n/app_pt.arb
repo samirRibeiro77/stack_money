@@ -9,6 +9,7 @@
   "telemetryStream": "Telemetria",
   "hiddenValues": "••••••",
   "liquidityBuffer": "Liquidez imediata",
+  "investmentBuffer": "Investimento travado",
   "allocationBuckets": "Caixinhas",
   "allocation": "Alocação: ",
   "min": "Min: ",
