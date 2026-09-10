@@ -795,5 +795,9 @@
   "contextHistory": "  • {date} -> {total}",
   "@contextHistory": {
     "description": "AI context message for history."
+  },
+  "draft": "Draft: ",
+  "@draft": {
+    "description": "Draft badge for messages."
   }
 }

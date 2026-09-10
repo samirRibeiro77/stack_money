@@ -46,7 +46,7 @@ class _ContributionSprintScreenState extends State<ContributionSprintScreen> {
           return const Scaffold(
             backgroundColor: StackMoneyTheme.background,
             body: Center(
-              child: CircularProgressIndicator(color: StackMoneyTheme.cyanNeon),
+              child: CircularProgressIndicator(color: StackMoneyTheme.magentaNeon),
             ),
           );
         }

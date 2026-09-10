@@ -31,7 +31,7 @@ class ChatManagementService {
   Future<Result<List<ChatThreadModel>>> fetchChats() async {
     try {
       final threadList = await _repository.fetch();
-      return Success(threadList);
+      return Success(linkDrafts(threadList));
     } on StackMoneyException catch (e) {
       return Failure(e);
     } catch (e, stack) {
@@ -63,6 +63,19 @@ class ChatManagementService {
         ),
       );
     }
+  }
+
+  List<ChatThreadModel> linkDrafts(List<ChatThreadModel> chatList) {
+    final chatListWithDraft = <ChatThreadModel>[];
+    for (final c in chatList) {
+      getDraft(c.id).then(
+        (result) => result.fold(
+          onSuccess: (draft) => chatListWithDraft.add(c.copyWith(draft: draft)),
+          onFailure: (_) => chatListWithDraft.add(c.copyWith(draft: '')),
+        ),
+      );
+    }
+    return chatListWithDraft;
   }
 
   /// Init and Sync RemoteConfig
@@ -243,6 +256,7 @@ class ChatManagementService {
   ) async {
     try {
       await _repository.saveMessage(threadId, message);
+      await _localRepo.deleteDraft(threadId);
       return Success(null);
     } on StackMoneyException catch (e) {
       return Failure(e);

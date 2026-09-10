@@ -10,6 +10,7 @@ class ChatThreadModel {
   final Timestamp updatedAt;
   final bool isArchived;
   final String lastMessage;
+  final String? _draftMessage;
 
   String get id => _id;
 
@@ -20,6 +21,7 @@ class ChatThreadModel {
     Timestamp? updatedAt,
     this.isArchived = false,
     this.lastMessage = '',
+    this._draftMessage,
   }) : _id = id ?? const Uuid().v4(),
        createdAt = TimestampParser.fromJson(createdAt),
        updatedAt = TimestampParser.fromJson(updatedAt);
@@ -46,11 +48,15 @@ class ChatThreadModel {
     };
   }
 
+  bool get hasDraft => _draftMessage?.isNotEmpty ?? false;
+  String? get draft => _draftMessage;
+
   ChatThreadModel copyWith({
     String? title,
     Timestamp? updatedAt,
     bool? isArchived,
     String? lastMessage,
+    String? draft,
     bool newId = false,
   }) {
     return ChatThreadModel(
@@ -60,6 +66,7 @@ class ChatThreadModel {
       updatedAt: updatedAt ?? this.updatedAt,
       isArchived: isArchived ?? this.isArchived,
       lastMessage: lastMessage ?? this.lastMessage,
+      draftMessage: draft ?? _draftMessage,
     );
   }
 }

@@ -1295,6 +1295,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'  • {date} -> {total}'**
   String contextHistory(Object date, Object total);
+
+  /// Draft badge for messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft: '**
+  String get draft;
 }
 
 class _AppLocalizationsDelegate

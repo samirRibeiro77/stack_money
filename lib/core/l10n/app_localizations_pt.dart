@@ -677,4 +677,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String contextHistory(Object date, Object total) {
     return '  • $date -> $total';
   }
+
+  @override
+  String get draft => 'Rascunho: ';
 }

@@ -139,14 +139,14 @@ class AppCoordinator {
   /// Activate data listeners
   void _activateAppListeners() async {
     _userSubscription = _userService.watch().listen(
-      (user) => _user.value = user,
+          (user) => _user.value = user,
       onError: (error) {
         // TODO: Create error page
       },
     );
 
     _historySubscription = _historyService.watch().listen(
-      (historyList) {
+          (historyList) {
         _history.value = historyList;
         if (_latestHistory.value?.date != historyList.firstOrNull?.date) {
           _latestHistory.value = historyList.firstOrNull;
@@ -158,9 +158,11 @@ class AppCoordinator {
     );
 
     _planSubscription = _planService.watch().listen(
-      (planList) {
+          (planList) {
         _plans.value = planList;
-        final fbCurrentPlan = planList.where((p) => p.isActive).firstOrNull;
+        final fbCurrentPlan = planList
+            .where((p) => p.isActive)
+            .firstOrNull;
         if (_currentPlan.value?.id != fbCurrentPlan?.id) {
           _currentPlan.value = fbCurrentPlan;
         }
@@ -171,18 +173,24 @@ class AppCoordinator {
     );
 
     _bucketSubscription = _bucketService.watch().listen(
-      (bucketList) => _buckets.value = bucketList,
+          (bucketList) => _buckets.value = bucketList,
       onError: (error) {
         // TODO: Create error page
       },
     );
 
     _chatsSubscription = _chatsService.watchThreads().listen(
-      (chatList) => _chats.value = chatList,
+          (chatList) {
+        _chats.value = _chatsService.linkDrafts(chatList);
+      },
       onError: (error) {
         // TODO: Create error page
       },
     );
+  }
+
+  void updateDrafts() {
+    _chats.value = _chatsService.linkDrafts(_chats.value);
   }
 
   void clearAndCloseListeners() {

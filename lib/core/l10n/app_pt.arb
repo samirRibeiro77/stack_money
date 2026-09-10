@@ -199,5 +199,6 @@
   "context": "Contexto",
   "noCurrentPlan": "Sem plano ativo",
   "contextMessage": "Nome do plano: {planName}\nCaixinhas: {bucketQty}\nHistórico:\n{history}",
-  "contextHistory": "  • {date} -> {total}"
+  "contextHistory": "  • {date} -> {total}",
+  "draft": "Rascunho: "
 }

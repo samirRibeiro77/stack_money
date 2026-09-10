@@ -30,6 +30,7 @@ class SharedPreferencesRepository {
         message: 'Error saving preferences on Shared Preferences',
         scope: ExceptionScope.database,
         exception: e as Exception,
+        payload: preferences.toJson(),
         stackTrace: stack,
       );
     }
@@ -94,6 +95,7 @@ class SharedPreferencesRepository {
         message: 'Error saving drafts on Shared Preferences',
         scope: ExceptionScope.database,
         exception: e as Exception,
+        payload: {'threadId': threadId, 'text': text},
         stackTrace: stack,
       );
     }
@@ -108,7 +110,7 @@ class SharedPreferencesRepository {
     try {
       final prefs = await SharedPreferences.getInstance();
       final jsonString = prefs.getString(_drafts.replaceAll(_id, threadId));
-      if (jsonString == null) throw Exception('Draft not found');
+      if (jsonString == null) return '';
 
       SmLogger.info('Preferences retrieved successfully');
       return jsonString;
@@ -117,9 +119,31 @@ class SharedPreferencesRepository {
         message: 'Error getting drafts from Shared Preferences',
         scope: ExceptionScope.database,
         exception: e as Exception,
+        payload: {'threadId': threadId},
         stackTrace: stack,
       );
       return null;
+    }
+  }
+
+  Future<void> deleteDraft(String threadId) async {
+    SmLogger.debug(
+      'Deleting draft',
+      payload: {'path': _drafts.replaceAll(_id, threadId)},
+    );
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_drafts.replaceAll(_id, threadId));
+      SmLogger.warning('Draft $threadId cleared successfully');
+    } catch (e, stack) {
+      StackMoneyException(
+        message: 'Error clearing draft from Shared Preferences',
+        scope: ExceptionScope.database,
+        exception: e as Exception,
+        payload: {'threadId': threadId},
+        stackTrace: stack,
+      );
     }
   }
 }
