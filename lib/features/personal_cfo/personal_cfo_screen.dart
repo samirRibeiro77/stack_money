@@ -51,9 +51,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
 
     return PopScope(
       canPop: true,
-      onPopInvokedWithResult: (_, _) async {
-        AppCoordinator.instance.updateDrafts();
-      },
+      onPopInvokedWithResult: (_, _) => _manager.draftMessage(),
       child: Scaffold(
         backgroundColor: StackMoneyTheme.background,
         resizeToAvoidBottomInset: false,
@@ -123,7 +121,6 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                 builder: (_, isStreaming, _) {
                   return SendMessage(
                     controller: _manager.messageController,
-                    onChanged: _manager.draftMessage,
                     isStreaming: isStreaming,
                     onSend: _manager.sendMessage,
                   );

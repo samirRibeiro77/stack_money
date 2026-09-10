@@ -99,8 +99,8 @@ class PersonalCfoManager {
   }
 
   /// Draft message saving locally
-  void draftMessage(String text) {
-    _cfoService.draftMessage(_thread.id, text);
+  void draftMessage() {
+    _cfoService.draftMessage(_thread.id, messageController.text);
   }
 
   /// Send a new message on the thread

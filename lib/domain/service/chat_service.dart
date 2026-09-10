@@ -3,6 +3,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/utils/result.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
@@ -277,6 +278,7 @@ class ChatManagementService {
   Future<Result<void>> draftMessage(String threadId, String text) async {
     try {
       _localRepo.saveDraft(threadId, text);
+      AppCoordinator.instance.updateDrafts();
       return Success(null);
     } on StackMoneyException catch (e) {
       return Failure(e);
