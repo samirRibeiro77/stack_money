@@ -36,9 +36,9 @@
   "@liquidityBuffer": {
     "description": "Immediate liquidity total"
   },
-  "investmentBuffer": "Investment Buffer",
-  "@investmentBuffer": {
-    "description": "Locked investment total"
+  "lockedAssets": "Locked Assets",
+  "@lockedAssets": {
+    "description": "Locked assets total"
   },
   "allocationBuckets": "Allocation Buckets",
   "@allocationBuckets": {

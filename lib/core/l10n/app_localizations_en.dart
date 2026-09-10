@@ -36,7 +36,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get liquidityBuffer => 'Liquidity Buffer';
 
   @override
-  String get investmentBuffer => 'Investment Buffer';
+  String get lockedAssets => 'Locked Assets';
 
   @override
   String get allocationBuckets => 'Allocation Buckets';
