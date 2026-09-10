@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
-import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/data/helper/asset_name.dart';
@@ -136,12 +135,18 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
               child: ValueListenableBuilder(
                 valueListenable: _manager.titleController,
                 builder: (_, title, _) {
-                  return ChatHeader(
-                    title: title.text,
-                    saveTitle: _manager.changeTitle,
-                    onShare: _manager.shareChat,
-                    onArchive: _manager.toggleArchiveThread,
-                    onDelete: _manager.deleteThread,
+                  return ValueListenableBuilder(
+                    valueListenable: _manager.isArchived,
+                    builder: (_, isArchived, _) {
+                      return ChatHeader(
+                        title: title.text,
+                        isArchived: isArchived,
+                        saveTitle: _manager.changeTitle,
+                        onShare: _manager.shareChat,
+                        toggleArchive: _manager.toggleArchiveThread,
+                        onDelete: _manager.deleteThread,
+                      );
+                    },
                   );
                 },
               ),

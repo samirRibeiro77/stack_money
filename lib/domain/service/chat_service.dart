@@ -250,6 +250,28 @@ class ChatManagementService {
     }
   }
 
+  Future<Result<void>> updateArchiveStatus(
+    String threadId,
+    bool isArchived,
+  ) async {
+    try {
+      await _repository.updateArchiveStatus(threadId, isArchived);
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error saving thread',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: {'threadId': threadId, 'isArchived': isArchived},
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
+
   /// Save a new message on thread
   Future<Result<void>> saveMessage(
     String threadId,

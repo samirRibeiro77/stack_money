@@ -7,6 +7,7 @@ enum PersonalCfoActions implements StackMoneyPopupMenuItem {
   currentData,
   share,
   archive,
+  unarchive,
   delete;
 
   @override
@@ -18,6 +19,8 @@ enum PersonalCfoActions implements StackMoneyPopupMenuItem {
         return l10n.share;
       case archive:
         return l10n.archive;
+      case unarchive:
+        return l10n.unarchive;
       case delete:
         return l10n.delete;
     }
@@ -44,6 +47,8 @@ enum PersonalCfoActions implements StackMoneyPopupMenuItem {
         return Icons.share_rounded;
       case archive:
         return Icons.archive_outlined;
+      case unarchive:
+        return Icons.unarchive_outlined;
       case delete:
         return Icons.delete_outlined;
     }
