@@ -203,7 +203,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
                                   ),
                                   const SizedBox(width: AppSizes.x2),
                                   Text(
-                                    l10n.investmentBuffer,
+                                    l10n.lockedAssets,
                                     style: textTheme.labelMedium,
                                   ),
                                 ],
