@@ -252,6 +252,10 @@
   "@archive": {
     "description": "Archive something"
   },
+  "unarchive": "Unarchive",
+  "@unarchive": {
+    "description": "Unarchive something"
+  },
   "delete": "Delete",
   "@delete": {
     "description": "Delete something"
@@ -795,5 +799,9 @@
   "contextHistory": "  • {date} -> {total}",
   "@contextHistory": {
     "description": "AI context message for history."
+  },
+  "draft": "Draft: ",
+  "@draft": {
+    "description": "Draft badge for messages."
   }
 }

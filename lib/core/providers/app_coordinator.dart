@@ -178,15 +178,21 @@ class AppCoordinator {
     );
 
     _chatsSubscription = _chatsService.watchThreads().listen(
-      (chatList) => _chats.value = chatList,
+      (chatList) {
+        _chats.value = _chatsService.linkDrafts(chatList);
+      },
       onError: (error) {
         // TODO: Create error page
       },
     );
   }
 
+  void updateDrafts() {
+    _chats.value = _chatsService.linkDrafts(_chats.value);
+  }
+
   void clearAndCloseListeners() {
-    SmLogger.info(
+    SmLogger.warning(
       'Closing all real-time streams and clearing coordinator memory...',
     );
 

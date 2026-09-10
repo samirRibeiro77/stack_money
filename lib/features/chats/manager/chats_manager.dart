@@ -37,8 +37,7 @@ class ChatsManager {
 
   /// Alterna o estado de arquivado da conversa
   Future<void> toggleArchiveThread(ChatThreadModel thread) async {
-    final updatedThread = thread.copyWith(isArchived: !thread.isArchived);
-    await _service.saveThread(updatedThread);
+    await _service.updateArchiveStatus(thread.id, !thread.isArchived);
   }
 
   Future<bool?> showTerminalConfirmDialog(String chatTitle) {

@@ -213,6 +213,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get archive => 'Archive';
 
   @override
+  String get unarchive => 'Unarchive';
+
+  @override
   String get delete => 'Delete';
 
   @override
@@ -675,4 +678,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String contextHistory(Object date, Object total) {
     return '  • $date -> $total';
   }
+
+  @override
+  String get draft => 'Draft: ';
 }

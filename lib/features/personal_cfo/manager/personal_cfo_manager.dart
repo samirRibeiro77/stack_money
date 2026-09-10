@@ -32,10 +32,13 @@ class PersonalCfoManager {
   final ScrollController scrollController = ScrollController();
   final messagesNotifier = ValueNotifier<List<ChatMessageModel>>([]);
   final _isStreaming = ValueNotifier(false);
+  final _isArchived = ValueNotifier(false);
 
   List<ChatMessageModel> get messages => messagesNotifier.value;
 
   ValueListenable<bool> get isStreaming => _isStreaming;
+
+  ValueListenable<bool> get isArchived => _isArchived;
 
   late final TextEditingController titleController;
   late final TextEditingController messageController;
@@ -43,18 +46,22 @@ class PersonalCfoManager {
   PersonalCfoManager(ChatThreadModel? initialThread, this._context) {
     _chatsManager = ChatsManager(_context);
     _thread = initialThread ?? ChatThreadModel(title: '');
+    _isArchived.value = initialThread?.isArchived ?? false;
+
+    SmLogger.debug('Initial thread', payload: initialThread?.toJson() ?? {});
 
     titleController = TextEditingController(text: _thread.title);
     messageController = TextEditingController(text: '');
 
     _cfoService.initRemoteConfig();
-    _getMessages(_thread.id);
-    _listenToMessages(_thread.id);
+    _getMessages();
+    _listenToMessages();
+    _recoveryDraft();
   }
 
-  Future<void> _getMessages(String threadId) async {
+  Future<void> _getMessages() async {
     try {
-      final messagesResult = await _cfoService.fetchMessages(threadId);
+      final messagesResult = await _cfoService.fetchMessages(_thread.id);
       final messages = messagesResult.getOrThrow();
       messagesNotifier.value = messages;
       _scrollToBottom();
@@ -69,7 +76,7 @@ class PersonalCfoManager {
           extra: StackMoneyException(
             message: 'Error fetching thread messages',
             scope: ExceptionScope.business,
-            payload: {'threadId': threadId},
+            payload: {'threadId': _thread.id},
             exception: e as Exception,
             stackTrace: stack,
           ),
@@ -78,13 +85,28 @@ class PersonalCfoManager {
     }
   }
 
-  void _listenToMessages(String threadId) {
-    _cfoService.getMessagesStream(threadId).listen((remoteMessages) {
+  void _listenToMessages() {
+    _cfoService.getMessagesStream(_thread.id).listen((remoteMessages) {
       if (!_isStreaming.value) {
         messagesNotifier.value = remoteMessages;
         _scrollToBottom();
       }
     });
+  }
+
+  /// Get draft if exists
+  void _recoveryDraft() {
+    _cfoService.getDraft(_thread.id).then((result) {
+      result.fold(
+        onSuccess: (text) => messageController.text = text ?? '',
+        onFailure: (_) => messageController.text = '',
+      );
+    });
+  }
+
+  /// Draft message saving locally
+  void draftMessage() {
+    _cfoService.draftMessage(_thread.id, messageController.text);
   }
 
   /// Send a new message on the thread
@@ -104,6 +126,7 @@ class PersonalCfoManager {
       }
 
       await _addUserMessage(cleanText);
+      _isArchived.value = false;
       final aiPlaceholder = _addAiPlaceholderMessage();
 
       final rawResponse = await _consumeCfoStream(
@@ -129,7 +152,7 @@ class PersonalCfoManager {
   Future<void> _initializeFirstMessageThread(String firstMessage) async {
     _thread = _thread.copyWith(lastMessage: firstMessage);
     await _cfoService.saveThread(_thread);
-    _listenToMessages(_thread.id);
+    _listenToMessages();
   }
 
   /// Add user message on the list and save on database
@@ -332,8 +355,9 @@ class PersonalCfoManager {
 
   Future<void> toggleArchiveThread() async {
     await _chatsManager.toggleArchiveThread(thread);
+    _isArchived.value = !thread.isArchived;
     if (!_context.mounted) return;
-    _context.pop();
+    if (!thread.isArchived) _context.pop();
   }
 
   Future<void> deleteThread() async {

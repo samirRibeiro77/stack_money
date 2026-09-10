@@ -79,7 +79,7 @@ class SendMessage extends StatelessWidget {
                           horizontal: AppSizes.cfoSendBarHeight / 25,
                         ),
                         child: CircularProgressIndicator.adaptive(
-                          backgroundColor: StackMoneyTheme.cyanNeon,
+                          backgroundColor: StackMoneyTheme.magentaNeon,
                         ),
                       )
                     : Icon(

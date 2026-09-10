@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/helpers/time_ago_formatter.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
@@ -47,20 +48,37 @@ class ChatCard extends StatelessWidget {
                   ),
                   SecurityText(
                     TimeAgoFormatter.format(l10n, chat.updatedAt),
-                    activeColor: StackMoneyTheme.mutedGrey,
+                    activeColor: chat.hasDraft
+                        ? StackMoneyTheme.cyanNeon
+                        : StackMoneyTheme.mutedGrey,
                     style: textTheme.labelSmall,
                   ),
                 ],
               ),
               const Divider(),
               if (!isSecureActive) ...[
-                Text(
-                  chat.lastMessage,
-                  style: textTheme.bodySmall?.copyWith(
-                    color: StackMoneyTheme.mutedGrey,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  children: [
+                    if (chat.hasDraft) ...[
+                      Text(
+                        l10n.draft,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: StackMoneyTheme.cyanNeon,
+                          fontWeight: AppTypography.weightMedium,
+                        ),
+                      ),
+                    ],
+                    Expanded(
+                      child: Text(
+                        chat.hasDraft ? chat.draft! : chat.lastMessage,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: StackMoneyTheme.mutedGrey,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
               ],
               if (isSecureActive) ...[

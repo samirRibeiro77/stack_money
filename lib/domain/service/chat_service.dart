@@ -3,16 +3,19 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/utils/result.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/data/repository/firebase_cfo_chat_repository.dart';
+import 'package:stack_money/data/repository/shared_preferences_repository.dart';
 
 class ChatManagementService {
-  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
-  final FirebaseCfoChatRepository _repository = FirebaseCfoChatRepository();
+  final _remoteConfig = FirebaseRemoteConfig.instance;
+  final _repository = FirebaseCfoChatRepository();
+  final _localRepo = SharedPreferencesRepository();
 
   /// Centralized instance of GenerativeModel
   GenerativeModel _getGenerativeModel(String systemInstruction) {
@@ -29,7 +32,7 @@ class ChatManagementService {
   Future<Result<List<ChatThreadModel>>> fetchChats() async {
     try {
       final threadList = await _repository.fetch();
-      return Success(threadList);
+      return Success(linkDrafts(threadList));
     } on StackMoneyException catch (e) {
       return Failure(e);
     } catch (e, stack) {
@@ -61,6 +64,19 @@ class ChatManagementService {
         ),
       );
     }
+  }
+
+  List<ChatThreadModel> linkDrafts(List<ChatThreadModel> chatList) {
+    final chatListWithDraft = <ChatThreadModel>[];
+    for (final c in chatList) {
+      getDraft(c.id).then(
+        (result) => result.fold(
+          onSuccess: (draft) => chatListWithDraft.add(c.copyWith(draft: draft)),
+          onFailure: (_) => chatListWithDraft.add(c.copyWith(draft: '')),
+        ),
+      );
+    }
+    return chatListWithDraft;
   }
 
   /// Init and Sync RemoteConfig
@@ -234,6 +250,28 @@ class ChatManagementService {
     }
   }
 
+  Future<Result<void>> updateArchiveStatus(
+    String threadId,
+    bool isArchived,
+  ) async {
+    try {
+      await _repository.updateArchiveStatus(threadId, isArchived);
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error saving thread',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: {'threadId': threadId, 'isArchived': isArchived},
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
+
   /// Save a new message on thread
   Future<Result<void>> saveMessage(
     String threadId,
@@ -241,6 +279,7 @@ class ChatManagementService {
   ) async {
     try {
       await _repository.saveMessage(threadId, message);
+      await _localRepo.deleteDraft(threadId);
       return Success(null);
     } on StackMoneyException catch (e) {
       return Failure(e);
@@ -251,6 +290,47 @@ class ChatManagementService {
           scope: ExceptionScope.service,
           exception: e as Exception,
           payload: {'threadId': threadId, 'message': message.toJson()},
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
+
+  /// Draft a message on local storage
+  Future<Result<void>> draftMessage(String threadId, String text) async {
+    try {
+      _localRepo.saveDraft(threadId, text);
+      AppCoordinator.instance.updateDrafts();
+      return Success(null);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error drafting message',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: {'threadId': threadId, 'text': text},
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
+
+  /// Get draft message from local storage
+  Future<Result<String?>> getDraft(String threadId) async {
+    try {
+      final result = await _localRepo.getDraft(threadId);
+      return Success(result);
+    } on StackMoneyException catch (e) {
+      return Failure(e);
+    } catch (e, stack) {
+      return Failure(
+        StackMoneyException(
+          message: 'Error drafting message',
+          scope: ExceptionScope.service,
+          exception: e as Exception,
+          payload: {'threadId': threadId},
           stackTrace: stack,
         ),
       );
