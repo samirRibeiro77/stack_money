@@ -1,0 +1,49 @@
+name: Flutter Build on Merge
+
+# Trigger the workflow only on push (merge) events to the main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Java JDK (required for Android builds)
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      # 3. Set up Flutter environment
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' # or 'beta', 'master'
+          # flutter-version: '3.24.0' # Optional: lock a specific version if needed
+
+      # 4. Install project dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 5. Run unit/widget tests (Best practice before building)
+      - name: Run tests
+        run: flutter test
+
+      # 6. Build the APK in Release mode
+      - name: Build APK
+        run: flutter build apk --release
+
+      # 7. Upload the generated APK as a GitHub artifact (Optional)
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
