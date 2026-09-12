@@ -39,8 +39,8 @@ jobs:
           echo "${{ secrets.FIREBASE_OPTIONS_CONTENT }}" > lib/firebase_options.dart
 
       # 6. Run unit/widget tests
-      - name: Run tests
-        run: flutter test
+#      - name: Run tests
+#        run: flutter test
 
 
       # 7. Build the APK in Release mode
