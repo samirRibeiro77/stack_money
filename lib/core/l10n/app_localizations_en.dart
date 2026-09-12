@@ -673,8 +673,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noCurrentPlan => 'No current plan';
 
   @override
-  String contextMessage(Object bucketQty, Object history, Object planName) {
-    return 'Plan name: $planName\nBuckets: $bucketQty\nHistory:\n$history';
+  String contextMessage(Object bucketQty, Object planName) {
+    return 'Plan name: $planName\nBuckets: $bucketQty\nHistory:';
   }
 
   @override

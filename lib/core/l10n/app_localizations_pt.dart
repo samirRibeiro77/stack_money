@@ -675,8 +675,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get noCurrentPlan => 'Sem plano ativo';
 
   @override
-  String contextMessage(Object bucketQty, Object history, Object planName) {
-    return 'Nome do plano: $planName\nCaixinhas: $bucketQty\nHistórico:\n$history';
+  String contextMessage(Object bucketQty, Object planName) {
+    return 'Nome do plano: $planName\nCaixinhas: $bucketQty\nHistórico:';
   }
 
   @override

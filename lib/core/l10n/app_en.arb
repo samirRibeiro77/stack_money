@@ -796,7 +796,7 @@
   "@noCurrentPlan": {
     "description": "There's no currently activated plan."
   },
-  "contextMessage": "Plan name: {planName}\nBuckets: {bucketQty}\nHistory:\n{history}",
+  "contextMessage": "Plan name: {planName}\nBuckets: {bucketQty}\nHistory:",
   "@contextMessage": {
     "description": "AI context message."
   },

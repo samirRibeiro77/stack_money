@@ -1299,8 +1299,8 @@ abstract class AppLocalizations {
   /// AI context message.
   ///
   /// In en, this message translates to:
-  /// **'Plan name: {planName}\nBuckets: {bucketQty}\nHistory:\n{history}'**
-  String contextMessage(Object bucketQty, Object history, Object planName);
+  /// **'Plan name: {planName}\nBuckets: {bucketQty}\nHistory:'**
+  String contextMessage(Object bucketQty, Object planName);
 
   /// AI context message for history.
   ///

@@ -33,6 +33,9 @@ class SmDialog extends StatelessWidget {
     return title ?? l10n.systemWarning;
   }
 
+  bool get _hasAction =>
+      onConfirm != null || onCancel != null || onDeny != null;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -89,36 +92,42 @@ class SmDialog extends StatelessWidget {
               ],
 
               /// Actions
-              const SizedBox(height: AppSizes.x12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  /// Deny
-                  if (onDeny != null) ...[
-                    SmChipButton(
-                      l10n.deny,
-                      onTap: onDeny,
-                      color: StackMoneyTheme.magentaNeon,
-                    ),
-                    Expanded(child: SizedBox()),
-                  ],
+              if (_hasAction) ...[
+                const SizedBox(height: AppSizes.x12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    /// Deny
+                    if (onDeny != null) ...[
+                      SmChipButton(
+                        l10n.deny,
+                        onTap: onDeny,
+                        color: StackMoneyTheme.magentaNeon,
+                      ),
+                      Expanded(child: SizedBox()),
+                    ],
 
-                  /// Cancel
-                  if (onCancel != null) ...[
-                    SmChipButton(
-                      l10n.cancel,
-                      onTap: onCancel,
-                      color: StackMoneyTheme.mutedGrey,
-                    ),
-                    SizedBox(width: AppSizes.x4),
-                  ],
+                    /// Cancel
+                    if (onCancel != null) ...[
+                      SmChipButton(
+                        l10n.cancel,
+                        onTap: onCancel,
+                        color: StackMoneyTheme.mutedGrey,
+                      ),
+                      SizedBox(width: AppSizes.x4),
+                    ],
 
-                  /// Confirm
-                  if (onConfirm != null) ...[
-                    SmChipButton(l10n.confirm, onTap: onConfirm, color: color),
+                    /// Confirm
+                    if (onConfirm != null) ...[
+                      SmChipButton(
+                        l10n.confirm,
+                        onTap: onConfirm,
+                        color: color,
+                      ),
+                    ],
                   ],
-                ],
-              ),
+                ),
+              ],
             ],
           ),
         ),
