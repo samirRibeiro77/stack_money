@@ -152,6 +152,12 @@ abstract class AppLocalizations {
   /// **'Liquidity Buffer'**
   String get liquidityBuffer;
 
+  /// Locked assets total
+  ///
+  /// In en, this message translates to:
+  /// **'Locked Assets'**
+  String get lockedAssets;
+
   /// Allocation buckets title
   ///
   /// In en, this message translates to:
@@ -1293,8 +1299,8 @@ abstract class AppLocalizations {
   /// AI context message.
   ///
   /// In en, this message translates to:
-  /// **'Plan name: {planName}\nBuckets: {bucketQty}\nHistory:\n{history}'**
-  String contextMessage(Object bucketQty, Object history, Object planName);
+  /// **'Plan name: {planName}\nBuckets: {bucketQty}\nHistory:'**
+  String contextMessage(Object bucketQty, Object planName);
 
   /// AI context message for history.
   ///

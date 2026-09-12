@@ -70,7 +70,6 @@ class ChatHeader extends StatelessWidget {
           .join('\n');
       final message = l10n.contextMessage(
         data.buckets.length,
-        historyMessage,
         data.currentPlan?.name ?? l10n.noCurrentPlan,
       );
 
@@ -80,6 +79,7 @@ class ChatHeader extends StatelessWidget {
           color: StackMoneyTheme.platinumSilver,
           title: l10n.context,
           message: message,
+          note: historyMessage,
         ),
       );
     }

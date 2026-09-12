@@ -9,6 +9,7 @@
   "telemetryStream": "Telemetria",
   "hiddenValues": "••••••",
   "liquidityBuffer": "Liquidez imediata",
+  "lockedAssets": "Ativos travados",
   "allocationBuckets": "Caixinhas",
   "allocation": "Alocação: ",
   "min": "Min: ",
@@ -199,7 +200,7 @@
   "preview": "Prévia",
   "context": "Contexto",
   "noCurrentPlan": "Sem plano ativo",
-  "contextMessage": "Nome do plano: {planName}\nCaixinhas: {bucketQty}\nHistórico:\n{history}",
+  "contextMessage": "Nome do plano: {planName}\nCaixinhas: {bucketQty}\nHistórico:",
   "contextHistory": "  • {date} -> {total}",
   "draft": "Rascunho: "
 }

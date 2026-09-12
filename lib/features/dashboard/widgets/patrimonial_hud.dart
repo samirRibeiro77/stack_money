@@ -20,6 +20,7 @@ class PatrimonialHud extends StatefulWidget {
 class _PatrimonialHudState extends State<PatrimonialHud>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  final _hideDetails = ValueNotifier(true);
 
   // Mudamos para um Tween mutável para conseguirmos atualizar o valor final dinamicamente
   final Tween<double> _amountTween = Tween<double>(begin: 0.0, end: 0.0);
@@ -27,6 +28,13 @@ class _PatrimonialHudState extends State<PatrimonialHud>
 
   // Guarda o último valor animado para servir de ponto de partida (begin) na próxima atualização
   double _oldTotalAmount = 0.0;
+
+  /// Toggle details
+  void _toggleDetails(bool isSecureActive) {
+    if (!isSecureActive) {
+      _hideDetails.value = !_hideDetails.value;
+    }
+  }
 
   @override
   void initState() {
@@ -84,6 +92,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
       builder: (_, latestHistory, _) {
         final total = latestHistory?.total ?? 0;
         final liquidity = latestHistory?.immediateLiquidityTotal ?? 0;
+        final investment = total - liquidity;
 
         // 3. GATILHO REATIVO: Atualiza os valores do Tween e roda a animação do zero
         _animateToNewValue(total, isSecureActive);
@@ -93,6 +102,7 @@ class _PatrimonialHudState extends State<PatrimonialHud>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              /// Total
               if (!isSecureActive)
                 AnimatedBuilder(
                   animation: _animation,
@@ -125,30 +135,98 @@ class _PatrimonialHudState extends State<PatrimonialHud>
               const Divider(height: 1),
               const SizedBox(height: AppSizes.sizedBoxMedium),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.bolt,
-                        color: StackMoneyTheme.cyanNeon,
-                        size: AppSizes.x10,
-                      ),
-                      const SizedBox(width: AppSizes.x2),
-                      Text(l10n.liquidityBuffer, style: textTheme.labelMedium),
-                    ],
-                  ),
-                  SecurityText(
-                    StackMoneyString.formatMoney(liquidity, symbol: true),
-                    type: SecurityType.mask,
-                    style: textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+              /// Details
+              ValueListenableBuilder(
+                valueListenable: _hideDetails,
+                builder: (_, hideDetails, _) {
+                  return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => _toggleDetails(isSecureActive),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.bolt,
+                                  color: StackMoneyTheme.cyanNeon,
+                                  size: AppSizes.x10,
+                                ),
+                                const SizedBox(width: AppSizes.x2),
+                                Text(
+                                  l10n.liquidityBuffer,
+                                  style: textTheme.labelMedium,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                SecurityText(
+                                  StackMoneyString.formatMoney(
+                                    liquidity,
+                                    symbol: true,
+                                  ),
+                                  type: SecurityType.mask,
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  activeColor: StackMoneyTheme.platinumSilver,
+                                  mutedColor: StackMoneyTheme.mutedGrey,
+                                ),
+                                if (!isSecureActive) ...[
+                                  Icon(
+                                    hideDetails
+                                        ? Icons.arrow_drop_down
+                                        : Icons.arrow_drop_up,
+                                    color: hideDetails
+                                        ? StackMoneyTheme.cyanNeon
+                                        : StackMoneyTheme.magentaNeon,
+                                    size: AppSizes.x7,
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ],
+                        ),
+                        if (!isSecureActive && !hideDetails) ...[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.savings_outlined,
+                                    color: StackMoneyTheme.magentaNeon,
+                                    size: AppSizes.x10,
+                                  ),
+                                  const SizedBox(width: AppSizes.x2),
+                                  Text(
+                                    l10n.lockedAssets,
+                                    style: textTheme.labelMedium,
+                                  ),
+                                ],
+                              ),
+                              SecurityText(
+                                StackMoneyString.formatMoney(
+                                  investment,
+                                  symbol: true,
+                                ),
+                                type: SecurityType.mask,
+                                style: textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                activeColor: StackMoneyTheme.platinumSilver,
+                                mutedColor: StackMoneyTheme.mutedGrey,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ],
                     ),
-                    activeColor: StackMoneyTheme.platinumSilver,
-                    mutedColor: StackMoneyTheme.mutedGrey,
-                  ),
-                ],
+                  );
+                },
               ),
             ],
           ),
