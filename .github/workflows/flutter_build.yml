@@ -33,15 +33,20 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # 5. Recreate the firebase_options.dart file from GitHub Secrets
+      # 5. Recreate files from GitHub Secrets
+      # 5.1. firebase_options.dart
       - name: Create firebase_options.dart
         run: |
           echo "${{ secrets.FIREBASE_OPTIONS_CONTENT }}" > lib/firebase_options.dart
 
-      # 6. Run unit/widget tests
-#      - name: Run tests
-#        run: flutter test
+      # 5.2. google-services.dart
+      - name: Create google-services.dart
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_CONTENT }}" > google-services.dart
 
+      # 6. Run unit/widget tests
+      #- name: Run tests
+      #  run: flutter test
 
       # 7. Build the APK in Release mode
       - name: Build APK
