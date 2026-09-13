@@ -39,10 +39,11 @@ jobs:
         run: |
           echo "${{ secrets.FIREBASE_OPTIONS_CONTENT }}" > lib/firebase_options.dart
 
-      # 5.2. google-services.dart
-      - name: Create google-services.dart
+      # 5.2. google-services.json
+      - name: Create google-services.json
         run: |
-          echo "${{ secrets.GOOGLE_SERVICES_CONTENT }}" > google-services.dart
+          echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 --decode > android/app/google-services.json
+
 
       # 6. Run unit/widget tests
       #- name: Run tests
