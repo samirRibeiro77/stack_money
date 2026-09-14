@@ -49,8 +49,8 @@ class ChatCard extends StatelessWidget {
                   SecurityText(
                     TimeAgoFormatter.format(l10n, chat.updatedAt),
                     activeColor: chat.hasDraft
-                        ? StackMoneyTheme.cyanNeon
-                        : StackMoneyTheme.mutedGrey,
+                        ? StackMoneyTheme.magentaNeon
+                        : StackMoneyTheme.cyanNeon,
                     style: textTheme.labelSmall,
                   ),
                 ],
@@ -63,7 +63,7 @@ class ChatCard extends StatelessWidget {
                       Text(
                         l10n.draft,
                         style: textTheme.bodySmall?.copyWith(
-                          color: StackMoneyTheme.cyanNeon,
+                          color: StackMoneyTheme.magentaNeon,
                           fontWeight: AppTypography.weightMedium,
                         ),
                       ),
