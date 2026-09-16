@@ -140,8 +140,12 @@ class PersonalCfoManager {
         userPrompt: cleanText,
         l10n: l10n,
       );
-    } catch (_) {
-      _handleSendMessageError(l10n.chatConnectionError);
+    } on StackMoneyException catch (e) {
+      _handleSendMessageError(
+        l10n.chatConnectionError(e.exception?.toString() ?? e.message),
+      );
+    } catch (e) {
+      _handleSendMessageError(l10n.chatConnectionError(e.toString()));
     } finally {
       _isStreaming.value = false;
       _scrollToBottom();

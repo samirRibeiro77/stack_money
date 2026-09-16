@@ -1203,8 +1203,8 @@ abstract class AppLocalizations {
   /// Message to show when the user create a new CFO chat.
   ///
   /// In en, this message translates to:
-  /// **'#### ⚡ Fail to connect to the CFO terminal...\n_Try again later!_'**
-  String get chatConnectionError;
+  /// **'#### ⚡ Fail to connect to the CFO terminal...\n_Error: {e}_'**
+  String chatConnectionError(Object e);
 
   /// Message to show when the user create a new CFO chat.
   ///
@@ -1293,8 +1293,8 @@ abstract class AppLocalizations {
   /// Dialog message when AI is creating/updating a bucket.
   ///
   /// In en, this message translates to:
-  /// **'Name: {name}\nMin Value: {minValue}'**
-  String aiBucketMessage(Object minValue, Object name);
+  /// **'Name: {name}\nTarget value: {targetValue}'**
+  String aiBucketMessage(Object name, Object targetValue);
 
   /// Preview label.
   ///

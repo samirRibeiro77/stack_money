@@ -44,12 +44,11 @@ class AiActionCard extends StatelessWidget {
       builder: (dialogContext) => SmDialog(
         title: StackMoneyString.formatTitle(action.actionType.label(l10n)),
         message: l10n.aiBucketMessage(
-          StackMoneyString.formatMoney(bucket.minValue, symbol: true),
           bucket.name,
+          StackMoneyString.formatMoney(bucket.targetValue ?? 0, symbol: true),
         ),
         note: action.actionType == ActionType.updateBucket ? bucket.id : null,
         color: StackMoneyTheme.platinumSilver,
-        onConfirm: () => context.pop(),
       ),
     );
   }

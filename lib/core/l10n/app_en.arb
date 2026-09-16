@@ -732,7 +732,7 @@
   "@personalCfo": {
     "description": "Personal CFO title."
   },
-  "chatConnectionError": "#### ⚡ Fail to connect to the CFO terminal...\n_Try again later!_",
+  "chatConnectionError": "#### ⚡ Fail to connect to the CFO terminal...\n_Error: {e}_",
   "@chatConnectionError": {
     "description": "Message to show when the user create a new CFO chat."
   },
@@ -792,7 +792,7 @@
   "@createBucket": {
     "description": "Dialog title when AI is creating a bucket."
   },
-  "aiBucketMessage": "Name: {name}\nMin Value: {minValue}",
+  "aiBucketMessage": "Name: {name}\nTarget value: {targetValue}",
   "@aiBucketMessage": {
     "description": "Dialog message when AI is creating/updating a bucket."
   },

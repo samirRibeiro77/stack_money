@@ -613,8 +613,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get personalCfo => 'Personal CFO • Lab';
 
   @override
-  String get chatConnectionError =>
-      '#### ⚡ Fail to connect to the CFO terminal...\n_Try again later!_';
+  String chatConnectionError(Object e) {
+    return '#### ⚡ Fail to connect to the CFO terminal...\n_Error: ${e}_';
+  }
 
   @override
   String get chatEmpty =>
@@ -668,8 +669,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createBucket => 'Create bucket';
 
   @override
-  String aiBucketMessage(Object minValue, Object name) {
-    return 'Name: $name\nMin Value: $minValue';
+  String aiBucketMessage(Object name, Object targetValue) {
+    return 'Name: $name\nTarget value: $targetValue';
   }
 
   @override
