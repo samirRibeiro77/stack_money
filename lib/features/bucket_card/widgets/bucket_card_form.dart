@@ -53,6 +53,36 @@ class BucketCardForm extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: AppSizes.sizedBoxMedium),
+              ValueListenableBuilder<bool>(
+                valueListenable: manager.hasTarget,
+                builder: (_, hasTarget, _) {
+                  if (!hasTarget || manager.targetValueController == null) {
+                    return const SizedBox.shrink();
+                  }
+
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                      top: AppSizes.sizedBoxMedium,
+                    ),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: manager.targetValueController,
+                          focusNode: manager.targetValueFocus,
+                          keyboardType: TextInputType.number,
+                          style: textTheme.bodySmall,
+                          decoration: StackMoneyTheme.inputDecoration(
+                            l10n.targetValue,
+                            color: techColor,
+                          ),
+                          inputFormatters: [MoneyInputFormatter()],
+                        ),
+                        const SizedBox(height: AppSizes.sizedBoxMedium),
+                      ],
+                    ),
+                  );
+                },
+              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [

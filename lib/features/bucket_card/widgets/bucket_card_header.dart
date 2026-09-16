@@ -6,7 +6,9 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/providers/bucket_card_scope.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/glass_popup_menu.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
+import 'package:stack_money/data/enum/bucket_actions.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
 
@@ -36,7 +38,12 @@ class BucketCardHeader extends StatelessWidget {
           },
           behavior: HitTestBehavior.opaque,
           child: Padding(
-            padding: const EdgeInsets.all(AppSizes.x8),
+            padding: const EdgeInsets.fromLTRB(
+              AppSizes.x8,
+              AppSizes.x8,
+              0,
+              AppSizes.x8,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -111,6 +118,11 @@ class BucketCardHeader extends StatelessWidget {
                       },
                     );
                   },
+                ),
+                GlassPopupMenu<BucketActions>(
+                  iconSize: AppSizes.x10,
+                  onSelected: manager.handleAction,
+                  items: manager.bucketActions(),
                 ),
               ],
             ),
