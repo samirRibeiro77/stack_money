@@ -27,12 +27,12 @@
   "cancel": "Cancelar",
   "bucketsConfig": "Configuração das Caixinhas",
   "newBucket": "Nova caixinha",
-  "enableTarget": "Habilitar alvo",
-  "disableTarget": "Desabilitar alvo",
+  "enableTarget": "Habilitar meta",
+  "disableTarget": "Desabilitar meta",
   "category": "Categoria",
   "where": "Onde",
   "minValue": "Valor minimo",
-  "targetValue": "Valor alvo",
+  "targetValue": "Valor da meta",
   "liquidity": "Liquidez",
   "percentSignal": "%",
   "plansConfig": "Configurações dos planos",
@@ -51,7 +51,7 @@
   "notAvailable": "N/A",
   "mandatoryDeductions": "Deduções em folha",
   "deductionName": "Nome da dedução",
-  "target": "Alvo",
+  "target": "Meta",
   "rule": "Regra",
   "deducted": "Deduzido: {value}",
   "totalNet": "Liquido total",
@@ -205,5 +205,7 @@
   "noCurrentPlan": "Sem plano ativo",
   "contextMessage": "Nome do plano: {planName}\nCaixinhas: {bucketQty}\nHistórico:",
   "contextHistory": "  • {date} -> {total}",
-  "draft": "Rascunho: "
+  "draft": "Rascunho: ",
+  "targetGap": "Brecha: {value}",
+  "targetDone": "Meta de {value} alcançada"
 }

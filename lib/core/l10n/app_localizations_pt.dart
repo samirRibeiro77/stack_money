@@ -93,10 +93,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get newBucket => 'Nova caixinha';
 
   @override
-  String get enableTarget => 'Habilitar alvo';
+  String get enableTarget => 'Habilitar meta';
 
   @override
-  String get disableTarget => 'Desabilitar alvo';
+  String get disableTarget => 'Desabilitar meta';
 
   @override
   String get category => 'Categoria';
@@ -108,7 +108,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get minValue => 'Valor minimo';
 
   @override
-  String get targetValue => 'Valor alvo';
+  String get targetValue => 'Valor da meta';
 
   @override
   String get liquidity => 'Liquidez';
@@ -164,7 +164,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get deductionName => 'Nome da dedução';
 
   @override
-  String get target => 'Alvo';
+  String get target => 'Meta';
 
   @override
   String get rule => 'Regra';
@@ -695,4 +695,14 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get draft => 'Rascunho: ';
+
+  @override
+  String targetGap(Object value) {
+    return 'Brecha: $value';
+  }
+
+  @override
+  String targetDone(Object value) {
+    return 'Meta de $value alcançada';
+  }
 }

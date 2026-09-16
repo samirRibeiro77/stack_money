@@ -693,4 +693,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get draft => 'Draft: ';
+
+  @override
+  String targetGap(Object value) {
+    return 'GAP: $value';
+  }
+
+  @override
+  String targetDone(Object value) {
+    return 'Target of $value secured';
+  }
 }

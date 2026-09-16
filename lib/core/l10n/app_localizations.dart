@@ -1331,6 +1331,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Draft: '**
   String get draft;
+
+  /// GAP between target and actual value.
+  ///
+  /// In en, this message translates to:
+  /// **'GAP: {value}'**
+  String targetGap(Object value);
+
+  /// Target value has been reached.
+  ///
+  /// In en, this message translates to:
+  /// **'Target of {value} secured'**
+  String targetDone(Object value);
 }
 
 class _AppLocalizationsDelegate

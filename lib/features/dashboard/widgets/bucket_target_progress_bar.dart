@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 
@@ -52,13 +53,20 @@ class _BucketTargetProgressBarState extends State<BucketTargetProgressBar> {
       );
     }
 
+    /// Variables
     final double target = widget.targetValue!;
     final double factor = (widget.currentBalance / target).clamp(0.0, 1.0);
     final bool isGoalReached = widget.currentBalance >= target;
     final double gap = target - widget.currentBalance;
-    final textTheme = Theme.of(context).textTheme;
 
-    // Lock tooptip to scan with touch
+    /// Context
+    final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
+    final techColor = isGoalReached
+        ? StackMoneyTheme.cyanNeon
+        : StackMoneyTheme.magentaNeon;
+
+    /// Lock tooptip to scan with touch
     final double clampedTooltipX = _barWidth > 0
         ? (_touchX - (AppSizes.targetTooltipWidth / 2)).clamp(
             0.0,
@@ -82,16 +90,23 @@ class _BucketTargetProgressBarState extends State<BucketTargetProgressBar> {
                 child: GlassmorphismEffect(
                   containerHeight: AppSizes.x12,
                   borderRadius: AppSizes.radiusSmall,
-                  borderColor: StackMoneyTheme.cyanNeon.withValues(alpha: 0.6),
+                  borderColor: techColor,
                   borderWidth: 1,
                   child: Center(
                     child: Text(
                       isGoalReached
-                          ? 'Goal of ${StackMoneyString.formatMoney(target, symbol: true)} reached'
-                          : 'GAP: ${StackMoneyString.formatMoney(gap, symbol: true)}',
+                          ? l10n.targetDone(
+                              StackMoneyString.formatMoney(
+                                target,
+                                symbol: true,
+                              ),
+                            )
+                          : l10n.targetGap(
+                              StackMoneyString.formatMoney(gap, symbol: true),
+                            ),
                       style: textTheme.labelSmall?.copyWith(
                         fontSize: AppTypography.fontSmallest,
-                        color: StackMoneyTheme.cyanNeon,
+                        color: techColor,
                         fontWeight: AppTypography.weightBold,
                       ),
                     ),
@@ -139,11 +154,9 @@ class _BucketTargetProgressBarState extends State<BucketTargetProgressBar> {
                         boxShadow: [
                           BoxShadow(
                             color: isGoalReached
-                                ? StackMoneyTheme.cyanNeon.withValues(
-                                    alpha: 0.8,
-                                  )
+                                ? techColor.withValues(alpha: 0.7)
                                 : StackMoneyTheme.platinumSilver.withValues(
-                                    alpha: 0.35,
+                                    alpha: 0.5,
                                   ),
                             blurRadius: _isInteracting
                                 ? AppSizes.x3

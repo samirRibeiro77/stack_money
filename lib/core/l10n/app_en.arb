@@ -819,5 +819,13 @@
   "draft": "Draft: ",
   "@draft": {
     "description": "Draft badge for messages."
+  },
+  "targetGap": "GAP: {value}",
+  "@targetGap": {
+    "description": "GAP between target and actual value."
+  },
+  "targetDone": "Target of {value} secured",
+  "@targetDone": {
+    "description": "Target value has been reached."
   }
 }
