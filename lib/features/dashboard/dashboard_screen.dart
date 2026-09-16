@@ -145,7 +145,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                                 return DashboardBucketCard(
                                   key: ValueKey(param.id),
-                                  parameter: param,
+                                  bucket: param,
                                   historyList: history,
                                   isExpanded: isCardExpanded,
                                   onHeaderTap: () =>

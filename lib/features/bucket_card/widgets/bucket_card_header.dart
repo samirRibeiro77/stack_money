@@ -40,9 +40,9 @@ class BucketCardHeader extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(
               AppSizes.x8,
-              AppSizes.x8,
+              AppSizes.x2,
               0,
-              AppSizes.x8,
+              AppSizes.x2,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

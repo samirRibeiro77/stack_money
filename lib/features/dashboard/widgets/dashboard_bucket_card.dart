@@ -12,17 +12,18 @@ import 'package:stack_money/data/enum/security_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
 import 'package:stack_money/data/models/chart_filter_state.dart';
 import 'package:stack_money/data/models/history.dart';
+import 'package:stack_money/features/dashboard/widgets/bucket_target_progress_bar.dart';
 import 'package:stack_money/features/dashboard/widgets/telemetry_filter_bar.dart';
 
 class DashboardBucketCard extends StatefulWidget {
-  final Bucket parameter;
+  final Bucket bucket;
   final List<History> historyList;
   final bool isExpanded;
   final VoidCallback onHeaderTap;
 
   const DashboardBucketCard({
     super.key,
-    required this.parameter,
+    required this.bucket,
     required this.historyList,
     required this.isExpanded,
     required this.onHeaderTap,
@@ -39,7 +40,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
 
   double _getBucketValueAt(History history) {
     final transaction = history.transactions
-        .where((t) => t.bucketId == widget.parameter.id)
+        .where((t) => t.bucketId == widget.bucket.id)
         .firstOrNull;
     return transaction?.actualValue ?? 0.0;
   }
@@ -55,7 +56,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
     final latestHistory = widget.historyList.last;
     final firstDate = widget.historyList.first.date;
     final double currentBalance = _getBucketValueAt(latestHistory);
-    final bool isUnderclock = currentBalance < widget.parameter.minValue;
+    final bool isUnderclock = currentBalance < widget.bucket.minValue;
 
     final Color healthColor = isUnderclock
         ? StackMoneyTheme.magentaNeon
@@ -69,6 +70,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
           shadowColor: healthColor,
           child: Column(
             children: [
+              /// Header with name and values
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -76,7 +78,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SecurityText(
-                        StackMoneyString.formatTitle(widget.parameter.name),
+                        StackMoneyString.formatTitle(widget.bucket.name),
                         style: textTheme.titleSmall,
                         type: SecurityType.systemLocked,
                       ),
@@ -121,7 +123,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                           Text(l10n.min, style: textTheme.labelSmall),
                           SecurityText(
                             StackMoneyString.formatMoney(
-                              widget.parameter.minValue,
+                              widget.bucket.minValue,
                               symbol: true,
                             ),
                             style: textTheme.labelSmall,
@@ -134,10 +136,18 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                 ],
               ),
 
-              // Miolo expandido guiado de forma reativa por valor invertido (!isSecureActive)
+              /// Target Progress Bar
+              BucketTargetProgressBar(
+                currentBalance: currentBalance,
+                targetValue: widget.bucket.targetValue,
+              ),
+
+              /// Body when expanded with chart and filters
               if (widget.isExpanded && !isSecureActive) ...[
-                const SizedBox(height: AppSizes.sizedBoxMedium),
-                const Divider(),
+                if (widget.bucket.targetValue == null) ...[
+                  const SizedBox(height: AppSizes.sizedBoxMedium),
+                  const Divider(),
+                ],
                 const SizedBox(height: AppSizes.sizedBoxMedium),
                 _buildMiniChart(healthColor),
                 const SizedBox(height: AppSizes.sizedBoxMedium),
@@ -178,13 +188,13 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
     List<double> values = filteredHistory
         .map((h) => _getBucketValueAt(h))
         .toList();
-    values.add(widget.parameter.minValue);
+    values.add(widget.bucket.minValue);
 
     double absoluteMin = values.reduce((a, b) => a < b ? a : b);
     double absoluteMax = values.reduce((a, b) => a > b ? a : b);
 
     double delta = absoluteMax - absoluteMin;
-    if (delta == 0) delta = widget.parameter.minValue.abs() * 0.2;
+    if (delta == 0) delta = widget.bucket.minValue.abs() * 0.2;
     if (delta == 0) delta = 100.0;
 
     double computedMinY = absoluteMin - (delta * 0.1);
@@ -217,7 +227,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
               tooltipBorderRadius: BorderRadius.circular(AppSizes.navBarRadius),
               getTooltipItems: (touchedSpots) {
                 return touchedSpots.map((spot) {
-                  final deltaValue = spot.y - widget.parameter.minValue;
+                  final deltaValue = spot.y - widget.bucket.minValue;
                   return LineTooltipItem(
                     StackMoneyString.formatMoney(spot.y),
                     TextStyle(
@@ -236,7 +246,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
           extraLinesData: ExtraLinesData(
             horizontalLines: [
               HorizontalLine(
-                y: widget.parameter.minValue,
+                y: widget.bucket.minValue,
                 color: Colors.white.withValues(alpha: 0.15),
                 strokeWidth: 1,
                 dashArray: [4, 4],
