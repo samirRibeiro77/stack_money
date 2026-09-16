@@ -95,29 +95,67 @@ class BucketCardHeader extends StatelessWidget {
                   ],
                 ),
                 const Expanded(child: SizedBox()),
-                ValueListenableBuilder<ValueSign>(
-                  valueListenable: manager.minValueSign,
-                  builder: (_, sign, _) {
-                    return ValueListenableBuilder<TextEditingValue>(
-                      valueListenable: manager.minValueController,
-                      builder: (_, value, _) {
-                        var minValue =
-                            StackMoneyNumber.parseMoneyStringToDouble(
-                              value.text,
-                            );
-                        if (sign.isNegative) minValue = -minValue;
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    ValueListenableBuilder<ValueSign>(
+                      valueListenable: manager.minValueSign,
+                      builder: (_, sign, _) {
+                        return ValueListenableBuilder<TextEditingValue>(
+                          valueListenable: manager.minValueController,
+                          builder: (_, value, _) {
+                            var minValue =
+                                StackMoneyNumber.parseMoneyStringToDouble(
+                                  value.text,
+                                );
+                            if (sign.isNegative) minValue = -minValue;
 
-                        return SecurityText(
-                          StackMoneyString.formatMoney(minValue, symbol: true),
-                          type: SecurityType.mask,
-                          style: textTheme.bodyMedium?.copyWith(
-                            fontWeight: AppTypography.weightBold,
-                          ),
-                          activeColor: techColor,
+                            return SecurityText(
+                              StackMoneyString.formatMoney(
+                                minValue,
+                                symbol: true,
+                              ),
+                              type: SecurityType.mask,
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontWeight: AppTypography.weightBold,
+                              ),
+                              activeColor: techColor,
+                            );
+                          },
                         );
                       },
-                    );
-                  },
+                    ),
+                    ValueListenableBuilder(
+                      valueListenable: manager.hasTarget,
+                      builder: (_, hasTarget, _) {
+                        if (!hasTarget) {
+                          return SizedBox.shrink();
+                        }
+
+                        return ValueListenableBuilder<TextEditingValue>(
+                          valueListenable: manager.targetValueController!,
+                          builder: (_, value, _) {
+                            var target =
+                                StackMoneyNumber.parseMoneyStringToDouble(
+                                  value.text,
+                                );
+
+                            return SecurityText(
+                              StackMoneyString.formatMoney(
+                                target,
+                                symbol: true,
+                              ),
+                              type: SecurityType.mask,
+                              style: textTheme.labelSmall?.copyWith(
+                                fontWeight: AppTypography.weightMedium,
+                              ),
+                              activeColor: StackMoneyTheme.mutedGrey,
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
                 ),
                 GlassPopupMenu<BucketActions>(
                   iconSize: AppSizes.x10,
