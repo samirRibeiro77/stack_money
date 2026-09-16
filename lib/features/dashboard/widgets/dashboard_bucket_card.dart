@@ -136,20 +136,19 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                 ],
               ),
 
-              /// Target Progress Bar
-              BucketTargetProgressBar(
-                currentBalance: currentBalance,
-                targetValue: widget.bucket.targetValue,
-              ),
-
-              /// Body when expanded with chart and filters
+              /// Body when expanded
               if (widget.isExpanded && !isSecureActive) ...[
-                if (widget.bucket.targetValue == null) ...[
-                  const SizedBox(height: AppSizes.sizedBoxMedium),
-                  const Divider(),
-                ],
+                /// Target Progress Bar & Divider
+                BucketTargetProgressBar(
+                  currentBalance: currentBalance,
+                  targetValue: widget.bucket.targetValue,
+                ),
+
+                /// Chart
                 const SizedBox(height: AppSizes.sizedBoxMedium),
                 _buildMiniChart(healthColor),
+
+                /// Filters
                 const SizedBox(height: AppSizes.sizedBoxMedium),
                 TelemetryFilterBar(
                   currentState: _chartFilter,
