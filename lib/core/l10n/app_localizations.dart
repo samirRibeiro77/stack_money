@@ -260,6 +260,18 @@ abstract class AppLocalizations {
   /// **'New bucket'**
   String get newBucket;
 
+  /// Enable target value on bucket
+  ///
+  /// In en, this message translates to:
+  /// **'Enable target'**
+  String get enableTarget;
+
+  /// Disable target value on bucket
+  ///
+  /// In en, this message translates to:
+  /// **'Disable target'**
+  String get disableTarget;
+
   /// Category
   ///
   /// In en, this message translates to:
@@ -277,6 +289,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Min Value'**
   String get minValue;
+
+  /// Target Value
+  ///
+  /// In en, this message translates to:
+  /// **'Target Value'**
+  String get targetValue;
 
   /// Liquidity
   ///

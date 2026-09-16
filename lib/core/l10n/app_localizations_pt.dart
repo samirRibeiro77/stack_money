@@ -93,6 +93,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get newBucket => 'Nova caixinha';
 
   @override
+  String get enableTarget => 'Habilitar alvo';
+
+  @override
+  String get disableTarget => 'Desabilitar alvo';
+
+  @override
   String get category => 'Categoria';
 
   @override
@@ -100,6 +106,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get minValue => 'Valor minimo';
+
+  @override
+  String get targetValue => 'Valor alvo';
 
   @override
   String get liquidity => 'Liquidez';

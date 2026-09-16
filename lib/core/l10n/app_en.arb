@@ -108,6 +108,14 @@
   "@newBucket": {
     "description": "Add new bucket slot text"
   },
+  "enableTarget": "Enable target",
+  "@enableTarget": {
+    "description": "Enable target value on bucket"
+  },
+  "disableTarget": "Disable target",
+  "@disableTarget": {
+    "description": "Disable target value on bucket"
+  },
   "category": "Category",
   "@category": {
     "description": "Category"
@@ -119,6 +127,10 @@
   "minValue": "Min Value",
   "@minValue": {
     "description": "Min Value"
+  },
+  "targetValue": "Target Value",
+  "@targetValue": {
+    "description": "Target Value"
   },
   "liquidity": "Liquidity",
   "@liquidity": {
