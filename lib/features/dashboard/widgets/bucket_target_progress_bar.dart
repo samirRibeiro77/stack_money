@@ -58,12 +58,12 @@ class _BucketTargetProgressBarState extends State<BucketTargetProgressBar> {
     final double gap = target - widget.currentBalance;
     final textTheme = Theme.of(context).textTheme;
 
-    // Centralized math for tooltip
-    const double tooltipWidth = 124.0;
-
     // Lock tooptip to scan with touch
     final double clampedTooltipX = _barWidth > 0
-        ? (_touchX - (tooltipWidth / 2)).clamp(0.0, _barWidth - tooltipWidth)
+        ? (_touchX - (AppSizes.targetTooltipWidth / 2)).clamp(
+            0.0,
+            _barWidth - AppSizes.targetTooltipWidth,
+          )
         : 0.0;
 
     return Padding(
@@ -72,7 +72,7 @@ class _BucketTargetProgressBarState extends State<BucketTargetProgressBar> {
         clipBehavior: Clip.none,
         children: [
           /// Scanner tooltip
-          if (!isGoalReached && _isInteracting)
+          if (_isInteracting)
             Positioned(
               top: -AppSizes.x26,
               left: clampedTooltipX,
@@ -86,7 +86,9 @@ class _BucketTargetProgressBarState extends State<BucketTargetProgressBar> {
                   borderWidth: 1,
                   child: Center(
                     child: Text(
-                      'GAP: ${StackMoneyString.formatMoney(gap, symbol: true)}',
+                      isGoalReached
+                          ? 'Goal of ${StackMoneyString.formatMoney(target, symbol: true)} reached'
+                          : 'GAP: ${StackMoneyString.formatMoney(gap, symbol: true)}',
                       style: textTheme.labelSmall?.copyWith(
                         fontSize: AppTypography.fontSmallest,
                         color: StackMoneyTheme.cyanNeon,
