@@ -10,6 +10,7 @@ import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
+import 'package:stack_money/data/enum/bucket_actions.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -27,6 +28,7 @@ class BucketCardManager {
   final _isImmediateLiquidity = ValueNotifier(false);
   final _minValueSign = ValueNotifier(ValueSign.positive);
   final _techColor = ValueNotifier(StackMoneyTheme.cyanNeon);
+  final _hasTarget = ValueNotifier(false);
 
   ValueListenable<bool> get isSaving => _isSaving;
 
@@ -36,19 +38,24 @@ class BucketCardManager {
 
   ValueListenable<Color> get techColor => _techColor;
 
+  ValueListenable<bool> get hasTarget => _hasTarget;
+
   late final TextEditingController whereController;
   late final TextEditingController categoryController;
   late final TextEditingController minValueController;
+  TextEditingController? targetValueController;
 
   late final FocusNode whereFocus;
   late final FocusNode categoryFocus;
   late final FocusNode minValueFocus;
+  FocusNode? targetValueFocus;
 
   Timer? _debounceTimer;
 
   BucketCardManager(Bucket initialBucket, this._context) {
     _bucket = initialBucket;
 
+    _hasTarget.value = _bucket.targetValue != null;
     _isImmediateLiquidity.value = _bucket.isImmediateLiquidity;
     _minValueSign.value = ValueSign.define(_bucket.minValue);
     _techColor.value = _bucket.minValue >= 0
@@ -72,6 +79,59 @@ class BucketCardManager {
     whereController.addListener(_onTextChanged);
     categoryController.addListener(_onTextChanged);
     minValueController.addListener(_onTextChanged);
+
+    if (_hasTarget.value) {
+      _setupTargetControllerAndFocus(_bucket.targetValue ?? 0.0);
+    }
+  }
+
+  void _setupTargetControllerAndFocus(double initialValue) {
+    targetValueController = TextEditingController(
+      text: StackMoneyString.formatMoney(initialValue),
+    );
+    targetValueFocus = FocusNode();
+
+    targetValueFocus!.addListener(() => _onFocusChange(targetValueFocus!));
+    targetValueController!.addListener(_onTextChanged);
+  }
+
+  List<BucketActions> bucketActions() {
+    return BucketActions.values.where((a) {
+      if (_hasTarget.value) {
+        return a != BucketActions.enableTarget;
+      } else {
+        return a != BucketActions.disableTarget;
+      }
+    }).toList();
+  }
+
+  void handleAction(BucketActions action) {
+    switch (action) {
+      case BucketActions.enableTarget:
+      case BucketActions.disableTarget:
+        return _toggleTarget();
+    }
+  }
+
+  void _toggleTarget() {
+    if (_hasTarget.value) {
+      _hasTarget.value = false;
+      targetValueController?.removeListener(_onTextChanged);
+      targetValueController?.dispose();
+      targetValueController = null;
+
+      targetValueFocus?.dispose();
+      targetValueFocus = null;
+    } else {
+      _hasTarget.value = true;
+      _setupTargetControllerAndFocus(0.0);
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        targetValueFocus?.requestFocus();
+      });
+    }
+
+    _triggerSaveNow();
   }
 
   void _onFocusChange(FocusNode focusNode) {
@@ -113,11 +173,19 @@ class BucketCardManager {
 
     if (minValueSign.value.isNegative) doubleValue = -doubleValue;
 
+    double? targetDoubleValue;
+    if (_hasTarget.value && targetValueController != null) {
+      targetDoubleValue = StackMoneyNumber.parseMoneyStringToDouble(
+        targetValueController!.text,
+      );
+    }
+
     final updated = _bucket.copyWith(
       where: whereController.text,
       category: categoryController.text,
       minValue: doubleValue,
       isImmediateLiquidity: isImmediateLiquidity.value,
+      targetValue: () => targetDoubleValue,
     );
 
     if (_bucket.equalsTo(updated)) return;
@@ -189,12 +257,15 @@ class BucketCardManager {
     whereController.dispose();
     categoryController.dispose();
     minValueController.dispose();
+    targetValueController?.dispose();
     whereFocus.dispose();
     categoryFocus.dispose();
     minValueFocus.dispose();
+    targetValueFocus?.dispose();
     _isSaving.dispose();
     _minValueSign.dispose();
     _isImmediateLiquidity.dispose();
     _techColor.dispose();
+    _hasTarget.dispose();
   }
 }
