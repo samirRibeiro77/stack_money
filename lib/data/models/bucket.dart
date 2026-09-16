@@ -6,6 +6,7 @@ class Bucket {
   final String? category;
   final String where;
   final double minValue;
+  double? targetValue;
   final bool isImmediateLiquidity;
   final int position;
 
@@ -16,6 +17,7 @@ class Bucket {
     required this.isImmediateLiquidity,
     required this.position,
     this.category,
+    this.targetValue,
   });
 
   factory Bucket.empty() {
@@ -23,6 +25,7 @@ class Bucket {
       const Uuid().v4(),
       where: '',
       minValue: 0.0,
+      targetValue: null,
       isImmediateLiquidity: false,
       position: 0,
     );
@@ -34,6 +37,7 @@ class Bucket {
       category: json?[ModelKey.category] as String? ?? '',
       where: json?[ModelKey.where] as String? ?? '',
       minValue: (json?[ModelKey.minValue] as num?)?.toDouble() ?? 0.0,
+      targetValue: (json?[ModelKey.targetValue] as num?)?.toDouble(),
       isImmediateLiquidity:
           json?[ModelKey.isImmediateLiquidity] as bool? ?? false,
       position: json?[ModelKey.position] as int? ?? 0,
@@ -45,6 +49,7 @@ class Bucket {
     ModelKey.category: category,
     ModelKey.where: where,
     ModelKey.minValue: minValue,
+    ModelKey.targetValue: targetValue,
     ModelKey.isImmediateLiquidity: isImmediateLiquidity,
     ModelKey.position: position,
   };
@@ -54,6 +59,7 @@ class Bucket {
     String? category,
     String? where,
     double? minValue,
+    double? Function()? targetValue,
     bool? isImmediateLiquidity,
     int? position,
   }) {
@@ -62,6 +68,7 @@ class Bucket {
       category: (category ?? this.category)?.trim(),
       where: (where ?? this.where).trim(),
       minValue: minValue ?? this.minValue,
+      targetValue: targetValue != null ? targetValue() : this.targetValue,
       isImmediateLiquidity: isImmediateLiquidity ?? this.isImmediateLiquidity,
       position: position ?? this.position,
     );
@@ -71,12 +78,14 @@ class Bucket {
 
   String get name => '$where $category';
 
-  bool get isDeletable => minValue == 0;
+  bool get isDeletable =>
+      minValue == 0 && (targetValue == null || targetValue == 0);
 
   bool equalsTo(Bucket b) {
     return where == b.where &&
         category == b.category &&
         minValue == b.minValue &&
+        targetValue == b.targetValue &&
         isImmediateLiquidity == b.isImmediateLiquidity;
   }
 }

@@ -203,7 +203,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
 
         if (!currentBucket.isDeletable) {
           throw Exception(
-            'Bucket contains active allocation funds. Only buckets with zero (0) \'minValue\' can be deleted',
+            'Bucket contains active allocation funds or target set. Only buckets with zero (0) \'minValue\' and \'targetValue\' can be deleted',
           );
         }
       }
