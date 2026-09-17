@@ -460,7 +460,7 @@
   "@filterByAlloc": {
     "description": "Sort by higher wallet allocation"
   },
-  "failDeleteBucketWithValue": "Bucket has 'MIN_VALUE' filled, can't be deleted",
+  "failDeleteBucketWithValue": "Bucket has 'MIN' or 'TARGET' filled and can't be deleted",
   "@failDeleteBucketWithValue": {
     "description": "SnackBar message when failed to delete bucket with MIN_VALUE filled."
   },

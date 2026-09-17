@@ -384,7 +384,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get failDeleteBucketWithValue =>
-      'Caixinha tem \'VALOR_MINIMO\' preenchido, não pode ser deletada';
+      'Caixinha tem \'MINIMO\' ou \'META\' preenchido e não pode ser deletada';
 
   @override
   String get planMoneySprintDay => 'Dia planejado de atualizar seu dinheiro';
