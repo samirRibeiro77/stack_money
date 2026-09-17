@@ -94,6 +94,16 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         });
   }
 
+  Stream<Bucket> watchById(String id) {
+    SmLogger.debug('Watching a bucket', payload: {'id': id});
+
+    return _collection.doc(id).snapshots().map((snapshot) {
+      SmLogger.info('Stream bucket $id updated.');
+
+      return Bucket.fromJson(snapshot.data());
+    });
+  }
+
   Future<void> commitSprint({
     required List<Bucket> updatedBuckets,
     required List<Transaction> transactions,
@@ -169,7 +179,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
         });
   }
 
-  Future<void> saveBatch(List<Bucket> buckets) async{
+  Future<void> saveBatch(List<Bucket> buckets) async {
     SmLogger.debug('Initializing batch save', payload: {'qty': buckets.length});
 
     try {

@@ -19,10 +19,8 @@ import 'package:stack_money/domain/service/bucket_service.dart';
 class BucketCardManager {
   final _bucketService = BucketManagementService();
 
-  late Bucket _bucket;
+  final _bucket = ValueNotifier(Bucket.empty());
   late final BuildContext _context;
-
-  Bucket get bucket => _bucket;
 
   final _isSaving = ValueNotifier(false);
   final _isImmediateLiquidity = ValueNotifier(false);
@@ -40,62 +38,62 @@ class BucketCardManager {
 
   ValueListenable<bool> get hasTarget => _hasTarget;
 
-  late final TextEditingController whereController;
-  late final TextEditingController categoryController;
-  late final TextEditingController minValueController;
-  TextEditingController? targetValueController;
+  ValueListenable<Bucket> get bucket => _bucket;
 
-  late final FocusNode whereFocus;
-  late final FocusNode categoryFocus;
-  late final FocusNode minValueFocus;
-  FocusNode? targetValueFocus;
+  final whereController = TextEditingController(text: '');
+  final categoryController = TextEditingController(text: '');
+  final minValueController = TextEditingController(text: '');
+  final targetValueController = TextEditingController(text: '');
+
+  final whereFocus = FocusNode();
+  final categoryFocus = FocusNode();
+  final minValueFocus = FocusNode();
+  final targetValueFocus = FocusNode();
 
   Timer? _debounceTimer;
 
   BucketCardManager(Bucket initialBucket, this._context) {
-    _bucket = initialBucket;
-
-    _hasTarget.value = _bucket.targetValue != null;
-    _isImmediateLiquidity.value = _bucket.isImmediateLiquidity;
-    _minValueSign.value = ValueSign.define(_bucket.minValue);
-    _techColor.value = _bucket.minValue >= 0
-        ? StackMoneyTheme.cyanNeon
-        : StackMoneyTheme.magentaNeon;
-
-    whereController = TextEditingController(text: _bucket.where);
-    categoryController = TextEditingController(text: _bucket.category);
-    minValueController = TextEditingController(
-      text: StackMoneyString.formatMoney(_bucket.minValue.abs()),
-    );
-
-    whereFocus = FocusNode();
-    categoryFocus = FocusNode();
-    minValueFocus = FocusNode();
+    updateBucket(initialBucket);
 
     whereFocus.addListener(() => _onFocusChange(whereFocus));
     categoryFocus.addListener(() => _onFocusChange(categoryFocus));
     minValueFocus.addListener(() => _onFocusChange(minValueFocus));
+    targetValueFocus.addListener(() => _onFocusChange(targetValueFocus));
 
     whereController.addListener(_onTextChanged);
     categoryController.addListener(_onTextChanged);
     minValueController.addListener(_onTextChanged);
-
-    if (_hasTarget.value) {
-      _setupTargetControllerAndFocus(_bucket.targetValue ?? 0.0);
-    }
+    targetValueController.addListener(_onTextChanged);
   }
 
-  void _setupTargetControllerAndFocus(double initialValue) {
-    targetValueController = TextEditingController(
-      text: StackMoneyString.formatMoney(initialValue),
+  void updateBucket(Bucket bucket) {
+    /// Set bucket
+    _bucket.value = bucket;
+
+    /// ValueNotifier
+    _hasTarget.value = _bucket.value.targetValue != null;
+    _isImmediateLiquidity.value = _bucket.value.isImmediateLiquidity;
+    _minValueSign.value = ValueSign.define(_bucket.value.minValue);
+    _techColor.value = _bucket.value.minValue >= 0
+        ? StackMoneyTheme.cyanNeon
+        : StackMoneyTheme.magentaNeon;
+
+    /// Controllers
+    whereController.text = _bucket.value.where;
+    categoryController.text = _bucket.value.category ?? '';
+    minValueController.text = StackMoneyString.formatMoney(
+      _bucket.value.minValue.abs(),
     );
-    targetValueFocus = FocusNode();
-
-    targetValueFocus!.addListener(() => _onFocusChange(targetValueFocus!));
-    targetValueController!.addListener(_onTextChanged);
+    targetValueController.text = StackMoneyString.formatMoney(
+      _bucket.value.targetValue?.abs() ?? 0,
+    );
   }
 
-  List<BucketActions> bucketActions() {
+  Stream<Bucket> watchBucket(String id) {
+    return _bucketService.watchById(id);
+  }
+
+  List<BucketActions> get bucketActions {
     return BucketActions.values.where((a) {
       if (_hasTarget.value) {
         return a != BucketActions.enableTarget;
@@ -116,18 +114,12 @@ class BucketCardManager {
   void _toggleTarget() {
     if (_hasTarget.value) {
       _hasTarget.value = false;
-      targetValueController?.removeListener(_onTextChanged);
-      targetValueController?.dispose();
-      targetValueController = null;
-
-      targetValueFocus?.dispose();
-      targetValueFocus = null;
     } else {
       _hasTarget.value = true;
-      _setupTargetControllerAndFocus(0.0);
+      targetValueController.text = '0.0';
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        targetValueFocus?.requestFocus();
+        targetValueFocus.requestFocus();
       });
     }
 
@@ -146,7 +138,7 @@ class BucketCardManager {
 
   void _scheduleDebouncedSave() {
     _debounceTimer?.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 800), () {
+    _debounceTimer = Timer(const Duration(milliseconds: 1000), () {
       _triggerSaveNow();
     });
   }
@@ -174,13 +166,13 @@ class BucketCardManager {
     if (minValueSign.value.isNegative) doubleValue = -doubleValue;
 
     double? targetDoubleValue;
-    if (_hasTarget.value && targetValueController != null) {
+    if (_hasTarget.value) {
       targetDoubleValue = StackMoneyNumber.parseMoneyStringToDouble(
-        targetValueController!.text,
+        targetValueController.text,
       );
     }
 
-    final updated = _bucket.copyWith(
+    final updated = _bucket.value.copyWith(
       where: whereController.text,
       category: categoryController.text,
       minValue: doubleValue,
@@ -188,9 +180,9 @@ class BucketCardManager {
       targetValue: () => targetDoubleValue,
     );
 
-    if (_bucket.equalsTo(updated)) return;
+    if (_bucket.value.equalsTo(updated)) return;
 
-    _bucket = updated;
+    _bucket.value = updated;
     _isSaving.value = true;
 
     final saveResult = await _bucketService.save(updated);
@@ -213,7 +205,7 @@ class BucketCardManager {
   Future<bool> confirmPurge() async {
     final l10n = AppLocalizations.of(_context)!;
 
-    if (!_bucket.isDeletable) {
+    if (!_bucket.value.isDeletable) {
       SmSnackBar(
         message: l10n.failDeleteBucketWithValue,
         type: SnackBarType.error,
@@ -226,7 +218,9 @@ class BucketCardManager {
       barrierDismissible: false,
       builder: (dialogContext) => SmDialog(
         message: l10n.deleteBucketMessage,
-        content: _bucket.name.isEmpty ? l10n.newBucket : _bucket.name,
+        content: _bucket.value.name.isEmpty
+            ? l10n.newBucket
+            : _bucket.value.name,
         note: l10n.deleteBucketNote,
         onCancel: () => Navigator.of(dialogContext).pop(false),
         onConfirm: () => Navigator.of(dialogContext).pop(true),
@@ -238,15 +232,17 @@ class BucketCardManager {
 
   Future purgeSelf() async {
     await _bucketService
-        .delete(_bucket.id)
+        .delete(_bucket.value.id)
         .then((_) {
-          SmLogger.info('Purge completed successfully for ID: ${_bucket.id}');
+          SmLogger.info(
+            'Purge completed successfully for ID: ${_bucket.value.id}',
+          );
         })
         .catchError((e, stack) {
           StackMoneyException(
             message: 'Failed to delete bucket from card context',
             scope: ExceptionScope.business,
-            payload: {'id': _bucket.id, 'exception': e},
+            payload: {'id': _bucket.value.id, 'exception': e},
             stackTrace: stack,
           );
         });
@@ -257,11 +253,11 @@ class BucketCardManager {
     whereController.dispose();
     categoryController.dispose();
     minValueController.dispose();
-    targetValueController?.dispose();
+    targetValueController.dispose();
     whereFocus.dispose();
     categoryFocus.dispose();
     minValueFocus.dispose();
-    targetValueFocus?.dispose();
+    targetValueFocus.dispose();
     _isSaving.dispose();
     _minValueSign.dispose();
     _isImmediateLiquidity.dispose();

@@ -58,6 +58,10 @@ class BucketManagementService {
     return _repository.watch();
   }
 
+  Stream<Bucket> watchById(String id) {
+    return _repository.watchById(id);
+  }
+
   Future<Result<void>> executeContributionSprint({
     required List<Bucket> updatedBuckets,
     required List<Transaction> transactions,

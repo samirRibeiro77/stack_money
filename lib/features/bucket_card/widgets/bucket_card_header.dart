@@ -133,7 +133,7 @@ class BucketCardHeader extends StatelessWidget {
                         }
 
                         return ValueListenableBuilder<TextEditingValue>(
-                          valueListenable: manager.targetValueController!,
+                          valueListenable: manager.targetValueController,
                           builder: (_, value, _) {
                             var target =
                                 StackMoneyNumber.parseMoneyStringToDouble(
@@ -160,7 +160,7 @@ class BucketCardHeader extends StatelessWidget {
                 GlassPopupMenu<BucketActions>(
                   iconSize: AppSizes.x10,
                   onSelected: manager.handleAction,
-                  items: manager.bucketActions(),
+                  items: manager.bucketActions,
                 ),
               ],
             ),
