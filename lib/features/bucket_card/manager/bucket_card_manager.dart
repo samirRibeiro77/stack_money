@@ -84,13 +84,9 @@ class BucketCardManager {
     );
 
     /// ValueNotifier
-    _hasTarget.value = _bucket.value.targetValue != null;
     _isImmediateLiquidity.value = _bucket.value.isImmediateLiquidity;
     _minValueSign.value = ValueSign.define(_bucket.value.minValue);
     _techColor.value = _bucket.value.minValue >= 0
-        ? StackMoneyTheme.cyanNeon
-        : StackMoneyTheme.magentaNeon;
-    _dateColor.value = targetDate.isNotEmpty
         ? StackMoneyTheme.cyanNeon
         : StackMoneyTheme.magentaNeon;
 
@@ -120,6 +116,16 @@ class BucketCardManager {
     }).toList();
   }
 
+  (bool, Timestamp?) get targetDateValidValue {
+    if (targetDateController.text.isEmpty) return (true, null);
+    final targetDate = StackMoneyNumber.parseMonthYearToTimestamp(
+      targetDateController.text,
+    );
+
+    if (targetDate == null) return (false, null);
+    return (true, targetDate);
+  }
+
   void handleAction(BucketActions action) {
     switch (action) {
       case BucketActions.enableTarget:
@@ -131,17 +137,10 @@ class BucketCardManager {
   void _toggleTarget() {
     if (_hasTarget.value) {
       _hasTarget.value = false;
+      _triggerSaveNow();
     } else {
       _hasTarget.value = true;
-      targetValueController.text = '0.0';
-      targetDateController.text = '';
-
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        targetValueFocus.requestFocus();
-      });
     }
-
-    _triggerSaveNow();
   }
 
   void _onFocusChange(FocusNode focusNode) {
@@ -194,31 +193,30 @@ class BucketCardManager {
   }
 
   Future _triggerSaveNow() async {
+    /// MinValue
     double doubleValue = StackMoneyNumber.parseMoneyStringToDouble(
       minValueController.text,
     );
 
     if (minValueSign.value.isNegative) doubleValue = -doubleValue;
 
+    /// Target
     double? targetDoubleValue;
+    Timestamp? targetTimestampDate;
     if (_hasTarget.value) {
       targetDoubleValue = StackMoneyNumber.parseMoneyStringToDouble(
         targetValueController.text,
       );
-    }
 
-    Timestamp? targetTimestampDate;
-    if (_hasTarget.value) {
-      if (_dateColor.value == StackMoneyTheme.magentaNeon) {
+      if (!targetDateValidValue.$1) {
         _failedSave();
         return;
       }
 
-      targetTimestampDate = StackMoneyNumber.parseMonthYearToTimestamp(
-        targetDateController.text,
-      );
+      targetTimestampDate = targetDateValidValue.$2;
     }
 
+    /// Bucket updated
     final updated = _bucket.value.copyWith(
       where: whereController.text,
       category: categoryController.text,
@@ -230,6 +228,7 @@ class BucketCardManager {
 
     if (_bucket.value.equalsTo(updated)) return;
 
+    /// Update bucket
     _bucket.value = updated;
     _isSaving.value = true;
 
