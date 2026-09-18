@@ -78,8 +78,13 @@ class StackMoneyString {
     return DateFormat(format).format(date);
   }
 
-  static String formatMonthYear(Timestamp? timestamp) {
-    if (timestamp == null) return '';
+  static String formatMonthYear(Timestamp? timestamp, {String? notAvailable}) {
+    if (timestamp == null) {
+      if (notAvailable == null) {
+        return '';
+      }
+      return notAvailable;
+    }
 
     final date = timestamp.toDate();
     final month = date.month.toString().padLeft(2, '0');

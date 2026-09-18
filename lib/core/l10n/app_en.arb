@@ -800,7 +800,7 @@
   "@createBucket": {
     "description": "Dialog title when AI is creating a bucket."
   },
-  "aiBucketMessage": "Name: {name}\nTarget value: {targetValue}",
+  "aiBucketMessage": "Name: {name}\nTarget value: {targetValue}\nTarget date: {targetDate}",
   "@aiBucketMessage": {
     "description": "Dialog message when AI is creating/updating a bucket."
   },

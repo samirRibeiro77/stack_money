@@ -1305,8 +1305,8 @@ abstract class AppLocalizations {
   /// Dialog message when AI is creating/updating a bucket.
   ///
   /// In en, this message translates to:
-  /// **'Name: {name}\nTarget value: {targetValue}'**
-  String aiBucketMessage(Object name, Object targetValue);
+  /// **'Name: {name}\nTarget value: {targetValue}\nTarget date: {targetDate}'**
+  String aiBucketMessage(Object name, Object targetDate, Object targetValue);
 
   /// Preview label.
   ///

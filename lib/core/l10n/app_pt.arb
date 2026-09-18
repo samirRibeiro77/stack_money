@@ -201,7 +201,7 @@
   "failUpdateThreadTitle": "Failed to update thread title...",
   "updateBucket": "Atualizar caixinha",
   "createBucket": "Criar caixinha",
-  "aiBucketMessage": "Nome: {name}\nMeta: {targetValue}",
+  "aiBucketMessage": "Nome: {name}\nMeta: {targetValue}\nLimite: {targetDate}",
   "preview": "Prévia",
   "context": "Contexto",
   "noCurrentPlan": "Sem plano ativo",

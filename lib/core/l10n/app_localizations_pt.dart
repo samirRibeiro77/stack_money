@@ -677,8 +677,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get createBucket => 'Criar caixinha';
 
   @override
-  String aiBucketMessage(Object name, Object targetValue) {
-    return 'Nome: $name\nMeta: $targetValue';
+  String aiBucketMessage(Object name, Object targetDate, Object targetValue) {
+    return 'Nome: $name\nMeta: $targetValue\nLimite: $targetDate';
   }
 
   @override

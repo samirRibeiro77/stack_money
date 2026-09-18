@@ -167,6 +167,7 @@ class PersonalCfoManager {
     );
 
     messagesNotifier.value = [...messages, userMessage];
+    _scrollToBottom();
     await _cfoService.saveMessage(_thread.id, userMessage);
   }
 

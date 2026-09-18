@@ -675,8 +675,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createBucket => 'Create bucket';
 
   @override
-  String aiBucketMessage(Object name, Object targetValue) {
-    return 'Name: $name\nTarget value: $targetValue';
+  String aiBucketMessage(Object name, Object targetDate, Object targetValue) {
+    return 'Name: $name\nTarget value: $targetValue\nTarget date: $targetDate';
   }
 
   @override

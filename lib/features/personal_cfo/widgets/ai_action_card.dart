@@ -45,6 +45,10 @@ class AiActionCard extends StatelessWidget {
         title: StackMoneyString.formatTitle(action.actionType.label(l10n)),
         message: l10n.aiBucketMessage(
           bucket.name,
+          StackMoneyString.formatMonthYear(
+            bucket.targetDate,
+            notAvailable: l10n.notAvailable,
+          ),
           StackMoneyString.formatMoney(bucket.targetValue ?? 0, symbol: true),
         ),
         note: action.actionType == ActionType.updateBucket ? bucket.id : null,
