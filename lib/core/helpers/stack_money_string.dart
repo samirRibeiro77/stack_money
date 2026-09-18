@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_formatter/currency_formatter.dart';
 import 'package:intl/intl.dart';
 
@@ -75,5 +76,13 @@ class StackMoneyString {
       }
     }
     return DateFormat(format).format(date);
+  }
+
+  static String formatMonthYear(Timestamp? timestamp) {
+    if (timestamp == null) return '';
+
+    final date = timestamp.toDate();
+    final month = date.month.toString().padLeft(2, '0');
+    return '$month/${date.year}';
   }
 }

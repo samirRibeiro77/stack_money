@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
@@ -26,6 +27,7 @@ class BucketCardManager {
   final _isImmediateLiquidity = ValueNotifier(false);
   final _minValueSign = ValueNotifier(ValueSign.positive);
   final _techColor = ValueNotifier(StackMoneyTheme.cyanNeon);
+  final _dateColor = ValueNotifier(StackMoneyTheme.cyanNeon);
   final _hasTarget = ValueNotifier(false);
 
   ValueListenable<bool> get isSaving => _isSaving;
@@ -36,6 +38,8 @@ class BucketCardManager {
 
   ValueListenable<Color> get techColor => _techColor;
 
+  ValueListenable<Color> get dateColor => _dateColor;
+
   ValueListenable<bool> get hasTarget => _hasTarget;
 
   ValueListenable<Bucket> get bucket => _bucket;
@@ -44,11 +48,13 @@ class BucketCardManager {
   final categoryController = TextEditingController(text: '');
   final minValueController = TextEditingController(text: '');
   final targetValueController = TextEditingController(text: '');
+  final targetDateController = TextEditingController(text: '');
 
   final whereFocus = FocusNode();
   final categoryFocus = FocusNode();
   final minValueFocus = FocusNode();
   final targetValueFocus = FocusNode();
+  final targetDateFocus = FocusNode();
 
   Timer? _debounceTimer;
 
@@ -59,22 +65,32 @@ class BucketCardManager {
     categoryFocus.addListener(() => _onFocusChange(categoryFocus));
     minValueFocus.addListener(() => _onFocusChange(minValueFocus));
     targetValueFocus.addListener(() => _onFocusChange(targetValueFocus));
+    targetDateFocus.addListener(() => _onFocusChange(targetDateFocus));
 
     whereController.addListener(_onTextChanged);
     categoryController.addListener(_onTextChanged);
     minValueController.addListener(_onTextChanged);
     targetValueController.addListener(_onTextChanged);
+    targetDateController.addListener(_onTargetDateChanged);
   }
 
   void updateBucket(Bucket bucket) {
     /// Set bucket
     _bucket.value = bucket;
 
+    /// TargetDate
+    final targetDate = StackMoneyString.formatMonthYear(
+      _bucket.value.targetDate,
+    );
+
     /// ValueNotifier
     _hasTarget.value = _bucket.value.targetValue != null;
     _isImmediateLiquidity.value = _bucket.value.isImmediateLiquidity;
     _minValueSign.value = ValueSign.define(_bucket.value.minValue);
     _techColor.value = _bucket.value.minValue >= 0
+        ? StackMoneyTheme.cyanNeon
+        : StackMoneyTheme.magentaNeon;
+    _dateColor.value = targetDate.isNotEmpty
         ? StackMoneyTheme.cyanNeon
         : StackMoneyTheme.magentaNeon;
 
@@ -87,6 +103,7 @@ class BucketCardManager {
     targetValueController.text = StackMoneyString.formatMoney(
       _bucket.value.targetValue?.abs() ?? 0,
     );
+    targetDateController.text = targetDate;
   }
 
   Stream<Bucket> watchBucket(String id) {
@@ -117,6 +134,7 @@ class BucketCardManager {
     } else {
       _hasTarget.value = true;
       targetValueController.text = '0.0';
+      targetDateController.text = '';
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         targetValueFocus.requestFocus();
@@ -134,6 +152,23 @@ class BucketCardManager {
 
   void _onTextChanged() {
     _scheduleDebouncedSave();
+  }
+
+  void _onTargetDateChanged() {
+    if (targetDateController.text.isEmpty) {
+      _dateColor.value = StackMoneyTheme.cyanNeon;
+      return;
+    }
+
+    final targetDate = StackMoneyNumber.parseMonthYearToTimestamp(
+      targetDateController.text,
+    );
+
+    if (targetDate == null) {
+      _dateColor.value = StackMoneyTheme.magentaNeon;
+    } else {
+      _dateColor.value = StackMoneyTheme.cyanNeon;
+    }
   }
 
   void _scheduleDebouncedSave() {
@@ -172,12 +207,25 @@ class BucketCardManager {
       );
     }
 
+    Timestamp? targetTimestampDate;
+    if (_hasTarget.value) {
+      if (_dateColor.value == StackMoneyTheme.magentaNeon) {
+        _failedSave();
+        return;
+      }
+
+      targetTimestampDate = StackMoneyNumber.parseMonthYearToTimestamp(
+        targetDateController.text,
+      );
+    }
+
     final updated = _bucket.value.copyWith(
       where: whereController.text,
       category: categoryController.text,
       minValue: doubleValue,
       isImmediateLiquidity: isImmediateLiquidity.value,
       targetValue: () => targetDoubleValue,
+      targetDate: () => targetTimestampDate,
     );
 
     if (_bucket.value.equalsTo(updated)) return;
@@ -187,18 +235,22 @@ class BucketCardManager {
 
     final saveResult = await _bucketService.save(updated);
     if (!saveResult.isSuccess) {
-      if (_context.mounted) {
-        final l10n = AppLocalizations.of(_context)!;
-        SmSnackBar(
-          message: l10n.failedSave,
-          type: SnackBarType.error,
-        ).show(_context);
-      }
-      _isSaving.value = false;
+      _failedSave();
       return;
     }
 
     await Future.delayed(const Duration(milliseconds: 500));
+    _isSaving.value = false;
+  }
+
+  void _failedSave() {
+    if (_context.mounted) {
+      final l10n = AppLocalizations.of(_context)!;
+      SmSnackBar(
+        message: l10n.failedSave,
+        type: SnackBarType.error,
+      ).show(_context);
+    }
     _isSaving.value = false;
   }
 

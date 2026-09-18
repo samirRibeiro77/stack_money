@@ -296,6 +296,18 @@ abstract class AppLocalizations {
   /// **'Target Value'**
   String get targetValue;
 
+  /// Target Date
+  ///
+  /// In en, this message translates to:
+  /// **'Target Date'**
+  String get targetDate;
+
+  /// Target Date hint text
+  ///
+  /// In en, this message translates to:
+  /// **'MM/AAAA'**
+  String get targetDateHint;
+
   /// Liquidity
   ///
   /// In en, this message translates to:

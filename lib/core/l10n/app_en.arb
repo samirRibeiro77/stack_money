@@ -132,6 +132,14 @@
   "@targetValue": {
     "description": "Target Value"
   },
+  "targetDate": "Target Date",
+  "@targetDate": {
+    "description": "Target Date"
+  },
+  "targetDateHint": "MM/AAAA",
+  "@targetDateHint": {
+    "description": "Target Date hint text"
+  },
   "liquidity": "Liquidity",
   "@liquidity": {
     "description": "Liquidity"

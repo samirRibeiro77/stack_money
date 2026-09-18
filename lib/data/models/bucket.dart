@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:stack_money/core/helpers/timestamp_parser.dart';
 import 'package:stack_money/data/helper/model_key.dart';
 import 'package:uuid/uuid.dart';
 
@@ -6,7 +8,8 @@ class Bucket {
   final String? category;
   final String where;
   final double minValue;
-  double? targetValue;
+  final double? targetValue;
+  final Timestamp? targetDate;
   final bool isImmediateLiquidity;
   final int position;
 
@@ -18,6 +21,7 @@ class Bucket {
     required this.position,
     this.category,
     this.targetValue,
+    this.targetDate,
   });
 
   factory Bucket.empty() {
@@ -26,6 +30,7 @@ class Bucket {
       where: '',
       minValue: 0.0,
       targetValue: null,
+      targetDate: null,
       isImmediateLiquidity: false,
       position: 0,
     );
@@ -38,6 +43,7 @@ class Bucket {
       where: json?[ModelKey.where] as String? ?? '',
       minValue: (json?[ModelKey.minValue] as num?)?.toDouble() ?? 0.0,
       targetValue: (json?[ModelKey.targetValue] as num?)?.toDouble(),
+      targetDate: TimestampParser.fromJsonNullable(json?[ModelKey.targetDate]),
       isImmediateLiquidity:
           json?[ModelKey.isImmediateLiquidity] as bool? ?? false,
       position: json?[ModelKey.position] as int? ?? 0,
@@ -50,6 +56,7 @@ class Bucket {
     ModelKey.where: where,
     ModelKey.minValue: minValue,
     ModelKey.targetValue: targetValue,
+    ModelKey.targetDate: targetDate,
     ModelKey.isImmediateLiquidity: isImmediateLiquidity,
     ModelKey.position: position,
   };
@@ -60,6 +67,7 @@ class Bucket {
     String? where,
     double? minValue,
     double? Function()? targetValue,
+    Timestamp? Function()? targetDate,
     bool? isImmediateLiquidity,
     int? position,
   }) {
@@ -69,6 +77,7 @@ class Bucket {
       where: (where ?? this.where).trim(),
       minValue: minValue ?? this.minValue,
       targetValue: targetValue != null ? targetValue() : this.targetValue,
+      targetDate: targetDate != null ? targetDate() : this.targetDate,
       isImmediateLiquidity: isImmediateLiquidity ?? this.isImmediateLiquidity,
       position: position ?? this.position,
     );
@@ -86,6 +95,7 @@ class Bucket {
         category == b.category &&
         minValue == b.minValue &&
         targetValue == b.targetValue &&
+        targetDate == b.targetDate &&
         isImmediateLiquidity == b.isImmediateLiquidity;
   }
 }

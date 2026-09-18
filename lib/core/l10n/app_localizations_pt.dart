@@ -111,6 +111,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get targetValue => 'Valor da meta';
 
   @override
+  String get targetDate => 'Data da meta';
+
+  @override
+  String get targetDateHint => 'MM/AAAA';
+
+  @override
   String get liquidity => 'Liquidez';
 
   @override

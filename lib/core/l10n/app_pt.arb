@@ -33,6 +33,8 @@
   "where": "Onde",
   "minValue": "Valor minimo",
   "targetValue": "Valor da meta",
+  "targetDate": "Data da meta",
+  "targetDateHint": "MM/AAAA",
   "liquidity": "Liquidez",
   "percentSignal": "%",
   "plansConfig": "Configurações dos planos",
