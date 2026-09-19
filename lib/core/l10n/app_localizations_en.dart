@@ -93,6 +93,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newBucket => 'New bucket';
 
   @override
+  String get enableTarget => 'Enable target';
+
+  @override
+  String get disableTarget => 'Disable target';
+
+  @override
   String get category => 'Category';
 
   @override
@@ -100,6 +106,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get minValue => 'Min Value';
+
+  @override
+  String get targetValue => 'Target Value';
+
+  @override
+  String get targetDate => 'Target Date';
+
+  @override
+  String get targetDateHint => 'MM/AAAA';
 
   @override
   String get liquidity => 'Liquidity';
@@ -375,7 +390,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failDeleteBucketWithValue =>
-      'Bucket has \'MIN_VALUE\' filled, can\'t be deleted';
+      'Bucket has \'MIN\' or \'TARGET\' filled and can\'t be deleted';
 
   @override
   String get planMoneySprintDay => 'Planned day to update your money';
@@ -604,8 +619,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get personalCfo => 'Personal CFO • Lab';
 
   @override
-  String get chatConnectionError =>
-      '#### ⚡ Fail to connect to the CFO terminal...\n_Try again later!_';
+  String chatConnectionError(Object e) {
+    return '#### ⚡ Fail to connect to the CFO terminal...\n_Error: ${e}_';
+  }
 
   @override
   String get chatEmpty =>
@@ -659,8 +675,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createBucket => 'Create bucket';
 
   @override
-  String aiBucketMessage(Object minValue, Object name) {
-    return 'Name: $name\nMin Value: $minValue';
+  String aiBucketMessage(Object name, Object targetDate, Object targetValue) {
+    return 'Name: $name\nTarget value: $targetValue\nTarget date: $targetDate';
   }
 
   @override
@@ -684,4 +700,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get draft => 'Draft: ';
+
+  @override
+  String targetGap(Object value) {
+    return 'GAP: $value';
+  }
+
+  @override
+  String targetGapWithDate(Object date, Object value) {
+    return 'GAP of $value until $date';
+  }
+
+  @override
+  String targetDone(Object value) {
+    return 'Target of $value secured';
+  }
 }

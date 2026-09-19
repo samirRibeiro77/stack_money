@@ -17,7 +17,8 @@ class StackMoneyTheme {
 
   static InputDecoration inputDecoration(
     String label, {
-    Color color = StackMoneyTheme.cyanNeon,
+    String hint = '',
+    Color color = cyanNeon,
     bool useUnderline = true,
     bool readOnly = false,
     double boxHeight = AppSizes.x16,
@@ -27,6 +28,8 @@ class StackMoneyTheme {
         label,
         useUnderline: useUnderline,
       ),
+      hintText: hint,
+      hintStyle: darkTheme.textTheme.labelSmall?.copyWith(color: mutedGrey),
       alignLabelWithHint: true,
       labelStyle: darkTheme.textTheme.bodySmall,
       floatingLabelStyle: darkTheme.textTheme.bodyLarge?.copyWith(

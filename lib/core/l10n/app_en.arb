@@ -108,6 +108,14 @@
   "@newBucket": {
     "description": "Add new bucket slot text"
   },
+  "enableTarget": "Enable target",
+  "@enableTarget": {
+    "description": "Enable target value on bucket"
+  },
+  "disableTarget": "Disable target",
+  "@disableTarget": {
+    "description": "Disable target value on bucket"
+  },
   "category": "Category",
   "@category": {
     "description": "Category"
@@ -119,6 +127,18 @@
   "minValue": "Min Value",
   "@minValue": {
     "description": "Min Value"
+  },
+  "targetValue": "Target Value",
+  "@targetValue": {
+    "description": "Target Value"
+  },
+  "targetDate": "Target Date",
+  "@targetDate": {
+    "description": "Target Date"
+  },
+  "targetDateHint": "MM/AAAA",
+  "@targetDateHint": {
+    "description": "Target Date hint text"
   },
   "liquidity": "Liquidity",
   "@liquidity": {
@@ -448,7 +468,7 @@
   "@filterByAlloc": {
     "description": "Sort by higher wallet allocation"
   },
-  "failDeleteBucketWithValue": "Bucket has 'MIN_VALUE' filled, can't be deleted",
+  "failDeleteBucketWithValue": "Bucket has 'MIN' or 'TARGET' filled and can't be deleted",
   "@failDeleteBucketWithValue": {
     "description": "SnackBar message when failed to delete bucket with MIN_VALUE filled."
   },
@@ -720,7 +740,7 @@
   "@personalCfo": {
     "description": "Personal CFO title."
   },
-  "chatConnectionError": "#### ⚡ Fail to connect to the CFO terminal...\n_Try again later!_",
+  "chatConnectionError": "#### ⚡ Fail to connect to the CFO terminal...\n_Error: {e}_",
   "@chatConnectionError": {
     "description": "Message to show when the user create a new CFO chat."
   },
@@ -780,7 +800,7 @@
   "@createBucket": {
     "description": "Dialog title when AI is creating a bucket."
   },
-  "aiBucketMessage": "Name: {name}\nMin Value: {minValue}",
+  "aiBucketMessage": "Name: {name}\nTarget value: {targetValue}\nTarget date: {targetDate}",
   "@aiBucketMessage": {
     "description": "Dialog message when AI is creating/updating a bucket."
   },
@@ -807,5 +827,17 @@
   "draft": "Draft: ",
   "@draft": {
     "description": "Draft badge for messages."
+  },
+  "targetGap": "GAP: {value}",
+  "@targetGap": {
+    "description": "GAP between target and actual value."
+  },
+  "targetGapWithDate": "GAP of {value} until {date}",
+  "@targetGapWithDate": {
+    "description": "GAP between target and actual value with a date to archive."
+  },
+  "targetDone": "Target of {value} secured",
+  "@targetDone": {
+    "description": "Target value has been reached."
   }
 }

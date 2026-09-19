@@ -93,6 +93,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get newBucket => 'Nova caixinha';
 
   @override
+  String get enableTarget => 'Habilitar meta';
+
+  @override
+  String get disableTarget => 'Desabilitar meta';
+
+  @override
   String get category => 'Categoria';
 
   @override
@@ -100,6 +106,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get minValue => 'Valor minimo';
+
+  @override
+  String get targetValue => 'Valor da meta';
+
+  @override
+  String get targetDate => 'Data da meta';
+
+  @override
+  String get targetDateHint => 'MM/AAAA';
 
   @override
   String get liquidity => 'Liquidez';
@@ -155,7 +170,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get deductionName => 'Nome da dedução';
 
   @override
-  String get target => 'Alvo';
+  String get target => 'Meta';
 
   @override
   String get rule => 'Regra';
@@ -375,7 +390,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get failDeleteBucketWithValue =>
-      'Caixinha tem \'VALOR_MINIMO\' preenchido, não pode ser deletada';
+      'Caixinha tem \'MINIMO\' ou \'META\' preenchido e não pode ser deletada';
 
   @override
   String get planMoneySprintDay => 'Dia planejado de atualizar seu dinheiro';
@@ -606,8 +621,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get personalCfo => 'CFO Pessoal';
 
   @override
-  String get chatConnectionError =>
-      '#### ⚡ Falha ao conectar com o terminal do CFO...\n_Tente novamente mais tarde!_';
+  String chatConnectionError(Object e) {
+    return '#### ⚡ Falha ao conectar com o terminal do CFO...\n_Erro: ${e}_';
+  }
 
   @override
   String get chatEmpty =>
@@ -661,8 +677,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get createBucket => 'Criar caixinha';
 
   @override
-  String aiBucketMessage(Object minValue, Object name) {
-    return 'Nome: $name\nValor minimo: $minValue';
+  String aiBucketMessage(Object name, Object targetDate, Object targetValue) {
+    return 'Nome: $name\nMeta: $targetValue\nLimite: $targetDate';
   }
 
   @override
@@ -686,4 +702,19 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get draft => 'Rascunho: ';
+
+  @override
+  String targetGap(Object value) {
+    return 'Brecha: $value';
+  }
+
+  @override
+  String targetGapWithDate(Object date, Object value) {
+    return 'Bracha de $value até $date';
+  }
+
+  @override
+  String targetDone(Object value) {
+    return 'Meta de $value alcançada';
+  }
 }

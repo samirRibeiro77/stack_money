@@ -12,6 +12,8 @@ class ModelKey {
   /// Bucket
   static const where = 'where';
   static const minValue = 'minValue';
+  static const targetValue = 'targetValue';
+  static const targetDate = 'targetDate';
   static const isImmediateLiquidity = 'isImmediateLiquidity';
 
   /// History
