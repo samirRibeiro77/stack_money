@@ -1350,6 +1350,12 @@ abstract class AppLocalizations {
   /// **'GAP: {value}'**
   String targetGap(Object value);
 
+  /// GAP between target and actual value with a date to archive.
+  ///
+  /// In en, this message translates to:
+  /// **'GAP of {value} until {date}'**
+  String targetGapWithDate(Object date, Object value);
+
   /// Target value has been reached.
   ///
   /// In en, this message translates to:

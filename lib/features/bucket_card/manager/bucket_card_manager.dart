@@ -61,6 +61,9 @@ class BucketCardManager {
   BucketCardManager(Bucket initialBucket, this._context) {
     updateBucket(initialBucket);
 
+    _hasTarget.value =
+        initialBucket.targetValue != null || initialBucket.targetDate != null;
+
     whereFocus.addListener(() => _onFocusChange(whereFocus));
     categoryFocus.addListener(() => _onFocusChange(categoryFocus));
     minValueFocus.addListener(() => _onFocusChange(minValueFocus));

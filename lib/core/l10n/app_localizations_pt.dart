@@ -709,6 +709,11 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String targetGapWithDate(Object date, Object value) {
+    return 'Bracha de $value até $date';
+  }
+
+  @override
   String targetDone(Object value) {
     return 'Meta de $value alcançada';
   }

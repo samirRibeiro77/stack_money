@@ -707,6 +707,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String targetGapWithDate(Object date, Object value) {
+    return 'GAP of $value until $date';
+  }
+
+  @override
   String targetDone(Object value) {
     return 'Target of $value secured';
   }

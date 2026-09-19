@@ -209,5 +209,6 @@
   "contextHistory": "  • {date} -> {total}",
   "draft": "Rascunho: ",
   "targetGap": "Brecha: {value}",
+  "targetGapWithDate": "Bracha de {value} até {date}",
   "targetDone": "Meta de {value} alcançada"
 }

@@ -142,6 +142,7 @@ class _DashboardBucketCardState extends State<DashboardBucketCard> {
                 BucketTargetProgressBar(
                   currentBalance: currentBalance,
                   targetValue: widget.bucket.targetValue,
+                  targetDate: widget.bucket.targetDate,
                 ),
 
                 /// Chart

@@ -47,7 +47,7 @@ class AiActionCard extends StatelessWidget {
           bucket.name,
           StackMoneyString.formatMonthYear(
             bucket.targetDate,
-            notAvailable: l10n.notAvailable,
+            notFound: l10n.notAvailable,
           ),
           StackMoneyString.formatMoney(bucket.targetValue ?? 0, symbol: true),
         ),

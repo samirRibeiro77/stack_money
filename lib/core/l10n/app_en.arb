@@ -832,6 +832,10 @@
   "@targetGap": {
     "description": "GAP between target and actual value."
   },
+  "targetGapWithDate": "GAP of {value} until {date}",
+  "@targetGapWithDate": {
+    "description": "GAP between target and actual value with a date to archive."
+  },
   "targetDone": "Target of {value} secured",
   "@targetDone": {
     "description": "Target value has been reached."

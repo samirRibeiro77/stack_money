@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/constants/app_typography.dart';
@@ -9,10 +10,12 @@ import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 class BucketTargetProgressBar extends StatefulWidget {
   final double currentBalance;
   final double? targetValue;
+  final Timestamp? targetDate;
 
   const BucketTargetProgressBar({
     required this.currentBalance,
-    required this.targetValue,
+    this.targetValue,
+    this.targetDate,
     super.key,
   });
 
@@ -44,6 +47,33 @@ class _BucketTargetProgressBarState extends State<BucketTargetProgressBar> {
     });
   }
 
+  String _message(
+    AppLocalizations l10n,
+    bool isGoalReached, {
+    double? target,
+    double? gap,
+    Timestamp? date,
+  }) {
+    if (target == null || gap == null) {
+      return l10n.error;
+    }
+
+    if (isGoalReached) {
+      return l10n.targetDone(
+        StackMoneyString.formatMoney(target, symbol: true),
+      );
+    }
+
+    if (date != null) {
+      return l10n.targetGapWithDate(
+        StackMoneyString.formatMonthYear(date),
+        StackMoneyString.formatMoney(gap, symbol: true),
+      );
+    }
+
+    return l10n.targetGap(StackMoneyString.formatMoney(gap, symbol: true));
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.targetValue == null || widget.targetValue! <= 0) {
@@ -66,12 +96,8 @@ class _BucketTargetProgressBarState extends State<BucketTargetProgressBar> {
         ? StackMoneyTheme.cyanNeon
         : StackMoneyTheme.magentaNeon;
 
-    /// Lock tooptip to scan with touch
-    final double clampedTooltipX = _barWidth > 0
-        ? (_touchX - (AppSizes.targetTooltipWidth / 2)).clamp(
-            0.0,
-            _barWidth - AppSizes.targetTooltipWidth,
-          )
+    final double alignmentX = _barWidth > 0
+        ? ((_touchX / _barWidth) * 2.0 - 1.0).clamp(-1.0, 1.0)
         : 0.0;
 
     return Padding(
@@ -83,31 +109,36 @@ class _BucketTargetProgressBarState extends State<BucketTargetProgressBar> {
           if (_isInteracting)
             Positioned(
               top: -AppSizes.x26,
-              left: clampedTooltipX,
+              left: 0,
+              right: 0,
               child: AnimatedOpacity(
                 duration: const Duration(milliseconds: 150),
                 opacity: _isInteracting ? 1.0 : 0.0,
-                child: GlassmorphismEffect(
-                  containerHeight: AppSizes.x12,
-                  borderRadius: AppSizes.radiusSmall,
-                  borderColor: techColor,
-                  borderWidth: 1,
-                  child: Center(
-                    child: Text(
-                      isGoalReached
-                          ? l10n.targetDone(
-                              StackMoneyString.formatMoney(
-                                target,
-                                symbol: true,
-                              ),
-                            )
-                          : l10n.targetGap(
-                              StackMoneyString.formatMoney(gap, symbol: true),
-                            ),
-                      style: textTheme.labelSmall?.copyWith(
-                        fontSize: AppTypography.fontSmallest,
-                        color: techColor,
-                        fontWeight: AppTypography.weightBold,
+                child: Align(
+                  alignment: Alignment(alignmentX, -1.0),
+                  child: GlassmorphismEffect(
+                    containerHeight: AppSizes.x12,
+                    borderRadius: AppSizes.radiusSmall,
+                    borderColor: techColor,
+                    borderWidth: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSizes.min,
+                        vertical: AppSizes.x2,
+                      ),
+                      child: Text(
+                        _message(
+                          l10n,
+                          isGoalReached,
+                          target: target,
+                          gap: gap,
+                          date: widget.targetDate,
+                        ),
+                        style: textTheme.labelSmall?.copyWith(
+                          fontSize: AppTypography.fontSmallest,
+                          color: techColor,
+                          fontWeight: AppTypography.weightBold,
+                        ),
                       ),
                     ),
                   ),
