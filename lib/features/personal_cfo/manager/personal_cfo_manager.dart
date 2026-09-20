@@ -109,6 +109,11 @@ class PersonalCfoManager {
     _cfoService.draftMessage(_thread.id, messageController.text);
   }
 
+  void sendSuggestion(String prompt) {
+    messageController.text = prompt;
+    sendMessage();
+  }
+
   /// Send a new message on the thread
   Future<void> sendMessage() async {
     final cleanText = messageController.text.trim();
