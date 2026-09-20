@@ -30,34 +30,32 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return ValueListenableBuilder(
-      valueListenable: AppCoordinator.instance.buckets,
-      builder: (_, fbBuckets, _) {
-        final buckets = List.of(fbBuckets);
-        buckets.sort((a, b) => a.position.compareTo(b.position));
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          /// Header
+          ExpandableHeader(
+            title: l10n.bucketsConfig,
+            validation: _manager.expandState,
+            toggle: _manager.toggleAllBuckets,
+          ),
+          const SizedBox(height: AppSizes.sizedBoxMedium),
 
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              /// Header
-              ExpandableHeader(
-                title: l10n.bucketsConfig,
-                validation: _manager.expandState,
-                toggle: _manager.toggleAllBuckets,
-              ),
-              const SizedBox(height: AppSizes.sizedBoxMedium),
+          /// New bucket
+          CardInitializeSlot(
+            l10n.newBucket,
+            onTap: _manager.initializeNewBucketSlot,
+          ),
+          const SizedBox(height: AppSizes.sizedBoxSmall),
 
-              /// New bucket
-              CardInitializeSlot(
-                l10n.newBucket,
-                onTap: _manager.initializeNewBucketSlot,
-              ),
-              const SizedBox(height: AppSizes.sizedBoxSmall),
-
-              /// List of buckets
-              ValueListenableBuilder(
-                valueListenable: _manager.expandedIdsNotifier,
-                builder: (_, expandedIds, _) {
+          /// List of buckets
+          ValueListenableBuilder(
+            valueListenable: _manager.expandedIdsNotifier,
+            builder: (_, expandedIds, _) {
+              return ValueListenableBuilder(
+                valueListenable: AppCoordinator.instance.buckets,
+                builder: (_, fbBuckets, _) {
+                  final buckets = List.of(fbBuckets);
                   buckets.sort((a, b) => a.position.compareTo(b.position));
 
                   return SmReorderableList(
@@ -91,11 +89,11 @@ class _BucketControlScreenState extends State<BucketControlScreen> {
                     },
                   );
                 },
-              ),
-            ],
+              );
+            },
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }

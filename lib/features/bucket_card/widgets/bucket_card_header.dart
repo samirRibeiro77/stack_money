@@ -6,7 +6,9 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/providers/bucket_card_scope.dart';
 import 'package:stack_money/core/providers/security_provider.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/widgets/glass_popup_menu.dart';
 import 'package:stack_money/core/widgets/security_text.dart';
+import 'package:stack_money/data/enum/bucket_actions.dart';
 import 'package:stack_money/data/enum/security_type.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
 
@@ -36,7 +38,12 @@ class BucketCardHeader extends StatelessWidget {
           },
           behavior: HitTestBehavior.opaque,
           child: Padding(
-            padding: const EdgeInsets.all(AppSizes.x8),
+            padding: const EdgeInsets.fromLTRB(
+              AppSizes.x8,
+              AppSizes.x2,
+              0,
+              AppSizes.x2,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -88,29 +95,72 @@ class BucketCardHeader extends StatelessWidget {
                   ],
                 ),
                 const Expanded(child: SizedBox()),
-                ValueListenableBuilder<ValueSign>(
-                  valueListenable: manager.minValueSign,
-                  builder: (_, sign, _) {
-                    return ValueListenableBuilder<TextEditingValue>(
-                      valueListenable: manager.minValueController,
-                      builder: (_, value, _) {
-                        var minValue =
-                            StackMoneyNumber.parseMoneyStringToDouble(
-                              value.text,
-                            );
-                        if (sign.isNegative) minValue = -minValue;
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    ValueListenableBuilder<ValueSign>(
+                      valueListenable: manager.minValueSign,
+                      builder: (_, sign, _) {
+                        return ValueListenableBuilder<TextEditingValue>(
+                          valueListenable: manager.minValueController,
+                          builder: (_, value, _) {
+                            var minValue =
+                                StackMoneyNumber.parseMoneyStringToDouble(
+                                  value.text,
+                                );
+                            if (sign.isNegative) minValue = -minValue;
 
-                        return SecurityText(
-                          StackMoneyString.formatMoney(minValue, symbol: true),
-                          type: SecurityType.mask,
-                          style: textTheme.bodyMedium?.copyWith(
-                            fontWeight: AppTypography.weightBold,
-                          ),
-                          activeColor: techColor,
+                            return SecurityText(
+                              StackMoneyString.formatMoney(
+                                minValue,
+                                symbol: true,
+                              ),
+                              type: SecurityType.mask,
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontWeight: AppTypography.weightBold,
+                              ),
+                              activeColor: techColor,
+                            );
+                          },
                         );
                       },
-                    );
-                  },
+                    ),
+                    ValueListenableBuilder(
+                      valueListenable: manager.hasTarget,
+                      builder: (_, hasTarget, _) {
+                        if (!hasTarget) {
+                          return SizedBox.shrink();
+                        }
+
+                        return ValueListenableBuilder<TextEditingValue>(
+                          valueListenable: manager.targetValueController,
+                          builder: (_, value, _) {
+                            var target =
+                                StackMoneyNumber.parseMoneyStringToDouble(
+                                  value.text,
+                                );
+
+                            return SecurityText(
+                              StackMoneyString.formatMoney(
+                                target,
+                                symbol: true,
+                              ),
+                              type: SecurityType.mask,
+                              style: textTheme.labelSmall?.copyWith(
+                                fontWeight: AppTypography.weightMedium,
+                              ),
+                              activeColor: StackMoneyTheme.mutedGrey,
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                GlassPopupMenu<BucketActions>(
+                  iconSize: AppSizes.x10,
+                  onSelected: manager.handleAction,
+                  items: manager.bucketActions,
                 ),
               ],
             ),

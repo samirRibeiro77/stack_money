@@ -61,27 +61,36 @@ class _BucketCardState extends State<BucketCard> {
         },
         background: const BucketCardBackground(),
         child: BucketCardSavingAnimation(
-          child: ValueListenableBuilder(
-            valueListenable: _cardManager.techColor,
-            builder: (_, techColor, _) {
-              return SmCard(
-                shadowColor: techColor,
-                removePadding: true,
-                child: Column(
-                  children: [
-                    BucketCardHeader(
-                      isExpanded: widget.isExpanded,
-                      onHeaderTap: widget.onHeaderTap,
+          child: StreamBuilder(
+            stream: _cardManager.watchBucket(widget.bucket.id),
+            builder: (_, snapshot) {
+              if (snapshot.hasData) {
+                _cardManager.updateBucket(snapshot.data!);
+              }
+
+              return ValueListenableBuilder(
+                valueListenable: _cardManager.techColor,
+                builder: (_, techColor, _) {
+                  return SmCard(
+                    shadowColor: techColor,
+                    removePadding: true,
+                    child: Column(
+                      children: [
+                        BucketCardHeader(
+                          isExpanded: widget.isExpanded,
+                          onHeaderTap: widget.onHeaderTap,
+                        ),
+                        if (widget.isExpanded && !isSecureActive) ...[
+                          const Divider(
+                            color: StackMoneyTheme.background,
+                            height: 1,
+                          ),
+                          const BucketCardForm(),
+                        ],
+                      ],
                     ),
-                    if (widget.isExpanded && !isSecureActive) ...[
-                      const Divider(
-                        color: StackMoneyTheme.background,
-                        height: 1,
-                      ),
-                      const BucketCardForm(),
-                    ],
-                  ],
-                ),
+                  );
+                },
               );
             },
           ),

@@ -260,6 +260,18 @@ abstract class AppLocalizations {
   /// **'New bucket'**
   String get newBucket;
 
+  /// Enable target value on bucket
+  ///
+  /// In en, this message translates to:
+  /// **'Enable target'**
+  String get enableTarget;
+
+  /// Disable target value on bucket
+  ///
+  /// In en, this message translates to:
+  /// **'Disable target'**
+  String get disableTarget;
+
   /// Category
   ///
   /// In en, this message translates to:
@@ -277,6 +289,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Min Value'**
   String get minValue;
+
+  /// Target Value
+  ///
+  /// In en, this message translates to:
+  /// **'Target Value'**
+  String get targetValue;
+
+  /// Target Date
+  ///
+  /// In en, this message translates to:
+  /// **'Target Date'**
+  String get targetDate;
+
+  /// Target Date hint text
+  ///
+  /// In en, this message translates to:
+  /// **'MM/YYYY'**
+  String get targetDateHint;
 
   /// Liquidity
   ///
@@ -777,7 +807,7 @@ abstract class AppLocalizations {
   /// SnackBar message when failed to delete bucket with MIN_VALUE filled.
   ///
   /// In en, this message translates to:
-  /// **'Bucket has \'MIN_VALUE\' filled, can\'t be deleted'**
+  /// **'Bucket has \'MIN\' or \'TARGET\' filled and can\'t be deleted'**
   String get failDeleteBucketWithValue;
 
   /// SnackBar message when is the day selected by the user to update it's money values.
@@ -1185,8 +1215,8 @@ abstract class AppLocalizations {
   /// Message to show when the user create a new CFO chat.
   ///
   /// In en, this message translates to:
-  /// **'#### ⚡ Fail to connect to the CFO terminal...\n_Try again later!_'**
-  String get chatConnectionError;
+  /// **'#### ⚡ Fail to connect to the CFO terminal...\n_Error: {e}_'**
+  String chatConnectionError(Object e);
 
   /// Message to show when the user create a new CFO chat.
   ///
@@ -1275,8 +1305,8 @@ abstract class AppLocalizations {
   /// Dialog message when AI is creating/updating a bucket.
   ///
   /// In en, this message translates to:
-  /// **'Name: {name}\nMin Value: {minValue}'**
-  String aiBucketMessage(Object minValue, Object name);
+  /// **'Name: {name}\nTarget value: {targetValue}\nTarget date: {targetDate}'**
+  String aiBucketMessage(Object name, Object targetDate, Object targetValue);
 
   /// Preview label.
   ///
@@ -1313,6 +1343,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Draft: '**
   String get draft;
+
+  /// GAP between target and actual value.
+  ///
+  /// In en, this message translates to:
+  /// **'GAP: {value}'**
+  String targetGap(Object value);
+
+  /// GAP between target and actual value with a date to archive.
+  ///
+  /// In en, this message translates to:
+  /// **'GAP of {value} until {date}'**
+  String targetGapWithDate(Object date, Object value);
+
+  /// Target value has been reached.
+  ///
+  /// In en, this message translates to:
+  /// **'Target of {value} secured'**
+  String targetDone(Object value);
 }
 
 class _AppLocalizationsDelegate

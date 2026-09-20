@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
@@ -10,6 +11,7 @@ import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
+import 'package:stack_money/data/enum/bucket_actions.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/enum/value_sign.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -18,15 +20,15 @@ import 'package:stack_money/domain/service/bucket_service.dart';
 class BucketCardManager {
   final _bucketService = BucketManagementService();
 
-  late Bucket _bucket;
+  final _bucket = ValueNotifier(Bucket.empty());
   late final BuildContext _context;
-
-  Bucket get bucket => _bucket;
 
   final _isSaving = ValueNotifier(false);
   final _isImmediateLiquidity = ValueNotifier(false);
   final _minValueSign = ValueNotifier(ValueSign.positive);
   final _techColor = ValueNotifier(StackMoneyTheme.cyanNeon);
+  final _dateColor = ValueNotifier(StackMoneyTheme.cyanNeon);
+  final _hasTarget = ValueNotifier(false);
 
   ValueListenable<bool> get isSaving => _isSaving;
 
@@ -36,42 +38,109 @@ class BucketCardManager {
 
   ValueListenable<Color> get techColor => _techColor;
 
-  late final TextEditingController whereController;
-  late final TextEditingController categoryController;
-  late final TextEditingController minValueController;
+  ValueListenable<Color> get dateColor => _dateColor;
 
-  late final FocusNode whereFocus;
-  late final FocusNode categoryFocus;
-  late final FocusNode minValueFocus;
+  ValueListenable<bool> get hasTarget => _hasTarget;
+
+  ValueListenable<Bucket> get bucket => _bucket;
+
+  final whereController = TextEditingController(text: '');
+  final categoryController = TextEditingController(text: '');
+  final minValueController = TextEditingController(text: '');
+  final targetValueController = TextEditingController(text: '');
+  final targetDateController = TextEditingController(text: '');
+
+  final whereFocus = FocusNode();
+  final categoryFocus = FocusNode();
+  final minValueFocus = FocusNode();
+  final targetValueFocus = FocusNode();
+  final targetDateFocus = FocusNode();
 
   Timer? _debounceTimer;
 
   BucketCardManager(Bucket initialBucket, this._context) {
-    _bucket = initialBucket;
+    updateBucket(initialBucket);
 
-    _isImmediateLiquidity.value = _bucket.isImmediateLiquidity;
-    _minValueSign.value = ValueSign.define(_bucket.minValue);
-    _techColor.value = _bucket.minValue >= 0
-        ? StackMoneyTheme.cyanNeon
-        : StackMoneyTheme.magentaNeon;
-
-    whereController = TextEditingController(text: _bucket.where);
-    categoryController = TextEditingController(text: _bucket.category);
-    minValueController = TextEditingController(
-      text: StackMoneyString.formatMoney(_bucket.minValue.abs()),
-    );
-
-    whereFocus = FocusNode();
-    categoryFocus = FocusNode();
-    minValueFocus = FocusNode();
+    _hasTarget.value =
+        initialBucket.targetValue != null || initialBucket.targetDate != null;
 
     whereFocus.addListener(() => _onFocusChange(whereFocus));
     categoryFocus.addListener(() => _onFocusChange(categoryFocus));
     minValueFocus.addListener(() => _onFocusChange(minValueFocus));
+    targetValueFocus.addListener(() => _onFocusChange(targetValueFocus));
+    targetDateFocus.addListener(() => _onFocusChange(targetDateFocus));
 
     whereController.addListener(_onTextChanged);
     categoryController.addListener(_onTextChanged);
     minValueController.addListener(_onTextChanged);
+    targetValueController.addListener(_onTextChanged);
+    targetDateController.addListener(_onTargetDateChanged);
+  }
+
+  void updateBucket(Bucket bucket) {
+    /// Set bucket
+    _bucket.value = bucket;
+
+    /// ValueNotifier
+    _isImmediateLiquidity.value = _bucket.value.isImmediateLiquidity;
+    _minValueSign.value = ValueSign.define(_bucket.value.minValue);
+    _techColor.value = _bucket.value.minValue >= 0
+        ? StackMoneyTheme.cyanNeon
+        : StackMoneyTheme.magentaNeon;
+
+    /// Controllers
+    whereController.text = _bucket.value.where;
+    categoryController.text = _bucket.value.category ?? '';
+    minValueController.text = StackMoneyString.formatMoney(
+      _bucket.value.minValue.abs(),
+    );
+    targetValueController.text = StackMoneyString.formatMoney(
+      _bucket.value.targetValue?.abs() ?? 0,
+    );
+    targetDateController.text = StackMoneyString.formatMonthYear(
+      _bucket.value.targetDate,
+    );
+  }
+
+  Stream<Bucket> watchBucket(String id) {
+    return _bucketService.watchById(id);
+  }
+
+  List<BucketActions> get bucketActions {
+    return BucketActions.values.where((a) {
+      if (_hasTarget.value) {
+        return a != BucketActions.enableTarget;
+      } else {
+        return a != BucketActions.disableTarget;
+      }
+    }).toList();
+  }
+
+  (bool, Timestamp?) get targetDateValidValue {
+    if (targetDateController.text.isEmpty) return (true, null);
+    final targetDate = StackMoneyNumber.parseMonthYearToTimestamp(
+      targetDateController.text,
+    );
+
+    if (targetDate == null) return (false, null);
+    return (true, targetDate);
+  }
+
+  void handleAction(BucketActions action) {
+    switch (action) {
+      case BucketActions.enableTarget:
+      case BucketActions.disableTarget:
+        return _toggleTarget();
+    }
+  }
+
+  void _toggleTarget() {
+    if (_hasTarget.value) {
+      _hasTarget.value = false;
+      _triggerSaveNow();
+    } else {
+      _hasTarget.value = true;
+    }
   }
 
   void _onFocusChange(FocusNode focusNode) {
@@ -84,9 +153,26 @@ class BucketCardManager {
     _scheduleDebouncedSave();
   }
 
+  void _onTargetDateChanged() {
+    if (targetDateController.text.isEmpty) {
+      _dateColor.value = StackMoneyTheme.cyanNeon;
+      return;
+    }
+
+    final targetDate = StackMoneyNumber.parseMonthYearToTimestamp(
+      targetDateController.text,
+    );
+
+    if (targetDate == null) {
+      _dateColor.value = StackMoneyTheme.magentaNeon;
+    } else {
+      _dateColor.value = StackMoneyTheme.cyanNeon;
+    }
+  }
+
   void _scheduleDebouncedSave() {
     _debounceTimer?.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 800), () {
+    _debounceTimer = Timer(const Duration(milliseconds: 1000), () {
       _triggerSaveNow();
     });
   }
@@ -107,34 +193,48 @@ class BucketCardManager {
   }
 
   Future _triggerSaveNow() async {
+    /// MinValue
     double doubleValue = StackMoneyNumber.parseMoneyStringToDouble(
       minValueController.text,
     );
 
     if (minValueSign.value.isNegative) doubleValue = -doubleValue;
 
-    final updated = _bucket.copyWith(
+    /// Target
+    double? targetDoubleValue;
+    Timestamp? targetTimestampDate;
+    if (_hasTarget.value) {
+      targetDoubleValue = StackMoneyNumber.parseMoneyStringToDouble(
+        targetValueController.text,
+      );
+
+      if (!targetDateValidValue.$1) {
+        _failedSave();
+        return;
+      }
+
+      targetTimestampDate = targetDateValidValue.$2;
+    }
+
+    /// Bucket updated
+    final updated = _bucket.value.copyWith(
       where: whereController.text,
       category: categoryController.text,
       minValue: doubleValue,
       isImmediateLiquidity: isImmediateLiquidity.value,
+      targetValue: () => targetDoubleValue,
+      targetDate: () => targetTimestampDate,
     );
 
-    if (_bucket.equalsTo(updated)) return;
+    if (_bucket.value.equalsTo(updated)) return;
 
-    _bucket = updated;
+    /// Update bucket
+    _bucket.value = updated;
     _isSaving.value = true;
 
     final saveResult = await _bucketService.save(updated);
     if (!saveResult.isSuccess) {
-      if (_context.mounted) {
-        final l10n = AppLocalizations.of(_context)!;
-        SmSnackBar(
-          message: l10n.failedSave,
-          type: SnackBarType.error,
-        ).show(_context);
-      }
-      _isSaving.value = false;
+      _failedSave();
       return;
     }
 
@@ -142,10 +242,21 @@ class BucketCardManager {
     _isSaving.value = false;
   }
 
+  void _failedSave() {
+    if (_context.mounted) {
+      final l10n = AppLocalizations.of(_context)!;
+      SmSnackBar(
+        message: l10n.failedSave,
+        type: SnackBarType.error,
+      ).show(_context);
+    }
+    _isSaving.value = false;
+  }
+
   Future<bool> confirmPurge() async {
     final l10n = AppLocalizations.of(_context)!;
 
-    if (!_bucket.isDeletable) {
+    if (!_bucket.value.isDeletable) {
       SmSnackBar(
         message: l10n.failDeleteBucketWithValue,
         type: SnackBarType.error,
@@ -158,7 +269,9 @@ class BucketCardManager {
       barrierDismissible: false,
       builder: (dialogContext) => SmDialog(
         message: l10n.deleteBucketMessage,
-        content: _bucket.name.isEmpty ? l10n.newBucket : _bucket.name,
+        content: _bucket.value.name.isEmpty
+            ? l10n.newBucket
+            : _bucket.value.name,
         note: l10n.deleteBucketNote,
         onCancel: () => Navigator.of(dialogContext).pop(false),
         onConfirm: () => Navigator.of(dialogContext).pop(true),
@@ -170,15 +283,17 @@ class BucketCardManager {
 
   Future purgeSelf() async {
     await _bucketService
-        .delete(_bucket.id)
+        .delete(_bucket.value.id)
         .then((_) {
-          SmLogger.info('Purge completed successfully for ID: ${_bucket.id}');
+          SmLogger.info(
+            'Purge completed successfully for ID: ${_bucket.value.id}',
+          );
         })
         .catchError((e, stack) {
           StackMoneyException(
             message: 'Failed to delete bucket from card context',
             scope: ExceptionScope.business,
-            payload: {'id': _bucket.id, 'exception': e},
+            payload: {'id': _bucket.value.id, 'exception': e},
             stackTrace: stack,
           );
         });
@@ -189,12 +304,15 @@ class BucketCardManager {
     whereController.dispose();
     categoryController.dispose();
     minValueController.dispose();
+    targetValueController.dispose();
     whereFocus.dispose();
     categoryFocus.dispose();
     minValueFocus.dispose();
+    targetValueFocus.dispose();
     _isSaving.dispose();
     _minValueSign.dispose();
     _isImmediateLiquidity.dispose();
     _techColor.dispose();
+    _hasTarget.dispose();
   }
 }
