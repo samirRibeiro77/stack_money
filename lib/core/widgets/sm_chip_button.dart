@@ -8,7 +8,6 @@ class SmChipButton extends StatelessWidget {
   const SmChipButton(
     this.title, {
     this.color = StackMoneyTheme.cyanNeon,
-    this.center = false,
     this.icon,
     this.onTap,
     super.key,
@@ -18,10 +17,11 @@ class SmChipButton extends StatelessWidget {
   final IconData? icon;
   final VoidCallback? onTap;
   final Color color;
-  final bool center;
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -34,64 +34,37 @@ class SmChipButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSizes.x2),
           border: Border.all(color: color, width: 0.5),
         ),
-        child: center
-            ? Center(
-                child: _SmChipButtonText(
-                  color: color,
-                  icon: icon,
-                  title: title,
-                ),
-              )
-            : _SmChipButtonText(color: color, icon: icon, title: title),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '[ ',
+              style: textTheme.labelSmall?.copyWith(
+                fontSize: AppTypography.fontSmallest,
+                color: color,
+              ),
+            ),
+            if (icon != null) ...[
+              Icon(icon, color: color, size: AppSizes.x6),
+              SizedBox(width: AppSizes.x3),
+            ],
+            Text(
+              StackMoneyString.formatTitle(title),
+              style: textTheme.labelSmall?.copyWith(
+                fontSize: AppTypography.fontSmallest,
+                color: color,
+              ),
+            ),
+            Text(
+              ' ]',
+              style: textTheme.labelSmall?.copyWith(
+                fontSize: AppTypography.fontSmallest,
+                color: color,
+              ),
+            ),
+          ],
+        ),
       ),
-    );
-  }
-}
-
-class _SmChipButtonText extends StatelessWidget {
-  const _SmChipButtonText({
-    required this.color,
-    required this.icon,
-    required this.title,
-  });
-
-  final Color color;
-  final IconData? icon;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          '[ ',
-          style: textTheme.labelSmall?.copyWith(
-            fontSize: AppTypography.fontSmallest,
-            color: color,
-          ),
-        ),
-        if (icon != null) ...[
-          Icon(icon, color: color, size: AppSizes.x6),
-          SizedBox(width: AppSizes.x3),
-        ],
-        Text(
-          StackMoneyString.formatTitle(title),
-          style: textTheme.labelSmall?.copyWith(
-            fontSize: AppTypography.fontSmallest,
-            color: color,
-          ),
-        ),
-        Text(
-          ' ]',
-          style: textTheme.labelSmall?.copyWith(
-            fontSize: AppTypography.fontSmallest,
-            color: color,
-          ),
-        ),
-      ],
     );
   }
 }

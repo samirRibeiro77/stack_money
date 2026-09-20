@@ -17,8 +17,6 @@ class CfoStarterSuggestionsGrid extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    final suggestions = CfoStarterSuggestion.values;
-
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSizes.containerTiny,
@@ -33,27 +31,17 @@ class CfoStarterSuggestionsGrid extends StatelessWidget {
             style: textTheme.labelMedium,
           ),
           SizedBox(height: AppSizes.sizedBoxMedium),
-          GridView.builder(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: AppSizes.sizedBoxSmall,
-              mainAxisSpacing: AppSizes.sizedBoxSmall,
-              childAspectRatio: 5,
-            ),
-            itemCount: suggestions.length,
-            itemBuilder: (_, index) {
-              final item = suggestions[index];
-
+          Wrap(
+            spacing: AppSizes.sizedBoxSmall,
+            runSpacing: AppSizes.sizedBoxSmall,
+            alignment: WrapAlignment.center,
+            children: CfoStarterSuggestion.values.map((item) {
               return SmChipButton(
                 item.title(l10n),
                 icon: item.icon,
-                center: true,
                 onTap: () => onSuggestionSelected(item.prompt(l10n)),
               );
-            },
+            }).toList(),
           ),
         ],
       ),
