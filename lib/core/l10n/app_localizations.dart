@@ -305,7 +305,7 @@ abstract class AppLocalizations {
   /// Target Date hint text
   ///
   /// In en, this message translates to:
-  /// **'MM/AAAA'**
+  /// **'MM/YYYY'**
   String get targetDateHint;
 
   /// Liquidity

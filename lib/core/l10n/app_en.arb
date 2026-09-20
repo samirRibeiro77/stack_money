@@ -136,7 +136,7 @@
   "@targetDate": {
     "description": "Target Date"
   },
-  "targetDateHint": "MM/AAAA",
+  "targetDateHint": "MM/YYYY",
   "@targetDateHint": {
     "description": "Target Date hint text"
   },

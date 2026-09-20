@@ -95,7 +95,7 @@ class FirebaseBucketRepository extends BaseFirebaseRepository {
   }
 
   Stream<Bucket> watchById(String id) {
-    SmLogger.debug('Watching a bucket', payload: {'id': id});
+    SmLogger.debug('Watching the bucket', payload: {'id': id});
 
     return _collection.doc(id).snapshots().map((snapshot) {
       SmLogger.info('Stream bucket $id updated.');

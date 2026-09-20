@@ -114,7 +114,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get targetDate => 'Target Date';
 
   @override
-  String get targetDateHint => 'MM/AAAA';
+  String get targetDateHint => 'MM/YYYY';
 
   @override
   String get liquidity => 'Liquidity';

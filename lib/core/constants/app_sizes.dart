@@ -84,7 +84,4 @@ class AppSizes {
 
   /// --- Widgets ---
   static const double appBarIcon = x10;
-
-  /// --- Dashboard ---
-  static const double targetTooltipWidth = 142.0;
 }

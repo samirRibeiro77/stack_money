@@ -81,11 +81,6 @@ class BucketCardManager {
     /// Set bucket
     _bucket.value = bucket;
 
-    /// TargetDate
-    final targetDate = StackMoneyString.formatMonthYear(
-      _bucket.value.targetDate,
-    );
-
     /// ValueNotifier
     _isImmediateLiquidity.value = _bucket.value.isImmediateLiquidity;
     _minValueSign.value = ValueSign.define(_bucket.value.minValue);
@@ -102,7 +97,9 @@ class BucketCardManager {
     targetValueController.text = StackMoneyString.formatMoney(
       _bucket.value.targetValue?.abs() ?? 0,
     );
-    targetDateController.text = targetDate;
+    targetDateController.text = StackMoneyString.formatMonthYear(
+      _bucket.value.targetDate,
+    );
   }
 
   Stream<Bucket> watchBucket(String id) {
