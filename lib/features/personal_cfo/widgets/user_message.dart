@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
-import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/cyber_markdown.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
 import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 
 class UserMessage extends StatelessWidget {
-  const UserMessage({required this.msg, required this.onRetry, super.key});
+  UserMessage({required this.msg, required this.onRetry, super.key});
 
   final ChatMessageModel msg;
   final VoidCallback onRetry;
+  late final Color color = msg.failedSend
+      ? StackMoneyTheme.magentaNeon
+      : StackMoneyTheme.cyanNeon;
 
   BorderRadius get _radius => BorderRadius.horizontal(
     left: Radius.circular(AppSizes.radiusSmall),
     right: Radius.zero,
   );
 
-  BorderSide get _borderSide => BorderSide(
-    color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.5),
-    width: AppSizes.min,
-  );
+  BorderSide get _borderSide =>
+      BorderSide(color: color.withValues(alpha: 0.5), width: AppSizes.min);
 
   Border get _border => Border(
     top: _borderSide,
@@ -44,7 +44,7 @@ class UserMessage extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(width: 0),
           borderRadius: _radius,
-          color: StackMoneyTheme.cyanNeon.withValues(alpha: 0.1),
+          color: color.withValues(alpha: 0.1),
         ),
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.8,
@@ -57,18 +57,25 @@ class UserMessage extends StatelessWidget {
             padding: const EdgeInsets.all(AppSizes.x3),
             child: Column(
               children: [
+                /// User text message
                 CyberMarkdown(
                   msg.text,
                   p: textTheme.bodyMedium,
                   horizontalPadding: AppSizes.min,
                 ),
+
+                /// Retry button
                 if (msg.failedSend) ...[
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: SmChipButton(
-                      l10n.retry,
-                      color: StackMoneyTheme.platinumSilver,
-                      onTap: onRetry,
+                  Padding(
+                    padding: EdgeInsets.only(top: AppSizes.sizedBoxSmall),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: SmChipButton(
+                        l10n.retry,
+                        icon: Icons.sync,
+                        color: StackMoneyTheme.platinumSilver,
+                        onTap: onRetry,
+                      ),
                     ),
                   ),
                 ],

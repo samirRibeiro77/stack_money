@@ -121,7 +121,9 @@ class PersonalCfoManager {
   /// Send a new message on the thread
   Future<void> sendMessage({ChatMessageModel? retry}) async {
     final l10n = AppLocalizations.of(_context)!;
-    final cleanText = messageController.text.trim();
+
+    /// Message or controller text
+    final cleanText = retry?.text ?? messageController.text.trim();
     final bool isFirstMessage = _thread.lastMessage.isEmpty;
 
     if (retry == null) {
@@ -170,11 +172,18 @@ class PersonalCfoManager {
 
   /// Re-send a failed user message without creating a new message document
   Future<void> retrySendMessage(ChatMessageModel failedUserMessage) async {
-    final index = messagesNotifier.value.indexWhere(
-      (m) => m.id == failedUserMessage.id,
-    );
+    final currentList = List<ChatMessageModel>.from(messagesNotifier.value);
+    final index = currentList.indexWhere((m) => m.id == failedUserMessage.id);
 
-    messagesNotifier.value.removeAt(index);
+    if (index != -1) {
+      /// Remove messages unsent
+      if (index + 1 < currentList.length &&
+          currentList[index + 1].sender == MessageSender.cfoAi) {
+        currentList.removeAt(index + 1);
+      }
+      currentList.removeAt(index);
+      messagesNotifier.value = currentList;
+    }
 
     await sendMessage(retry: failedUserMessage.copyWith(failedSend: false));
   }
@@ -187,12 +196,17 @@ class PersonalCfoManager {
   }
 
   /// Add user message on the list and save on database
-  Future<ChatMessageModel> _addUserMessage(String text, {ChatMessageModel? msg}) async {
-    final userMessage = msg ?? ChatMessageModel(
-      sender: MessageSender.user,
-      text: text,
-      failedSend: false,
-    );
+  Future<ChatMessageModel> _addUserMessage(
+    String text, {
+    ChatMessageModel? msg,
+  }) async {
+    final userMessage =
+        msg ??
+        ChatMessageModel(
+          sender: MessageSender.user,
+          text: text,
+          failedSend: false,
+        );
 
     messagesNotifier.value = [...messages, userMessage];
     _scrollToBottom();
@@ -302,21 +316,28 @@ class PersonalCfoManager {
   }
 
   /// Handle errors
-  void _handleSendMessageError(ChatMessageModel? message, String errorText) {
+  void _handleSendMessageError(
+    ChatMessageModel? message,
+    String errorText,
+  ) async {
     if (message != null) {
-      _markUserMessageAsFailed(message);
+      await _markUserMessageAsFailed(message);
     }
 
-    if (messagesNotifier.value.isNotEmpty) {
-      final lastMessage = messagesNotifier.value.last;
-      if (lastMessage.sender == MessageSender.cfoAi) {
-        final errorAiMessage = lastMessage.copyWith(text: errorText);
-        messagesNotifier.value = [
-          ...messagesNotifier.value..removeLast(),
-          errorAiMessage,
-        ];
-      }
+    final currentList = List<ChatMessageModel>.from(messagesNotifier.value);
+
+    /// Check last message
+    if (currentList.last.sender == MessageSender.cfoAi) {
+      currentList[currentList.length - 1] = currentList.last.copyWith(
+        text: errorText,
+      );
+    } else if (currentList.last.sender == MessageSender.user) {
+      final aiErrorMessage = _addAiPlaceholderMessage();
+      currentList.add(aiErrorMessage.copyWith(text: errorText));
     }
+
+    /// Update messages
+    messagesNotifier.value = currentList;
   }
 
   Future<bool> changeTitle(String title) async {
