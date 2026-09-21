@@ -105,7 +105,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                     final msg = messages[index];
 
                     if (msg.sender.isUser) {
-                      return UserMessage(msg: msg);
+                      return UserMessage(msg: msg, onRetry: () => _manager.retrySendMessage(msg));
                     }
 
                     return AiMessage(

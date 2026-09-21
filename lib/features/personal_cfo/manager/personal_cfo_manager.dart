@@ -119,22 +119,25 @@ class PersonalCfoManager {
   }
 
   /// Send a new message on the thread
-  Future<void> sendMessage() async {
-    final cleanText = messageController.text.trim();
-    if (cleanText.isEmpty || _isStreaming.value) return;
-
-    _isStreaming.value = true;
-    messageController.text = '';
-
-    final bool isFirstMessage = _thread.lastMessage.isEmpty;
+  Future<void> sendMessage({ChatMessageModel? retry}) async {
     final l10n = AppLocalizations.of(_context)!;
+    final cleanText = messageController.text.trim();
+    final bool isFirstMessage = _thread.lastMessage.isEmpty;
 
+    if (retry == null) {
+      if (cleanText.isEmpty || _isStreaming.value) return;
+      messageController.text = '';
+    }
+    _isStreaming.value = true;
+
+    ChatMessageModel? userMessage;
     try {
       if (isFirstMessage) {
         await _initializeFirstMessageThread(cleanText);
       }
 
-      await _addUserMessage(cleanText);
+      userMessage = await _addUserMessage(cleanText, msg: retry);
+
       _isArchived.value = false;
       final aiPlaceholder = _addAiPlaceholderMessage();
 
@@ -151,14 +154,29 @@ class PersonalCfoManager {
       );
     } on StackMoneyException catch (e) {
       _handleSendMessageError(
+        userMessage,
         l10n.chatConnectionError(e.exception?.toString() ?? e.message),
       );
     } catch (e) {
-      _handleSendMessageError(l10n.chatConnectionError(e.toString()));
+      _handleSendMessageError(
+        userMessage,
+        l10n.chatConnectionError(e.toString()),
+      );
     } finally {
       _isStreaming.value = false;
       _scrollToBottom();
     }
+  }
+
+  /// Re-send a failed user message without creating a new message document
+  Future<void> retrySendMessage(ChatMessageModel failedUserMessage) async {
+    final index = messagesNotifier.value.indexWhere(
+      (m) => m.id == failedUserMessage.id,
+    );
+
+    messagesNotifier.value.removeAt(index);
+
+    await sendMessage(retry: failedUserMessage.copyWith(failedSend: false));
   }
 
   /// Configure a new Thread on the first message exchange
@@ -169,15 +187,17 @@ class PersonalCfoManager {
   }
 
   /// Add user message on the list and save on database
-  Future<void> _addUserMessage(String text) async {
-    final userMessage = ChatMessageModel(
+  Future<ChatMessageModel> _addUserMessage(String text, {ChatMessageModel? msg}) async {
+    final userMessage = msg ?? ChatMessageModel(
       sender: MessageSender.user,
       text: text,
+      failedSend: false,
     );
 
     messagesNotifier.value = [...messages, userMessage];
     _scrollToBottom();
     await _cfoService.saveMessage(_thread.id, userMessage);
+    return userMessage;
   }
 
   /// AI message placeholder to animate the screen
@@ -224,7 +244,7 @@ class PersonalCfoManager {
     }
   }
 
-  /// Finalize AI respose: Clear JSON, add action and save on database
+  /// Finalize AI response: Clear JSON, add action and save on database
   Future<void> _finalizeAiResponse({
     required ChatMessageModel aiPlaceholder,
     required String rawResponseText,
@@ -250,7 +270,7 @@ class PersonalCfoManager {
     /// Save on database
     await _cfoService.saveMessage(_thread.id, finalAiMessage);
 
-    /// Generate title with Thread doesn't have one
+    /// Generate title when Thread doesn't have one
     if (_thread.title.isEmpty) {
       try {
         final generatedTitleResult = await _cfoService.generateTitle(
@@ -266,8 +286,27 @@ class PersonalCfoManager {
     }
   }
 
+  /// Handle errors and mark user message as failed
+  Future<void> _markUserMessageAsFailed(ChatMessageModel userMessage) async {
+    final failedMessage = userMessage.copyWith(failedSend: true);
+
+    final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
+
+    final userIndex = updatedList.indexWhere((m) => m.id == userMessage.id);
+    if (userIndex != -1) {
+      updatedList[userIndex] = failedMessage;
+    }
+
+    messagesNotifier.value = updatedList;
+    await _cfoService.saveMessage(_thread.id, failedMessage);
+  }
+
   /// Handle errors
-  void _handleSendMessageError(String errorText) {
+  void _handleSendMessageError(ChatMessageModel? message, String errorText) {
+    if (message != null) {
+      _markUserMessageAsFailed(message);
+    }
+
     if (messagesNotifier.value.isNotEmpty) {
       final lastMessage = messagesNotifier.value.last;
       if (lastMessage.sender == MessageSender.cfoAi) {
@@ -349,7 +388,7 @@ class PersonalCfoManager {
     }
   }
 
-  /// Refuese CFO suggestion
+  /// Refuse CFO suggestion
   Future<void> _rejectProposedAction(ChatMessageModel message) async {
     final action = message.proposedAction;
     if (action == null) return;

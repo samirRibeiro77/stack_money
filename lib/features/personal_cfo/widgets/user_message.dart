@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
+import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/cyber_markdown.dart';
 import 'package:stack_money/core/widgets/glassmorphism_effect.dart';
+import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
 
 class UserMessage extends StatelessWidget {
-  const UserMessage({required this.msg, super.key});
+  const UserMessage({required this.msg, required this.onRetry, super.key});
 
   final ChatMessageModel msg;
+  final VoidCallback onRetry;
 
   BorderRadius get _radius => BorderRadius.horizontal(
     left: Radius.circular(AppSizes.radiusSmall),
@@ -30,6 +34,7 @@ class UserMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Align(
       alignment: Alignment.centerRight,
@@ -50,10 +55,24 @@ class UserMessage extends StatelessWidget {
           containerHeight: null,
           child: Padding(
             padding: const EdgeInsets.all(AppSizes.x3),
-            child: CyberMarkdown(
-              msg.text,
-              p: textTheme.bodyMedium,
-              horizontalPadding: AppSizes.min,
+            child: Column(
+              children: [
+                CyberMarkdown(
+                  msg.text,
+                  p: textTheme.bodyMedium,
+                  horizontalPadding: AppSizes.min,
+                ),
+                if (msg.failedSend) ...[
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: SmChipButton(
+                      l10n.retry,
+                      color: StackMoneyTheme.platinumSilver,
+                      onTap: onRetry,
+                    ),
+                  ),
+                ],
+              ],
             ),
           ),
         ),

@@ -11,6 +11,7 @@ class ChatMessageModel {
   final String text;
   final Timestamp timestamp;
   final ProposedActionModel? proposedAction;
+  final bool failedSend;
 
   String get id => _id;
 
@@ -20,6 +21,7 @@ class ChatMessageModel {
     required this.text,
     Timestamp? timestamp,
     this.proposedAction,
+    this.failedSend = false,
   }) : _id = id ?? const Uuid().v4(),
        timestamp = TimestampParser.fromJson(timestamp);
 
@@ -32,6 +34,7 @@ class ChatMessageModel {
       proposedAction: ProposedActionModel.fromJson(
         json?[ModelKey.proposedAction] as Map<String, Object?>?,
       ),
+      failedSend: json?[ModelKey.failedSend] as bool? ?? false,
     );
   }
 
@@ -42,12 +45,14 @@ class ChatMessageModel {
       ModelKey.text: text,
       ModelKey.date: timestamp,
       ModelKey.proposedAction: proposedAction?.toJson(),
+      ModelKey.failedSend: failedSend,
     };
   }
 
   ChatMessageModel copyWith({
     String? text,
     ProposedActionModel? proposedAction,
+    bool? failedSend,
     bool newId = false,
   }) {
     return ChatMessageModel(
@@ -56,6 +61,7 @@ class ChatMessageModel {
       text: text ?? this.text,
       timestamp: timestamp,
       proposedAction: proposedAction ?? this.proposedAction,
+      failedSend: failedSend ?? this.failedSend,
     );
   }
 }
