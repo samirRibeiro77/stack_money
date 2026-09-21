@@ -393,7 +393,7 @@ class PersonalCfoManager {
   }
 
   Future<void> shareChat() async {
-    await ExportService().exportData(messages);
+    await ExportService().exportData(titleController.text, messages);
   }
 
   Future<void> shareToAi() async {
@@ -401,7 +401,6 @@ class PersonalCfoManager {
       chatName: titleController.text,
       messages: messages,
     );
-    final markdownContent = exportModel.toMD();
 
     if (_context.mounted) {
       final l10n = AppLocalizations.of(_context)!;
@@ -421,8 +420,8 @@ class PersonalCfoManager {
                 icon: Icons.copy_rounded,
                 color: StackMoneyTheme.platinumSilver,
                 onTap: () {
-                  Clipboard.setData(ClipboardData(text: markdownContent));
-                  Navigator.of(dialogContext).pop();
+                  Clipboard.setData(ClipboardData(text: exportModel.toMD()));
+                  dialogContext.pop();
                   SmSnackBar(
                     message: l10n.markdownCopied,
                     type: SnackBarType.info,
@@ -434,7 +433,7 @@ class PersonalCfoManager {
                 icon: Icons.screen_share_outlined,
                 color: StackMoneyTheme.platinumSilver,
                 onTap: () {
-                  Navigator.of(dialogContext).pop();
+                  dialogContext.pop();
                   ExportService().shareMarkdownFile(exportModel);
                 },
               ),

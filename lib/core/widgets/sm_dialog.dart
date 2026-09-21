@@ -104,9 +104,10 @@ class SmDialog extends StatelessWidget {
               /// Body
               if (child != null) ...[
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: AppSizes.sizedBoxMedium,
-                    horizontal: AppSizes.x2,
+                  padding: EdgeInsets.only(
+                    top: AppSizes.sizedBoxMedium,
+                    left: AppSizes.x2,
+                    right: AppSizes.x2,
                   ),
                   child: child!,
                 ),

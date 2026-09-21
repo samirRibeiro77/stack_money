@@ -61,9 +61,12 @@ class ExportService {
     return null;
   }
 
-  Future<ShareResult> exportData(List<Object?> data) async {
+  Future<ShareResult> exportData(String name, List<Object?> data) async {
     return await shareFile(
-      await _createExportFile(text: _convertDataToExport(jsonList: data)),
+      await _createExportFile(
+        name: name,
+        text: _convertDataToExport(jsonList: data),
+      ),
     );
   }
 
