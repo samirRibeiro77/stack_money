@@ -12,6 +12,7 @@ class AiExportModel {
   final List<SalaryPlan>? plans;
   final List<Bucket>? buckets;
   final List<History>? history;
+  final String? chatName;
   final List<ChatMessageModel>? messages;
   final DateTime _exportedAt;
 
@@ -20,6 +21,7 @@ class AiExportModel {
     this.plans,
     this.buckets,
     this.history,
+    this.chatName,
     this.messages,
   }) : _exportedAt = DateTime.now();
 
@@ -75,6 +77,9 @@ class AiExportModel {
     /// Personal CFO Transcription
     if (messages?.isNotEmpty ?? false) {
       buffer.writeln('## 💬 CONVERSATION TRANSCRIPT');
+      if (chatName != null) {
+        buffer.writeln('> **$chatName:**');
+      }
       buffer.writeln('```json');
       buffer.writeln(_parseData(messages!.map((m) => m.toJson()).toList()));
       buffer.writeln('```\n\n');
@@ -101,12 +106,5 @@ class AiExportModel {
         return nonEncodable.toString();
       },
     );
-  }
-
-  double _getBucketCurrentBalance(String bucketId) {
-    final transaction = history?.last.transactions
-        .where((t) => t.bucketId == bucketId)
-        .firstOrNull;
-    return transaction?.actualValue ?? 0.0;
   }
 }

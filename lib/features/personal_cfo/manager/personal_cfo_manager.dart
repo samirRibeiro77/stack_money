@@ -397,7 +397,10 @@ class PersonalCfoManager {
   }
 
   Future<void> shareToAi() async {
-    final exportModel = await ExportService().exportToLLM(messages: messages);
+    final exportModel = await ExportService().exportToLLM(
+      chatName: titleController.text,
+      messages: messages,
+    );
     final markdownContent = exportModel.toMD();
 
     if (_context.mounted) {
@@ -432,7 +435,7 @@ class PersonalCfoManager {
                 color: StackMoneyTheme.platinumSilver,
                 onTap: () {
                   Navigator.of(dialogContext).pop();
-                  ExportService().shareMarkdownFile(markdownContent);
+                  ExportService().shareMarkdownFile(exportModel);
                 },
               ),
             ],

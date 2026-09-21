@@ -6,7 +6,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/data/enum/export_parameters.dart';
 import 'package:stack_money/data/helper/export_key.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/models/ai_context.dart';
@@ -20,10 +23,8 @@ import 'package:stack_money/data/models/salary_plan.dart';
 class ExportService {
   final _remoteConfig = FirebaseRemoteConfig.instance;
 
-  static final _filePath =
-      '{prefix}/stack_money_backup/stack_money_{timestamp}.json';
-  static final _prefix = '{prefix}';
-  static final _timestamp = '{timestamp}';
+  static const _fileName = 'stack_money';
+  static const _defaultChat = 'personal_cfo';
 
   Future<DataExportModel?> createAppDataExport() async {
     try {
@@ -32,13 +33,14 @@ class ExportService {
       final history = AppCoordinator.instance.history.value;
 
       final file = await _createExportFile(
-        _convertDataToExport(
+        text: _convertDataToExport(
           jsonMap: _createJsonData(
             plans: plans,
             buckets: buckets,
             history: history,
           ),
         ),
+        kind: ExportKind.backup,
       );
 
       return DataExportModel(
@@ -61,7 +63,7 @@ class ExportService {
 
   Future<ShareResult> exportData(List<Object?> data) async {
     return await shareFile(
-      await _createExportFile(_convertDataToExport(jsonList: data)),
+      await _createExportFile(text: _convertDataToExport(jsonList: data)),
     );
   }
 
@@ -76,7 +78,10 @@ class ExportService {
     );
   }
 
-  Future<AiExportModel> exportToLLM({List<ChatMessageModel>? messages}) async {
+  Future<AiExportModel> exportToLLM({
+    String? chatName,
+    List<ChatMessageModel>? messages,
+  }) async {
     final systemPrompt = _remoteConfig.getString(FirebaseKey.cfoSystemPrompt);
 
     return AiExportModel(
@@ -84,12 +89,28 @@ class ExportService {
       plans: AppCoordinator.instance.plans.value,
       buckets: AppCoordinator.instance.buckets.value,
       history: AppCoordinator.instance.history.value,
+      chatName: chatName != null
+          ? StackMoneyString.formatTitle(chatName)
+          : chatName,
       messages: messages,
     );
   }
 
   Future<ShareResult> shareFile(File file) async {
     final XFile xFile = XFile(file.path, mimeType: ExportKey.mimeType);
+
+    return await SharePlus.instance.share(ShareParams(files: [xFile]));
+  }
+
+  Future<ShareResult> shareMarkdownFile(AiExportModel export) async {
+    final file = await _createExportFile(
+      name: export.chatName ?? _defaultChat,
+      text: export.toMD(),
+      kind: ExportKind.cfo,
+      extension: ExportExtension.md,
+      timestamp: false,
+    );
+    final XFile xFile = XFile(file.path, mimeType: 'text/markdown');
 
     return await SharePlus.instance.share(ShareParams(files: [xFile]));
   }
@@ -135,32 +156,42 @@ class ExportService {
     return jsonData;
   }
 
-  Future<File> _createExportFile(String jsonString) async {
+  Future<String> _filePath({
+    required ExportExtension extension,
+    required ExportKind kind,
+    required String name,
+    required bool timestamp,
+  }) async {
+    final buffer = StringBuffer();
     final Directory tempDir = await getTemporaryDirectory();
-    final filePath = _filePath
-        .replaceAll(_prefix, tempDir.path)
-        .replaceAll(
-          _timestamp,
-          Timestamp.now().millisecondsSinceEpoch.toString(),
-        );
+    buffer.write('${tempDir.path}/stack_money_${kind.name}');
+    buffer.write('/');
+    buffer.write(name);
+    buffer.write(
+      timestamp ? '_${Timestamp.now().millisecondsSinceEpoch.toString()}' : '',
+    );
+    buffer.write('.${extension.name}');
 
-    final file = await File(filePath).create(recursive: true);
-    return await file.writeAsString(jsonString);
+    final filePath = buffer.toString();
+    SmLogger.debug('Got file path', payload: {'path': filePath});
+    return filePath;
   }
 
-  Future<File> _createMarkdownExportFile(String markdownText) async {
-    final Directory tempDir = await getTemporaryDirectory();
-    final filePath =
-        '${tempDir.path}/stack_money_cfo_export_${DateTime.now().millisecondsSinceEpoch}.md';
+  Future<File> _createExportFile({
+    required String text,
+    String name = _fileName,
+    ExportExtension extension = ExportExtension.json,
+    ExportKind kind = ExportKind.data,
+    bool timestamp = true,
+  }) async {
+    final filePath = await _filePath(
+      name: name,
+      extension: extension,
+      kind: kind,
+      timestamp: timestamp,
+    );
 
     final file = await File(filePath).create(recursive: true);
-    return await file.writeAsString(markdownText);
-  }
-
-  Future<ShareResult> shareMarkdownFile(String markdownText) async {
-    final file = await _createMarkdownExportFile(markdownText);
-    final XFile xFile = XFile(file.path, mimeType: 'text/markdown');
-
-    return await SharePlus.instance.share(ShareParams(files: [xFile]));
+    return await file.writeAsString(text);
   }
 }
