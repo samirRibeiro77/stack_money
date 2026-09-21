@@ -503,6 +503,12 @@ abstract class AppLocalizations {
   /// Share something
   ///
   /// In en, this message translates to:
+  /// **'Export LLM'**
+  String get exportToAi;
+
+  /// Share something
+  ///
+  /// In en, this message translates to:
   /// **'Share'**
   String get share;
 
@@ -1415,6 +1421,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quais são os seus principais comandos e automações como meu Personal CFO? Explique detalhadamente a quais dados do meu Stack Money você tem acesso e como pode me ajudar a tomar decisões.'**
   String get cfoSuggestionCfoProtocolsPrompt;
+
+  /// Dialog note to show when sharing LLM data.
+  ///
+  /// In en, this message translates to:
+  /// **'Chose how to share with your other AI your context and chat:'**
+  String get howToShareLLM;
+
+  /// SnackBar message to show when copied the MD to the clipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'LLM Markdown copied successfully.'**
+  String get markdownCopied;
 }
 
 class _AppLocalizationsDelegate

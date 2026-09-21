@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
@@ -9,12 +10,16 @@ import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/data/helper/export_key.dart';
 import 'package:stack_money/data/helper/firebase_key.dart';
 import 'package:stack_money/data/models/ai_context.dart';
+import 'package:stack_money/data/models/ai_export_model.dart';
 import 'package:stack_money/data/models/bucket.dart';
+import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/data_export_model.dart';
 import 'package:stack_money/data/models/history.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 
 class ExportService {
+  final _remoteConfig = FirebaseRemoteConfig.instance;
+
   static final _filePath =
       '{prefix}/stack_money_backup/stack_money_{timestamp}.json';
   static final _prefix = '{prefix}';
@@ -68,6 +73,18 @@ class ExportService {
       currentPlan: AppCoordinator.instance.currentPlan.value,
       buckets: AppCoordinator.instance.buckets.value,
       history: AppCoordinator.instance.history.value,
+    );
+  }
+
+  Future<AiExportModel> exportToLLM({List<ChatMessageModel>? messages}) async {
+    final systemPrompt = _remoteConfig.getString(FirebaseKey.cfoSystemPrompt);
+
+    return AiExportModel(
+      systemPrompt: systemPrompt,
+      plans: AppCoordinator.instance.plans.value,
+      buckets: AppCoordinator.instance.buckets.value,
+      history: AppCoordinator.instance.history.value,
+      messages: messages,
     );
   }
 
@@ -129,5 +146,21 @@ class ExportService {
 
     final file = await File(filePath).create(recursive: true);
     return await file.writeAsString(jsonString);
+  }
+
+  Future<File> _createMarkdownExportFile(String markdownText) async {
+    final Directory tempDir = await getTemporaryDirectory();
+    final filePath =
+        '${tempDir.path}/stack_money_cfo_export_${DateTime.now().millisecondsSinceEpoch}.md';
+
+    final file = await File(filePath).create(recursive: true);
+    return await file.writeAsString(markdownText);
+  }
+
+  Future<ShareResult> shareMarkdownFile(String markdownText) async {
+    final file = await _createMarkdownExportFile(markdownText);
+    final XFile xFile = XFile(file.path, mimeType: 'text/markdown');
+
+    return await SharePlus.instance.share(ShareParams(files: [xFile]));
   }
 }

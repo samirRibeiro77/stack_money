@@ -268,6 +268,10 @@
   "@copy": {
     "description": "Copy something"
   },
+  "exportToAi": "Export LLM",
+  "@exportToAi": {
+    "description": "Share something"
+  },
   "share": "Share",
   "@share": {
     "description": "Share something"
@@ -875,5 +879,13 @@
   "cfoSuggestionCfoProtocolsPrompt": "Quais são os seus principais comandos e automações como meu Personal CFO? Explique detalhadamente a quais dados do meu Stack Money você tem acesso e como pode me ajudar a tomar decisões.",
   "@cfoSuggestionCfoProtocolsPrompt": {
     "description": "CFO Protocols suggestion prompt for AI."
+  },
+  "howToShareLLM": "Chose how to share with your other AI your context and chat:",
+  "@howToShareLLM": {
+    "description": "Dialog note to show when sharing LLM data."
+  },
+  "markdownCopied": "LLM Markdown copied successfully.",
+  "@markdownCopied": {
+    "description": "SnackBar message to show when copied the MD to the clipboard."
   }
 }

@@ -68,6 +68,7 @@
   "percentNet": "% liq",
   "percentGross": "% bru",
   "copy": "Copiar",
+  "exportToAi": "Exportar pra IA",
   "share": "Compartilhar",
   "archive": "Arquivar",
   "unarchive": "Desarquivar",
@@ -219,5 +220,7 @@
   "cfoSuggestionMaxCashFlowTitle": "Maximizar fluxo de caixa",
   "cfoSuggestionMaxCashFlowPrompt": "Com base no meu saldo e sobra salarial atual, proponha um plano salarial atualizado (update_salary_plan) otimizando a distribuição para as minhas metas vigentes.",
   "cfoSuggestionCfoProtocolsTitle": "Protocolos do CFO",
-  "cfoSuggestionCfoProtocolsPrompt": "Quais são os seus principais comandos e automações como meu Personal CFO? Explique detalhadamente a quais dados do meu Stack Money você tem acesso e como pode me ajudar a tomar decisões."
+  "cfoSuggestionCfoProtocolsPrompt": "Quais são os seus principais comandos e automações como meu Personal CFO? Explique detalhadamente a quais dados do meu Stack Money você tem acesso e como pode me ajudar a tomar decisões.",
+  "howToShareLLM": "Escolha como compartilhar os dados com a sua outra AI:",
+  "markdownCopied": "Markdown copiado com sucesso."
 }
