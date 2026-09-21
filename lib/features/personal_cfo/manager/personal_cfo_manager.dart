@@ -1,12 +1,16 @@
 import 'dart:core';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/action_parser.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/core/widgets/sm_chip_button.dart';
+import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/action_status.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
@@ -389,7 +393,55 @@ class PersonalCfoManager {
   }
 
   Future<void> shareChat() async {
-    await ExportService().exportData(messages);
+    await ExportService().exportData(titleController.text, messages);
+  }
+
+  Future<void> shareToAi() async {
+    final exportModel = await ExportService().exportToLLM(
+      chatName: titleController.text,
+      messages: messages,
+    );
+
+    if (_context.mounted) {
+      final l10n = AppLocalizations.of(_context)!;
+
+      showDialog(
+        context: _context,
+        barrierDismissible: true,
+        builder: (dialogContext) => SmDialog(
+          color: StackMoneyTheme.cyanNeon,
+          title: l10n.exportToAi,
+          note: l10n.howToShareLLM,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SmChipButton(
+                l10n.copy,
+                icon: Icons.copy_rounded,
+                color: StackMoneyTheme.platinumSilver,
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: exportModel.toMD()));
+                  dialogContext.pop();
+                  SmSnackBar(
+                    message: l10n.markdownCopied,
+                    type: SnackBarType.info,
+                  ).show(_context);
+                },
+              ),
+              SmChipButton(
+                l10n.share,
+                icon: Icons.screen_share_outlined,
+                color: StackMoneyTheme.platinumSilver,
+                onTap: () {
+                  dialogContext.pop();
+                  ExportService().shareMarkdownFile(exportModel);
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   void _scrollToBottom() {

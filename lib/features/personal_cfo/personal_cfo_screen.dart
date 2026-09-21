@@ -151,6 +151,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                         title: title.text,
                         isArchived: isArchived,
                         saveTitle: _manager.changeTitle,
+                        onAiShare: _manager.shareToAi,
                         onShare: _manager.shareChat,
                         toggleArchive: _manager.toggleArchiveThread,
                         onDelete: _manager.deleteThread,

@@ -225,6 +225,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get copy => 'Copiar';
 
   @override
+  String get exportToAi => 'Exportar pra IA';
+
+  @override
   String get share => 'Compartilhar';
 
   @override
@@ -748,4 +751,11 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get cfoSuggestionCfoProtocolsPrompt =>
       'Quais são os seus principais comandos e automações como meu Personal CFO? Explique detalhadamente a quais dados do meu Stack Money você tem acesso e como pode me ajudar a tomar decisões.';
+
+  @override
+  String get howToShareLLM =>
+      'Escolha como compartilhar os dados com a sua outra AI:';
+
+  @override
+  String get markdownCopied => 'Markdown copiado com sucesso.';
 }
