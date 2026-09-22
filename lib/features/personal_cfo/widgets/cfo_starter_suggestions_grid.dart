@@ -5,7 +5,7 @@ import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/data/enum/cfo_starter_suggestion.dart';
 
 class CfoStarterSuggestionsGrid extends StatelessWidget {
-  final ValueChanged<String> onSuggestionSelected;
+  final ValueChanged<CfoStarterSuggestion> onSuggestionSelected;
 
   const CfoStarterSuggestionsGrid({
     super.key,
@@ -39,7 +39,7 @@ class CfoStarterSuggestionsGrid extends StatelessWidget {
               return SmChipButton(
                 item.title(l10n),
                 icon: item.icon,
-                onTap: () => onSuggestionSelected(item.prompt(l10n)),
+                onTap: () => onSuggestionSelected(item),
               );
             }).toList(),
           ),
