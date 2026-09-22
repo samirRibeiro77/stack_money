@@ -13,6 +13,7 @@ import 'package:stack_money/core/widgets/sm_chip_button.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/action_status.dart';
+import 'package:stack_money/data/enum/cfo_starter_suggestion.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
@@ -51,8 +52,6 @@ class PersonalCfoManager {
     _chatsManager = ChatsManager(_context);
     _thread = initialThread ?? ChatThreadModel(title: '');
     _isArchived.value = initialThread?.isArchived ?? false;
-
-    SmLogger.debug('Initial thread', payload: initialThread?.toJson() ?? {});
 
     titleController = TextEditingController(text: _thread.title);
     messageController = TextEditingController(text: '');
@@ -113,9 +112,12 @@ class PersonalCfoManager {
     _cfoService.draftMessage(_thread.id, messageController.text);
   }
 
-  void sendSuggestion(String prompt) {
-    messageController.text = prompt;
-    sendMessage();
+  void sendSuggestion(CfoStarterSuggestion suggestion) {
+    if (_context.mounted) {
+      final l10n = AppLocalizations.of(_context)!;
+      messageController.text = suggestion.prompt(l10n);
+      sendMessage();
+    }
   }
 
   /// Send a new message on the thread
