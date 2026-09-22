@@ -7,6 +7,7 @@ import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/action_parser.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_chip_button.dart';
@@ -116,7 +117,24 @@ class PersonalCfoManager {
     if (_context.mounted) {
       final l10n = AppLocalizations.of(_context)!;
       messageController.text = suggestion.prompt(l10n);
-      sendMessage();
+
+      /// If not moneySprint, send the message
+      if (suggestion != CfoStarterSuggestion.moneySprint) {
+        sendMessage();
+        return;
+      }
+
+      /// Write bucket template so the user can edit
+      final buffer = StringBuffer();
+      buffer.writeln(messageController.text);
+      for (final bucket in AppCoordinator.instance.buckets.value) {
+        buffer.writeln(
+          l10n.cfoSuggestionMoneySprintTemplate(bucket.id, bucket.name),
+        );
+      }
+
+      /// Set message text
+      messageController.text = buffer.toString();
     }
   }
 

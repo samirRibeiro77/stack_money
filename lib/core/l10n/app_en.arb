@@ -880,6 +880,18 @@
   "@cfoSuggestionCfoProtocolsPrompt": {
     "description": "CFO Protocols suggestion prompt for AI."
   },
+  "cfoSuggestionMoneySprintTitle": "Money Sprint",
+  "@cfoSuggestionMoneySprintTitle": {
+    "description": "Money Sprint suggestion title for AI."
+  },
+  "cfoSuggestionMoneySprintPrompt": "Hoje foi dia de pagamento e estou organizando minhas caixinhas. Crie o plano de atualização dos dados do app baseado nas seguinte entradas:\n\n# Buckets",
+  "@cfoSuggestionMoneySprintPrompt": {
+    "description": "Money Sprint suggestion prompt for AI."
+  },
+  "cfoSuggestionMoneySprintTemplate": "## {name}\nbucketId: {id}\n- Adicionei:   R$\n- Retirei:     R$\n- Valor atual: R$\n",
+  "@cfoSuggestionMoneySprintTemplate": {
+    "description": "Money Sprint suggestion template for AI."
+  },
   "howToShareLLM": "Chose how to share with your other AI your context and chat:",
   "@howToShareLLM": {
     "description": "Dialog note to show when sharing LLM data."

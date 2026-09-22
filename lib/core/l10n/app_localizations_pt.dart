@@ -753,6 +753,18 @@ class AppLocalizationsPt extends AppLocalizations {
       'Quais são os seus principais comandos e automações como meu Personal CFO? Explique detalhadamente a quais dados do meu Stack Money você tem acesso e como pode me ajudar a tomar decisões.';
 
   @override
+  String get cfoSuggestionMoneySprintTitle => 'Dia de pagamento';
+
+  @override
+  String get cfoSuggestionMoneySprintPrompt =>
+      'Hoje foi dia de pagamento e estou organizando minhas caixinhas. Crie o plano de atualização dos dados do app baseado nas seguinte entradas:\n\n# Buckets';
+
+  @override
+  String cfoSuggestionMoneySprintTemplate(Object id, Object name) {
+    return '## $name\nbucketId: $id\n- Adicionei:   R\$\n- Retirei:     R\$\n- Valor atual: R\$\n';
+  }
+
+  @override
   String get howToShareLLM =>
       'Escolha como compartilhar os dados com a sua outra AI:';
 

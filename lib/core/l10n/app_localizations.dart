@@ -1422,6 +1422,24 @@ abstract class AppLocalizations {
   /// **'Quais são os seus principais comandos e automações como meu Personal CFO? Explique detalhadamente a quais dados do meu Stack Money você tem acesso e como pode me ajudar a tomar decisões.'**
   String get cfoSuggestionCfoProtocolsPrompt;
 
+  /// Money Sprint suggestion title for AI.
+  ///
+  /// In en, this message translates to:
+  /// **'Money Sprint'**
+  String get cfoSuggestionMoneySprintTitle;
+
+  /// Money Sprint suggestion prompt for AI.
+  ///
+  /// In en, this message translates to:
+  /// **'Hoje foi dia de pagamento e estou organizando minhas caixinhas. Crie o plano de atualização dos dados do app baseado nas seguinte entradas:\n\n# Buckets'**
+  String get cfoSuggestionMoneySprintPrompt;
+
+  /// Money Sprint suggestion template for AI.
+  ///
+  /// In en, this message translates to:
+  /// **'## {name}\nbucketId: {id}\n- Adicionei:   R\$\n- Retirei:     R\$\n- Valor atual: R\$\n'**
+  String cfoSuggestionMoneySprintTemplate(Object id, Object name);
+
   /// Dialog note to show when sharing LLM data.
   ///
   /// In en, this message translates to:
