@@ -1,14 +1,19 @@
 import 'dart:core';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/action_parser.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
+import 'package:stack_money/core/widgets/sm_chip_button.dart';
+import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/action_status.dart';
+import 'package:stack_money/data/enum/cfo_starter_suggestion.dart';
 import 'package:stack_money/data/enum/message_sender.dart';
 import 'package:stack_money/data/enum/snack_bar_type.dart';
 import 'package:stack_money/data/models/chat_message_model.dart';
@@ -47,8 +52,6 @@ class PersonalCfoManager {
     _chatsManager = ChatsManager(_context);
     _thread = initialThread ?? ChatThreadModel(title: '');
     _isArchived.value = initialThread?.isArchived ?? false;
-
-    SmLogger.debug('Initial thread', payload: initialThread?.toJson() ?? {});
 
     titleController = TextEditingController(text: _thread.title);
     messageController = TextEditingController(text: '');
@@ -109,23 +112,36 @@ class PersonalCfoManager {
     _cfoService.draftMessage(_thread.id, messageController.text);
   }
 
+  void sendSuggestion(CfoStarterSuggestion suggestion) {
+    if (_context.mounted) {
+      final l10n = AppLocalizations.of(_context)!;
+      messageController.text = suggestion.prompt(l10n);
+      sendMessage();
+    }
+  }
+
   /// Send a new message on the thread
-  Future<void> sendMessage() async {
-    final cleanText = messageController.text.trim();
-    if (cleanText.isEmpty || _isStreaming.value) return;
-
-    _isStreaming.value = true;
-    messageController.text = '';
-
-    final bool isFirstMessage = _thread.lastMessage.isEmpty;
+  Future<void> sendMessage({ChatMessageModel? retry}) async {
     final l10n = AppLocalizations.of(_context)!;
 
+    /// Message or controller text
+    final cleanText = retry?.text ?? messageController.text.trim();
+    final bool isFirstMessage = _thread.lastMessage.isEmpty;
+
+    if (retry == null) {
+      if (cleanText.isEmpty || _isStreaming.value) return;
+      messageController.text = '';
+    }
+    _isStreaming.value = true;
+
+    ChatMessageModel? userMessage;
     try {
       if (isFirstMessage) {
         await _initializeFirstMessageThread(cleanText);
       }
 
-      await _addUserMessage(cleanText);
+      userMessage = await _addUserMessage(cleanText, msg: retry);
+
       _isArchived.value = false;
       final aiPlaceholder = _addAiPlaceholderMessage();
 
@@ -142,14 +158,36 @@ class PersonalCfoManager {
       );
     } on StackMoneyException catch (e) {
       _handleSendMessageError(
+        userMessage,
         l10n.chatConnectionError(e.exception?.toString() ?? e.message),
       );
     } catch (e) {
-      _handleSendMessageError(l10n.chatConnectionError(e.toString()));
+      _handleSendMessageError(
+        userMessage,
+        l10n.chatConnectionError(e.toString()),
+      );
     } finally {
       _isStreaming.value = false;
       _scrollToBottom();
     }
+  }
+
+  /// Re-send a failed user message without creating a new message document
+  Future<void> retrySendMessage(ChatMessageModel failedUserMessage) async {
+    final currentList = List<ChatMessageModel>.from(messagesNotifier.value);
+    final index = currentList.indexWhere((m) => m.id == failedUserMessage.id);
+
+    if (index != -1) {
+      /// Remove messages unsent
+      if (index + 1 < currentList.length &&
+          currentList[index + 1].sender == MessageSender.cfoAi) {
+        currentList.removeAt(index + 1);
+      }
+      currentList.removeAt(index);
+      messagesNotifier.value = currentList;
+    }
+
+    await sendMessage(retry: failedUserMessage.copyWith(failedSend: false));
   }
 
   /// Configure a new Thread on the first message exchange
@@ -160,15 +198,22 @@ class PersonalCfoManager {
   }
 
   /// Add user message on the list and save on database
-  Future<void> _addUserMessage(String text) async {
-    final userMessage = ChatMessageModel(
-      sender: MessageSender.user,
-      text: text,
-    );
+  Future<ChatMessageModel> _addUserMessage(
+    String text, {
+    ChatMessageModel? msg,
+  }) async {
+    final userMessage =
+        msg ??
+        ChatMessageModel(
+          sender: MessageSender.user,
+          text: text,
+          failedSend: false,
+        );
 
     messagesNotifier.value = [...messages, userMessage];
     _scrollToBottom();
     await _cfoService.saveMessage(_thread.id, userMessage);
+    return userMessage;
   }
 
   /// AI message placeholder to animate the screen
@@ -215,7 +260,7 @@ class PersonalCfoManager {
     }
   }
 
-  /// Finalize AI respose: Clear JSON, add action and save on database
+  /// Finalize AI response: Clear JSON, add action and save on database
   Future<void> _finalizeAiResponse({
     required ChatMessageModel aiPlaceholder,
     required String rawResponseText,
@@ -241,7 +286,7 @@ class PersonalCfoManager {
     /// Save on database
     await _cfoService.saveMessage(_thread.id, finalAiMessage);
 
-    /// Generate title with Thread doesn't have one
+    /// Generate title when Thread doesn't have one
     if (_thread.title.isEmpty) {
       try {
         final generatedTitleResult = await _cfoService.generateTitle(
@@ -257,18 +302,44 @@ class PersonalCfoManager {
     }
   }
 
-  /// Handle errors
-  void _handleSendMessageError(String errorText) {
-    if (messagesNotifier.value.isNotEmpty) {
-      final lastMessage = messagesNotifier.value.last;
-      if (lastMessage.sender == MessageSender.cfoAi) {
-        final errorAiMessage = lastMessage.copyWith(text: errorText);
-        messagesNotifier.value = [
-          ...messagesNotifier.value..removeLast(),
-          errorAiMessage,
-        ];
-      }
+  /// Handle errors and mark user message as failed
+  Future<void> _markUserMessageAsFailed(ChatMessageModel userMessage) async {
+    final failedMessage = userMessage.copyWith(failedSend: true);
+
+    final updatedList = List<ChatMessageModel>.from(messagesNotifier.value);
+
+    final userIndex = updatedList.indexWhere((m) => m.id == userMessage.id);
+    if (userIndex != -1) {
+      updatedList[userIndex] = failedMessage;
     }
+
+    messagesNotifier.value = updatedList;
+    await _cfoService.saveMessage(_thread.id, failedMessage);
+  }
+
+  /// Handle errors
+  void _handleSendMessageError(
+    ChatMessageModel? message,
+    String errorText,
+  ) async {
+    if (message != null) {
+      await _markUserMessageAsFailed(message);
+    }
+
+    final currentList = List<ChatMessageModel>.from(messagesNotifier.value);
+
+    /// Check last message
+    if (currentList.last.sender == MessageSender.cfoAi) {
+      currentList[currentList.length - 1] = currentList.last.copyWith(
+        text: errorText,
+      );
+    } else if (currentList.last.sender == MessageSender.user) {
+      final aiErrorMessage = _addAiPlaceholderMessage();
+      currentList.add(aiErrorMessage.copyWith(text: errorText));
+    }
+
+    /// Update messages
+    messagesNotifier.value = currentList;
   }
 
   Future<bool> changeTitle(String title) async {
@@ -340,7 +411,7 @@ class PersonalCfoManager {
     }
   }
 
-  /// Refuese CFO suggestion
+  /// Refuse CFO suggestion
   Future<void> _rejectProposedAction(ChatMessageModel message) async {
     final action = message.proposedAction;
     if (action == null) return;
@@ -384,7 +455,55 @@ class PersonalCfoManager {
   }
 
   Future<void> shareChat() async {
-    await ExportService().exportData(messages);
+    await ExportService().exportData(titleController.text, messages);
+  }
+
+  Future<void> shareToAi() async {
+    final exportModel = await ExportService().exportToLLM(
+      chatName: titleController.text,
+      messages: messages,
+    );
+
+    if (_context.mounted) {
+      final l10n = AppLocalizations.of(_context)!;
+
+      showDialog(
+        context: _context,
+        barrierDismissible: true,
+        builder: (dialogContext) => SmDialog(
+          color: StackMoneyTheme.cyanNeon,
+          title: l10n.exportToAi,
+          note: l10n.howToShareLLM,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SmChipButton(
+                l10n.copy,
+                icon: Icons.copy_rounded,
+                color: StackMoneyTheme.platinumSilver,
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: exportModel.toMD()));
+                  dialogContext.pop();
+                  SmSnackBar(
+                    message: l10n.markdownCopied,
+                    type: SnackBarType.info,
+                  ).show(_context);
+                },
+              ),
+              SmChipButton(
+                l10n.share,
+                icon: Icons.screen_share_outlined,
+                color: StackMoneyTheme.platinumSilver,
+                onTap: () {
+                  dialogContext.pop();
+                  ExportService().shareMarkdownFile(exportModel);
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   void _scrollToBottom() {

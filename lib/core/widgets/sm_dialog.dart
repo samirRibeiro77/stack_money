@@ -9,7 +9,8 @@ import 'package:stack_money/core/widgets/sm_chip_button.dart';
 
 class SmDialog extends StatelessWidget {
   final String? title;
-  final String message;
+  final String? message;
+  final Widget? child;
   final String? content;
   final String? note;
   final Color color;
@@ -18,7 +19,8 @@ class SmDialog extends StatelessWidget {
   final VoidCallback? onDeny;
 
   const SmDialog({
-    required this.message,
+    this.message,
+    this.child,
     this.onConfirm,
     this.onCancel,
     this.onDeny,
@@ -69,63 +71,85 @@ class SmDialog extends StatelessWidget {
                 ),
               ),
 
-              /// Body
-              const SizedBox(height: AppSizes.x10),
-              Text(message, style: textTheme.bodySmall),
+              /// Message
+              if (message != null) ...[
+                Padding(
+                  padding: EdgeInsets.only(top: AppSizes.sizedBoxLarge),
+                  child: Text(message!, style: textTheme.bodySmall),
+                ),
+              ],
 
               /// Content
               if (content != null) ...[
-                const SizedBox(height: AppSizes.x2),
-                Text(
-                  StackMoneyString.formatTitle(content!),
-                  style: textTheme.titleMedium?.copyWith(
-                    color: color,
-                    fontWeight: AppTypography.weightBold,
+                Padding(
+                  padding: EdgeInsetsGeometry.only(top: AppSizes.sizedBoxSmall),
+                  child: Text(
+                    StackMoneyString.formatTitle(content!),
+                    style: textTheme.titleMedium?.copyWith(
+                      color: color,
+                      fontWeight: AppTypography.weightBold,
+                    ),
                   ),
                 ),
               ],
 
               /// Note
               if (note != null) ...[
-                const SizedBox(height: AppSizes.x6),
-                Text(note!, style: textTheme.labelSmall),
+                Padding(
+                  padding: EdgeInsets.only(top: AppSizes.sizedBoxMedium),
+                  child: Text(note!, style: textTheme.labelSmall),
+                ),
+              ],
+
+              /// Body
+              if (child != null) ...[
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: AppSizes.sizedBoxMedium,
+                    left: AppSizes.x2,
+                    right: AppSizes.x2,
+                  ),
+                  child: child!,
+                ),
               ],
 
               /// Actions
               if (_hasAction) ...[
-                const SizedBox(height: AppSizes.x12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    /// Deny
-                    if (onDeny != null) ...[
-                      SmChipButton(
-                        l10n.deny,
-                        onTap: onDeny,
-                        color: StackMoneyTheme.magentaNeon,
-                      ),
-                      Expanded(child: SizedBox()),
-                    ],
+                Padding(
+                  padding: EdgeInsets.only(top: AppSizes.sizedBoxLarge),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      /// Deny
+                      if (onDeny != null) ...[
+                        SmChipButton(
+                          l10n.deny,
+                          onTap: onDeny,
+                          color: StackMoneyTheme.magentaNeon,
+                        ),
+                        Expanded(child: SizedBox()),
+                      ],
 
-                    /// Cancel
-                    if (onCancel != null) ...[
-                      SmChipButton(
-                        l10n.cancel,
-                        onTap: onCancel,
-                        color: StackMoneyTheme.mutedGrey,
-                      ),
-                      SizedBox(width: AppSizes.x4),
-                    ],
+                      /// Cancel
+                      if (onCancel != null) ...[
+                        SmChipButton(
+                          l10n.cancel,
+                          onTap: onCancel,
+                          color: StackMoneyTheme.mutedGrey,
+                        ),
+                        SizedBox(width: AppSizes.x4),
+                      ],
 
-                    /// Confirm
-                    if (onConfirm != null) ...[
-                      SmChipButton(
-                        l10n.confirm,
-                        onTap: onConfirm,
-                        color: color,
-                      ),
+                      /// Confirm
+                      if (onConfirm != null) ...[
+                        SmChipButton(
+                          l10n.confirm,
+                          onTap: onConfirm,
+                          color: color,
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ],
             ],
