@@ -65,9 +65,22 @@ class BucketManagementService {
   Future<Result<void>> executeContributionSprint({
     required List<Bucket> updatedBuckets,
     required List<Transaction> transactions,
-    required double totalNetWorth,
-    required double totalLiquidity,
   }) async {
+    double totalNetWorth = 0.0;
+    double totalLiquidity = 0.0;
+
+    for (final bucket in updatedBuckets) {
+      final transaction = transactions
+          .where((t) => t.bucketId == bucket.id)
+          .firstOrNull;
+      final actualValue = transaction?.actualValue ?? 0.0;
+
+      totalNetWorth += actualValue;
+      if (bucket.isImmediateLiquidity) {
+        totalLiquidity += actualValue;
+      }
+    }
+
     try {
       await _repository.commitSprint(
         updatedBuckets: updatedBuckets,

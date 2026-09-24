@@ -10,6 +10,7 @@ class ModelKey {
   static const targetDay = 'targetDay';
 
   /// Bucket
+  static const buckets = 'buckets';
   static const where = 'where';
   static const minValue = 'minValue';
   static const targetValue = 'targetValue';

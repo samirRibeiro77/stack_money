@@ -2,6 +2,7 @@ import 'package:stack_money/core/utils/result.dart';
 import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/data/enum/action_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
+import 'package:stack_money/data/models/money_sprint_action.dart';
 import 'package:stack_money/data/models/proposed_action_model.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/domain/service/bucket_service.dart';
@@ -13,6 +14,7 @@ class AiActionService {
 
   Future<void> handleAction(ProposedActionModel action) async {
     SmLogger.debug('Handle proposed action', payload: action.toJson());
+
     switch (action.actionType) {
       case ActionType.createBucket:
         _handleCreateBucket(action.payload);
@@ -20,6 +22,8 @@ class AiActionService {
         _handleUpdateBucket(action.payload);
       case ActionType.updateSalaryPlan:
         _handlePlan(action.payload);
+      case ActionType.moneySprint:
+        _handleSprint(action.payload);
       case ActionType.unknown:
     }
   }
@@ -37,6 +41,15 @@ class AiActionService {
       SalaryPlan.fromJson(
         json,
       ).copyWith(newId: true, isActive: false, isArchived: false),
+    );
+  }
+
+  Future<Result<void>> _handleSprint(Map<String, Object?>? json) async {
+    final sprint = MoneySprintAction.fromJson(json);
+
+    return _bucketService.executeContributionSprint(
+      updatedBuckets: sprint.buckets,
+      transactions: sprint.transactions,
     );
   }
 }

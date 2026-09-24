@@ -232,12 +232,7 @@ class ContributionSprintManager {
         onDeny: () => dialogContext.pop(),
         onConfirm: () {
           dialogContext.pop();
-          _executeFirebaseCommit(
-            context,
-            compiledTransactions,
-            netWorthTotal,
-            netWorthLiquidity,
-          );
+          _executeFirebaseCommit(context, compiledTransactions);
           context.pop();
         },
       ),
@@ -248,15 +243,11 @@ class ContributionSprintManager {
   Future<void> _executeFirebaseCommit(
     BuildContext context,
     List<Transaction> transactions,
-    double total,
-    double liquidity,
   ) async {
     _isLoadingNotifier.value = true;
     final result = await _bucketService.executeContributionSprint(
       updatedBuckets: buckets,
       transactions: transactions,
-      totalNetWorth: total,
-      totalLiquidity: liquidity,
     );
 
     result.fold(

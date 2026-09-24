@@ -4,6 +4,7 @@ enum ActionType {
   updateBucket('update_bucket'),
   createBucket('create_bucket'),
   updateSalaryPlan('update_salary_plan'),
+  moneySprint('money_sprint'),
   unknown('unknown');
 
   final String value;
@@ -21,6 +22,7 @@ enum ActionType {
     switch(this) {
       case updateBucket: return l10n.updateBucket;
       case createBucket: return l10n.createBucket;
+      case moneySprint: return l10n.moneySprint;
       case unknown: return l10n.unknow;
       default: return '';
     }
