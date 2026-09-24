@@ -1431,14 +1431,24 @@ abstract class AppLocalizations {
   /// Money Sprint suggestion prompt for AI.
   ///
   /// In en, this message translates to:
-  /// **'Hoje foi dia de pagamento e estou organizando minhas caixinhas. Crie o plano de atualização dos dados do app baseado nas seguinte entradas:\n\n# Buckets'**
+  /// **'Today is payment day and I\'m organizing my money. Create a money commit sprint for the app data based on the following transactions:\n\n# Buckets'**
   String get cfoSuggestionMoneySprintPrompt;
 
   /// Money Sprint suggestion template for AI.
   ///
   /// In en, this message translates to:
-  /// **'## {name}\nbucketId: {id}\n- Adicionei:   R\$\n- Retirei:     R\$\n- Valor atual: R\$\n'**
-  String cfoSuggestionMoneySprintTemplate(Object id, Object name);
+  /// **'\n## {name}\nbucketId: {id}\n- Transaction: R\$ VALUE\n- Balance: R\$ CURRENT{target}'**
+  String cfoSuggestionMoneySprintTemplate(
+    Object id,
+    Object name,
+    Object target,
+  );
+
+  /// Add target to Money Sprint suggestion template for AI.
+  ///
+  /// In en, this message translates to:
+  /// **'\n- Target value: R\$ {value}\n- Target date: {date}'**
+  String cfoSuggestionMoneySprintTemplateWithTarget(Object date, Object value);
 
   /// Dialog note to show when sharing LLM data.
   ///

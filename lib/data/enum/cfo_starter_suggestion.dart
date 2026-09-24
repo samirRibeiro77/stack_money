@@ -52,9 +52,24 @@ enum CfoStarterSuggestion {
         if (bucket == null) {
           return l10n.error;
         }
-        return l10n.cfoSuggestionMoneySprintTemplate(bucket.id, bucket.name);
+        return l10n.cfoSuggestionMoneySprintTemplate(
+          bucket.id,
+          bucket.name,
+          _targetTemplate(l10n, bucket),
+        );
       default:
         return '';
     }
+  }
+
+  String _targetTemplate(AppLocalizations l10n, Bucket bucket) {
+    if (bucket.targetValue == null) {
+      return '';
+    }
+
+    return l10n.cfoSuggestionMoneySprintTemplateWithTarget(
+      bucket.targetDate ?? l10n.notAvailable,
+      bucket.targetValue ?? l10n.notAvailable,
+    );
   }
 }

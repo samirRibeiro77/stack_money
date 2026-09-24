@@ -760,8 +760,17 @@ class AppLocalizationsPt extends AppLocalizations {
       'Hoje foi dia de pagamento e estou organizando minhas caixinhas. Crie o plano de atualização dos dados do app baseado nas seguinte entradas:\n\n# Buckets';
 
   @override
-  String cfoSuggestionMoneySprintTemplate(Object id, Object name) {
-    return '## $name\nbucketId: $id\n- Adicionei:   R\$\n- Retirei:     R\$\n- Valor atual: R\$\n';
+  String cfoSuggestionMoneySprintTemplate(
+    Object id,
+    Object name,
+    Object target,
+  ) {
+    return '## $name\nbucketId: $id\n- Movimentação: R\$ VALOR\n- Saldo atual: R\$ ATUAL$target';
+  }
+
+  @override
+  String cfoSuggestionMoneySprintTemplateWithTarget(Object date, Object value) {
+    return '\n- Meta definida: R\$ $value\n- Data para meta: $date';
   }
 
   @override

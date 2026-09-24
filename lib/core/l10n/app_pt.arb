@@ -223,7 +223,8 @@
   "cfoSuggestionCfoProtocolsPrompt": "Quais são os seus principais comandos e automações como meu Personal CFO? Explique detalhadamente a quais dados do meu Stack Money você tem acesso e como pode me ajudar a tomar decisões.",
   "cfoSuggestionMoneySprintTitle": "Dia de pagamento",
   "cfoSuggestionMoneySprintPrompt": "Hoje foi dia de pagamento e estou organizando minhas caixinhas. Crie o plano de atualização dos dados do app baseado nas seguinte entradas:\n\n# Buckets",
-  "cfoSuggestionMoneySprintTemplate": "## {name}\nbucketId: {id}\n- Adicionei:   R$\n- Retirei:     R$\n- Valor atual: R$\n",
+  "cfoSuggestionMoneySprintTemplate": "## {name}\nbucketId: {id}\n- Movimentação: R$ VALOR\n- Saldo atual: R$ ATUAL{target}",
+  "cfoSuggestionMoneySprintTemplateWithTarget": "\n- Meta definida: R$ {value}\n- Data para meta: {date}",
   "howToShareLLM": "Escolha como compartilhar os dados com a sua outra AI:",
   "markdownCopied": "Markdown copiado com sucesso."
 }

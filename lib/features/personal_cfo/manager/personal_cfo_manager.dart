@@ -129,7 +129,7 @@ class PersonalCfoManager {
       buffer.writeln(messageController.text);
       for (final bucket in AppCoordinator.instance.buckets.value) {
         buffer.writeln(
-          l10n.cfoSuggestionMoneySprintTemplate(bucket.id, bucket.name),
+          suggestion.template(l10n, bucket: bucket),
         );
       }
 

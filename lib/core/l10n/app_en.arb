@@ -884,13 +884,17 @@
   "@cfoSuggestionMoneySprintTitle": {
     "description": "Money Sprint suggestion title for AI."
   },
-  "cfoSuggestionMoneySprintPrompt": "Hoje foi dia de pagamento e estou organizando minhas caixinhas. Crie o plano de atualização dos dados do app baseado nas seguinte entradas:\n\n# Buckets",
+  "cfoSuggestionMoneySprintPrompt": "Today is payment day and I'm organizing my money. Create a money commit sprint for the app data based on the following transactions:\n\n# Buckets",
   "@cfoSuggestionMoneySprintPrompt": {
     "description": "Money Sprint suggestion prompt for AI."
   },
-  "cfoSuggestionMoneySprintTemplate": "## {name}\nbucketId: {id}\n- Adicionei:   R$\n- Retirei:     R$\n- Valor atual: R$\n",
+  "cfoSuggestionMoneySprintTemplate": "\n## {name}\nbucketId: {id}\n- Transaction: R$ VALUE\n- Balance: R$ CURRENT{target}",
   "@cfoSuggestionMoneySprintTemplate": {
     "description": "Money Sprint suggestion template for AI."
+  },
+  "cfoSuggestionMoneySprintTemplateWithTarget": "\n- Target value: R$ {value}\n- Target date: {date}",
+  "@cfoSuggestionMoneySprintTemplateWithTarget": {
+    "description": "Add target to Money Sprint suggestion template for AI."
   },
   "howToShareLLM": "Chose how to share with your other AI your context and chat:",
   "@howToShareLLM": {
