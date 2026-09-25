@@ -768,7 +768,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String cfoSuggestionMoneySprintTemplateWithTarget(Object date, Object value) {
-    return '\n- Target value: R\$ $value\n- Target date: $date';
+    return '\n- Target value: $value\n- Target date: $date';
   }
 
   @override

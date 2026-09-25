@@ -770,7 +770,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String cfoSuggestionMoneySprintTemplateWithTarget(Object date, Object value) {
-    return '\n- Meta definida: R\$ $value\n- Data para meta: $date';
+    return '\n- Meta definida: $value\n- Data para meta: $date';
   }
 
   @override

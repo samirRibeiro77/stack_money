@@ -81,6 +81,16 @@ When you recommend a concrete change, append a single JSON action block at the V
                 "isImmediateLiquidity": true,
                 "position": 1
             },
+            {
+                "id": "674a7007-5472-4b65-9172-0eb0ec09a026",
+                "category": "USA",
+                "where": "NU",
+                "minValue": 34752.7,
+                "targetValue": 45000.0,
+                "targetDate": Timestamp(seconds=1822359600, nanoseconds=0),   <-- Should always return as Firebase Timestamp
+                "isImmediateLiquidity": false,
+                "position": 4
+            },
             ...
         ],
         "transactions": [

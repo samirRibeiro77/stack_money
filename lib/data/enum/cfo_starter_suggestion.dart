@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/data/models/bucket.dart';
 
@@ -67,9 +68,17 @@ enum CfoStarterSuggestion {
       return '';
     }
 
-    return l10n.cfoSuggestionMoneySprintTemplateWithTarget(
-      bucket.targetDate ?? l10n.notAvailable,
-      bucket.targetValue ?? l10n.notAvailable,
+    /// Target Value
+    final value = bucket.targetValue != null
+        ? StackMoneyString.formatMoney(bucket.targetValue ?? 0, symbol: true)
+        : l10n.notAvailable;
+
+    /// Target Date
+    final date = StackMoneyString.formatMonthYear(
+      bucket.targetDate,
+      notFound: l10n.notAvailable,
     );
+
+    return l10n.cfoSuggestionMoneySprintTemplateWithTarget(date, value);
   }
 }

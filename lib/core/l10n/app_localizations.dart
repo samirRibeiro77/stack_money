@@ -1447,7 +1447,7 @@ abstract class AppLocalizations {
   /// Add target to Money Sprint suggestion template for AI.
   ///
   /// In en, this message translates to:
-  /// **'\n- Target value: R\$ {value}\n- Target date: {date}'**
+  /// **'\n- Target value: {value}\n- Target date: {date}'**
   String cfoSuggestionMoneySprintTemplateWithTarget(Object date, Object value);
 
   /// Dialog note to show when sharing LLM data.

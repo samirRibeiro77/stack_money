@@ -892,7 +892,7 @@
   "@cfoSuggestionMoneySprintTemplate": {
     "description": "Money Sprint suggestion template for AI."
   },
-  "cfoSuggestionMoneySprintTemplateWithTarget": "\n- Target value: R$ {value}\n- Target date: {date}",
+  "cfoSuggestionMoneySprintTemplateWithTarget": "\n- Target value: {value}\n- Target date: {date}",
   "@cfoSuggestionMoneySprintTemplateWithTarget": {
     "description": "Add target to Money Sprint suggestion template for AI."
   },

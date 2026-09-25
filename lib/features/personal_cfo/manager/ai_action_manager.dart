@@ -4,6 +4,7 @@ import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/providers/app_coordinator.dart';
 import 'package:stack_money/core/theme/theme.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/data/enum/action_type.dart';
 import 'package:stack_money/data/models/bucket.dart';
@@ -63,6 +64,8 @@ class AiActionManager {
   }
 
   void _previewMoneySprint(BuildContext context) {
+    SmLogger.debug('Money Sprint', payload: action.payload);
+
     final l10n = AppLocalizations.of(context)!;
     final payload = MoneySprintAction.fromJson(action.payload);
 
