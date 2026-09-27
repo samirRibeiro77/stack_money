@@ -198,7 +198,7 @@ class PlanEditManager {
             scope: ExceptionScope.business,
             payload: copiedPlan.toJson(),
             exception: e.exception,
-            stackTrace: e.stackTrace
+            stackTrace: e.stackTrace,
           ),
         );
       },
@@ -207,7 +207,7 @@ class PlanEditManager {
 
   Future<void> sharePlan() async {
     try {
-      ExportService().exportData([currentPlan.toJson()]);
+      ExportService().exportData(currentPlan.name, [currentPlan.toJson()]);
     } catch (e, stack) {
       StackMoneyException(
         message: 'Failed to share plan',
@@ -229,10 +229,7 @@ class PlanEditManager {
         }
       },
       onFailure: (e) {
-        _context.push(
-          ErrorScreen.route,
-          extra: e,
-        );
+        _context.push(ErrorScreen.route, extra: e);
       },
     );
   }
@@ -262,10 +259,7 @@ class PlanEditManager {
           }
         },
         onFailure: (e) {
-          _context.push(
-            ErrorScreen.route,
-            extra: e,
-          );
+          _context.push(ErrorScreen.route, extra: e);
         },
       );
     }
@@ -427,9 +421,7 @@ class PlanEditManager {
     }
   }
 
-  Future<bool?> removeDistributionConfirmation(
-    String distributionName,
-  ) {
+  Future<bool?> removeDistributionConfirmation(String distributionName) {
     final l10n = AppLocalizations.of(_context)!;
 
     return showDialog<bool>(

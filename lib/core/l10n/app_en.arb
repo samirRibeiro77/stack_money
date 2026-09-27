@@ -268,6 +268,10 @@
   "@copy": {
     "description": "Copy something"
   },
+  "exportToAi": "Export LLM",
+  "@exportToAi": {
+    "description": "Share something"
+  },
   "share": "Share",
   "@share": {
     "description": "Share something"
@@ -748,6 +752,10 @@
   "@chatEmpty": {
     "description": "Message to show when the user create a new CFO chat."
   },
+  "aiSuggestions": "Some CFO suggestions to start with:",
+  "@aiSuggestions": {
+    "description": "Message to show for suggestions when the user create a new CFO chat."
+  },
   "timeAgoJustNow": "Just now",
   "@timeAgoJustNow": {
     "description": "Time ago formatter (just now)."
@@ -839,5 +847,45 @@
   "targetDone": "Target of {value} secured",
   "@targetDone": {
     "description": "Target value has been reached."
+  },
+  "cfoSuggestionEcosystemAuditTitle": "Ecosystem Audit",
+  "@cfoSuggestionEcosystemAuditTitle": {
+    "description": "Ecosystem Audit suggestion title for AI."
+  },
+  "cfoSuggestionEcosystemAuditPrompt": "Realize uma varredura completa e profunda na minha saúde financeira atual. Analise meu patrimônio total, a distribuição nas caixinhas e o saldo do meu plano salarial. Me dê um diagnóstico transparente e sincero do meu momento.",
+  "@cfoSuggestionEcosystemAuditPrompt": {
+    "description": "Ecosystem Audit suggestion prompt for AI."
+  },
+  "cfoSuggestionTargetPacingTitle": "Target Pacing",
+  "@cfoSuggestionTargetPacingTitle": {
+    "description": "Target Pacing suggestion title for AI."
+  },
+  "cfoSuggestionTargetPacingPrompt": "Examine todas as minhas caixinhas que possuem um targetValue definido. Calcule o GAP restante de cada uma e me diga se o meu ritmo atual de aporte salarial vai me fazer atingir os objetivos no prazo ou se preciso recalibrar o ritmo.",
+  "@cfoSuggestionTargetPacingPrompt": {
+    "description": "Target Pacing suggestion prompt for AI."
+  },
+  "cfoSuggestionMaxCashFlowTitle": "Max CashFlow",
+  "@cfoSuggestionMaxCashflowTitle": {
+    "description": "Max CashFlow suggestion title for AI."
+  },
+  "cfoSuggestionMaxCashFlowPrompt": "Com base no meu saldo e sobra salarial atual, proponha um plano salarial atualizado (update_salary_plan) otimizando a distribuição para as minhas metas vigentes.",
+  "@cfoSuggestionMaxCashflowPrompt": {
+    "description": "Max CashFlow suggestion prompt for AI."
+  },
+  "cfoSuggestionCfoProtocolsTitle": "CFO Protocols",
+  "@cfoSuggestionCfoProtocolsTitle": {
+    "description": "CFO Protocols suggestion title for AI."
+  },
+  "cfoSuggestionCfoProtocolsPrompt": "Quais são os seus principais comandos e automações como meu Personal CFO? Explique detalhadamente a quais dados do meu Stack Money você tem acesso e como pode me ajudar a tomar decisões.",
+  "@cfoSuggestionCfoProtocolsPrompt": {
+    "description": "CFO Protocols suggestion prompt for AI."
+  },
+  "howToShareLLM": "Chose how to share with your other AI your context and chat:",
+  "@howToShareLLM": {
+    "description": "Dialog note to show when sharing LLM data."
+  },
+  "markdownCopied": "LLM Markdown copied successfully.",
+  "@markdownCopied": {
+    "description": "SnackBar message to show when copied the MD to the clipboard."
   }
 }

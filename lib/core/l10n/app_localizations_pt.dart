@@ -225,6 +225,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get copy => 'Copiar';
 
   @override
+  String get exportToAi => 'Exportar pra IA';
+
+  @override
   String get share => 'Compartilhar';
 
   @override
@@ -630,6 +633,9 @@ class AppLocalizationsPt extends AppLocalizations {
       'CFO Pessoal AI conectado com sucesso!\nPergunte algo...';
 
   @override
+  String get aiSuggestions => 'Algumas sugestões para começar:';
+
+  @override
   String get timeAgoJustNow => 'Agora';
 
   @override
@@ -717,4 +723,39 @@ class AppLocalizationsPt extends AppLocalizations {
   String targetDone(Object value) {
     return 'Meta de $value alcançada';
   }
+
+  @override
+  String get cfoSuggestionEcosystemAuditTitle => 'Auditoria do Ecossistema';
+
+  @override
+  String get cfoSuggestionEcosystemAuditPrompt =>
+      'Realize uma varredura completa e profunda na minha saúde financeira atual. Analise meu patrimônio total, a distribuição nas caixinhas e o saldo do meu plano salarial. Me dê um diagnóstico transparente e sincero do meu momento.';
+
+  @override
+  String get cfoSuggestionTargetPacingTitle => 'Velocidade das minhas metas';
+
+  @override
+  String get cfoSuggestionTargetPacingPrompt =>
+      'Examine todas as minhas caixinhas que possuem um targetValue definido. Calcule o GAP restante de cada uma e me diga se o meu ritmo atual de aporte salarial vai me fazer atingir os objetivos no prazo ou se preciso recalibrar o ritmo.';
+
+  @override
+  String get cfoSuggestionMaxCashFlowTitle => 'Maximizar fluxo de caixa';
+
+  @override
+  String get cfoSuggestionMaxCashFlowPrompt =>
+      'Com base no meu saldo e sobra salarial atual, proponha um plano salarial atualizado (update_salary_plan) otimizando a distribuição para as minhas metas vigentes.';
+
+  @override
+  String get cfoSuggestionCfoProtocolsTitle => 'Protocolos do CFO';
+
+  @override
+  String get cfoSuggestionCfoProtocolsPrompt =>
+      'Quais são os seus principais comandos e automações como meu Personal CFO? Explique detalhadamente a quais dados do meu Stack Money você tem acesso e como pode me ajudar a tomar decisões.';
+
+  @override
+  String get howToShareLLM =>
+      'Escolha como compartilhar os dados com a sua outra AI:';
+
+  @override
+  String get markdownCopied => 'Markdown copiado com sucesso.';
 }

@@ -15,6 +15,7 @@ class ChatHeader extends StatelessWidget {
   final String title;
   final bool isArchived;
   final ValueChanged<String> saveTitle;
+  final VoidCallback onAiShare;
   final VoidCallback onShare;
   final VoidCallback toggleArchive;
   final VoidCallback onDelete;
@@ -23,6 +24,7 @@ class ChatHeader extends StatelessWidget {
     required this.title,
     required this.isArchived,
     required this.saveTitle,
+    required this.onAiShare,
     required this.onShare,
     required this.toggleArchive,
     required this.onDelete,
@@ -31,6 +33,9 @@ class ChatHeader extends StatelessWidget {
 
   void _handleAction(PersonalCfoActions action, BuildContext context) {
     switch (action) {
+      case PersonalCfoActions.exportToAi:
+        onAiShare();
+        break;
       case PersonalCfoActions.share:
         onShare();
         break;

@@ -8,6 +8,7 @@ import 'package:stack_money/data/models/chat_message_model.dart';
 import 'package:stack_money/data/models/chat_thread_model.dart';
 import 'package:stack_money/features/personal_cfo/manager/personal_cfo_manager.dart';
 import 'package:stack_money/features/personal_cfo/widgets/ai_message.dart';
+import 'package:stack_money/features/personal_cfo/widgets/cfo_starter_suggestions_grid.dart';
 import 'package:stack_money/features/personal_cfo/widgets/chat_header.dart';
 import 'package:stack_money/features/personal_cfo/widgets/send_message.dart';
 import 'package:stack_money/features/personal_cfo/widgets/user_message.dart';
@@ -71,10 +72,18 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
               builder: (_, messages, _) {
                 if (messages.isEmpty) {
                   return Center(
-                    child: Text(
-                      l10n.chatEmpty,
-                      textAlign: TextAlign.center,
-                      style: textTheme.labelLarge,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          l10n.chatEmpty,
+                          textAlign: TextAlign.center,
+                          style: textTheme.labelLarge,
+                        ),
+                        CfoStarterSuggestionsGrid(
+                          onSuggestionSelected: _manager.sendSuggestion,
+                        ),
+                      ],
                     ),
                   );
                 }
@@ -96,7 +105,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                     final msg = messages[index];
 
                     if (msg.sender.isUser) {
-                      return UserMessage(msg: msg);
+                      return UserMessage(msg: msg, onRetry: () => _manager.retrySendMessage(msg));
                     }
 
                     return AiMessage(
@@ -142,6 +151,7 @@ class _PersonalCfoScreenState extends State<PersonalCfoScreen> {
                         title: title.text,
                         isArchived: isArchived,
                         saveTitle: _manager.changeTitle,
+                        onAiShare: _manager.shareToAi,
                         onShare: _manager.shareChat,
                         toggleArchive: _manager.toggleArchiveThread,
                         onDelete: _manager.deleteThread,
