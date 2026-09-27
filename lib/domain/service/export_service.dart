@@ -26,6 +26,100 @@ class ExportService {
   static const _fileName = 'stack_money';
   static const _defaultChat = 'personal_cfo';
 
+  String _convertDataToExport({
+    Map<String, Object?>? jsonMap,
+    List<Object?>? jsonList,
+  }) {
+    if (jsonMap == null && jsonList == null) {
+      throw Exception('Must fill one of the two (jsonMap || jsonList)');
+    }
+
+    return jsonEncode(
+      jsonMap ?? jsonList,
+      toEncodable: (nonEncodable) {
+        if (nonEncodable is Timestamp) {
+          return nonEncodable.toDate().toIso8601String();
+        }
+        return nonEncodable.toString();
+      },
+    );
+  }
+
+  Map<String, Object?> _createJsonData({
+    List<SalaryPlan> plans = const [],
+    List<Bucket> buckets = const [],
+    List<History> history = const [],
+  }) {
+    final jsonData = <String, Object?>{};
+
+    if (plans.isNotEmpty) {
+      jsonData[FirebaseKey.salaryPlans] = plans.map((p) => p.toJson()).toList();
+    }
+
+    if (buckets.isNotEmpty) {
+      jsonData[FirebaseKey.buckets] = buckets.map((b) => b.toJson()).toList();
+    }
+
+    if (history.isNotEmpty) {
+      jsonData[FirebaseKey.history] = history.map((h) => h.toJson()).toList();
+    }
+
+    return jsonData;
+  }
+
+  String _cfoHumanizedMessages(String title, List<ChatMessageModel> messages) {
+    final buffer = StringBuffer();
+    buffer.writeln('$title\n\n');
+
+    for (final message in messages) {
+      buffer.writeln('${message.sender.name}: ${message.text}\n\n\n');
+    }
+
+    return buffer.toString();
+  }
+
+  Future<File> _createExportFile({
+    required String text,
+    String name = _fileName,
+    ExportExtension extension = ExportExtension.json,
+    ExportKind kind = ExportKind.data,
+    bool timestamp = true,
+  }) async {
+    final filePath = await _filePath(
+      name: name,
+      extension: extension,
+      kind: kind,
+      timestamp: timestamp,
+    );
+
+    final file = await File(filePath).create(recursive: true);
+    return await file.writeAsString(text);
+  }
+
+  Future<String> _filePath({
+    required ExportExtension extension,
+    required ExportKind kind,
+    required String name,
+    required bool timestamp,
+  }) async {
+    final buffer = StringBuffer();
+    final Directory tempDir = await getTemporaryDirectory();
+    buffer.write('${tempDir.path}/stack_money_${kind.name}');
+    buffer.write('/');
+    buffer.write(name);
+    buffer.write(
+      timestamp ? '_${Timestamp
+          .now()
+          .millisecondsSinceEpoch
+          .toString()}' : '',
+    );
+    buffer.write('.${extension.name}');
+
+    final filePath = buffer.toString();
+    SmLogger.debug('Got file path', payload: {'path': filePath});
+    return filePath;
+  }
+
   Future<DataExportModel?> createAppDataExport() async {
     try {
       final plans = AppCoordinator.instance.plans.value;
@@ -66,6 +160,19 @@ class ExportService {
       await _createExportFile(
         name: name,
         text: _convertDataToExport(jsonList: data),
+      ),
+    );
+  }
+
+  Future<ShareResult> shareChatMessages(String title,
+      List<ChatMessageModel> messages) async {
+    return await shareFile(
+      await _createExportFile(
+        name: title,
+        extension: ExportExtension.txt,
+        kind: ExportKind.cfo,
+        timestamp: false,
+        text: _cfoHumanizedMessages(title, messages),
       ),
     );
   }
@@ -116,85 +223,5 @@ class ExportService {
     final XFile xFile = XFile(file.path, mimeType: 'text/markdown');
 
     return await SharePlus.instance.share(ShareParams(files: [xFile]));
-  }
-
-  String _convertDataToExport({
-    Map<String, Object?>? jsonMap,
-    List<Object?>? jsonList,
-  }) {
-    if (jsonMap == null && jsonList == null) {
-      throw Exception('Must fill one of the two (jsonMap || jsonList)');
-    }
-
-    return jsonEncode(
-      jsonMap ?? jsonList,
-      toEncodable: (nonEncodable) {
-        if (nonEncodable is Timestamp) {
-          return nonEncodable.toDate().toIso8601String();
-        }
-        return nonEncodable.toString();
-      },
-    );
-  }
-
-  Map<String, Object?> _createJsonData({
-    List<SalaryPlan> plans = const [],
-    List<Bucket> buckets = const [],
-    List<History> history = const [],
-  }) {
-    final jsonData = <String, Object?>{};
-
-    if (plans.isNotEmpty) {
-      jsonData[FirebaseKey.salaryPlans] = plans.map((p) => p.toJson()).toList();
-    }
-
-    if (buckets.isNotEmpty) {
-      jsonData[FirebaseKey.buckets] = buckets.map((b) => b.toJson()).toList();
-    }
-
-    if (history.isNotEmpty) {
-      jsonData[FirebaseKey.history] = history.map((h) => h.toJson()).toList();
-    }
-
-    return jsonData;
-  }
-
-  Future<String> _filePath({
-    required ExportExtension extension,
-    required ExportKind kind,
-    required String name,
-    required bool timestamp,
-  }) async {
-    final buffer = StringBuffer();
-    final Directory tempDir = await getTemporaryDirectory();
-    buffer.write('${tempDir.path}/stack_money_${kind.name}');
-    buffer.write('/');
-    buffer.write(name);
-    buffer.write(
-      timestamp ? '_${Timestamp.now().millisecondsSinceEpoch.toString()}' : '',
-    );
-    buffer.write('.${extension.name}');
-
-    final filePath = buffer.toString();
-    SmLogger.debug('Got file path', payload: {'path': filePath});
-    return filePath;
-  }
-
-  Future<File> _createExportFile({
-    required String text,
-    String name = _fileName,
-    ExportExtension extension = ExportExtension.json,
-    ExportKind kind = ExportKind.data,
-    bool timestamp = true,
-  }) async {
-    final filePath = await _filePath(
-      name: name,
-      extension: extension,
-      kind: kind,
-      timestamp: timestamp,
-    );
-
-    final file = await File(filePath).create(recursive: true);
-    return await file.writeAsString(text);
   }
 }

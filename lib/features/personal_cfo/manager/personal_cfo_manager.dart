@@ -455,7 +455,7 @@ class PersonalCfoManager {
   }
 
   Future<void> shareChat() async {
-    await ExportService().exportData(titleController.text, messages);
+    await ExportService().shareChatMessages(titleController.text, messages);
   }
 
   Future<void> shareToAi() async {

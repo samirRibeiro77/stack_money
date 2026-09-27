@@ -1,3 +1,3 @@
 enum ExportKind { data, backup, cfo }
 
-enum ExportExtension { json, md }
+enum ExportExtension { json, md, txt }
