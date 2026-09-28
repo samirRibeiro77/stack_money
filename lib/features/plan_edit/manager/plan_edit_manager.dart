@@ -462,10 +462,6 @@ class PlanEditManager {
   }
 
   void reorderDistributions(int oldIndex, int newIndex) {
-    SmLogger.debug(
-      'Reorder distributions',
-      payload: {'oldIndex': oldIndex, 'newIndex': newIndex},
-    );
     final fullList = List<DistributionRow>.from(currentPlan.distributions);
     fullList.sort((a, b) => a.position.compareTo(b.position));
 
