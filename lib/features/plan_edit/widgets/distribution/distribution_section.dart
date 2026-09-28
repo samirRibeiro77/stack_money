@@ -3,6 +3,7 @@ import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/card_initialize_slot.dart';
+import 'package:stack_money/core/widgets/sm_reorderable_list.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/models/salary_plan.dart';
 import 'package:stack_money/features/plan_edit/widgets/distribution/distribution_card.dart';
@@ -11,16 +12,18 @@ class DistributionSection extends StatelessWidget {
   final SalaryPlan plan;
   final VoidCallback onAddSlot;
   final Function(
-    int index, {
+    String id, {
     String? cat,
     String? sub,
     AllocationType? type,
     double? value,
     int? targetDay,
+    int? position,
   })
   onUpdate;
   final Function(String id) onRemove;
   final Function(String name) confirmDismiss;
+  final Function(int oldIndex, int newIndex) onReorder;
 
   const DistributionSection({
     required this.plan,
@@ -28,12 +31,15 @@ class DistributionSection extends StatelessWidget {
     required this.onUpdate,
     required this.onRemove,
     required this.confirmDismiss,
+    required this.onReorder,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
+    plan.distributions.sort((a, b) => a.position.compareTo(b.position));
 
     final availableDays = plan.inflows
         .where((e) => e.value > 0)
@@ -48,22 +54,47 @@ class DistributionSection extends StatelessWidget {
       ignoring: plan.isActive,
       child: Column(
         children: [
-          ...List.generate(plan.distributions.length, (index) {
-            final row = plan.distributions[index];
-            final double computedValue = plan.calculateRowAbsoluteValue(row);
-
-            return DistributionCard(
-              row: row,
+          /// Reorderable distributions
+          SmReorderableList(
+            items: plan.distributions,
+            onReorder: onReorder,
+            itemBuilder: (_, distribution, _) {
+              return DistributionCard(
+                row: distribution,
+                techColor: techColor,
+                isReadOnly: plan.isActive,
+                availableDays: availableDays,
+                computedValue: plan.calculateRowAbsoluteValue(distribution),
+                onUpdate: onUpdate,
+                confirmDismiss: confirmDismiss,
+                onRemove: onRemove,
+              );
+            },
+            feedbackChildBuilder: (_, distribution, _) => DistributionCard(
+              row: distribution,
               techColor: techColor,
-              index: index,
               isReadOnly: plan.isActive,
               availableDays: availableDays,
-              computedValue: computedValue,
-              onUpdate: onUpdate,
-              confirmDismiss: confirmDismiss,
-              onRemove: onRemove,
-            );
-          }),
+              computedValue: plan.calculateRowAbsoluteValue(distribution),
+              onUpdate: (id, {cat, sub, type, value, targetDay, position}) =>
+                  {},
+              confirmDismiss: (_) => {},
+              onRemove: (_) => {},
+            ),
+            draggingChildBuilder: (_, distribution, _) => DistributionCard(
+              row: distribution,
+              techColor: techColor,
+              isReadOnly: plan.isActive,
+              availableDays: availableDays,
+              computedValue: plan.calculateRowAbsoluteValue(distribution),
+              onUpdate: (id, {cat, sub, type, value, targetDay, position}) =>
+                  {},
+              confirmDismiss: (_) => {},
+              onRemove: (_) => {},
+            ),
+          ),
+
+          /// New distribution
           const SizedBox(height: AppSizes.sizedBoxSmall),
           if (!plan.isActive)
             CardInitializeSlot(l10n.newDistributionRule, onTap: onAddSlot),

@@ -6,6 +6,7 @@ import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
+import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
@@ -391,34 +392,39 @@ class PlanEditManager {
         ? currentPlan.inflows.first.day
         : 5;
 
-    list.add(DistributionRow.empty(defaultDay: defaultDay));
+    list.add(
+      DistributionRow.empty(
+        defaultDay: defaultDay,
+        lastPosition: list.length + 1,
+      ),
+    );
 
     _planNotifier.value = currentPlan.copyWith(distributions: list);
     _scrollToBottom();
   }
 
   void updateDistribution(
-    int index, {
+    String id, {
     String? cat,
     String? sub,
     AllocationType? type,
     double? value,
     int? targetDay,
+    int? position,
   }) {
     final list = List<DistributionRow>.from(currentPlan.distributions);
-    if (index >= 0 && index < list.length) {
-      final distribution = list[index];
+    final index = list.indexWhere((d) => d.id == id);
 
-      list[index] = distribution.copyWith(
-        category: cat,
-        subCategory: sub,
-        type: type,
-        value: value,
-        targetDay: targetDay,
-      );
+    list[index] = list[index].copyWith(
+      category: cat,
+      subCategory: sub,
+      type: type,
+      value: value,
+      targetDay: targetDay,
+      position: position,
+    );
 
-      _planNotifier.value = currentPlan.copyWith(distributions: list);
-    }
+    _planNotifier.value = currentPlan.copyWith(distributions: list);
   }
 
   Future<bool?> removeDistributionConfirmation(String distributionName) {
@@ -453,6 +459,25 @@ class PlanEditManager {
     _planNotifier.value = currentPlan.copyWith(isActive: newActiveState);
 
     await _planService.toggleActiveStatus(currentPlan.id, newActiveState);
+  }
+
+  void reorderDistributions(int oldIndex, int newIndex) {
+    SmLogger.debug(
+      'Reorder distributions',
+      payload: {'oldIndex': oldIndex, 'newIndex': newIndex},
+    );
+    final fullList = List<DistributionRow>.from(currentPlan.distributions);
+    fullList.sort((a, b) => a.position.compareTo(b.position));
+
+    final item = fullList.removeAt(oldIndex);
+    fullList.insert(newIndex, item);
+
+    for (int i = 0; i < fullList.length; i++) {
+      final updatedDistribution = fullList[i].copyWith(position: i + 1);
+      fullList[i] = updatedDistribution;
+    }
+
+    _planNotifier.value = currentPlan.copyWith(distributions: fullList);
   }
 
   void _triggerUndoSnackBar(String message, SalaryPlan backup) {

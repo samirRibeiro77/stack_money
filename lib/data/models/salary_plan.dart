@@ -68,9 +68,10 @@ class SalaryPlan {
       position: json?[ModelKey.position] as int? ?? 0,
       inflows: json?.decodeList(ModelKey.inflows, InflowRow.fromJson) ?? [],
       outflows: json?.decodeList(ModelKey.outflows, OutflowRow.fromJson) ?? [],
-      distributions:
-          json?.decodeList(ModelKey.distributions, DistributionRow.fromJson) ??
-          [],
+      distributions: _orderByPosition(
+        json?.decodeList(ModelKey.distributions, DistributionRow.fromJson) ??
+            [],
+      ),
       isPreview: isPreview,
     );
   }
@@ -119,6 +120,14 @@ class SalaryPlan {
 
   bool get blockEdit => isPreview || isActive;
 
+  /// Private methods
+  static List<DistributionRow> _orderByPosition(
+    List<DistributionRow> distributions,
+  ) {
+    distributions.sort((a, b) => a.position.compareTo(b.position));
+    return distributions;
+  }
+
   /// Operators
   bool equalsTo(SalaryPlan other) =>
       _id == other._id &&
@@ -162,7 +171,7 @@ class SalaryPlan {
     const ListEquality().hash(distributions),
   );
 
-  // Getters
+  /// Getters
   double get totalAllocated {
     return distributions.fold(
       0.0,
@@ -200,7 +209,7 @@ class SalaryPlan {
     return days;
   }
 
-  // --- 📐 MOTOR MATEMÁTICO DE ENTRADAS ---
+  /// --- 📐 MOTOR MATEMÁTICO DE ENTRADAS ---
   double calculateInflowAbsolute(InflowRow row) {
     return row.type == InflowType.percentageBase
         ? baseSalary * (row.value / 100.0)
@@ -213,7 +222,7 @@ class SalaryPlan {
         .fold(0.0, (sum, item) => sum + calculateInflowAbsolute(item));
   }
 
-  // --- 📐 MOTOR MATEMÁTICO DE DEDUÇÕES ---
+  /// --- 📐 MOTOR MATEMÁTICO DE DEDUÇÕES ---
   double calculateOutflowAbsolute(OutflowRow row) {
     if (row.type == DeductionType.percentageGross) {
       final double grossForDay = grossSalaryForDay(row.targetDay);
@@ -222,7 +231,7 @@ class SalaryPlan {
     return row.value;
   }
 
-  // --- 📐 MOTOR MATEMÁTICO DE DISTRIBUIÇÃO ---
+  /// --- 📐 MOTOR MATEMÁTICO DE DISTRIBUIÇÃO ---
   double calculateRowAbsoluteValue(DistributionRow row) {
     switch (row.type) {
       case AllocationType.fixed:
@@ -237,7 +246,7 @@ class SalaryPlan {
     }
   }
 
-  // --- 🛰️ MOTOR DE FATIAMENTO TEMPORAL ---
+  /// --- 🛰️ MOTOR DE FATIAMENTO TEMPORAL ---
   double netSalaryForDay(int day) {
     final gross = grossSalaryForDay(day);
     final out = outflows
