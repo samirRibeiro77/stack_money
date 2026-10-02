@@ -14,6 +14,7 @@ class ExpandableHeader extends StatelessWidget {
     this.inactiveIcon = Icons.unfold_less,
     this.activeColor = StackMoneyTheme.cyanNeon,
     this.inactiveColor = StackMoneyTheme.magentaNeon,
+    this.showIcon = true,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class ExpandableHeader extends StatelessWidget {
   final IconData inactiveIcon;
   final Color activeColor;
   final Color inactiveColor;
+  final bool showIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +41,31 @@ class ExpandableHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TitleText(title),
-            if (!isSecureActive)
+            if (!isSecureActive && showIcon)
               ValueListenableBuilder<bool>(
                 valueListenable: validation,
                 builder: (_, isExpanded, _) {
-                  return Icon(
-                    isExpanded ? activeIcon : inactiveIcon,
-                    color: isExpanded ? activeColor : inactiveColor,
-                    size: AppSizes.x10,
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                          return ScaleTransition(
+                            scale: animation,
+                            child: RotationTransition(
+                              turns: animation,
+                              child: child,
+                            ),
+                          );
+                        },
+                    child: Icon(
+                      isExpanded ? activeIcon : inactiveIcon,
+                      key: ValueKey('${title}_${validation.value}'),
+                      color: isExpanded ? activeColor : inactiveColor,
+                      size: AppSizes.x10,
+                    ),
                   );
                 },
-              )
+              ),
           ],
         ),
       ),

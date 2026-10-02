@@ -5,6 +5,7 @@ import 'package:stack_money/data/enum/stack_money_popup_menu_item.dart';
 
 enum PersonalCfoActions implements StackMoneyPopupMenuItem {
   currentData,
+  exportToAi,
   share,
   archive,
   unarchive,
@@ -15,6 +16,8 @@ enum PersonalCfoActions implements StackMoneyPopupMenuItem {
     switch (this) {
       case currentData:
         return l10n.context;
+      case exportToAi:
+        return l10n.exportToAi;
       case share:
         return l10n.share;
       case archive:
@@ -30,6 +33,7 @@ enum PersonalCfoActions implements StackMoneyPopupMenuItem {
   Color get color {
     switch (this) {
       case currentData:
+      case exportToAi:
         return StackMoneyTheme.cyanNeon;
       case delete:
         return StackMoneyTheme.magentaNeon;
@@ -43,6 +47,8 @@ enum PersonalCfoActions implements StackMoneyPopupMenuItem {
     switch (this) {
       case currentData:
         return Icons.data_object_rounded;
+      case exportToAi:
+        return Icons.auto_awesome_rounded;
       case share:
         return Icons.share_rounded;
       case archive:

@@ -470,11 +470,35 @@ abstract class AppLocalizations {
   /// **'Over ({value})'**
   String overflowBy(Object value);
 
+  /// Salary distributions header
+  ///
+  /// In en, this message translates to:
+  /// **'Salary Distributions'**
+  String get salaryDistributions;
+
   /// Add distribution rule slot text
   ///
   /// In en, this message translates to:
   /// **'New distribution'**
   String get newDistributionRule;
+
+  /// Title for dialog when commiting new sort
+  ///
+  /// In en, this message translates to:
+  /// **'Commit sorting'**
+  String get distributionSortTitle;
+
+  /// Message for dialog when commiting new sort
+  ///
+  /// In en, this message translates to:
+  /// **'The sorting of your distributions has changed.'**
+  String get distributionSortMessage;
+
+  /// Note for dialog when commiting new sort
+  ///
+  /// In en, this message translates to:
+  /// **'{name} -> Old: {oldIndex} // New: {newIndex}'**
+  String distributionSortNote(Object name, Object newIndex, Object oldIndex);
 
   /// Subcategory
   ///
@@ -499,6 +523,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copy'**
   String get copy;
+
+  /// Share something
+  ///
+  /// In en, this message translates to:
+  /// **'Export LLM'**
+  String get exportToAi;
 
   /// Share something
   ///
@@ -1224,6 +1254,12 @@ abstract class AppLocalizations {
   /// **'Personal AI CFO connected sucessfully!\nAsk something right away...'**
   String get chatEmpty;
 
+  /// Message to show for suggestions when the user create a new CFO chat.
+  ///
+  /// In en, this message translates to:
+  /// **'Some CFO suggestions to start with:'**
+  String get aiSuggestions;
+
   /// Time ago formatter (just now).
   ///
   /// In en, this message translates to:
@@ -1361,6 +1397,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Target of {value} secured'**
   String targetDone(Object value);
+
+  /// Ecosystem Audit suggestion title for AI.
+  ///
+  /// In en, this message translates to:
+  /// **'Ecosystem Audit'**
+  String get cfoSuggestionEcosystemAuditTitle;
+
+  /// Ecosystem Audit suggestion prompt for AI.
+  ///
+  /// In en, this message translates to:
+  /// **'Realize uma varredura completa e profunda na minha saúde financeira atual. Analise meu patrimônio total, a distribuição nas caixinhas e o saldo do meu plano salarial. Me dê um diagnóstico transparente e sincero do meu momento.'**
+  String get cfoSuggestionEcosystemAuditPrompt;
+
+  /// Target Pacing suggestion title for AI.
+  ///
+  /// In en, this message translates to:
+  /// **'Target Pacing'**
+  String get cfoSuggestionTargetPacingTitle;
+
+  /// Target Pacing suggestion prompt for AI.
+  ///
+  /// In en, this message translates to:
+  /// **'Examine todas as minhas caixinhas que possuem um targetValue definido. Calcule o GAP restante de cada uma e me diga se o meu ritmo atual de aporte salarial vai me fazer atingir os objetivos no prazo ou se preciso recalibrar o ritmo.'**
+  String get cfoSuggestionTargetPacingPrompt;
+
+  /// No description provided for @cfoSuggestionMaxCashFlowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Max CashFlow'**
+  String get cfoSuggestionMaxCashFlowTitle;
+
+  /// No description provided for @cfoSuggestionMaxCashFlowPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Com base no meu saldo e sobra salarial atual, proponha um plano salarial atualizado (update_salary_plan) otimizando a distribuição para as minhas metas vigentes.'**
+  String get cfoSuggestionMaxCashFlowPrompt;
+
+  /// CFO Protocols suggestion title for AI.
+  ///
+  /// In en, this message translates to:
+  /// **'CFO Protocols'**
+  String get cfoSuggestionCfoProtocolsTitle;
+
+  /// CFO Protocols suggestion prompt for AI.
+  ///
+  /// In en, this message translates to:
+  /// **'Quais são os seus principais comandos e automações como meu Personal CFO? Explique detalhadamente a quais dados do meu Stack Money você tem acesso e como pode me ajudar a tomar decisões.'**
+  String get cfoSuggestionCfoProtocolsPrompt;
+
+  /// Dialog note to show when sharing LLM data.
+  ///
+  /// In en, this message translates to:
+  /// **'Chose how to share with your other AI your context and chat:'**
+  String get howToShareLLM;
+
+  /// SnackBar message to show when copied the MD to the clipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'LLM Markdown copied successfully.'**
+  String get markdownCopied;
 }
 
 class _AppLocalizationsDelegate

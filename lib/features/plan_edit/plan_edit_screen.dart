@@ -236,6 +236,8 @@ class _PlanEditScreenState extends State<PlanEditScreen> {
                       onUpdate: _manager.updateDistribution,
                       confirmDismiss: _manager.removeDistributionConfirmation,
                       onRemove: _manager.removeDistribution,
+                      onReorder: _manager.reorderDistributions,
+                      commitSort: _manager.reorderAllDistributions,
                     ),
                   ),
                   const SliverToBoxAdapter(
