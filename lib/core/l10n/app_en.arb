@@ -248,9 +248,25 @@
   "@overflowBy": {
     "description": "System overflowed by X"
   },
+  "salaryDistributions": "Salary Distributions",
+  "@salaryDistributions": {
+    "description": "Salary distributions header"
+  },
   "newDistributionRule": "New distribution",
   "@newDistributionRule": {
     "description": "Add distribution rule slot text"
+  },
+  "distributionSortTitle": "Commit sorting",
+  "@distributionSortTitle": {
+    "description": "Title for dialog when commiting new sort"
+  },
+  "distributionSortMessage": "The sorting of your distributions has changed.",
+  "@distributionSortMessage": {
+    "description": "Message for dialog when commiting new sort"
+  },
+  "distributionSortNote": "{name} -> Old: {oldIndex} // New: {newIndex}",
+  "@distributionSortNote": {
+    "description": "Note for dialog when commiting new sort"
   },
   "subcategory": "Subcategory",
   "@subcategory": {

@@ -210,7 +210,22 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get salaryDistributions => 'Salary Distributions';
+
+  @override
   String get newDistributionRule => 'Nova distribuição';
+
+  @override
+  String get distributionSortTitle => 'Atualizar ordenação';
+
+  @override
+  String get distributionSortMessage =>
+      'A ordenação das suas distribuições foi alterada.';
+
+  @override
+  String distributionSortNote(Object name, Object newIndex, Object oldIndex) {
+    return '$name -> Antes: $oldIndex // Depois: $newIndex';
+  }
 
   @override
   String get subcategory => 'Subcategoria';

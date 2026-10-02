@@ -210,7 +210,22 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get salaryDistributions => 'Salary Distributions';
+
+  @override
   String get newDistributionRule => 'New distribution';
+
+  @override
+  String get distributionSortTitle => 'Commit sorting';
+
+  @override
+  String get distributionSortMessage =>
+      'The sorting of your distributions has changed.';
+
+  @override
+  String distributionSortNote(Object name, Object newIndex, Object oldIndex) {
+    return '$name -> Old: $oldIndex // New: $newIndex';
+  }
 
   @override
   String get subcategory => 'Subcategory';

@@ -470,11 +470,35 @@ abstract class AppLocalizations {
   /// **'Over ({value})'**
   String overflowBy(Object value);
 
+  /// Salary distributions header
+  ///
+  /// In en, this message translates to:
+  /// **'Salary Distributions'**
+  String get salaryDistributions;
+
   /// Add distribution rule slot text
   ///
   /// In en, this message translates to:
   /// **'New distribution'**
   String get newDistributionRule;
+
+  /// Title for dialog when commiting new sort
+  ///
+  /// In en, this message translates to:
+  /// **'Commit sorting'**
+  String get distributionSortTitle;
+
+  /// Message for dialog when commiting new sort
+  ///
+  /// In en, this message translates to:
+  /// **'The sorting of your distributions has changed.'**
+  String get distributionSortMessage;
+
+  /// Note for dialog when commiting new sort
+  ///
+  /// In en, this message translates to:
+  /// **'{name} -> Old: {oldIndex} // New: {newIndex}'**
+  String distributionSortNote(Object name, Object newIndex, Object oldIndex);
 
   /// Subcategory
   ///
