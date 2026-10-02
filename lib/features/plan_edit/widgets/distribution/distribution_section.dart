@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stack_money/core/constants/app_sizes.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
 import 'package:stack_money/core/theme/theme.dart';
 import 'package:stack_money/core/widgets/card_initialize_slot.dart';
 import 'package:stack_money/core/widgets/expandable_header.dart';
+import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_reorderable_list.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
 import 'package:stack_money/data/models/distribution_row.dart';
@@ -26,6 +28,7 @@ class DistributionSection extends StatelessWidget {
   final Function(String id) onRemove;
   final Function(String name) confirmDismiss;
   final Function(int oldIndex, int newIndex) onReorder;
+  final Function(List<DistributionRow> distributions) commitSort;
 
   DistributionSection({
     required this.plan,
@@ -34,16 +37,41 @@ class DistributionSection extends StatelessWidget {
     required this.onRemove,
     required this.confirmDismiss,
     required this.onReorder,
+    required this.commitSort,
     super.key,
-  }) : distributions = ValueNotifier(plan.distributions);
+  }) : distributions = ValueNotifier(plan.distributions) {
+    _checkSorting();
+  }
 
-  final isSorted = ValueNotifier(false);
+  final isSorted = ValueNotifier(true);
   final ValueNotifier<List<DistributionRow>> distributions;
 
-  void _sortDistributions() {
+  void _checkSorting() {
+    final sorted = _extractSortedDistributions();
+    for (int i = 0; i < sorted.length; i++) {
+      if (sorted[i] != distributions.value[i]) {
+        isSorted.value = false;
+        return;
+      }
+    }
     isSorted.value = true;
-    final list = List<DistributionRow>.from(distributions.value);
+    return;
+  }
 
+  void _sortDistributions(BuildContext context) {
+    if (isSorted.value) {
+      _commitSortConfirmation(context);
+      return;
+    }
+
+    /// Update and Check
+    distributions.value = _extractSortedDistributions();
+    _checkSorting();
+  }
+
+  List<DistributionRow> _extractSortedDistributions() {
+    /// Extract list and sort
+    final list = List<DistributionRow>.from(distributions.value);
     list.sort((a, b) {
       /// Compare positions
       int comparePosition = a.targetDay.compareTo(b.targetDay);
@@ -57,7 +85,35 @@ class DistributionSection extends StatelessWidget {
       return a.name.toLowerCase().compareTo(b.name.toLowerCase());
     });
 
-    distributions.value = list;
+    return list;
+  }
+
+  void _commitSortConfirmation(BuildContext context) {
+    if (context.mounted) {
+      final l10n = AppLocalizations.of(context)!;
+
+      final note = StringBuffer();
+      for (var i = 0; i < distributions.value.length; i++) {
+        final d = distributions.value[i];
+        note.writeln(l10n.distributionSortNote(d.name, i + 1, d.position));
+      }
+
+      showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => SmDialog(
+          color: StackMoneyTheme.cyanNeon,
+          title: l10n.distributionSortTitle,
+          message: l10n.distributionSortMessage,
+          note: note.toString(),
+          onCancel: () => context.pop(),
+          onConfirm: () {
+            commitSort(distributions.value);
+            context.pop();
+          },
+        ),
+      );
+    }
   }
 
   void _update(
@@ -69,7 +125,7 @@ class DistributionSection extends StatelessWidget {
     int? targetDay,
     int? position,
   }) {
-    isSorted.value = false;
+    _checkSorting();
 
     onUpdate(
       id,
@@ -91,7 +147,7 @@ class DistributionSection extends StatelessWidget {
         .map((e) => e.day)
         .toSet()
         .toList();
-    final Color techColor = plan.isOverflowed
+    final techColor = plan.isOverflowed
         ? StackMoneyTheme.magentaNeon
         : StackMoneyTheme.cyanNeon;
 
@@ -100,12 +156,16 @@ class DistributionSection extends StatelessWidget {
       child: Column(
         children: [
           /// Filter header
-          ExpandableHeader(
-            title: 'Salary Distributions',
-            toggle: _sortDistributions,
-            validation: isSorted,
-            activeIcon: Icons.filter_alt_outlined,
-            inactiveIcon: Icons.filter_alt_off_outlined,
+          IgnorePointer(
+            ignoring: plan.blockEdit,
+            child: ExpandableHeader(
+              title: l10n.salaryDistributions,
+              toggle: () => _sortDistributions(context),
+              validation: isSorted,
+              activeIcon: Icons.cloud_sync_outlined,
+              inactiveIcon: Icons.sort_outlined,
+              showIcon: !plan.blockEdit,
+            ),
           ),
 
           /// Reorderable distributions

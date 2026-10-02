@@ -6,7 +6,6 @@ import 'package:stack_money/core/exceptions/exception_scope.dart';
 import 'package:stack_money/core/exceptions/stack_money_exception.dart';
 import 'package:stack_money/core/helpers/stack_money_string.dart';
 import 'package:stack_money/core/l10n/app_localizations.dart';
-import 'package:stack_money/core/utils/sm_logger.dart';
 import 'package:stack_money/core/widgets/sm_dialog.dart';
 import 'package:stack_money/core/widgets/sm_snack_bar.dart';
 import 'package:stack_money/data/enum/allocation_type.dart';
@@ -474,6 +473,14 @@ class PlanEditManager {
     }
 
     _planNotifier.value = currentPlan.copyWith(distributions: fullList);
+  }
+
+  void reorderAllDistributions(List<DistributionRow> distributions) {
+    for (int i = 0; i < distributions.length; i++) {
+      distributions[i] = distributions[i].copyWith(position: i + 1);
+    }
+
+    _planNotifier.value = currentPlan.copyWith(distributions: distributions);
   }
 
   void _triggerUndoSnackBar(String message, SalaryPlan backup) {
