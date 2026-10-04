@@ -15,7 +15,6 @@ class DistributionCard extends StatelessWidget {
   const DistributionCard({
     required this.row,
     required this.techColor,
-    required this.index,
     required this.isReadOnly,
     required this.availableDays,
     required this.computedValue,
@@ -27,17 +26,17 @@ class DistributionCard extends StatelessWidget {
 
   final DistributionRow row;
   final Color techColor;
-  final int index;
   final bool isReadOnly;
   final List<int> availableDays;
   final double computedValue;
   final Function(
-    int index, {
+    String id, {
     String? cat,
     String? sub,
     AllocationType? type,
     double? value,
     int? targetDay,
+    int? position,
   })
   onUpdate;
   final Function(String id) onRemove;
@@ -50,7 +49,7 @@ class DistributionCard extends StatelessWidget {
     } else {
       valueToSave = StackMoneyNumber.parsePercentageStringToDouble(value);
     }
-    onUpdate(index, value: valueToSave);
+    onUpdate(row.id, value: valueToSave);
   }
 
   @override
@@ -104,7 +103,7 @@ class DistributionCard extends StatelessWidget {
                           l10n.category,
                           readOnly: isReadOnly,
                         ),
-                        onChanged: (val) => onUpdate(index, cat: val),
+                        onChanged: (val) => onUpdate(row.id, cat: val),
                       ),
                     ),
                     const SizedBox(width: AppSizes.sizedBoxMedium),
@@ -117,7 +116,7 @@ class DistributionCard extends StatelessWidget {
                           l10n.subcategory,
                           readOnly: isReadOnly,
                         ),
-                        onChanged: (val) => onUpdate(index, sub: val),
+                        onChanged: (val) => onUpdate(row.id, sub: val),
                       ),
                     ),
                   ],
@@ -146,7 +145,7 @@ class DistributionCard extends StatelessWidget {
                           );
                         }).toList(),
                         onChanged: (val) =>
-                            onUpdate(index, type: val, value: 0.0),
+                            onUpdate(row.id, type: val, value: 0.0),
                       ),
                     ),
                     const SizedBox(width: AppSizes.sizedBoxMedium),
@@ -199,7 +198,7 @@ class DistributionCard extends StatelessWidget {
                           }
 
                           return GestureDetector(
-                            onTap: () => onUpdate(index, targetDay: d),
+                            onTap: () => onUpdate(row.id, targetDay: d),
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: AppSizes.x3,

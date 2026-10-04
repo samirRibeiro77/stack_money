@@ -9,6 +9,7 @@ class DistributionRow {
   final AllocationType type;
   final double value;
   final int targetDay;
+  final int position;
 
   const DistributionRow._(
     this._id, {
@@ -17,9 +18,10 @@ class DistributionRow {
     required this.type,
     required this.value,
     required this.targetDay,
+    required this.position,
   });
 
-  factory DistributionRow.empty({int defaultDay = 0}) {
+  factory DistributionRow.empty({int defaultDay = 0, int lastPosition = 0}) {
     return DistributionRow._(
       const Uuid().v4(),
       category: '',
@@ -27,6 +29,7 @@ class DistributionRow {
       type: AllocationType.fixed,
       value: 0.0,
       targetDay: defaultDay,
+      position: lastPosition,
     );
   }
 
@@ -38,6 +41,7 @@ class DistributionRow {
       type: AllocationType.fromJson(json?[ModelKey.type] as String? ?? ''),
       value: (json?[ModelKey.value] as num?)?.toDouble() ?? 0,
       targetDay: json?[ModelKey.targetDay] as int? ?? 0,
+      position: json?[ModelKey.position] as int? ?? 0,
     );
   }
 
@@ -48,6 +52,7 @@ class DistributionRow {
     ModelKey.type: type.name,
     ModelKey.value: value,
     ModelKey.targetDay: targetDay,
+    ModelKey.position: position,
   };
 
   DistributionRow copyWith({
@@ -57,6 +62,7 @@ class DistributionRow {
     AllocationType? type,
     double? value,
     int? targetDay,
+    int? position,
   }) {
     return DistributionRow._(
       newId ? const Uuid().v4() : _id,
@@ -65,6 +71,7 @@ class DistributionRow {
       type: type ?? this.type,
       value: value ?? this.value,
       targetDay: targetDay ?? this.targetDay,
+      position: position ?? this.position,
     );
   }
 
@@ -82,9 +89,10 @@ class DistributionRow {
           subCategory == other.subCategory &&
           type == other.type &&
           value == other.value &&
-          targetDay == other.targetDay;
+          targetDay == other.targetDay &&
+          position == other.position;
 
   @override
   int get hashCode =>
-      Object.hash(_id, category, subCategory, type, value, targetDay);
+      Object.hash(_id, category, subCategory, type, value, targetDay, position);
 }

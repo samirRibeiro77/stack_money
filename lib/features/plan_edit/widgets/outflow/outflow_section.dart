@@ -60,7 +60,7 @@ class OutflowSection extends StatelessWidget {
               if (!isExpand) return const SizedBox.shrink();
 
               return IgnorePointer(
-                ignoring: plan.isActive,
+                ignoring: plan.blockEdit,
                 child: Column(
                   children: [
                     const Divider(color: StackMoneyTheme.background, height: 1),
@@ -78,7 +78,7 @@ class OutflowSection extends StatelessWidget {
                           return OutflowSectionCard(
                             row: row,
                             index: index,
-                            isReadOnly: plan.isActive,
+                            isReadOnly: plan.blockEdit,
                             availableDays: availableDays,
                             isLast: isLast,
                             absVal: absVal,
